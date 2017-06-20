@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/rel_1"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="天下大势"
+                android:textColor="@color/main_color"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/text_line_1"
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/main_color"
+                android:gravity="center_vertical"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="科技前沿"
+                android:textColor="@color/main_color"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/text_line_2"
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/main_color"
+                android:gravity="center_vertical"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_3"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_3"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical"
+                android:text="管理科学"
+                android:textColor="@color/main_color"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/text_line_3"
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/main_color"
+                android:gravity="center_vertical"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_4"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/text_4"
+                android:layout_width="wrap_content"
+                android:layout_height="47dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical"
+                android:text="心灵鸡汤"
+                android:textColor="@color/main_color"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/text_line_4"
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/main_color"
+                android:gravity="center_vertical"
+                android:textSize="14dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:scrollbars="none" >
+    </ListView>
+
+</LinearLayout>

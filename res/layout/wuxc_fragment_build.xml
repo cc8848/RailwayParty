@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rea_mytitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:background="@color/main_color" >
+
+        <ImageView
+            android:id="@+id/roundimage_headimg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/logo_top" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_height"
+            android:layout_marginLeft="@dimen/top_height"
+            android:layout_marginRight="@dimen/top_height"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="党建"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/search_top" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_height" >
+
+        <RelativeLayout
+            android:id="@+id/main_top_bac"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/banner1" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_title"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_below="@id/main_top_bac"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rel_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="制度\n文件"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_1"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_1"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="党建\n要闻"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_2"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="通知\n公告"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_3"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_3"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="时政\n热点"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_4"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_4"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="党员\n风采"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_5"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_5"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rel_6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" >
+
+                    <TextView
+                        android:id="@+id/text_6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="5dp"
+                        android:text="网上\n党校"
+                        android:textColor="@color/main_color"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_number_6"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/tag"
+                        android:gravity="center"
+                        android:text="99+"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/text_below_6"
+                        android:layout_width="25dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/main_color" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <wuxc.single.railwayparty.layout.Childviewpaper
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/lin_title"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#ffffff" />
+    </RelativeLayout>
+
+</RelativeLayout>

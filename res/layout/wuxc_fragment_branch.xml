@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/top_height"
+        android:background="@drawable/zhibu_bg"
+        android:orientation="vertical" >
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rea_mytitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:background="@color/main_color" >
+
+        <ImageView
+            android:id="@+id/roundimage_headimg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/logo_top" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_height"
+            android:layout_marginLeft="@dimen/top_height"
+            android:layout_marginRight="@dimen/top_height"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="支部"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/search_top" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_mian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp" >
+
+        <LinearLayout
+            android:id="@+id/lin_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/rel_1"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="党籍管理"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rel_2"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon2"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="党费缴纳"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rel_3"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon3"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="困难党员救助"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/rel_4"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon4"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="组织架构"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rel_5"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon5"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="数据分析"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="114dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/rel_6"
+                android:layout_width="60dp"
+                android:layout_height="70dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/zhibu_icon6"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="支部群组"
+                    android:textColor="#ffffff"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

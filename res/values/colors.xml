@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="main_color">#cc0502</color>
+    <color name="btn_press">#a80402</color>
+    <color name="line">#3fe6e6e6</color>
+    <color name="text_grey">#7d7d7d</color>
+    <color name="three_title">#f3e8e6</color>
+    <color name="text_line">#8fe6e6e6</color>
+       <color name="text_line_black">#e6e6e6</color>
+    <color name="member_transform_black">#4e4a49</color>
+    <color name="member_transform_grey">#726f6a</color>
+    <color name="member_transform_yellow">#fff7a9</color>
+    <color name="member_transform_party_symbol">#f5f5f5</color>
+    <color name="member_transform_stroke">#c2c2c2</color>
+    <color name="member_transform_party_top_red">#f40000</color>
+    <color name="vote_right">#5c3e3e</color>
+    <color name="vote_left">#6ba7bf</color>
+    <color name="middle">#e06a68</color>
+    <color name="right">#ec9e9e</color>
+
+</resources>

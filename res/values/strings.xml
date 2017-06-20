@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">中铁一局</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="str_build">党建</string>
+    <string name="str_main">首页</string>
+    <string name="str_branch">支部</string>
+    <string name="str_bbs">论坛</string>
+    <string name="str_my">我的</string>
+
+</resources>

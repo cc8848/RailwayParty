@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rea_mytitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:background="@color/main_color" >
+
+        <ImageView
+            android:id="@+id/roundimage_headimg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/logo_top" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_height"
+            android:layout_marginLeft="@dimen/top_height"
+            android:layout_marginRight="@dimen/top_height"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="论坛"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/search_top" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/main_color"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/lin_1"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/image_1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon01_dyq" />
+
+            <TextView
+                android:id="@+id/text_1"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="党员圈"
+                android:textColor="#90ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_2"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/image_2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon01_dyq" />
+
+            <TextView
+                android:id="@+id/text_2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="党旗领航"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_3"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/image_3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon01_dyq" />
+
+            <TextView
+                android:id="@+id/text_3"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="党史与研究"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_4"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/image_4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon01_dyq" />
+
+            <TextView
+                android:id="@+id/text_4"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="党员意见"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_5"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/image_5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/icon01_dyq" />
+
+            <TextView
+                android:id="@+id/text_5"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="微投票"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <wuxc.single.railwayparty.layout.Childviewpaper
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:background="#ffffff" />
+
+</LinearLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape15"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="20dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_gravity="center"
+         
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="#ffffff"
+                android:gravity="center_horizontal"
+                android:text="hjj"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="145.0dip"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/positiveButton"
+                android:layout_width="210dp"
+                android:layout_height="60dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape7red"
+                android:gravity="center"
+                android:text="0k"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/negativeButton"
+                android:layout_width="210dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape7red"
+                android:gravity="center"
+                android:text="qux"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
