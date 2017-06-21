@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.getImageAbsolutePath;
 import wuxc.single.railwayparty.internet.saveBitmap;
@@ -101,8 +102,23 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		switch (requestCode) {
 		case PHOTO_REQUEST_TAKEPHOTO:// 当选择拍照时调用
 			final Bitmap photo = data.getParcelableExtra("data");
-			if (photo != null) {
-				doCropPhoto(photo);
+			File file = null;
+
+			try {
+				file = saveBitmap.saveMyBitmap("photo", photo);
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO");
+			if (file != null) {
+				// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO" + Uri.fromFile(file));
+				startPhotoZoom(Uri.fromFile(file));
+				HeadimgAbsolutePath = getImageAbsolutePath.getPath(getActivity(), Uri.fromFile(file));
+
+			} else {
+				Toast.makeText(getActivity(), "手机无法存储", Toast.LENGTH_SHORT).show();
 			}
 			// HeadimgAbsolutePath = MediaStore.EXTRA_OUTPUT;
 			break;
@@ -110,6 +126,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			if (!(data == null)) {
 				HeadimgAbsolutePath = "";
 				startPhotoZoom(data.getData());
+				// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO"+data.getData());
 				HeadimgAbsolutePath = getImageAbsolutePath.getPath(getActivity(), data.getData());
 			}
 
@@ -120,11 +137,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				setPicToView(data);
 			}
 			break;
-		case 6:
-			if (data != null) {
-				setPicToViewnew(data);
-			}
-			break;
+	 
 		default:
 			break;
 
@@ -132,38 +145,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void setPicToViewnew(Intent picdata) {
-		Bundle extras = picdata.getExtras();
-		if (extras != null) {
-			Bitmap photo = extras.getParcelable("data");
-			mbitmap = photo;
-			Drawable drawable = new BitmapDrawable(photo);
-			round_headimg.setImageBitmap(photo);
-			File file = null;
-
-			try {
-				file = saveBitmap.saveMyBitmap("wuxc", photo);
-				Log.e("wuxc", "success");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			new Thread(new Runnable() { // 开启线程上传文件
-				@Override
-				public void run() {
-					// String UpLoadResult = UpLoadFile.uploadHeadImage(file1,
-					// URLcontainer.urlip + URLcontainer.UpLoadSignle, LoginId,
-					// ticket);
-					// Message msg = new Message();
-					// msg.what = GET_UPLOAD_RESULT;
-					// msg.obj = UpLoadResult;
-					// uiHandler.sendMessage(msg);
-				}
-			}).start();
-		}
-	}
-
+	 
 	private void setPicToView(Intent picdata) {
 		Bundle extras = picdata.getExtras();
 		if (extras != null) {
@@ -171,6 +153,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			mbitmap = photo;
 			Drawable drawable = new BitmapDrawable(photo);
 			round_headimg.setImageBitmap(photo);
+			Log.e("HeadimgAbsolutePath", HeadimgAbsolutePath);
 			final File file1 = savePNG.savePNG_After(photo, "wuxc", HeadimgAbsolutePath);
 			File file = null;
 
@@ -195,26 +178,6 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				}
 			}).start();
 		}
-	}
-
-	protected void doCropPhoto(Bitmap data) {
-		Intent intent = getCropImageIntent(data);
-		startActivityForResult(intent, 6);
-	}
-
-	public static Intent getCropImageIntent(Bitmap data) {
-		Intent intent = new Intent("com.android.camera.action.CROP");
-		intent.setType("image/*");
-
-		intent.putExtra("data", data);
-		intent.putExtra("crop", "true");
-		intent.putExtra("aspectX", 1);
-		intent.putExtra("aspectY", 1);
-		intent.putExtra("outputX", 150);
-		intent.putExtra("outputY", 150);
-		intent.putExtra("return-data", true);
-		intent.putExtra("circleCrop", true);
-		return intent;
 	}
 
 	public void startPhotoZoom(Uri uri) {
