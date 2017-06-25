@@ -91,6 +91,7 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/lin_credits"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
@@ -252,7 +253,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_1"
+                android:id="@+id/rel_message"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >
@@ -409,7 +410,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_5"
+                android:id="@+id/rel_mycheck"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >
@@ -481,7 +482,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_7"
+                android:id="@+id/rel_evaluation"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >

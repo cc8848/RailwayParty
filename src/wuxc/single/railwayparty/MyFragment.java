@@ -22,7 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.getImageAbsolutePath;
@@ -30,6 +32,11 @@ import wuxc.single.railwayparty.internet.saveBitmap;
 import wuxc.single.railwayparty.internet.savePNG;
 import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
+import wuxc.single.railwayparty.my.CreditsActivity;
+import wuxc.single.railwayparty.my.EvaluationActivity;
+import wuxc.single.railwayparty.my.MessageActivity;
+import wuxc.single.railwayparty.my.MycheckActivity;
+import wuxc.single.railwayparty.my.SettingActivity;
 
 public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private LinearLayout lin_top;
@@ -44,6 +51,15 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private static final int PHOTO_REQUEST_TAKEPHOTO = 4;// ≈ƒ’’
 	private Bitmap mbitmap;
 	private static String HeadimgAbsolutePath;
+	private ImageView image_search;
+	private RelativeLayout rel_message;
+	private RelativeLayout rel_2;
+	private RelativeLayout rel_3;
+	private RelativeLayout rel_4;
+	private RelativeLayout rel_mycheck;
+	private RelativeLayout rel_6;
+	private RelativeLayout rel_evaluation;
+	private LinearLayout lin_credits;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +99,24 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		lin_top = (LinearLayout) view.findViewById(R.id.lin_top);
 		round_headimg = (RoundImageView) view.findViewById(R.id.round_headimg);
 		round_headimg.setOnClickListener(this);
+		image_search = (ImageView) view.findViewById(R.id.image_search);
+		image_search.setOnClickListener(this);
+		rel_message = (RelativeLayout) view.findViewById(R.id.rel_message);
+		rel_2 = (RelativeLayout) view.findViewById(R.id.rel_2);
+		rel_3 = (RelativeLayout) view.findViewById(R.id.rel_3);
+		rel_4 = (RelativeLayout) view.findViewById(R.id.rel_4);
+		rel_mycheck = (RelativeLayout) view.findViewById(R.id.rel_mycheck);
+		rel_6 = (RelativeLayout) view.findViewById(R.id.rel_6);
+		rel_evaluation = (RelativeLayout) view.findViewById(R.id.rel_evaluation);
+		lin_credits = (LinearLayout) view.findViewById(R.id.lin_credits);
+		rel_message.setOnClickListener(this);
+		lin_credits.setOnClickListener(this);
+		rel_2.setOnClickListener(this);
+		rel_3.setOnClickListener(this);
+		rel_4.setOnClickListener(this);
+		rel_mycheck.setOnClickListener(this);
+		rel_6.setOnClickListener(this);
+		rel_evaluation.setOnClickListener(this);
 	}
 
 	@Override
@@ -137,7 +171,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				setPicToView(data);
 			}
 			break;
-	 
+
 		default:
 			break;
 
@@ -145,7 +179,6 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	 
 	private void setPicToView(Intent picdata) {
 		Bundle extras = picdata.getExtras();
 		if (extras != null) {
@@ -229,7 +262,40 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		case R.id.round_headimg:
 			selecttype();
 			break;
+		case R.id.image_search:
+			Intent intent_search = new Intent();
+			intent_search.setClass(getActivity(), SettingActivity.class);
+			startActivity(intent_search);
+			break;
+		case R.id.lin_credits:
+			Intent intent_credits = new Intent();
+			intent_credits.setClass(getActivity(), CreditsActivity.class);
+			startActivity(intent_credits);
+			break;
+		case R.id.rel_message:
+			Intent intent_message = new Intent();
+			intent_message.setClass(getActivity(), MessageActivity.class);
+			startActivity(intent_message);
+			break;
 
+		case R.id.rel_2:
+			break;
+		case R.id.rel_3:
+			break;
+		case R.id.rel_4:
+			break;
+		case R.id.rel_mycheck:
+			Intent intent_mycheck = new Intent();
+			intent_mycheck.setClass(getActivity(), MycheckActivity.class);
+			startActivity(intent_mycheck);
+			break;
+		case R.id.rel_6:
+			break;
+		case R.id.rel_evaluation:
+			Intent intent_evaluation = new Intent();
+			intent_evaluation.setClass(getActivity(), EvaluationActivity.class);
+			startActivity(intent_evaluation);
+			break;
 		default:
 			break;
 		}

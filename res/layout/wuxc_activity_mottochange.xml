@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_height"
+        android:background="@color/main_color" >
+
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_width="@dimen/top_imageview_height"
+            android:layout_height="@dimen/top_imageview_height"
+            android:layout_marginLeft="@dimen/top_imageview_distance"
+            android:layout_marginTop="@dimen/top_imageview_distance"
+            android:src="@drawable/arrow_left" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_height"
+            android:layout_marginLeft="@dimen/top_height"
+            android:layout_marginRight="@dimen/top_height"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="设置宣言"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/text_size" />
+
+        <TextView
+            android:id="@+id/text_save"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/top_imageview_height"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/top_imageview_distance"
+            android:layout_marginTop="@dimen/top_imageview_distance"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="#ffffff"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" >
+
+        <EditText
+            android:id="@+id/edit_motto"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+            android:gravity="bottom"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/edit_motto"
+            android:layout_marginTop="3dp"
+            android:background="@color/main_color" />
+
+        <TextView
+            android:id="@+id/text_char"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:gravity="bottom"
+            android:text="15"
+            android:textColor="@color/text_grey"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="12dp"
+        android:text="输入您的宣言，字数不超过15字"
+        android:textColor="@color/text_grey"
+        android:textSize="14dp" />
+
+</LinearLayout>

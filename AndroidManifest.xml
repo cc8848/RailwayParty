@@ -42,6 +42,46 @@
             android:name=".my.AboutActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".my.NewpwdActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.AdviceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.MyResumeActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.mottoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.phoneActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.MessageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.CreditsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.CreditsRuleActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.EvaluationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.MycheckActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
