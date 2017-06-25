@@ -302,7 +302,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_2"
+                android:id="@+id/rel_mylearn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >
@@ -338,7 +338,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_3"
+                android:id="@+id/rel_mycollect"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >
@@ -374,7 +374,7 @@
                 android:background="@color/text_line_black" />
 
             <RelativeLayout
-                android:id="@+id/rel_4"
+                android:id="@+id/rel_mypublish"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="#ffffff" >

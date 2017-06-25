@@ -82,6 +82,18 @@
             android:name=".my.MycheckActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".my.MycollectActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.MypublishActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".my.MylearnActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

@@ -36,6 +36,9 @@ import wuxc.single.railwayparty.my.CreditsActivity;
 import wuxc.single.railwayparty.my.EvaluationActivity;
 import wuxc.single.railwayparty.my.MessageActivity;
 import wuxc.single.railwayparty.my.MycheckActivity;
+import wuxc.single.railwayparty.my.MycollectActivity;
+import wuxc.single.railwayparty.my.MylearnActivity;
+import wuxc.single.railwayparty.my.MypublishActivity;
 import wuxc.single.railwayparty.my.SettingActivity;
 
 public class MyFragment extends MainBaseFragment implements OnClickListener {
@@ -53,9 +56,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private static String HeadimgAbsolutePath;
 	private ImageView image_search;
 	private RelativeLayout rel_message;
-	private RelativeLayout rel_2;
-	private RelativeLayout rel_3;
-	private RelativeLayout rel_4;
+	private RelativeLayout rel_mylearn;
+	private RelativeLayout rel_mycollect;
+	private RelativeLayout rel_mypublish;
 	private RelativeLayout rel_mycheck;
 	private RelativeLayout rel_6;
 	private RelativeLayout rel_evaluation;
@@ -102,18 +105,18 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		image_search = (ImageView) view.findViewById(R.id.image_search);
 		image_search.setOnClickListener(this);
 		rel_message = (RelativeLayout) view.findViewById(R.id.rel_message);
-		rel_2 = (RelativeLayout) view.findViewById(R.id.rel_2);
-		rel_3 = (RelativeLayout) view.findViewById(R.id.rel_3);
-		rel_4 = (RelativeLayout) view.findViewById(R.id.rel_4);
+		rel_mylearn = (RelativeLayout) view.findViewById(R.id.rel_mylearn);
+		rel_mycollect = (RelativeLayout) view.findViewById(R.id.rel_mycollect);
+		rel_mypublish = (RelativeLayout) view.findViewById(R.id.rel_mypublish);
 		rel_mycheck = (RelativeLayout) view.findViewById(R.id.rel_mycheck);
 		rel_6 = (RelativeLayout) view.findViewById(R.id.rel_6);
 		rel_evaluation = (RelativeLayout) view.findViewById(R.id.rel_evaluation);
 		lin_credits = (LinearLayout) view.findViewById(R.id.lin_credits);
 		rel_message.setOnClickListener(this);
 		lin_credits.setOnClickListener(this);
-		rel_2.setOnClickListener(this);
-		rel_3.setOnClickListener(this);
-		rel_4.setOnClickListener(this);
+		rel_mylearn.setOnClickListener(this);
+		rel_mycollect.setOnClickListener(this);
+		rel_mypublish.setOnClickListener(this);
 		rel_mycheck.setOnClickListener(this);
 		rel_6.setOnClickListener(this);
 		rel_evaluation.setOnClickListener(this);
@@ -278,11 +281,20 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			startActivity(intent_message);
 			break;
 
-		case R.id.rel_2:
+		case R.id.rel_mylearn:
+			Intent intent_mylearn = new Intent();
+			intent_mylearn.setClass(getActivity(), MylearnActivity.class);
+			startActivity(intent_mylearn);
 			break;
-		case R.id.rel_3:
+		case R.id.rel_mycollect:
+			Intent intent_mycollect = new Intent();
+			intent_mycollect.setClass(getActivity(), MycollectActivity.class);
+			startActivity(intent_mycollect);
 			break;
-		case R.id.rel_4:
+		case R.id.rel_mypublish:
+			Intent intent_mypublish = new Intent();
+			intent_mypublish.setClass(getActivity(), MypublishActivity.class);
+			startActivity(intent_mypublish);
 			break;
 		case R.id.rel_mycheck:
 			Intent intent_mycheck = new Intent();
