@@ -1,5 +1,6 @@
 package wuxc.single.railwayparty;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import wuxc.single.railwayparty.branch.PartyAssistantActivity;
+import wuxc.single.railwayparty.branch.PartyMembershipActivity;
+import wuxc.single.railwayparty.branch.PartyMoneyActivity;
 import android.view.ViewGroup;
 
 public class BranchFragment extends MainBaseFragment implements OnClickListener {
@@ -18,9 +22,9 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private LinearLayout lin_1;
 	private LinearLayout lin_2;
 	private LinearLayout lin_3;
-	private LinearLayout rel_1;
-	private LinearLayout rel_2;
-	private LinearLayout rel_3;
+	private LinearLayout rel_party_membership;
+	private LinearLayout rel_myparty_money;
+	private LinearLayout rel_assistant;
 	private LinearLayout rel_4;
 	private LinearLayout rel_5;
 	private LinearLayout rel_6;
@@ -37,8 +41,8 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private void initheight(View view) {
 		// TODO Auto-generated method stub
 		int rel_width = (int) ((screenwidth - 80 * scalepx) / 3);
-//		Log.e("screenwidth", "" + screenwidth);
-//		Log.e("rel_width", "" + rel_width);
+		// Log.e("screenwidth", "" + screenwidth);
+		// Log.e("rel_width", "" + rel_width);
 		int rel_height = (int) (rel_width / 1.73 * 2);
 		int margin = (int) ((rel_height + 6 * scalepx) * 3 / 4);
 		RelativeLayout.LayoutParams LayoutParams = (android.widget.RelativeLayout.LayoutParams) lin_2.getLayoutParams();
@@ -50,20 +54,23 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		LayoutParams2.topMargin = margin * 2;
 		lin_3.setLayoutParams(LayoutParams2);
 
-		LinearLayout.LayoutParams LayoutParams3 = (android.widget.LinearLayout.LayoutParams) rel_1.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams3 = (android.widget.LinearLayout.LayoutParams) rel_party_membership
+				.getLayoutParams();
 		LayoutParams3.height = rel_height;
 		LayoutParams3.width = rel_width;
-		rel_1.setLayoutParams(LayoutParams3);
+		rel_party_membership.setLayoutParams(LayoutParams3);
 
-		LinearLayout.LayoutParams LayoutParams4 = (android.widget.LinearLayout.LayoutParams) rel_2.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams4 = (android.widget.LinearLayout.LayoutParams) rel_myparty_money
+				.getLayoutParams();
 		LayoutParams4.height = rel_height;
 		LayoutParams4.width = rel_width;
-		rel_2.setLayoutParams(LayoutParams4);
+		rel_myparty_money.setLayoutParams(LayoutParams4);
 
-		LinearLayout.LayoutParams LayoutParams5 = (android.widget.LinearLayout.LayoutParams) rel_3.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams5 = (android.widget.LinearLayout.LayoutParams) rel_assistant
+				.getLayoutParams();
 		LayoutParams5.height = rel_height;
 		LayoutParams5.width = rel_width;
-		rel_3.setLayoutParams(LayoutParams5);
+		rel_assistant.setLayoutParams(LayoutParams5);
 
 		LinearLayout.LayoutParams LayoutParams6 = (android.widget.LinearLayout.LayoutParams) rel_4.getLayoutParams();
 		LayoutParams6.height = rel_height;
@@ -95,12 +102,18 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		lin_1 = (LinearLayout) view.findViewById(R.id.lin_1);
 		lin_2 = (LinearLayout) view.findViewById(R.id.lin_2);
 		lin_3 = (LinearLayout) view.findViewById(R.id.lin_3);
-		rel_1 = (LinearLayout) view.findViewById(R.id.rel_1);
-		rel_2 = (LinearLayout) view.findViewById(R.id.rel_2);
-		rel_3 = (LinearLayout) view.findViewById(R.id.rel_3);
+		rel_party_membership = (LinearLayout) view.findViewById(R.id.rel_party_membership);
+		rel_myparty_money = (LinearLayout) view.findViewById(R.id.rel_myparty_money);
+		rel_assistant = (LinearLayout) view.findViewById(R.id.rel_assistant);
 		rel_4 = (LinearLayout) view.findViewById(R.id.rel_4);
 		rel_5 = (LinearLayout) view.findViewById(R.id.rel_5);
 		rel_6 = (LinearLayout) view.findViewById(R.id.rel_6);
+		rel_party_membership.setOnClickListener(this);
+		rel_myparty_money.setOnClickListener(this);
+		rel_assistant.setOnClickListener(this);
+		rel_4.setOnClickListener(this);
+		rel_5.setOnClickListener(this);
+		rel_6.setOnClickListener(this);
 	}
 
 	@Override
@@ -114,6 +127,35 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 
 	@Override
 	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.rel_party_membership:
+			Intent intent_membership = new Intent();
+			intent_membership.setClass(getActivity(), PartyMembershipActivity.class);
+			startActivity(intent_membership);
+			break;
+		case R.id.rel_myparty_money:
+			Intent intent_myparty_money = new Intent();
+			intent_myparty_money.setClass(getActivity(), PartyMoneyActivity.class);
+			startActivity(intent_myparty_money);
+			break;
+		case R.id.rel_assistant:
+			Intent intent_assistant = new Intent();
+			intent_assistant.setClass(getActivity(), PartyAssistantActivity.class);
+			startActivity(intent_assistant);
+			break;
+		case R.id.rel_4:
+
+			break;
+		case R.id.rel_5:
+
+			break;
+		case R.id.rel_6:
+
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

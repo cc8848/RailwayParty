@@ -2,7 +2,8 @@ package wuxc.single.railwayparty.internet;
 
 public class URLcontainer {
 	// 域名
-	public static String urlip = "http://114.115.211.114:8080/ServiceOfTrans";
+	public static String urlip = "http://www.smxyyzgs.cn/";
 	// 获取文件
-
+	// 组织机构
+	public static String GetAllOrg = "api/common/getAllOrg";
 }

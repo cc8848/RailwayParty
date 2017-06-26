@@ -61,7 +61,7 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/rel_1"
+                android:id="@+id/rel_party_membership"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"
@@ -85,7 +85,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/rel_2"
+                android:id="@+id/rel_myparty_money"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"
@@ -109,7 +109,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/rel_3"
+                android:id="@+id/rel_assistant"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"

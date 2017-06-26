@@ -39,6 +39,7 @@ import wuxc.single.railwayparty.my.MycheckActivity;
 import wuxc.single.railwayparty.my.MycollectActivity;
 import wuxc.single.railwayparty.my.MylearnActivity;
 import wuxc.single.railwayparty.my.MypublishActivity;
+import wuxc.single.railwayparty.my.MyvoteActivity;
 import wuxc.single.railwayparty.my.SettingActivity;
 
 public class MyFragment extends MainBaseFragment implements OnClickListener {
@@ -60,7 +61,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private RelativeLayout rel_mycollect;
 	private RelativeLayout rel_mypublish;
 	private RelativeLayout rel_mycheck;
-	private RelativeLayout rel_6;
+	private RelativeLayout rel_myvote;
 	private RelativeLayout rel_evaluation;
 	private LinearLayout lin_credits;
 
@@ -109,7 +110,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		rel_mycollect = (RelativeLayout) view.findViewById(R.id.rel_mycollect);
 		rel_mypublish = (RelativeLayout) view.findViewById(R.id.rel_mypublish);
 		rel_mycheck = (RelativeLayout) view.findViewById(R.id.rel_mycheck);
-		rel_6 = (RelativeLayout) view.findViewById(R.id.rel_6);
+		rel_myvote = (RelativeLayout) view.findViewById(R.id.rel_myvote);
 		rel_evaluation = (RelativeLayout) view.findViewById(R.id.rel_evaluation);
 		lin_credits = (LinearLayout) view.findViewById(R.id.lin_credits);
 		rel_message.setOnClickListener(this);
@@ -118,7 +119,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		rel_mycollect.setOnClickListener(this);
 		rel_mypublish.setOnClickListener(this);
 		rel_mycheck.setOnClickListener(this);
-		rel_6.setOnClickListener(this);
+		rel_myvote.setOnClickListener(this);
 		rel_evaluation.setOnClickListener(this);
 	}
 
@@ -301,7 +302,10 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			intent_mycheck.setClass(getActivity(), MycheckActivity.class);
 			startActivity(intent_mycheck);
 			break;
-		case R.id.rel_6:
+		case R.id.rel_myvote:
+			Intent intent_vote = new Intent();
+			intent_vote.setClass(getActivity(), MyvoteActivity.class);
+			startActivity(intent_vote);
 			break;
 		case R.id.rel_evaluation:
 			Intent intent_evaluation = new Intent();
