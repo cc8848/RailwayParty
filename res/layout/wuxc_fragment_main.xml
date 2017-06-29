@@ -84,13 +84,14 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/rel_inform"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
-                        android:id="@+id/rel_1"
+                        android:id="@+id/rel_9"
                         android:layout_width="60dp"
                         android:layout_height="60dp" >
 
@@ -101,6 +102,7 @@
                             android:src="@drawable/index1" />
 
                         <TextView
+                            android:id="@+id/text_1"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentRight="true"
@@ -128,13 +130,14 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:id="@+id/rel_policy"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
-                        android:id="@+id/rel_2"
+                        android:id="@+id/rel_10"
                         android:layout_width="60dp"
                         android:layout_height="60dp" >
 
@@ -145,6 +148,7 @@
                             android:src="@drawable/index2" />
 
                         <TextView
+                            android:id="@+id/text_2"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentRight="true"
@@ -179,13 +183,14 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
+                    android:id="@+id/rel_3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
-                        android:id="@+id/rel_3"
+                        android:id="@+id/rel_11"
                         android:layout_width="60dp"
                         android:layout_height="60dp" >
 
@@ -196,6 +201,7 @@
                             android:src="@drawable/index3" />
 
                         <TextView
+                            android:id="@+id/text_3"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentRight="true"
@@ -223,13 +229,14 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:id="@+id/rel_weblearn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="horizontal" >
 
                     <RelativeLayout
-                        android:id="@+id/rel_4"
+                        android:id="@+id/rel_12"
                         android:layout_width="60dp"
                         android:layout_height="60dp" >
 
@@ -240,6 +247,7 @@
                             android:src="@drawable/index4" />
 
                         <TextView
+                            android:id="@+id/text_4"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:layout_alignParentRight="true"
@@ -270,6 +278,7 @@
             android:orientation="horizontal" >
 
             <RelativeLayout
+                android:id="@+id/rel_5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="46" >
@@ -288,6 +297,7 @@
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/text_5"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"
@@ -307,6 +317,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
+                android:id="@+id/rel_6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >
@@ -325,6 +336,7 @@
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/text_6"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"
@@ -344,6 +356,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
+                android:id="@+id/rel_7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >
@@ -362,6 +375,7 @@
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/text_7"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"
@@ -381,6 +395,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
+                android:id="@+id/rel_8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >
@@ -399,6 +414,7 @@
                         android:textSize="16dp" />
 
                     <TextView
+                        android:id="@+id/text_8"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"

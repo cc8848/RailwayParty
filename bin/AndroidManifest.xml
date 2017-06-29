@@ -163,6 +163,46 @@
             android:name=".branch.PartyAssistantActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".branch.PartyOrgActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.PartyBranchStatisicActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.Statisticsfornation"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.Statisticsforsex"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.Statisticsforlevel"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.Statisticsforage"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.PartyBranchGroupActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.InformActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.WebLearnActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PolicyActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

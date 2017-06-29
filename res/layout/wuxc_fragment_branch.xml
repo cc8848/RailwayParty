@@ -142,7 +142,7 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/rel_4"
+                android:id="@+id/rel_org"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"
@@ -166,7 +166,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/rel_5"
+                android:id="@+id/rel_statisic"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"
@@ -199,7 +199,7 @@
             android:orientation="horizontal" >
 
             <LinearLayout
-                android:id="@+id/rel_6"
+                android:id="@+id/rel_group"
                 android:layout_width="60dp"
                 android:layout_height="70dp"
                 android:layout_margin="3dp"

@@ -10,8 +10,11 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import wuxc.single.railwayparty.branch.PartyAssistantActivity;
+import wuxc.single.railwayparty.branch.PartyBranchGroupActivity;
+import wuxc.single.railwayparty.branch.PartyBranchStatisicActivity;
 import wuxc.single.railwayparty.branch.PartyMembershipActivity;
 import wuxc.single.railwayparty.branch.PartyMoneyActivity;
+import wuxc.single.railwayparty.branch.PartyOrgActivity;
 import android.view.ViewGroup;
 
 public class BranchFragment extends MainBaseFragment implements OnClickListener {
@@ -25,9 +28,9 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private LinearLayout rel_party_membership;
 	private LinearLayout rel_myparty_money;
 	private LinearLayout rel_assistant;
-	private LinearLayout rel_4;
-	private LinearLayout rel_5;
-	private LinearLayout rel_6;
+	private LinearLayout rel_org;
+	private LinearLayout rel_statisic;
+	private LinearLayout rel_group;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,20 +75,21 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		LayoutParams5.width = rel_width;
 		rel_assistant.setLayoutParams(LayoutParams5);
 
-		LinearLayout.LayoutParams LayoutParams6 = (android.widget.LinearLayout.LayoutParams) rel_4.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams6 = (android.widget.LinearLayout.LayoutParams) rel_org.getLayoutParams();
 		LayoutParams6.height = rel_height;
 		LayoutParams6.width = rel_width;
-		rel_4.setLayoutParams(LayoutParams6);
+		rel_org.setLayoutParams(LayoutParams6);
 
-		LinearLayout.LayoutParams LayoutParams7 = (android.widget.LinearLayout.LayoutParams) rel_5.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams7 = (android.widget.LinearLayout.LayoutParams) rel_statisic
+				.getLayoutParams();
 		LayoutParams7.height = rel_height;
 		LayoutParams7.width = rel_width;
-		rel_5.setLayoutParams(LayoutParams7);
+		rel_statisic.setLayoutParams(LayoutParams7);
 
-		LinearLayout.LayoutParams LayoutParams8 = (android.widget.LinearLayout.LayoutParams) rel_6.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams8 = (android.widget.LinearLayout.LayoutParams) rel_group.getLayoutParams();
 		LayoutParams8.height = rel_height;
 		LayoutParams8.width = rel_width;
-		rel_6.setLayoutParams(LayoutParams8);
+		rel_group.setLayoutParams(LayoutParams8);
 	}
 
 	private void initview(View view) {
@@ -105,15 +109,15 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		rel_party_membership = (LinearLayout) view.findViewById(R.id.rel_party_membership);
 		rel_myparty_money = (LinearLayout) view.findViewById(R.id.rel_myparty_money);
 		rel_assistant = (LinearLayout) view.findViewById(R.id.rel_assistant);
-		rel_4 = (LinearLayout) view.findViewById(R.id.rel_4);
-		rel_5 = (LinearLayout) view.findViewById(R.id.rel_5);
-		rel_6 = (LinearLayout) view.findViewById(R.id.rel_6);
+		rel_org = (LinearLayout) view.findViewById(R.id.rel_org);
+		rel_statisic = (LinearLayout) view.findViewById(R.id.rel_statisic);
+		rel_group = (LinearLayout) view.findViewById(R.id.rel_group);
 		rel_party_membership.setOnClickListener(this);
 		rel_myparty_money.setOnClickListener(this);
 		rel_assistant.setOnClickListener(this);
-		rel_4.setOnClickListener(this);
-		rel_5.setOnClickListener(this);
-		rel_6.setOnClickListener(this);
+		rel_org.setOnClickListener(this);
+		rel_statisic.setOnClickListener(this);
+		rel_group.setOnClickListener(this);
 	}
 
 	@Override
@@ -143,14 +147,20 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 			intent_assistant.setClass(getActivity(), PartyAssistantActivity.class);
 			startActivity(intent_assistant);
 			break;
-		case R.id.rel_4:
-
+		case R.id.rel_org:
+			Intent intent_org = new Intent();
+			intent_org.setClass(getActivity(), PartyOrgActivity.class);
+			startActivity(intent_org);
 			break;
-		case R.id.rel_5:
-
+		case R.id.rel_statisic:
+			Intent intent_statisic = new Intent();
+			intent_statisic.setClass(getActivity(), PartyBranchStatisicActivity.class);
+			startActivity(intent_statisic);
 			break;
-		case R.id.rel_6:
-
+		case R.id.rel_group:
+			Intent intent_group = new Intent();
+			intent_group.setClass(getActivity(), PartyBranchGroupActivity.class);
+			startActivity(intent_group);
 			break;
 
 		default:

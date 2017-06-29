@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  
+   
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/image_pic"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/t0162f022653122395c"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"  android:layout_marginLeft="20dp"
+        android:layout_marginRight="80dp" >
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="80dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="标题 "
+            android:textColor="#000000"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_time"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:text="2017-12-28"
+            android:textColor="@color/text_grey"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"  android:layout_marginLeft="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="36dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="2017-12-282017-12-282017-12-282017-12-282017-12-282017-12-282017-12-28"
+        android:textColor="@color/text_grey"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/shu" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="80dp" />
+
+</RelativeLayout>

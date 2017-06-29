@@ -109,6 +109,7 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp"
                 android:gravity="center_vertical"
                 android:text="234"
                 android:textColor="@color/text_grey"
@@ -117,6 +118,7 @@
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
+                android:layout_marginLeft="15dp"
                 android:src="@drawable/zan" />
 
             <TextView
