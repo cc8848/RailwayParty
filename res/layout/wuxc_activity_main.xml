@@ -10,6 +10,14 @@
         android:layout_marginBottom="59dp" >
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/text_gobg"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:background="@android:color/transparent" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="85dp"

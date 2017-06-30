@@ -9,7 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import wuxc.single.railwayparty.main.CleanActivity;
+import wuxc.single.railwayparty.main.DisciplinaryActivity;
+import wuxc.single.railwayparty.main.FlagActivity;
 import wuxc.single.railwayparty.main.InformActivity;
+import wuxc.single.railwayparty.main.MemberActivity;
+import wuxc.single.railwayparty.main.PartyManageActivity;
 import wuxc.single.railwayparty.main.PolicyActivity;
 import wuxc.single.railwayparty.main.WebLearnActivity;
 import android.view.ViewGroup;
@@ -21,12 +26,12 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private RelativeLayout main_top_bac;
 	private LinearLayout rel_inform;
 	private LinearLayout rel_policy;
-	private LinearLayout rel_3;
+	private LinearLayout rel_party_manage;
 	private LinearLayout rel_weblearn;
-	private RelativeLayout rel_5;
-	private RelativeLayout rel_6;
-	private RelativeLayout rel_7;
-	private RelativeLayout rel_8;
+	private RelativeLayout rel_clean;
+	private RelativeLayout rel_disciplinary;
+	private RelativeLayout rel_member;
+	private RelativeLayout rel_flag;
 	private RelativeLayout rel_9;
 	private RelativeLayout rel_10;
 	private RelativeLayout rel_11;
@@ -59,13 +64,13 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		main_top_bac = (RelativeLayout) view.findViewById(R.id.main_top_bac);
 		rel_inform = (LinearLayout) view.findViewById(R.id.rel_inform);
 		rel_policy = (LinearLayout) view.findViewById(R.id.rel_policy);
-		rel_3 = (LinearLayout) view.findViewById(R.id.rel_3);
+		rel_party_manage = (LinearLayout) view.findViewById(R.id.rel_party_manage);
 		rel_weblearn = (LinearLayout) view.findViewById(R.id.rel_weblearn);
 
-		rel_5 = (RelativeLayout) view.findViewById(R.id.rel_5);
-		rel_6 = (RelativeLayout) view.findViewById(R.id.rel_6);
-		rel_7 = (RelativeLayout) view.findViewById(R.id.rel_7);
-		rel_8 = (RelativeLayout) view.findViewById(R.id.rel_8);
+		rel_clean = (RelativeLayout) view.findViewById(R.id.rel_clean);
+		rel_disciplinary = (RelativeLayout) view.findViewById(R.id.rel_disciplinary);
+		rel_member = (RelativeLayout) view.findViewById(R.id.rel_member);
+		rel_flag = (RelativeLayout) view.findViewById(R.id.rel_flag);
 		rel_9 = (RelativeLayout) view.findViewById(R.id.rel_9);
 		rel_10 = (RelativeLayout) view.findViewById(R.id.rel_10);
 		rel_11 = (RelativeLayout) view.findViewById(R.id.rel_11);
@@ -80,14 +85,15 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		text_8 = (TextView) view.findViewById(R.id.text_8);
 		lin_four = (LinearLayout) view.findViewById(R.id.lin_four);
 		headimg = (ImageView) view.findViewById(R.id.headimg);
+
 		rel_inform.setOnClickListener(this);
 		rel_policy.setOnClickListener(this);
-		rel_3.setOnClickListener(this);
+		rel_party_manage.setOnClickListener(this);
 		rel_weblearn.setOnClickListener(this);
-		rel_5.setOnClickListener(this);
-		rel_6.setOnClickListener(this);
-		rel_7.setOnClickListener(this);
-		rel_8.setOnClickListener(this);
+		rel_clean.setOnClickListener(this);
+		rel_disciplinary.setOnClickListener(this);
+		rel_member.setOnClickListener(this);
+		rel_flag.setOnClickListener(this);
 		showtext();
 	}
 
@@ -177,26 +183,37 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			intent_rel_policy.setClass(getActivity(), PolicyActivity.class);
 			startActivity(intent_rel_policy);
 			break;
-		case R.id.rel_3:
-
+		case R.id.rel_party_manage:
+			Intent intent_rel_party_manage = new Intent();
+			intent_rel_party_manage.setClass(getActivity(), PartyManageActivity.class);
+			startActivity(intent_rel_party_manage);
 			break;
 		case R.id.rel_weblearn:
 			Intent intent_rel_weblearn = new Intent();
 			intent_rel_weblearn.setClass(getActivity(), WebLearnActivity.class);
 			startActivity(intent_rel_weblearn);
 			break;
-		case R.id.rel_5:
-
+		case R.id.rel_clean:
+			Intent intent_rel_clean = new Intent();
+			intent_rel_clean.setClass(getActivity(), CleanActivity.class);
+			startActivity(intent_rel_clean);
 			break;
-		case R.id.rel_6:
-
+		case R.id.rel_disciplinary:
+			Intent intent_rel_disciplinary = new Intent();
+			intent_rel_disciplinary.setClass(getActivity(), DisciplinaryActivity.class);
+			startActivity(intent_rel_disciplinary);
 			break;
-		case R.id.rel_7:
-
+		case R.id.rel_member:
+			Intent intent_rel_member = new Intent();
+			intent_rel_member.setClass(getActivity(), MemberActivity.class);
+			startActivity(intent_rel_member);
 			break;
-		case R.id.rel_8:
-
+		case R.id.rel_flag:
+			Intent intent_rel_flag = new Intent();
+			intent_rel_flag.setClass(getActivity(), FlagActivity.class);
+			startActivity(intent_rel_flag);
 			break;
+		 
 
 		default:
 			break;

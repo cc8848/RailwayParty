@@ -183,7 +183,7 @@
                 android:orientation="horizontal" >
 
                 <LinearLayout
-                    android:id="@+id/rel_3"
+                    android:id="@+id/rel_party_manage"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -278,7 +278,7 @@
             android:orientation="horizontal" >
 
             <RelativeLayout
-                android:id="@+id/rel_5"
+                android:id="@+id/rel_clean"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="46" >
@@ -317,7 +317,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/rel_6"
+                android:id="@+id/rel_disciplinary"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >
@@ -356,7 +356,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/rel_7"
+                android:id="@+id/rel_member"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >
@@ -395,7 +395,7 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/rel_8"
+                android:id="@+id/rel_flag"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="37" >

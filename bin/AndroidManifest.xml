@@ -203,6 +203,54 @@
             android:name=".main.PolicyActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".main.ExamActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.ExamResultActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.ExamDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PublishTipsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.DisciplinaryActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PartyRuleInformationActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.ReportInnameActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.ReportOutnameActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PartyManageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.CleanActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.MemberActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.FlagActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

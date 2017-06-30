@@ -53,6 +53,7 @@
         android:textSize="16dp" />
 
     <Button
+        android:id="@+id/btn_exam"
         android:layout_width="140dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
@@ -64,13 +65,14 @@
         android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/text_exam"
         android:layout_width="140dp"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical|right"
+        android:gravity="top|right"
         android:text="查看成绩"
         android:textColor="@color/text_grey"
         android:textSize="12dp" />

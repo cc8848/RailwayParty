@@ -124,7 +124,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="right"
                     android:text="申请理由："
                     android:textSize="16dp" />
@@ -154,6 +154,7 @@
                 android:layout_height="50dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape7red"
                 android:gravity="center"
                 android:text="申请缴费"

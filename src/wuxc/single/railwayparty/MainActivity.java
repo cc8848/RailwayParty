@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	public static String curFragmentTag;
@@ -27,6 +28,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private FragmentTransaction mFragmentTransaction;
 	private int page = 0;
 	private SharedPreferences FragmentPage;
+	private TextView text_gobg;
+	private int screenwidth = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	private void initview() {
 		// TODO Auto-generated method stub
+		screenwidth = getWindow().getWindowManager().getDefaultDisplay().getWidth();
+
 		FragmentPage = getSharedPreferences("fragmentinfo", MODE_PRIVATE);
 		RelativeBuild = (RelativeLayout) findViewById(R.id.relative_build);
 		RelativeBranch = (RelativeLayout) findViewById(R.id.relative_branch);
@@ -48,6 +53,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		RelativeBranch.setOnClickListener(this);
 		RelativeMy.setOnClickListener(this);
 		ImageMain.setOnClickListener(this);
+		text_gobg = (TextView) findViewById(R.id.text_gobg);
+		text_gobg.setOnClickListener(this);
+		int height = (int) (screenwidth / 3.3);
+		RelativeLayout.LayoutParams LayoutParams = (android.widget.RelativeLayout.LayoutParams) text_gobg
+				.getLayoutParams();
+		LayoutParams.height = height;
+		text_gobg.setLayoutParams(LayoutParams);
 		mFragmentManager = getSupportFragmentManager();
 		read();
 		if (page == 1) {
@@ -78,6 +90,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		Editor edit = FragmentPage.edit();
 		edit.putInt("fragment", i);
 		edit.commit();
+		if (i == 3) {
+			text_gobg.setVisibility(View.VISIBLE);
+		} else {
+			text_gobg.setVisibility(View.GONE);
+		}
 	}
 
 	private void setCurrentFragment() {
@@ -217,6 +234,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			RelativeBuild.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.relative_branch:
+			write(2);
+			setTabSelection(getString(R.string.str_branch));
+			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));
+			break;
+		case R.id.text_gobg:
 			write(2);
 			setTabSelection(getString(R.string.str_branch));
 			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));

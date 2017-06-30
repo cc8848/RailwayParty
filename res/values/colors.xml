@@ -7,7 +7,7 @@
     <color name="text_grey">#7d7d7d</color>
     <color name="three_title">#f3e8e6</color>
     <color name="text_line">#8fe6e6e6</color>
-       <color name="text_line_black">#e6e6e6</color>
+    <color name="text_line_black">#e6e6e6</color>
     <color name="member_transform_black">#4e4a49</color>
     <color name="member_transform_grey">#726f6a</color>
     <color name="member_transform_yellow">#fff7a9</color>
@@ -18,5 +18,8 @@
     <color name="vote_left">#6ba7bf</color>
     <color name="middle">#e06a68</color>
     <color name="right">#ec9e9e</color>
+    <color name="brown">#ab8d13</color>
+    <color name="color_qh">#7bd1d2</color>
+    <color name="color_sg">#ec6564</color>
 
 </resources>

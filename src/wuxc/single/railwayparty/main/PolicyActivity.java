@@ -3,6 +3,7 @@ package wuxc.single.railwayparty.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,7 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 	private TextView text_title;
 	private String title = "两学一做";
 	private String temp = "两学一做";
+	private ImageView image_edit;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 		ViewPaper.setOffscreenPageLimit(NumberPicture);
 		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
 		ViewPaper.setAdapter(new MyPagerAdapter());
+		image_edit.setVisibility(View.GONE);
 	}
 
 	private void initfragment() {
@@ -118,20 +121,19 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 				clearcolor();
 				text_1.setTextColor(Color.parseColor("#ffffff"));
 				text_line_1.setBackgroundColor(Color.parseColor("#ffffff"));
+				image_edit.setVisibility(View.GONE);
 				break;
 			case 1:
-
 				clearcolor();
 				text_2.setTextColor(Color.parseColor("#ffffff"));
 				text_line_2.setBackgroundColor(Color.parseColor("#ffffff"));
-
+				image_edit.setVisibility(View.VISIBLE);
 				break;
 			case 2:
-
 				clearcolor();
 				text_3.setTextColor(Color.parseColor("#ffffff"));
 				text_line_3.setBackgroundColor(Color.parseColor("#ffffff"));
-
+				image_edit.setVisibility(View.GONE);
 				break;
 
 			default:
@@ -198,6 +200,8 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 		image_more.setOnClickListener(this);
 		clearselect();
 		text_one.setBackgroundResource(R.drawable.shape20line);
+		image_edit = (ImageView) findViewById(R.id.image_edit);
+		image_edit.setOnClickListener(this);
 	}
 
 	private void clearselect() {
@@ -219,18 +223,21 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 			text_1.setTextColor(Color.parseColor("#ffffff"));
 			text_line_1.setBackgroundColor(Color.parseColor("#ffffff"));
 			ViewPaper.setCurrentItem(0);
+			image_edit.setVisibility(View.GONE);
 			break;
 		case R.id.text_2:
 			clearcolor();
 			text_2.setTextColor(Color.parseColor("#ffffff"));
 			text_line_2.setBackgroundColor(Color.parseColor("#ffffff"));
 			ViewPaper.setCurrentItem(1);
+			image_edit.setVisibility(View.VISIBLE);
 			break;
 		case R.id.text_3:
 			clearcolor();
 			text_3.setTextColor(Color.parseColor("#ffffff"));
 			text_line_3.setBackgroundColor(Color.parseColor("#ffffff"));
 			ViewPaper.setCurrentItem(2);
+			image_edit.setVisibility(View.GONE);
 			break;
 		case R.id.image_more:
 			lin_select.setVisibility(View.VISIBLE);
@@ -264,6 +271,11 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 			title = temp;
 			text_title.setText(title);
 			text_1.setText(title);
+			break;
+		case R.id.image_edit:
+			Intent intent = new Intent();
+			intent.setClass(getApplicationContext(), PublishTipsActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			break;
