@@ -34,7 +34,7 @@ public class Bbs1Cache {
 
 	public TextView gettextName() {
 		if (textName == null) {
-			textName = (TextView) baseView.findViewById(R.id.text_time);
+			textName = (TextView) baseView.findViewById(R.id.text_name);
 		}
 		return textName;
 	}

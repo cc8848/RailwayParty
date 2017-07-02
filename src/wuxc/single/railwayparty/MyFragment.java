@@ -139,24 +139,30 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		Bundle bundle = data.getExtras();
 		switch (requestCode) {
 		case PHOTO_REQUEST_TAKEPHOTO:// 当选择拍照时调用
-			final Bitmap photo = data.getParcelableExtra("data");
-			File file = null;
+			if (!(data == null)&&!(bundle==null)) {
+//				Log.e("data", "" + data);
+				 
+//				Log.e("PHOTO_REQUEST_TAKEPHOTO", "" + PHOTO_REQUEST_TAKEPHOTO);
+				final Bitmap photo = data.getParcelableExtra("data");
+				File file = null;
 
-			try {
-				file = saveBitmap.saveMyBitmap("photo", photo);
+				try {
+					file = saveBitmap.saveMyBitmap("photo", photo);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO");
-			if (file != null) {
-				// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO" + Uri.fromFile(file));
-				startPhotoZoom(Uri.fromFile(file));
-				HeadimgAbsolutePath = getImageAbsolutePath.getPath(getActivity(), Uri.fromFile(file));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO");
+				if (file != null) {
+					// Log.e("pic", "PHOTO_REQUEST_TAKEPHOTO" +
+					// Uri.fromFile(file));
+					startPhotoZoom(Uri.fromFile(file));
+					HeadimgAbsolutePath = getImageAbsolutePath.getPath(getActivity(), Uri.fromFile(file));
 
-			} else {
-				Toast.makeText(getActivity(), "手机无法存储", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getActivity(), "手机无法存储", Toast.LENGTH_SHORT).show();
+				}
 			}
 			// HeadimgAbsolutePath = MediaStore.EXTRA_OUTPUT;
 			break;

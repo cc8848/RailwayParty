@@ -3,6 +3,7 @@ package wuxc.single.railwayparty;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import wuxc.single.railwayparty.fragment.BbsFragment3;
 import wuxc.single.railwayparty.fragment.BbsFragment4;
 import wuxc.single.railwayparty.fragment.BbsFragment5;
 import wuxc.single.railwayparty.layout.Childviewpaper;
+import wuxc.single.railwayparty.other.SearchActivity;
 
 public class BbsFragment extends MainBaseFragment implements OnClickListener {
 	private LinearLayout lin_1;
@@ -59,6 +61,17 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		ViewPaper.setOffscreenPageLimit(NumberPicture);
 		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
 		ViewPaper.setAdapter(new MyPagerAdapter());
+		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+		image_search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SearchActivity.class);
+				startActivity(intent);
+			}
+		});
 		return view;
 	}
 
@@ -211,27 +224,32 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		case R.id.lin_1:
 			clearcolor();
 			image_1.setImageResource(R.drawable.icon01_dyq);
-			text_1.setTextColor(Color.parseColor("#ffffff"));	ViewPaper.setCurrentItem(0);
+			text_1.setTextColor(Color.parseColor("#ffffff"));
+			ViewPaper.setCurrentItem(0);
 			break;
 		case R.id.lin_2:
 			clearcolor();
 			image_2.setImageResource(R.drawable.icon02_dyq);
-			text_2.setTextColor(Color.parseColor("#ffffff"));	ViewPaper.setCurrentItem(1);
+			text_2.setTextColor(Color.parseColor("#ffffff"));
+			ViewPaper.setCurrentItem(1);
 			break;
 		case R.id.lin_3:
 			clearcolor();
 			image_3.setImageResource(R.drawable.icon03_dyq);
-			text_3.setTextColor(Color.parseColor("#ffffff"));	ViewPaper.setCurrentItem(2);
+			text_3.setTextColor(Color.parseColor("#ffffff"));
+			ViewPaper.setCurrentItem(2);
 			break;
 		case R.id.lin_4:
 			clearcolor();
 			image_4.setImageResource(R.drawable.icon04_dyq);
-			text_4.setTextColor(Color.parseColor("#ffffff"));	ViewPaper.setCurrentItem(3);
+			text_4.setTextColor(Color.parseColor("#ffffff"));
+			ViewPaper.setCurrentItem(3);
 			break;
 		case R.id.lin_5:
 			clearcolor();
 			image_5.setImageResource(R.drawable.icon05_dyq);
-			text_5.setTextColor(Color.parseColor("#ffffff"));	ViewPaper.setCurrentItem(4);
+			text_5.setTextColor(Color.parseColor("#ffffff"));
+			ViewPaper.setCurrentItem(4);
 			break;
 		default:
 			break;

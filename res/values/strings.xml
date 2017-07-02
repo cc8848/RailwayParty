@@ -9,5 +9,14 @@
     <string name="str_branch">支部</string>
     <string name="str_bbs">论坛</string>
     <string name="str_my">我的</string>
+    <string name="search_hint">请输入查找内容</string>
+    <string name="search_label_1">申请书</string>
+    <string name="search_label_2">候选人</string>
+    <string name="search_label_3">组织审批</string>
+    <string name="search_label_4">组织生活会</string>
+    <string name="search_label_5">民主生活会</string>
+    <string name="search_label_6">党支部</string>
+    <string name="search_label_7">推优党员</string>
+    <string name="search_label_8">新党员</string>
 
 </resources>

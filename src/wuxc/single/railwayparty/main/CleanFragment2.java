@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Clean2Adapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.Clean2Model;
 
 public class CleanFragment2 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -186,7 +187,16 @@ public class CleanFragment2 extends Fragment implements OnTouchListener, OnClick
 		// intent.setClass(getActivity(), PartyRuleClean2Activity.class);
 		// startActivity(intent);
 		// }
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+		// Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("source", R.drawable.detail10);
+		bundle.putInt("height", 3014);
+		bundle.putInt("width", 750);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void setheadtextview() {

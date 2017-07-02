@@ -251,6 +251,23 @@
             android:name=".main.FlagActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".detail.DetailActivity"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".other.SearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".other.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".other.ResetPwdActivity"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

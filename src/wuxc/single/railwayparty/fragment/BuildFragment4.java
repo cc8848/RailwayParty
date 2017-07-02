@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.BuildAdapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.BuildModel;
 
 public class BuildFragment4 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -175,7 +177,16 @@ public class BuildFragment4 extends Fragment implements OnTouchListener, OnClick
 		// bundle.putString("Name", "名字");
 		// intent.putExtras(bundle);
 		// startActivity(intent);
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+		// Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("source", R.drawable.detail);
+		bundle.putInt("height", 3048);
+		bundle.putInt("width", 750);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void setheadtextview() {

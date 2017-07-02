@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.InformationAdapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.InformationModel;
 
 public class InformationFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -184,6 +185,15 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 		if (position == 1) {
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), PartyRuleInformationActivity.class);
+			startActivity(intent);
+		} else {
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), DetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putInt("source", R.drawable.detail4);
+			bundle.putInt("height", 2941);
+			bundle.putInt("width", 750);
+			intent.putExtras(bundle);
 			startActivity(intent);
 		}
 		// Toast.makeText(getActivity(), "µã»÷µÚ" + position + "Ìõ" + "item",

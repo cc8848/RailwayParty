@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Flag3Adapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.Flag3Model;
 
 public class FlagFragment3 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -186,7 +187,16 @@ public class FlagFragment3 extends Fragment implements OnTouchListener, OnClickL
 		// intent.setClass(getActivity(), PartyRuleFlag3Activity.class);
 		// startActivity(intent);
 		// }
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+		// Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("source", R.drawable.detail2);
+		bundle.putInt("height", 1670);
+		bundle.putInt("width", 750);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	private void setheadtextview() {

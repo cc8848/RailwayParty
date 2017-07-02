@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Clean1Adapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.Clean1Model;
 
 public class MemberFragment1 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -172,21 +173,20 @@ public class MemberFragment1 extends Fragment implements OnTouchListener, OnClic
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		// recommendModel data = list.get(position - 1);
-		// Intent intent = new Intent();
-		// intent.setClass(getActivity(), SpecialDetailActivity.class);
-		// Bundle bundle = new Bundle();
-		// bundle.putString("Title", data.getTitle());
-		// bundle.putString("detail", data.getDetail());
-		// bundle.putString("Time", data.getTime());
-		// bundle.putString("Name", "名字");
-		// intent.putExtras(bundle);
-		// startActivity(intent);
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("source", R.drawable.detail);
+		bundle.putInt("height", 3048);
+		bundle.putInt("width", 750);
+		intent.putExtras(bundle);
+		startActivity(intent);
 		// if (position == 1) {
 		// Intent intent = new Intent();
 		// intent.setClass(getActivity(), PartyRuleClean1Activity.class);
 		// startActivity(intent);
 		// }
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
 	}
 
 	private void setheadtextview() {

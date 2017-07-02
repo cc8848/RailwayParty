@@ -146,7 +146,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="请确认新密码"
+                    android:hint="再次输入您的新密码"
                     android:password="true"
                     android:textSize="16dp" />
             </LinearLayout>

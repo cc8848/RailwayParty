@@ -21,5 +21,64 @@
     <color name="brown">#ab8d13</color>
     <color name="color_qh">#7bd1d2</color>
     <color name="color_sg">#ec6564</color>
+    <color name="background_grey">#f5f5f5</color>
 
+    
+    
+      <color name="white">#ffffff</color>
+    <color name="main_red">#00a7ff</color>
+    <!-- 主调红色 -->
+    <color name="text_white">#ffffff</color>
+    <!-- 白色字体 -->
+    <color name="news_list_title_black">#3F3F3F</color>
+    <!-- 新闻列表标题颜色 -->
+    <color name="news_list_content_grey">#666666</color>
+    <!-- 新闻列表内容颜色 -->
+    <color name="news_list_date_grey">#999999</color>
+    <!-- 新闻列表日期颜色 -->
+    <color name="more">#7CCD7C</color>
+    <color name="grey">#E4E4E4</color>
+    <color name="green">#4FC646</color>
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color>
+    <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color>
+    <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="hometext_red">#F91816</color>
+    <color name="search_shortcutkey_green">#58A263</color>
+    <color name="search_shortcutkey_darkbrown">#970005</color>
+    <color name="search_shortcutkey_brown">#B38865</color>
+    <color name="search_shortcutkey_mainblue">#447093</color>
+    <color name="search_shortcutkey_blue_purple">#765896</color>
+    <color name="search_shortcutkey_darkgreen">#1C6520</color>
+    <color name="search_shortcutkey_purple">#C163B1</color>
+    <color name="login_toregister">#f00000</color>
+    <color name="pink">#fef3f1</color>
+    <color name="member_grey">#efefef</color>
+    <color name="vip5">#b117e9</color>
+    <color name="vip4">#c41706</color>
+    <color name="vip3">#f87002</color>
+    <color name="vip2">#fdb102</color>
+    <color name="vip1">#c9975c</color>
+    <color name="stroke5">#76149d</color>
+    <color name="stroke4">#a71000</color>
+    <color name="stroke3">#d75f00</color>
+    <color name="stroke2">#d09104</color>
+    <color name="stroke1">#917256</color>
+    <color name="vipdot">#7d5e32</color>
+    <color name="reward0">#f6c4c5</color>
+    <color name="reward1">#c9e7df</color>
+    <color name="reward2">#58A263</color>
+    <color name="reward3">#B38865</color>
+    <color name="reward4">#C163B1</color>
+    
 </resources>

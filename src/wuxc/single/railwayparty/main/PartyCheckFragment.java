@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.PartyCheckAdapter;
+import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.model.PartyCheckModel;
 
 public class PartyCheckFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -186,8 +187,15 @@ public class PartyCheckFragment extends Fragment implements OnTouchListener, OnC
 		// intent.setClass(getActivity(), PartyRulePartyCheckActivity.class);
 		// startActivity(intent);
 		// }
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
-	}
+//		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), DetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putInt("source", R.drawable.detail8);
+		bundle.putInt("height", 2964);
+		bundle.putInt("width", 750);
+		intent.putExtras(bundle);
+		startActivity(intent);	}
 
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());

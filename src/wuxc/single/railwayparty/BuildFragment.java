@@ -3,6 +3,7 @@ package wuxc.single.railwayparty;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import wuxc.single.railwayparty.fragment.BuildFragment1;
@@ -24,6 +26,7 @@ import wuxc.single.railwayparty.fragment.BuildFragment4;
 import wuxc.single.railwayparty.fragment.BuildFragment5;
 import wuxc.single.railwayparty.fragment.BuildFragment6;
 import wuxc.single.railwayparty.layout.Childviewpaper;
+import wuxc.single.railwayparty.other.SearchActivity;
 import wuxc.single.railwayparty.start.guidePageActivity.MyOnPageChangeListener;
 
 public class BuildFragment extends MainBaseFragment implements OnClickListener {
@@ -73,6 +76,17 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		ViewPaper.setOffscreenPageLimit(NumberPicture);
 		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
 		ViewPaper.setAdapter(new MyPagerAdapter());
+		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+		image_search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SearchActivity.class);
+				startActivity(intent);
+			}
+		});
 		return view;
 	}
 
@@ -128,37 +142,37 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				clearcolor();
 				text_1.setTextColor(Color.parseColor("#cc0502"));
 				text_below_1.setBackgroundColor(Color.parseColor("#cc0502"));
-			 
+
 				break;
 			case 1:
 				clearcolor();
 				text_2.setTextColor(Color.parseColor("#cc0502"));
 				text_below_2.setBackgroundColor(Color.parseColor("#cc0502"));
-			 
+
 				break;
 			case 2:
 				clearcolor();
 				text_3.setTextColor(Color.parseColor("#cc0502"));
 				text_below_3.setBackgroundColor(Color.parseColor("#cc0502"));
-			 
+
 				break;
 			case 3:
 				clearcolor();
 				text_4.setTextColor(Color.parseColor("#cc0502"));
 				text_below_4.setBackgroundColor(Color.parseColor("#cc0502"));
-			 
+
 				break;
 			case 4:
 				clearcolor();
 				text_5.setTextColor(Color.parseColor("#cc0502"));
 				text_below_5.setBackgroundColor(Color.parseColor("#cc0502"));
-				 
+
 				break;
 			case 5:
 				clearcolor();
 				text_6.setTextColor(Color.parseColor("#cc0502"));
 				text_below_6.setBackgroundColor(Color.parseColor("#cc0502"));
-				 
+
 				break;
 
 			default:

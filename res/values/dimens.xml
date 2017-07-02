@@ -26,5 +26,17 @@
     <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
     <dimen name="big_text">18dp</dimen>
+    <dimen name="search_shortcutkey_size">16dip</dimen>
+    <dimen name="search_edit_height">50dip</dimen>
+    <dimen name="search_edittext_height">30dip</dimen>
+    <dimen name="search_edittext_width">330dip</dimen>
+    <dimen name="search_text_size">13dip</dimen>
+    <dimen name="search_shortcutkey_height">40dip</dimen>
+    <dimen name="login_edit_size">16dip</dimen>
+    <dimen name="login_btn_size">18dip</dimen>
+    <dimen name="auto_login">14dip</dimen>
+    <dimen name="member_text_size">14dip</dimen>
+    <dimen name="member_transform_height">40dp</dimen>
+    <dimen name="input_height">46dp</dimen>
 
 </resources>

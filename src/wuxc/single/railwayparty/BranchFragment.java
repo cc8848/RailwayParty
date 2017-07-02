@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import wuxc.single.railwayparty.branch.PartyAssistantActivity;
@@ -15,6 +16,7 @@ import wuxc.single.railwayparty.branch.PartyBranchStatisicActivity;
 import wuxc.single.railwayparty.branch.PartyMembershipActivity;
 import wuxc.single.railwayparty.branch.PartyMoneyActivity;
 import wuxc.single.railwayparty.branch.PartyOrgActivity;
+import wuxc.single.railwayparty.other.SearchActivity;
 import android.view.ViewGroup;
 
 public class BranchFragment extends MainBaseFragment implements OnClickListener {
@@ -38,6 +40,17 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		View view = inflater.inflate(R.layout.wuxc_fragment_branch, container, false);
 		initview(view);
 		initheight(view);
+		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+		image_search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SearchActivity.class);
+				startActivity(intent);
+			}
+		});
 		return view;
 	}
 
@@ -86,7 +99,8 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		LayoutParams7.width = rel_width;
 		rel_statisic.setLayoutParams(LayoutParams7);
 
-		LinearLayout.LayoutParams LayoutParams8 = (android.widget.LinearLayout.LayoutParams) rel_group.getLayoutParams();
+		LinearLayout.LayoutParams LayoutParams8 = (android.widget.LinearLayout.LayoutParams) rel_group
+				.getLayoutParams();
 		LayoutParams8.height = rel_height;
 		LayoutParams8.width = rel_width;
 		rel_group.setLayoutParams(LayoutParams8);

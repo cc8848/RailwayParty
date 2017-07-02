@@ -17,6 +17,8 @@ import wuxc.single.railwayparty.main.MemberActivity;
 import wuxc.single.railwayparty.main.PartyManageActivity;
 import wuxc.single.railwayparty.main.PolicyActivity;
 import wuxc.single.railwayparty.main.WebLearnActivity;
+import wuxc.single.railwayparty.other.LoginActivity;
+import wuxc.single.railwayparty.other.SearchActivity;
 import android.view.ViewGroup;
 
 public class MainFragment extends MainBaseFragment implements OnClickListener {
@@ -54,6 +56,17 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
 		initview(view);
 		initheight(view);
+		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+		image_search.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SearchActivity.class);
+				startActivity(intent);
+			}
+		});
 		return view;
 	}
 
@@ -94,6 +107,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		rel_disciplinary.setOnClickListener(this);
 		rel_member.setOnClickListener(this);
 		rel_flag.setOnClickListener(this);
+		main_top_bac.setOnClickListener(this);
 		showtext();
 	}
 
@@ -213,8 +227,11 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			intent_rel_flag.setClass(getActivity(), FlagActivity.class);
 			startActivity(intent_rel_flag);
 			break;
-		 
-
+		case R.id.main_top_bac:
+			Intent intent_top_bac = new Intent();
+			intent_top_bac.setClass(getActivity(), LoginActivity.class);
+			startActivity(intent_top_bac);
+			break;
 		default:
 			break;
 		}
