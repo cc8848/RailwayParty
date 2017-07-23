@@ -5,7 +5,36 @@ public class FileModel {
 	private String Title;
 	private String time;
 	private String Id;
-	private String Detail;
+	private String Detail;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 	private String from;
 
 	public String getFrom() {

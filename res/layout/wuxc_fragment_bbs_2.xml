@@ -127,7 +127,10 @@
                 android:textSize="14dp" />
         </RelativeLayout>
     </LinearLayout>
-
+ <TextView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/text_line" />
     <ListView
         android:id="@+id/list_data"
         android:layout_width="match_parent"

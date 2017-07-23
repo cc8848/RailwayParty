@@ -4,7 +4,36 @@ public class MypublishModel {
 
 	private String Id;
 	private String Label;
-	private int number;
+	private int number;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 	private String Time;
 	private String title;
 	private String detail;

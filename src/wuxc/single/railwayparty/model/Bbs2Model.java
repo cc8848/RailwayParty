@@ -9,6 +9,35 @@ public class Bbs2Model {
 	private int imageurl;
 	private String label;
 	private int width;
+	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
 
 	public int getWidth() {
 		return width;

@@ -126,27 +126,27 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 				clearcolor();
 				text_1.setTextColor(Color.parseColor("#cc0502"));
 				image_1.setImageResource(R.drawable.icon01_dyq);
-				text_1.setTextColor(Color.parseColor("#ffffff"));
+				text_1.setTextColor(Color.parseColor("#cc0502"));
 				break;
 			case 1:
 				clearcolor();
 				image_2.setImageResource(R.drawable.icon02_dyq);
-				text_2.setTextColor(Color.parseColor("#ffffff"));
+				text_2.setTextColor(Color.parseColor("#cc0502"));
 				break;
 			case 2:
 				clearcolor();
 				image_3.setImageResource(R.drawable.icon03_dyq);
-				text_3.setTextColor(Color.parseColor("#ffffff"));
+				text_3.setTextColor(Color.parseColor("#cc0502"));
 				break;
 			case 3:
 				clearcolor();
 				image_4.setImageResource(R.drawable.icon04_dyq);
-				text_4.setTextColor(Color.parseColor("#ffffff"));
+				text_4.setTextColor(Color.parseColor("#cc0502"));
 				break;
 			case 4:
 				clearcolor();
 				image_5.setImageResource(R.drawable.icon05_dyq);
-				text_5.setTextColor(Color.parseColor("#ffffff"));
+				text_5.setTextColor(Color.parseColor("#cc0502"));
 				break;
 
 			default:
@@ -167,22 +167,22 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		clearcolor();
 		image_1.setImageResource(R.drawable.icon01_dyq);
-		text_1.setTextColor(Color.parseColor("#ffffff"));
+		text_1.setTextColor(Color.parseColor("#cc0502"));
 
 	}
 
 	private void clearcolor() {
 		// TODO Auto-generated method stub
 		image_1.setImageResource(R.drawable.icon1_dyq);
-		text_1.setTextColor(Color.parseColor("#80ffffff"));
+		text_1.setTextColor(Color.parseColor("#D0D0D0"));
 		image_2.setImageResource(R.drawable.icon2_dyq);
-		text_2.setTextColor(Color.parseColor("#80ffffff"));
+		text_2.setTextColor(Color.parseColor("#D0D0D0"));
 		image_3.setImageResource(R.drawable.icon3_dyq);
-		text_3.setTextColor(Color.parseColor("#80ffffff"));
+		text_3.setTextColor(Color.parseColor("#D0D0D0"));
 		image_4.setImageResource(R.drawable.icon4_dyq);
-		text_4.setTextColor(Color.parseColor("#80ffffff"));
+		text_4.setTextColor(Color.parseColor("#D0D0D0"));
 		image_5.setImageResource(R.drawable.icon5_dyq);
-		text_5.setTextColor(Color.parseColor("#80ffffff"));
+		text_5.setTextColor(Color.parseColor("#D0D0D0"));
 	}
 
 	private void initview(View view) {
@@ -224,31 +224,31 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		case R.id.lin_1:
 			clearcolor();
 			image_1.setImageResource(R.drawable.icon01_dyq);
-			text_1.setTextColor(Color.parseColor("#ffffff"));
+			text_1.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(0);
 			break;
 		case R.id.lin_2:
 			clearcolor();
 			image_2.setImageResource(R.drawable.icon02_dyq);
-			text_2.setTextColor(Color.parseColor("#ffffff"));
+			text_2.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(1);
 			break;
 		case R.id.lin_3:
 			clearcolor();
 			image_3.setImageResource(R.drawable.icon03_dyq);
-			text_3.setTextColor(Color.parseColor("#ffffff"));
+			text_3.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(2);
 			break;
 		case R.id.lin_4:
 			clearcolor();
 			image_4.setImageResource(R.drawable.icon04_dyq);
-			text_4.setTextColor(Color.parseColor("#ffffff"));
+			text_4.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(3);
 			break;
 		case R.id.lin_5:
 			clearcolor();
 			image_5.setImageResource(R.drawable.icon05_dyq);
-			text_5.setTextColor(Color.parseColor("#ffffff"));
+			text_5.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(4);
 			break;
 		default:

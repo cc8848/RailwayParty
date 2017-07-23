@@ -1,10 +1,19 @@
 package wuxc.single.railwayparty.start;
 
+import java.util.ArrayList;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import wuxc.single.railwayparty.MainActivity;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 
 public class startLogoActivity extends Activity {
 	private ImageView image_logo;
@@ -24,6 +34,29 @@ public class startLogoActivity extends Activity {
 	private int GuidePage = 0;// 引导页显示标志字
 	private String userName = "";
 	private String password;
+	private static final int GET_LOGININ_RESULT_DATA = 1;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private String userPhoto;
+	private String address;
+	private int ticket;
+	private String loginId;
+	private String sex;
+	private String sessionId;
+	private String username;
+
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_LOGININ_RESULT_DATA:
+				GetDataDetailFromLoginResultData(msg.obj);
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +94,8 @@ public class startLogoActivity extends Activity {
 			startActivity(intent);
 			finish();
 		} else {
-			userName = PreAccount.getString("userName", "");
-			password = PreAccount.getString("password", "");
+			userName = PreAccount.getString("LoginId", "");
+			password = PreAccount.getString("pwd", "");
 			if (userName.equals("") || password.equals("")) {
 				Intent intent = new Intent();
 				intent.setClass(this, MainActivity.class);
@@ -70,11 +103,110 @@ public class startLogoActivity extends Activity {
 				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "自动登录", Toast.LENGTH_SHORT).show();
-				Intent intent = new Intent();
-				intent.setClass(this, MainActivity.class);
-				startActivity(intent);
-				finish();
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("login_id", userName));
+				ArrayValues.add(new BasicNameValuePair("pwd", password));
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String LoginResultData = "";
+						LoginResultData = HttpGetData.GetData("api/member/login", ArrayValues);
+						Message msg = new Message();
+						msg.obj = LoginResultData;
+						msg.what = GET_LOGININ_RESULT_DATA;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
 			}
+		}
+
+	}
+
+	public void GetDataDetailFromLoginResultData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+		finish();
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				Toast.makeText(getApplicationContext(), "登陆成功", Toast.LENGTH_SHORT).show();
+				GetDetailData(Data);
+				finish();
+			} else if (Type.equals("accountPwdError")) {
+				Toast.makeText(getApplicationContext(), "用户名和密码不匹配", Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("userLocked")) {
+				Toast.makeText(getApplicationContext(), "账号被禁用", Toast.LENGTH_SHORT).show();
+
+			} else {
+				Toast.makeText(getApplicationContext(), "登陆失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailData(String data) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(data);
+
+			userPhoto = demoJson.getString("userPhoto");
+			address = demoJson.getString("address");
+			ticket = demoJson.getInt("ticket");
+			loginId = demoJson.getString("loginId");
+			sex = demoJson.getString("sex");
+			sessionId = demoJson.getString("sessionId");
+			username = demoJson.getString("username");
+			WriteAccount();
+			WriteUserInfo();
+			// GetAllData();
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void WriteUserInfo() {
+		// TODO Auto-generated method stub
+		Editor edit = PreUserInfo.edit();
+		edit.putString("userPhoto", userPhoto);
+		edit.putString("address", address);
+		edit.putInt("ticket", ticket);
+		edit.putString("sex", sex);
+		edit.putString("loginId", loginId);
+		edit.putString("sessionId", sessionId);
+		edit.putString("sex", sex);
+		edit.commit();
+	}
+
+	private void WriteAccount() {
+		// TODO Auto-generated method stub
+		if (true) {
+			Editor edit = PreAccount.edit();
+			edit.putString("LoginId", userName);
+			edit.putString("pwd", password);
+			edit.commit();
+			// } else {
+			// Editor edit = PreAccount.edit();
+			// edit.putString("LoginId", null);
+			// edit.putString("pwd", null);
+			// edit.commit();
 		}
 
 	}

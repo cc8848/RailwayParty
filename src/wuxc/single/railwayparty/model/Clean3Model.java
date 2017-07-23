@@ -14,6 +14,35 @@ public class Clean3Model {
 	private String name;
 	private String label;
 	private String pl;
+	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
 
 	public String getName() {
 		return name;

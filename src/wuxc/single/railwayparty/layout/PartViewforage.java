@@ -115,7 +115,7 @@ public class PartViewforage extends View {
 		// 3 绘制 Y 周坐标
 
 		titlePaint.setTextAlign(Align.RIGHT);
-		titlePaint.setTextSize(40);
+		titlePaint.setTextSize(25);
 		titlePaint.setAntiAlias(true);
 		titlePaint.setStyle(Paint.Style.FILL);
 		for (int i = 0; i < ySteps.length; i++) {
@@ -129,7 +129,7 @@ public class PartViewforage extends View {
 		int temp = step;
 		for (int i = 0; i < columCount - 1; i++) {
 			// text, baseX, baseY, textPaint
-			canvas.drawText(xWeeks[i], 65 + temp * (i + 1), height + 60, titlePaint);
+			canvas.drawText(xWeeks[i], 95 + temp * (i + 1), height + 60, titlePaint);
 		}
 
 		// 5 绘制矩形
@@ -143,8 +143,8 @@ public class PartViewforage extends View {
 				paint.setColor(Color.parseColor("#c40505"));// 字体颜色
 				Rect rect = new Rect();// 柱状图的形状
 
-				rect.left = 30 + step * (i + 1) - 40;
-				rect.right = 30 + step * (i + 1) + 40;
+				rect.left = 60 + step * (i + 1) - 20;
+				rect.right = 60 + step * (i + 1) + 20;
 				int rh = (int) (leftHeight - leftHeight * (value / 1000));
 				rect.top = rh + 20;
 				rect.bottom = height;
@@ -154,7 +154,7 @@ public class PartViewforage extends View {
 				canvas.drawBitmap(bitmap, null, rect, paint);
 
 				if (this.text[i] == TRUE) {
-					canvas.drawText(value + "", 30 + step * (i + 1) - 30, rh + 10, paint);
+					canvas.drawText(value + "", 60 + step * (i + 1) - 30, rh + 10, paint);
 				}
 
 			}

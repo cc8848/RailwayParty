@@ -8,7 +8,36 @@ public class MycheckModel {
 	private String Time;
 	private String Id;
 
-	private String detail;
+	private String detail;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 
 	public String getDetail() {
 		return detail;

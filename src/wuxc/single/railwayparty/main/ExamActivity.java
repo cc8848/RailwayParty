@@ -5,12 +5,19 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.ExamTopicModel;
+import wuxc.single.railwayparty.model.MemberModel;
 
 public class ExamActivity extends Activity implements OnClickListener {
 	private TextView text_title;
@@ -79,9 +88,28 @@ public class ExamActivity extends Activity implements OnClickListener {
 	private float scale = 0;
 	private float scalepx = 0;
 	private float dp = 0;
-	private int recLen = 0;
-
+	private int recLen = 3600;
+	private int timelength = 60;
 	Timer timer = new Timer();
+	private String Title;
+	private String Id;
+	private int ticket = 0;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final String GET_FAIL_RESULT = "fail";
+	private static final int GET_DUE_DATA = 6;
+	private int topicnumber = 2;
+	public Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_DUE_DATA:
+				GetDataDueData(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -146,10 +174,18 @@ public class ExamActivity extends Activity implements OnClickListener {
 		lin_c.setOnClickListener(this);
 		lin_d.setOnClickListener(this);
 		initheight();
-		GetDataList();
-		showTop();
-		showtopic();
-		text_time.setText("00:00");
+		// GetDataList();
+		// showTop();
+		// showtopic();
+		Intent intent = this.getIntent(); // 获取已有的intent对象
+		Bundle bundle = intent.getExtras(); // 获取intent里面的bundle对象
+
+		Title = bundle.getString("Title");
+		Id = bundle.getString("keyid");
+		ticket = bundle.getInt("ticket");
+		text_title.setText(Title);
+		text_time.setText("60:00");
+		GetData();
 		if (Number == 1) {
 			btn_last.setVisibility(View.GONE);
 		} else {
@@ -175,18 +211,171 @@ public class ExamActivity extends Activity implements OnClickListener {
 	TimerTask task = new TimerTask() {
 		@Override
 		public void run() {
-			recLen++;
+			recLen--;
 			Message message = new Message();
 			message.what = 1;
 			handler.sendMessage(message);
 		}
 	};
 
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			Data = demoJson.getString("data");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+
+				GetDataList(Data);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDataList(String data) {
+
+		try {
+
+			JSONObject json_data = null;
+
+			json_data = new JSONObject(data);
+			timelength = json_data.getInt("timeLength");
+			recLen = timelength * 60;
+			String Subs = json_data.getString("subs");
+			getdata(Subs);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private void getdata(String subs) {
+		// TODO Auto-generated method stub
+		list.clear();
+		JSONArray jArray = null;
+		try {
+			jArray = new JSONArray(subs);
+			JSONObject json_data = null;
+			if (jArray.length() == 0) {
+				Toast.makeText(getApplicationContext(), "无数据", Toast.LENGTH_SHORT).show();
+
+			} else {
+				for (int i = 0; i < jArray.length(); i++) {
+					json_data = jArray.getJSONObject(i);
+
+					// json_data = json_data.getJSONObject("data");
+					ExamTopicModel listinfo = new ExamTopicModel();
+
+					listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTopic((i + 1) + "、" + json_data.getString("title"));
+					listinfo.setScore(json_data.getInt("score"));
+					JSONArray jArray1 = new JSONArray(json_data.getString("subs"));
+					listinfo.setAString("");
+					listinfo.setBString("");
+					listinfo.setCString("");
+					listinfo.setDString("");
+					listinfo.setAid("");
+					listinfo.setBid("");
+					listinfo.setCid("");
+					listinfo.setDid("");
+					String anwser = "";
+					anwser = json_data.getString("answer");
+					listinfo.setRightAnswer(0);
+					listinfo.setUserAnswer(0);
+					if (anwser.equals("A")) {
+						listinfo.setRightAnswer(1);
+					} else if (anwser.equals("B")) {
+						listinfo.setRightAnswer(2);
+					} else if (anwser.equals("C")) {
+						listinfo.setRightAnswer(3);
+					} else if (anwser.equals("D")) {
+						listinfo.setRightAnswer(4);
+					}
+					for (int j = 0; j < jArray1.length(); j++) {
+						JSONObject json_data1 = jArray1.getJSONObject(j);
+						if (j == 0) {
+							listinfo.setAString(json_data1.getString("code") + "、" + json_data1.getString("content"));
+							listinfo.setAid(json_data1.getString("keyid"));
+						} else if (j == 1) {
+							listinfo.setBString(json_data1.getString("code") + "、" + json_data1.getString("content"));
+							listinfo.setBid(json_data1.getString("keyid"));
+						} else if (j == 2) {
+							listinfo.setCString(json_data1.getString("code") + "、" + json_data1.getString("content"));
+							listinfo.setCid(json_data1.getString("keyid"));
+						} else if (j == 3) {
+							listinfo.setDString(json_data1.getString("code") + "、" + json_data1.getString("content"));
+							listinfo.setDid(json_data1.getString("keyid"));
+						}
+					}
+					list.add(listinfo);
+
+				}
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		topicnumber = list.size();
+		showTop();
+		showtopic();
+	}
+
+	private void GetDataList() {
+		// TODO Auto-generated method stub
+		list.clear();
+		for (int i = 0; i < 20; i++) {
+			ExamTopicModel examTopicModel = new ExamTopicModel();
+			examTopicModel.setAString("A、党员设岗定责和承诺践诺制度");
+			examTopicModel.setBString("B、党员示范岗和党员责任区制度");
+			examTopicModel.setCString("C、党员挂牌上岗、亮明身份制度");
+			examTopicModel.setDString("D、党员到社区报到、直接联系服务群众制度");
+			examTopicModel.setTopic(i + "【单选题】开展“两学一做”，针对不同群众党员实际情况，提出具体要求。那么，在窗口单位和服务行业中，重点落实（  ）。");
+			examTopicModel.setUserAnswer(0);
+			list.add(examTopicModel);
+		}
+	}
+
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/testPaper/getPaper", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = GET_DUE_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
+
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-//		timer.cancel();
+		// timer.cancel();
 	}
 
 	protected void settime() {
@@ -246,6 +435,26 @@ public class ExamActivity extends Activity implements OnClickListener {
 
 	private void showtopic() {
 		ExamTopicModel examTopicModel = list.get(Number - 1);
+		if (examTopicModel.getAid().equals("")) {
+			lin_a.setVisibility(View.GONE);
+		} else {
+			lin_a.setVisibility(View.VISIBLE);
+		}
+		if (examTopicModel.getBid().equals("")) {
+			lin_b.setVisibility(View.GONE);
+		} else {
+			lin_b.setVisibility(View.VISIBLE);
+		}
+		if (examTopicModel.getCid().equals("")) {
+			lin_c.setVisibility(View.GONE);
+		} else {
+			lin_c.setVisibility(View.VISIBLE);
+		}
+		if (examTopicModel.getDid().equals("")) {
+			lin_d.setVisibility(View.GONE);
+		} else {
+			lin_d.setVisibility(View.VISIBLE);
+		}
 		topic_a.setText(examTopicModel.getAString());
 		topic_b.setText(examTopicModel.getBString());
 		topic_c.setText(examTopicModel.getCString());
@@ -274,21 +483,6 @@ public class ExamActivity extends Activity implements OnClickListener {
 		} else if (examTopicModel.getUserAnswer() == 4) {
 			image_d.setImageResource(R.drawable.icon_radio);
 			topic_d.setTextColor(Color.parseColor("#cc0502"));
-		}
-	}
-
-	private void GetDataList() {
-		// TODO Auto-generated method stub
-		list.clear();
-		for (int i = 0; i < 20; i++) {
-			ExamTopicModel examTopicModel = new ExamTopicModel();
-			examTopicModel.setAString("A、党员设岗定责和承诺践诺制度");
-			examTopicModel.setBString("B、党员示范岗和党员责任区制度");
-			examTopicModel.setCString("C、党员挂牌上岗、亮明身份制度");
-			examTopicModel.setDString("D、党员到社区报到、直接联系服务群众制度");
-			examTopicModel.setTopic(i + "【单选题】开展“两学一做”，针对不同群众党员实际情况，提出具体要求。那么，在窗口单位和服务行业中，重点落实（  ）。");
-			examTopicModel.setUserAnswer(0);
-			list.add(examTopicModel);
 		}
 	}
 
@@ -329,7 +523,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 				} else {
 					btn_last.setVisibility(View.VISIBLE);
 				}
-				if (Number == 20) {
+				if (Number == topicnumber) {
 					btn_next.setText("提交");
 				} else {
 					btn_next.setText("下一题");
@@ -339,13 +533,103 @@ public class ExamActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.btn_next:
-			if (Number == 20) {
-				Toast.makeText(getApplicationContext(), "您的答案已提交", Toast.LENGTH_SHORT).show();
+			if (Number == topicnumber) {
+				ExamTopicModel examTopicModelnext = list.get(Number - 1);
+
+				if (examTopicModelnext.getUserAnswer() != 0) {
+					if (recLen <= 0) {
+						Toast.makeText(getApplicationContext(), "超时！答案无法提交", Toast.LENGTH_SHORT).show();
+
+					} else {
+						int totalsccore = 0;
+						JSONObject anwser = new JSONObject();
+						JSONObject right = new JSONObject();
+						int[] user = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+						for (int i = 0; i < list.size(); i++) {
+							ExamTopicModel examTopicModel = list.get(i);
+							String userAanswer = "";
+							if (examTopicModel.getUserAnswer() == 1) {
+								userAanswer = "A";
+							} else if (examTopicModel.getUserAnswer() == 2) {
+								userAanswer = "B";
+							} else if (examTopicModel.getUserAnswer() == 3) {
+								userAanswer = "C";
+							} else if (examTopicModel.getUserAnswer() == 4) {
+								userAanswer = "D";
+							}
+							user[i] = examTopicModel.getUserAnswer();
+							String rightAanswer = "";
+							if (examTopicModel.getRightAnswer() == 1) {
+								rightAanswer = "A";
+							} else if (examTopicModel.getRightAnswer() == 2) {
+								rightAanswer = "B";
+							} else if (examTopicModel.getRightAnswer() == 3) {
+								rightAanswer = "C";
+							} else if (examTopicModel.getRightAnswer() == 4) {
+								rightAanswer = "D";
+							}
+							try {
+								right.put(examTopicModel.getId(), rightAanswer);
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							try {
+								anwser.put(examTopicModel.getId(), userAanswer);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							if (examTopicModel.getRightAnswer() == examTopicModel.getUserAnswer()) {
+								totalsccore = totalsccore + examTopicModel.getScore();
+							} else {
+								totalsccore = totalsccore + 0;
+							}
+							Log.e("examTopicModel.getRightAnswer()", ""+examTopicModel.getRightAnswer());
+							Log.e("examTopicModel.getUserAnswer()", ""+examTopicModel.getUserAnswer());
+						}
+						final ArrayList ArrayValues = new ArrayList();
+						ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+						ArrayValues.add(new BasicNameValuePair("examResultDto.par_keyid", "" + Id));
+						ArrayValues.add(new BasicNameValuePair("examResultDto.score", "" + totalsccore));
+						ArrayValues.add(new BasicNameValuePair("examResultDto.answer", "" + anwser));
+					Log.e("anwser", ""+anwser);
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String DueData = "";
+								DueData = HttpGetData.GetData("api/pubshare/examResult/save", ArrayValues);
+								// Message msg = new Message();
+								// msg.obj = DueData;
+								// msg.what = GET_DUE_DATA;
+								// uiHandler.sendMessage(msg);
+							}
+						}).start();
+						finish();
+						Intent intent1 = new Intent();
+						intent1.setClass(getApplicationContext(), ExamResultActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putInt("score", totalsccore);
+						Log.e("totalsccore", "" + totalsccore);
+						bundle.putString("Title", Title);
+						bundle.putString("keyid", Id);
+						bundle.putString("anwser", right.toString());
+						bundle.putInt("ticket", ticket);
+						bundle.putIntArray("user", user);
+						intent1.putExtras(bundle);
+						startActivity(intent1);
+					}
+				} else {
+					Toast.makeText(getApplicationContext(), "本题尚未作答", Toast.LENGTH_SHORT).show();
+				}
+			} else if (Number >= list.size()) {
+				Toast.makeText(getApplicationContext(), "试题个数错误", Toast.LENGTH_SHORT).show();
+
 			} else {
 				ExamTopicModel examTopicModelnext = list.get(Number - 1);
 				if (examTopicModelnext.getUserAnswer() != 0) {
 					Number++;
-					if (Number == 20) {
+					if (Number == topicnumber) {
 						btn_next.setText("提交");
 					} else {
 						btn_next.setText("下一题");

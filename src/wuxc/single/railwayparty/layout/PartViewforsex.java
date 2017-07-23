@@ -115,7 +115,7 @@ public class PartViewforsex extends View {
 		// 3 »æÖÆ Y ÖÜ×ø±ê
 
 		titlePaint.setTextAlign(Align.RIGHT);
-		titlePaint.setTextSize(40);
+		titlePaint.setTextSize(25);
 		titlePaint.setAntiAlias(true);
 		titlePaint.setStyle(Paint.Style.FILL);
 		for (int i = 0; i < ySteps.length; i++) {

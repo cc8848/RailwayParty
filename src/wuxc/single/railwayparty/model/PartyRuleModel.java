@@ -4,7 +4,36 @@ public class PartyRuleModel {
 	private String headimgUrl;
 	private String title;
 	private String content;
-	private String time;
+	private String time;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 	private String keyid;
 	private int imageurl;
 	private String label;

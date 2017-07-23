@@ -115,7 +115,7 @@ public class PartViewfornation extends View {
 		// 3 绘制 Y 周坐标
 
 		titlePaint.setTextAlign(Align.RIGHT);
-		titlePaint.setTextSize(40);
+		titlePaint.setTextSize(25);
 		titlePaint.setAntiAlias(true);
 		titlePaint.setStyle(Paint.Style.FILL);
 		for (int i = 0; i < ySteps.length; i++) {
@@ -126,10 +126,10 @@ public class PartViewfornation extends View {
 		int xAxisLength = width - 30;
 		int columCount = xWeeks.length + 1;
 		int step = xAxisLength / columCount;
-		int temp = step + 35;
+		int temp = step ;
 		for (int i = 0; i < columCount - 1; i++) {
 			// text, baseX, baseY, textPaint
-			canvas.drawText(xWeeks[i], 45 + temp * (i + 1), height + 60, titlePaint);
+			canvas.drawText(xWeeks[i], 55 + temp * (i + 1), height + 60, titlePaint);
 		}
 
 		// 5 绘制矩形

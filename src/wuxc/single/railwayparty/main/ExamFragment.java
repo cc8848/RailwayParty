@@ -41,12 +41,12 @@ public class ExamFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btn_exam:
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), ExamActivity.class);
+			intent.setClass(getActivity(), TestActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.text_exam:
 			Intent intent1 = new Intent();
-			intent1.setClass(getActivity(), ExamResultActivity.class);
+			intent1.setClass(getActivity(), TestAnswerActivity.class);
 			startActivity(intent1);
 			break;
 

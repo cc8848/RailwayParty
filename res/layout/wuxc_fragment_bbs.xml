@@ -40,8 +40,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="@color/main_color"
+        android:layout_height="100dp"
+        android:background="#ffffff"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -55,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/image_1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon01_dyq" />
 
             <TextView
@@ -78,8 +78,8 @@
 
             <ImageView
                 android:id="@+id/image_2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon01_dyq" />
 
             <TextView
@@ -101,8 +101,8 @@
 
             <ImageView
                 android:id="@+id/image_3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon01_dyq" />
 
             <TextView
@@ -124,8 +124,8 @@
 
             <ImageView
                 android:id="@+id/image_4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon01_dyq" />
 
             <TextView
@@ -147,8 +147,8 @@
 
             <ImageView
                 android:id="@+id/image_5"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/icon01_dyq" />
 
             <TextView
@@ -160,6 +160,11 @@
                 android:textColor="#ffffff" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/text_line" />
 
     <wuxc.single.railwayparty.layout.Childviewpaper
         android:id="@+id/viewPager"

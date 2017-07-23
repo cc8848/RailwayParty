@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wuxc.single.railwayparty"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -69,6 +69,14 @@
         </activity>
         <activity
             android:name=".start.guidePageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.webview"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.SpecialDetailActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -249,6 +257,14 @@
         </activity>
         <activity
             android:name=".main.FlagActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.TestActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.TestAnswerActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity

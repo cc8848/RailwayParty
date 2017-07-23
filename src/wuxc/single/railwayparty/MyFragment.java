@@ -2,19 +2,22 @@ package wuxc.single.railwayparty;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract.Contacts.Data;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,7 +29,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
 import wuxc.single.railwayparty.internet.getImageAbsolutePath;
 import wuxc.single.railwayparty.internet.saveBitmap;
 import wuxc.single.railwayparty.internet.savePNG;
@@ -64,6 +69,27 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private RelativeLayout rel_myvote;
 	private RelativeLayout rel_evaluation;
 	private LinearLayout lin_credits;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private String LoginId;
+	private int ticket;
+	private String userPhoto;
+	private final static int GET_USER_HEAD_IMAGE = 6;
+	private boolean UploadImage = false;
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_UPLOAD_RESULT:
+				GetUpLoadResult(msg.obj);
+				break;
+			case GET_USER_HEAD_IMAGE:
+				ShowHeadImage(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +97,94 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		View view = inflater.inflate(R.layout.wuxc_fragment_my, container, false);
 		initview(view);
 		initheight(view);
+		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
+		GetHeadPic();
 		return view;
+	}
+
+	protected void ShowHeadImage(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj == null)) {
+			try {
+				Bitmap HeadImage = (Bitmap) obj;
+				round_headimg.setImageBitmap(HeadImage);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+
+	protected void GetUpLoadResult(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj == null)) {
+			String fileInfo = null;
+			try {
+				JSONObject demoJson = new JSONObject(obj.toString());
+				fileInfo = demoJson.getString("fileInfo");
+				if (!fileInfo.equals("") || !(fileInfo == null)) {
+					GetImageNameFromResult(fileInfo);
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+
+	private void GetImageNameFromResult(String fileInfo) {
+		// TODO Auto-generated method stub
+		String fileName = null;
+		String filePath = null;
+		try {
+			JSONObject demoJson = new JSONObject(fileInfo);
+			fileName = demoJson.getString("fileName");
+			filePath = demoJson.getString("filePath");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		if (fileName.equals("image_headimg")) {
+			Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
+			WriteUsPhoto(filePath);
+			UploadImage = true;
+		} else {
+			Toast.makeText(getActivity(), "上传失败！", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	private void WriteUsPhoto(String filePath) {
+		// TODO Auto-generated method stub
+		Editor edit = PreUserInfo.edit();
+		edit.putString("userPhoto", filePath);
+		edit.commit();
+	}
+
+	private void GetHeadPic() {
+		// TODO Auto-generated method stub
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				Bitmap HeadImage = null;
+				HeadImage = GetBitmapFromServer
+						.getBitmapFromServer(URLcontainer.urlip + URLcontainer.GetFile + userPhoto);
+				Message msg = new Message();
+				msg.what = GET_USER_HEAD_IMAGE;
+				msg.obj = HeadImage;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		LoginId = PreUserInfo.getString("loginId", null);
+		ticket = PreUserInfo.getInt("ticket", 0);
+		userPhoto = PreUserInfo.getString("userPhoto", null);
 	}
 
 	private void initheight(View view) {
@@ -139,10 +252,11 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		Bundle bundle = data.getExtras();
 		switch (requestCode) {
 		case PHOTO_REQUEST_TAKEPHOTO:// 当选择拍照时调用
-			if (!(data == null)&&!(bundle==null)) {
-//				Log.e("data", "" + data);
-				 
-//				Log.e("PHOTO_REQUEST_TAKEPHOTO", "" + PHOTO_REQUEST_TAKEPHOTO);
+			if (!(data == null) && !(bundle == null)) {
+				// Log.e("data", "" + data);
+
+				// Log.e("PHOTO_REQUEST_TAKEPHOTO", "" +
+				// PHOTO_REQUEST_TAKEPHOTO);
 				final Bitmap photo = data.getParcelableExtra("data");
 				File file = null;
 
@@ -211,13 +325,12 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			new Thread(new Runnable() { // 开启线程上传文件
 				@Override
 				public void run() {
-					// String UpLoadResult = UpLoadFile.uploadHeadImage(file1,
-					// URLcontainer.urlip + URLcontainer.UpLoadSignle, LoginId,
-					// ticket);
-					// Message msg = new Message();
-					// msg.what = GET_UPLOAD_RESULT;
-					// msg.obj = UpLoadResult;
-					// uiHandler.sendMessage(msg);
+					String UpLoadResult = UpLoadFile.uploadHeadImage(file1,
+							URLcontainer.urlip + "uploadUserPortrait/uploadSignle", LoginId, "" + ticket);
+					Message msg = new Message();
+					msg.what = GET_UPLOAD_RESULT;
+					msg.obj = UpLoadResult;
+					uiHandler.sendMessage(msg);
 				}
 			}).start();
 		}

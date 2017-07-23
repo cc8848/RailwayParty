@@ -1,6 +1,8 @@
 package wuxc.single.railwayparty;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,11 +50,15 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private TextView text_6;
 	private TextView text_7;
 	private TextView text_8;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private int ticket = 0;
+	private TextView text_warning;
+	private View view = null;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.wuxc_fragment_main, container, false);
+		view = inflater.inflate(R.layout.wuxc_fragment_main, container, false);
 		screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
 		initview(view);
 		initheight(view);
@@ -67,11 +73,14 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				startActivity(intent);
 			}
 		});
+		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ticket = PreUserInfo.getInt("ticket", 0);
 		return view;
 	}
 
 	private void initview(View view) {
 		// TODO Auto-generated method stub
+
 		ImageGobg = (ImageView) view.findViewById(R.id.image_go_zb);
 		rel_main = (RelativeLayout) view.findViewById(R.id.rel_main);
 		main_top_bac = (RelativeLayout) view.findViewById(R.id.main_top_bac);
@@ -98,6 +107,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		text_8 = (TextView) view.findViewById(R.id.text_8);
 		lin_four = (LinearLayout) view.findViewById(R.id.lin_four);
 		headimg = (ImageView) view.findViewById(R.id.headimg);
+		text_warning = (TextView) view.findViewById(R.id.text_warning);
 
 		rel_inform.setOnClickListener(this);
 		rel_policy.setOnClickListener(this);
@@ -113,19 +123,19 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 	private void showtext() {
 		// TODO Auto-generated method stub
-		text_1.setVisibility(View.GONE);
-		text_2.setVisibility(View.GONE);
-		text_3.setVisibility(View.GONE);
-		text_4.setVisibility(View.GONE);
-		text_5.setVisibility(View.GONE);
-		text_6.setVisibility(View.GONE);
-		text_7.setVisibility(View.GONE);
-		text_8.setVisibility(View.GONE);
+		// text_1.setVisibility(View.GONE);
+		// text_2.setVisibility(View.GONE);
+		// text_3.setVisibility(View.GONE);
+		// text_4.setVisibility(View.GONE);
+		// text_5.setVisibility(View.GONE);
+		// text_6.setVisibility(View.GONE);
+		// text_7.setVisibility(View.GONE);
+		// text_8.setVisibility(View.GONE);
 	}
 
 	private void initheight(View view) {
 		// TODO Auto-generated method stub
-		int height = (int) (screenwidth / 3.3);
+		int height = (int) (screenwidth / 3);
 		RelativeLayout.LayoutParams LayoutParams = (android.widget.RelativeLayout.LayoutParams) ImageGobg
 				.getLayoutParams();
 		LayoutParams.height = height;
@@ -135,7 +145,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				.getLayoutParams();
 		LayoutParams1.bottomMargin = height;
 		rel_main.setLayoutParams(LayoutParams1);
-		height = (int) (screenwidth / 2.5);
+		height = (int) (screenwidth / 2.2);
 		RelativeLayout.LayoutParams LayoutParams2 = (android.widget.RelativeLayout.LayoutParams) main_top_bac
 				.getLayoutParams();
 		LayoutParams2.height = height;
@@ -147,13 +157,13 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		LayoutParams9.topMargin = height / 5;
 		headimg.setLayoutParams(LayoutParams9);
 
-		height = (int) (screenwidth / 2.1);
+		height = (int) (screenwidth / 2.6);
 		RelativeLayout.LayoutParams LayoutParams3 = (android.widget.RelativeLayout.LayoutParams) lin_four
 				.getLayoutParams();
 		LayoutParams3.height = height;
 		lin_four.setLayoutParams(LayoutParams3);
 
-		height = (int) (screenwidth / 2.1 / 2) - 8;
+		height = (int) (screenwidth / 2.6 / 2) - 8;
 		LinearLayout.LayoutParams LayoutParams4 = (android.widget.LinearLayout.LayoutParams) rel_9.getLayoutParams();
 		LayoutParams4.height = height;
 		LayoutParams4.width = height;
@@ -181,6 +191,16 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		super.onResume();
 
 		MainActivity.curFragmentTag = getString(R.string.str_main);
+		if (view != null) {
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket != 0) {
+				headimg.setVisibility(View.GONE);
+				text_warning.setVisibility(View.GONE);
+			} else {
+				headimg.setVisibility(View.VISIBLE);
+				text_warning.setVisibility(View.VISIBLE);
+			}
+		}
 
 	}
 
@@ -228,9 +248,12 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			startActivity(intent_rel_flag);
 			break;
 		case R.id.main_top_bac:
-			Intent intent_top_bac = new Intent();
-			intent_top_bac.setClass(getActivity(), LoginActivity.class);
-			startActivity(intent_top_bac);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+			}
+
 			break;
 		default:
 			break;

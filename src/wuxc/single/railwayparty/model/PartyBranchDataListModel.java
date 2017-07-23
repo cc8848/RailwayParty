@@ -3,7 +3,36 @@ public class PartyBranchDataListModel {
 	private String PartyName;
 	private String PartyAddress;
 	private String PartyPhonenumber;
-	private String Id;
+	private String Id;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 	private boolean IsSelected;
 
 	public String getPartyName() {

@@ -367,7 +367,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:text="说明：专题在线考试为选择题，达不到分数线需重新答题，可多次答题。"
+                android:text=" "
                 android:textColor="#000000"
                 android:textSize="16dp" />
 
@@ -395,7 +395,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:gravity="center_vertical"
-                    android:text="说明：专题在线考试为选择题，达不到分数线需重新答题，可多次答题。"
+                    android:text=" "
                     android:textColor="#000000"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -424,7 +424,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:gravity="center_vertical"
-                    android:text="说明：专题在线考试为选择题，达不到分数线需重新答题，可多次答题。"
+                    android:text=" "
                     android:textColor="#000000"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -453,7 +453,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:gravity="center_vertical"
-                    android:text="说明：专题在线考试为选择题，达不到分数线需重新答题，可多次答题。"
+                    android:text=" "
                     android:textColor="#000000"
                     android:textSize="16dp" />
             </LinearLayout>
@@ -482,7 +482,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="6dp"
                     android:gravity="center_vertical"
-                    android:text="说明：专题在线考试为选择题，达不到分数线需重新答题，可多次答题。"
+                    android:text=" "
                     android:textColor="#000000"
                     android:textSize="16dp" />
             </LinearLayout>

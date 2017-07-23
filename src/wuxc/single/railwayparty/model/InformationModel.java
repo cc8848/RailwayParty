@@ -3,7 +3,36 @@ package wuxc.single.railwayparty.model;
 public class InformationModel {
 	private String headimgUrl;
 	private String title;
-	private String content;
+	private String content;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
 	private String time;
 	private String keyid;
 	private int imageurl;

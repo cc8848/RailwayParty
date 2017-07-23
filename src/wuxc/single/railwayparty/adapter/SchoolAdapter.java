@@ -68,7 +68,7 @@ public class SchoolAdapter extends ArrayAdapter<SchoolModel> implements OnClickL
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
 		imageView.setTag(URLcontainer.urlip + imageUrl);
-	//	Log.e("imageUrl", imageUrl);
+		// Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(imageAndText.getImageurl());
 		} else {
@@ -79,7 +79,7 @@ public class SchoolAdapter extends ArrayAdapter<SchoolModel> implements OnClickL
 				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
 					imageUrl = URLcontainer.urlip + imageUrl;
-					//Log.e("imageUrl", imageUrl);
+					// Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
 							ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl);
@@ -111,7 +111,7 @@ public class SchoolAdapter extends ArrayAdapter<SchoolModel> implements OnClickL
 		}
 
 		TextView textcontent = viewCache.gettextContent();
-		textcontent.setText(imageAndText.getContent());
+		textcontent.setText(imageAndText.getSummary());
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());

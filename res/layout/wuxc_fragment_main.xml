@@ -53,21 +53,22 @@
 
             <ImageView
                 android:id="@+id/headimg"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:src="@drawable/index_user" />
 
             <TextView
+                android:id="@+id/text_warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/headimg"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="请登录"
                 android:textColor="@color/main_color"
-                android:textSize="24dp" />
+                android:textSize="16dp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -92,32 +93,33 @@
 
                     <RelativeLayout
                         android:id="@+id/rel_9"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp" >
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" >
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_margin="16dp"
                             android:src="@drawable/index1" />
 
                         <TextView
                             android:id="@+id/text_1"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
                             android:background="@drawable/tag"
                             android:gravity="center"
-                            android:text="99+"
+                            android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="14dp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:text="通知公告"
                         android:textSize="16dp" />
@@ -126,8 +128,8 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/line"
-                    android:visibility="gone" />
+                    android:layout_marginTop="5dp"
+                    android:background="@color/text_line" />
 
                 <LinearLayout
                     android:id="@+id/rel_policy"
@@ -138,32 +140,33 @@
 
                     <RelativeLayout
                         android:id="@+id/rel_10"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp" >
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" >
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_margin="16dp"
                             android:src="@drawable/index2" />
 
                         <TextView
                             android:id="@+id/text_2"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
                             android:background="@drawable/tag"
                             android:gravity="center"
-                            android:text="99+"
+                            android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="14dp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:text="两学一做"
                         android:textSize="16dp" />
@@ -173,8 +176,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/line"
-                android:visibility="gone" />
+                android:background="@color/text_line" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -191,32 +193,33 @@
 
                     <RelativeLayout
                         android:id="@+id/rel_11"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp" >
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" >
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_margin="16dp"
                             android:src="@drawable/index3" />
 
                         <TextView
                             android:id="@+id/text_3"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
                             android:background="@drawable/tag"
                             android:gravity="center"
-                            android:text="99+"
+                            android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="14dp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:text="党务管理"
                         android:textSize="16dp" />
@@ -225,8 +228,8 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/line"
-                    android:visibility="gone" />
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/text_line" />
 
                 <LinearLayout
                     android:id="@+id/rel_weblearn"
@@ -237,32 +240,33 @@
 
                     <RelativeLayout
                         android:id="@+id/rel_12"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp" >
+                        android:layout_width="50dp"
+                        android:layout_height="50dp" >
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
                             android:layout_margin="16dp"
                             android:src="@drawable/index4" />
 
                         <TextView
                             android:id="@+id/text_4"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_alignParentRight="true"
+                            android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
                             android:background="@drawable/tag"
                             android:gravity="center"
-                            android:text="99+"
+                            android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="14dp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp"
                         android:gravity="center_vertical"
                         android:text="网上党校"
                         android:textSize="16dp" />
@@ -270,51 +274,59 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/text_5dp"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@id/lin_four"
+            android:background="@color/text_line" />
+
         <LinearLayout
             android:id="@+id/lin_hor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/lin_four"
+            android:layout_below="@id/text_5dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal" >
 
             <RelativeLayout
                 android:id="@+id/rel_clean"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="46" >
+                android:layout_weight="42" >
 
                 <RelativeLayout
-                    android:layout_width="110dp"
+                    android:layout_width="98dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
                         android:text="党风廉洁建设"
                         android:textColor="@color/main_color"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/text_5"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
-                        android:text="99+"
+                        android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
             <TextView
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/line"
-                android:visibility="gone" />
+                android:layout_height="35dp"
+                android:background="@color/text_line" />
 
             <RelativeLayout
                 android:id="@+id/rel_disciplinary"
@@ -323,37 +335,36 @@
                 android:layout_weight="37" >
 
                 <RelativeLayout
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
                         android:text="纪检监察"
                         android:textColor="@color/main_color"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/text_6"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
-                        android:text="99+"
+                        android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
             <TextView
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/line"
-                android:visibility="gone" />
+                android:layout_height="35dp"
+                android:background="@color/text_line" />
 
             <RelativeLayout
                 android:id="@+id/rel_member"
@@ -362,37 +373,36 @@
                 android:layout_weight="37" >
 
                 <RelativeLayout
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
                         android:text="职工之家"
                         android:textColor="@color/main_color"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/text_7"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
-                        android:text="99+"
+                        android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
             <TextView
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/line"
-                android:visibility="gone" />
+                android:layout_height="35dp"
+                android:background="@color/text_line" />
 
             <RelativeLayout
                 android:id="@+id/rel_flag"
@@ -401,29 +411,29 @@
                 android:layout_weight="37" >
 
                 <RelativeLayout
-                    android:layout_width="75dp"
+                    android:layout_width="65dp"
                     android:layout_height="35dp"
                     android:layout_centerInParent="true" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_centerVertical="true"
                         android:text="团旗飘飘"
                         android:textColor="@color/main_color"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/text_8"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
-                        android:text="99+"
+                        android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>

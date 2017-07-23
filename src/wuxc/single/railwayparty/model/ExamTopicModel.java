@@ -10,6 +10,89 @@ public class ExamTopicModel {
 	private int UserAnswer;
 	private int RightAnswer;
 	private String detail;
+	private int score;
+	private String Answer;
+	private String Aid;
+	private String Bid;	private boolean Cont;
+	private String Summary;
+	public String getSummary() {
+		return Summary;
+	}
+
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
+
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	 
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
+
+	private String Cid;
+	private String Did;
+
+	public String getAid() {
+		return Aid;
+	}
+
+	public void setAid(String aid) {
+		Aid = aid;
+	}
+
+	public String getBid() {
+		return Bid;
+	}
+
+	public void setBid(String bid) {
+		Bid = bid;
+	}
+
+	public String getCid() {
+		return Cid;
+	}
+
+	public void setCid(String cid) {
+		Cid = cid;
+	}
+
+	public String getDid() {
+		return Did;
+	}
+
+	public void setDid(String did) {
+		Did = did;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public String getAnswer() {
+		return Answer;
+	}
+
+	public void setAnswer(String answer) {
+		Answer = answer;
+	}
 
 	public String getDetail() {
 		return detail;

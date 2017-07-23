@@ -1,19 +1,32 @@
 package wuxc.single.railwayparty;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import wuxc.single.railwayparty.internet.HttpGetData;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	public static String curFragmentTag;
@@ -30,18 +43,149 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private SharedPreferences FragmentPage;
 	private TextView text_gobg;
 	private int screenwidth = 0;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private int ticket = 0;
+	private String userid;
+	private static final int GET_LOGININ_RESULT_DATA = 1;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_LOGININ_RESULT_DATA:
+				GetDataDetailFromLoginResultData(msg.obj);
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wuxc_activity_main);
 		initview();
+		getdata();
+	}
+
+	public void GetDataDetailFromLoginResultData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				// Toast.makeText(getApplicationContext(), "登陆成功",
+				// Toast.LENGTH_SHORT).show();
+				GetDetailData(Data);
+				// finish();
+			} else if (Type.equals("accountPwdError")) {
+				// Toast.makeText(getApplicationContext(), "用户名和密码不匹配",
+				// Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("userLocked")) {
+				// Toast.makeText(getApplicationContext(), "账号被禁用",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				// Toast.makeText(getApplicationContext(), "登陆失败",
+				// Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailData(String data) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(data);
+
+			Editor edit = PreUserInfo.edit();
+			edit.putString("deptId", demoJson.getString("deptId"));
+			edit.putString("deptName", demoJson.getString("deptName"));
+			edit.putString("companyId", demoJson.getString("companyId"));
+			edit.putString("companyName", demoJson.getString("companyName"));
+			edit.putString("userPhoto", demoJson.getString("userPhoto"));
+			edit.putString("userName", demoJson.getString("userName"));
+			edit.putString("sex", demoJson.getString("sex"));
+			edit.putString("loginId", demoJson.getString("loginId"));
+			edit.putString("memberLevel", demoJson.getString("memberLevel"));
+			edit.putString("memberLevelDesc", demoJson.getString("memberLevelDesc"));
+			edit.putString("address", demoJson.getString("address"));
+			edit.putString("permisons", demoJson.getString("permisons"));
+			edit.putString("userLevel", demoJson.getString("userLevel"));
+			edit.putString("position", demoJson.getString("position"));
+			edit.putString("sign", demoJson.getString("sign"));
+			edit.putString("hobby", demoJson.getString("hobby"));
+			edit.putString("balance", demoJson.getString("balance"));
+			edit.putString("cashBalance", demoJson.getString("cashBalance"));
+			edit.putString("realName", demoJson.getString("realName"));
+			edit.putString("cityCode", demoJson.getString("cityCode"));
+			edit.putString("mobile", demoJson.getString("mobile"));
+			edit.putString("alipayAccount", demoJson.getString("alipayAccount"));
+			edit.putString("alipayRealname", demoJson.getString("alipayRealname"));
+			edit.putString("renzhengName", demoJson.getString("renzhengName"));
+			edit.putString("renzheng", demoJson.getString("renzheng"));
+			edit.putString("icardNo", demoJson.getString("icardNo"));
+			edit.putString("sixin", demoJson.getString("sixin"));
+			edit.putString("guanzhu", demoJson.getString("guanzhu"));
+			edit.putString("fensi", demoJson.getString("fensi"));
+			edit.putString("shoucang", demoJson.getString("shoucang"));
+			edit.putString("other1", demoJson.getString("other1"));
+			edit.putString("other2", demoJson.getString("other2"));
+			edit.putString("other3", demoJson.getString("other3"));
+			edit.putString("pAge", demoJson.getString("pAge"));
+			edit.putString("pInTime", demoJson.getString("pInTime"));
+			edit.putString("pMonthFare", demoJson.getString("pMonthFare"));
+			edit.putString("pFareEndTime", demoJson.getString("pFareEndTime"));
+			edit.putString("pUser", demoJson.getString("pUser"));
+			edit.putString("pAllowOnLinFare", demoJson.getString("pAllowOnLinFare"));
+			edit.commit();
+			// GetAllData();
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void getdata() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("queryUserId", userid));
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/member/getUserInfo", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_LOGININ_RESULT_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	private void initview() {
 		// TODO Auto-generated method stub
 		screenwidth = getWindow().getWindowManager().getDefaultDisplay().getWidth();
-
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ticket = PreUserInfo.getInt("ticket", 0);
+		userid = PreUserInfo.getString("loginId", "");
 		FragmentPage = getSharedPreferences("fragmentinfo", MODE_PRIVATE);
 		RelativeBuild = (RelativeLayout) findViewById(R.id.relative_build);
 		RelativeBranch = (RelativeLayout) findViewById(R.id.relative_branch);
@@ -55,7 +199,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		ImageMain.setOnClickListener(this);
 		text_gobg = (TextView) findViewById(R.id.text_gobg);
 		text_gobg.setOnClickListener(this);
-		int height = (int) (screenwidth / 3.3);
+		int height = (int) (screenwidth / 3);
 		RelativeLayout.LayoutParams LayoutParams = (android.widget.RelativeLayout.LayoutParams) text_gobg
 				.getLayoutParams();
 		LayoutParams.height = height;

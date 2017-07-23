@@ -62,11 +62,11 @@ public class ArtAdapter extends ArrayAdapter<ArtModel> {
 		TextTitle.setText("" + imageAndText.getTitle());
 		ImageView imageView = viewCache.getImageHeadimg();
 		if (imageAndText.getColor() == 1) {
-			imageView.setImageResource(R.drawable.qh);
-			TextTitle.setTextColor(Color.parseColor("#7bd1d2"));
-		} else {
 			imageView.setImageResource(R.drawable.sg);
 			TextTitle.setTextColor(Color.parseColor("#ec6564"));
+		} else {
+			imageView.setImageResource(R.drawable.qh);
+			TextTitle.setTextColor(Color.parseColor("#7bd1d2"));
 		}
 		return rowView;
 	}
