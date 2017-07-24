@@ -10,12 +10,22 @@ public class Bbs1Model {
 	private String time;
 	private String keyid;
 	private int imageurl;
+	private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 
 	private String name;
 	private String label;
 	private String pl;
 	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -33,8 +43,6 @@ public class Bbs1Model {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

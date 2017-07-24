@@ -49,7 +49,7 @@ public class PartyOrgActivity extends Activity implements OnClickListener, OnTou
 		initview();
 		setonclicklistener();
 		setheadtextview();
-		getdatalist(curPage);
+		// getdatalist(curPage);
 	}
 
 	private void setheadtextview() {
@@ -73,12 +73,12 @@ public class PartyOrgActivity extends Activity implements OnClickListener, OnTou
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 0; i++) {
 
 				MemberModel listinfo = new MemberModel();
 				listinfo.setTime("2017-09-10");
 				listinfo.setTitle("政工干部");
-				listinfo.setName("张超");
+				listinfo.setName("yew");
 				listinfo.setImageUrl("");
 				list.add(listinfo);
 

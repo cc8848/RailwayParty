@@ -4,8 +4,19 @@ public class MycollectModel {
 	private String ImageUrl;
 	private String Title;
 	private String time;
-	private String Id;	private boolean Cont;
+	private String Id;
+	private boolean Cont;
 	private String Summary;
+	private String detail;
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -24,8 +35,6 @@ public class MycollectModel {
 
 	private String Link;
 
-	 
-
 	public String getLink() {
 		return Link;
 	}
@@ -33,7 +42,6 @@ public class MycollectModel {
 	public void setLink(String link) {
 		Link = link;
 	}
-
 
 	public String getTime() {
 		return time;

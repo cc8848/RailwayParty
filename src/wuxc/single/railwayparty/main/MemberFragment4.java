@@ -129,9 +129,9 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 					Clean1Model listinfo = new Clean1Model();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("content"));
+					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
 					listinfo.setGuanzhu(json_data.getString("hot"));
@@ -141,8 +141,8 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 					listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("content").equals("") || json_data.getString("content") == null
-								|| json_data.getString("content").equals("null")) {
+						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
+								|| json_data.getString("summary").equals("null")) {
 							listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
@@ -220,13 +220,13 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		Clean1Model data = list.get(position - 1);
-		if (data.isCont()) {
+		if (true) {
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());
+			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -259,7 +259,7 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "jyzn"));
+		ArrayValues.add(new BasicNameValuePair("chn", "jyzn"));chn="jyzn";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 

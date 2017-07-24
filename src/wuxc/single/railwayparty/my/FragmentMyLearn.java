@@ -65,7 +65,7 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 			setonclicklistener();
 			setheadtextview();
 
-			getdatalist(curPage);
+			//getdatalist(curPage);
 		}
 
 		return view;
@@ -199,7 +199,7 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 
 				MyLearnModel listinfo = new MyLearnModel();
 				listinfo.setTime("2017-09-18");

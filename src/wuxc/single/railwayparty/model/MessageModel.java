@@ -4,8 +4,19 @@ public class MessageModel {
 
 	private String Title;
 	private String Time;
-	private String Id;	private boolean Cont;
+	private String Id;
+	private boolean Cont;
 	private String Summary;
+	private String Content;
+
+	public String getContent() {
+		return Content;
+	}
+
+	public void setContent(String content) {
+		Content = content;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -23,8 +34,6 @@ public class MessageModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

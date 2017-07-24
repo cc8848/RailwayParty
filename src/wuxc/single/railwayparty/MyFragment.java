@@ -391,9 +391,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			startActivity(intent_search);
 			break;
 		case R.id.lin_credits:
-			Intent intent_credits = new Intent();
-			intent_credits.setClass(getActivity(), CreditsActivity.class);
-			startActivity(intent_credits);
+//			Intent intent_credits = new Intent();
+//			intent_credits.setClass(getActivity(), CreditsActivity.class);
+//			startActivity(intent_credits);
 			break;
 		case R.id.rel_message:
 			Intent intent_message = new Intent();

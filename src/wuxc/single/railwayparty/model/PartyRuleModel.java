@@ -5,7 +5,15 @@ public class PartyRuleModel {
 	private String title;
 	private String content;
 	private String time;	private boolean Cont;
-	private String Summary;
+	private String Summary;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	public String getSummary() {
 		return Summary;
 	}

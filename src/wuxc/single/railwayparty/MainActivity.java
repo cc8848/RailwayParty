@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.other.LoginActivity;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 	public static String curFragmentTag;
@@ -373,30 +375,72 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.relative_build:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(1);
 			setTabSelection(getString(R.string.str_build));
 			RelativeBuild.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.relative_branch:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(2);
 			setTabSelection(getString(R.string.str_branch));
 			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.text_gobg:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(2);
 			setTabSelection(getString(R.string.str_branch));
 			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.image_main:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(3);
 			setTabSelection(getString(R.string.str_main));
 			break;
 		case R.id.relative_bbs:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(4);
 			setTabSelection(getString(R.string.str_bbs));
 			RelativeBbs.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.relative_my:
+			ticket = PreUserInfo.getInt("ticket", 0);
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			write(5);
 			setTabSelection(getString(R.string.str_my));
 			RelativeMy.setBackgroundColor(Color.parseColor("#a80402"));

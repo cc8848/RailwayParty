@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.other.LoginActivity;
 
 public class SettingActivity extends Activity implements OnClickListener {
 	private LinearLayout lin_newpwd;
@@ -40,6 +41,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		lin_myinfo.setOnClickListener(this);
 		lin_advice.setOnClickListener(this);
 		btn_exit = (Button) findViewById(R.id.btn_exit);
+		btn_exit.setOnClickListener(this);
 	}
 
 	@Override
@@ -79,8 +81,9 @@ public class SettingActivity extends Activity implements OnClickListener {
 			startActivity(intent_advice);
 			break;
 		case R.id.btn_exit:
-			Toast.makeText(getApplicationContext(), "ÍË³öµÇÂ¼", Toast.LENGTH_SHORT).show();
-
+			Intent intent_top_bac = new Intent();
+			intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
+			startActivity(intent_top_bac);
 			break;
 		default:
 			break;

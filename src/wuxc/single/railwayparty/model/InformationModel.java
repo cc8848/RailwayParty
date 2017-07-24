@@ -2,7 +2,15 @@ package wuxc.single.railwayparty.model;
 
 public class InformationModel {
 	private String headimgUrl;
-	private String title;
+	private String title;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private String content;	private boolean Cont;
 	private String Summary;
 	public String getSummary() {

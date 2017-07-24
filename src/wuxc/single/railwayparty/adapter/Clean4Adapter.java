@@ -64,7 +64,7 @@ public class Clean4Adapter extends ArrayAdapter<Clean4Model> {
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getImageUrl();
 		ImageView imageView = viewCache.getImageHeadimg();
-		imageView.setTag(URLcontainer.urlip + imageUrl);
+		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
 		Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(R.drawable.file0004);
@@ -75,7 +75,7 @@ public class Clean4Adapter extends ArrayAdapter<Clean4Model> {
 				Bitmap bm1 = null;
 				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip + imageUrl;
+					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
 					Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {

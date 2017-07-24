@@ -142,19 +142,20 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 					InformationModel listinfo = new InformationModel();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("content"));	listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("summary"));
+					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-//					listinfo.setGuanzhu(json_data.getString("hot"));
-//					listinfo.setZan("453");
+					// listinfo.setGuanzhu(json_data.getString("hot"));
+					// listinfo.setZan("453");
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-//					listinfo.setRead(true);
+					// listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("content").equals("") || json_data.getString("content") == null
-								|| json_data.getString("content").equals("null")) {
+						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
+								|| json_data.getString("summary").equals("null")) {
 							listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
@@ -323,18 +324,9 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		InformationModel data = list.get(position - 1);
-		if (data.isCont()) {
+		if (position == 1) {
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), SpecialDetailActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("Title", data.getTitle());
-			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());
-			intent.putExtras(bundle);
-			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
+			intent.setClass(getActivity(), PartyRuleInformationActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("url", data.getLink());
 			// // bundle.putString("Time", "2016-11-23");
@@ -345,8 +337,34 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
 			intent.putExtras(bundle);
 			startActivity(intent);
+		} else {
+
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			} else {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), webview.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("url", data.getLink());
+				// // bundle.putString("Time", "2016-11-23");
+				// // bundle.putString("Name", "小李");
+				// // bundle.putString("PageTitle", "收藏详情");
+				// // bundle.putString("Detail",
+				// //
+				// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
 		}
 	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -361,7 +379,7 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "xxtb"));
+		ArrayValues.add(new BasicNameValuePair("chn", "xxtb"));chn="xxtb";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -385,6 +403,7 @@ public class InformationFragment extends Fragment implements OnTouchListener, On
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
+
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());
 		headTextView.setGravity(Gravity.CENTER);

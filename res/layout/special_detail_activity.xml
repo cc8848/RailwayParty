@@ -69,6 +69,15 @@
             android:textSize="@dimen/member_transform_size" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/text_detail"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:textColor="@color/member_transform_stroke"
+        android:textSize="@dimen/member_transform_size"
+        android:visibility="gone" />
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
@@ -121,7 +130,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/text_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_position"
@@ -137,7 +145,6 @@
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/text_detail"
                 android:background="@color/member_transform_stroke"
                 android:visibility="gone" />
 

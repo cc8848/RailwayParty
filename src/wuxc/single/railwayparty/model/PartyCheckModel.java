@@ -5,7 +5,15 @@ public class PartyCheckModel {
 	private String title;
 	private String content;
 	private String time;
-	private String keyid;
+	private String keyid;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private int imageurl;
 	private String label;
 	private int width;

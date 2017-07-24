@@ -66,7 +66,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 			setonclicklistener();
 			setheadtextview();
 
-			getdatalist(curPage);
+//			getdatalist(curPage);
 		}
 
 		return view;

@@ -111,7 +111,7 @@ public class Flag3Adapter extends ArrayAdapter<Flag3Model> {
 		TextView texttime = viewCache.getTextTime();
 		texttime.setText("" + imageAndText.getTime());
 		TextView textdetail = viewCache.getTextDetail();
-		textdetail.setText("" + imageAndText.getContent());
+		textdetail.setText("" + imageAndText.getSummary());
 		return rowView;
 	}
 

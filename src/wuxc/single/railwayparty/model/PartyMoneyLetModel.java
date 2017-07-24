@@ -4,8 +4,29 @@ public class PartyMoneyLetModel {
 
 	private String Title;
 
-	private String Id;	private boolean Cont;
+	private String Id;
+	private boolean Cont;
 	private String Summary;
+	private String time;
+
+	private String content;
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -24,8 +45,6 @@ public class PartyMoneyLetModel {
 
 	private String Link;
 
-	 
-
 	public String getLink() {
 		return Link;
 	}
@@ -33,7 +52,6 @@ public class PartyMoneyLetModel {
 	public void setLink(String link) {
 		Link = link;
 	}
-
 
 	public String getId() {
 		return Id;

@@ -199,7 +199,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 
 				FileModel listinfo = new FileModel();
 

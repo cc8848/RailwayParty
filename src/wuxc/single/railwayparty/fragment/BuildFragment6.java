@@ -84,6 +84,8 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private String searchChannelText = "政工干部培训";
+	private String fileClassify = "";
+	private String classify = "";
 	private String Type = "";
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -147,8 +149,9 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 
 					listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("content"));
+					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
 					listinfo.setGuanzhu("231");
@@ -159,8 +162,8 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 					listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("content").equals("") || json_data.getString("content") == null
-								|| json_data.getString("content").equals("null")) {
+						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
+								|| json_data.getString("summary").equals("null")) {
 							listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
@@ -355,6 +358,8 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
 			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -389,10 +394,12 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 		// chn = GetChannelByKey.GetSign(PreALLChannel,
 		// "职工之家");searchChannelText
 		ArrayValues.add(new BasicNameValuePair("chn", "wsdx"));
+		chn = "wsdx";
 		ArrayValues.add(new BasicNameValuePair("searchChannelText", searchChannelText + Type));
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-
+		ArrayValues.add(new BasicNameValuePair("fileClassify", "" + fileClassify));
+		ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
@@ -516,6 +523,7 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 			text_1.setTextColor(Color.parseColor(getString(R.color.main_color)));
 			Type = "PPT";
 			curPage = 1;
+			fileClassify = "1";
 			GetData();
 			break;
 		case R.id.text_2:
@@ -523,6 +531,7 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 			text_2.setTextColor(Color.parseColor(getString(R.color.main_color)));
 			Type = "音频";
 			curPage = 1;
+			fileClassify = "2";
 			GetData();
 			break;
 		case R.id.text_3:
@@ -530,6 +539,7 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 			text_3.setTextColor(Color.parseColor(getString(R.color.main_color)));
 			Type = "视频";
 			curPage = 1;
+			fileClassify = "3";
 			GetData();
 			break;
 		default:
@@ -548,6 +558,7 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 				text_title.setText("政工干部\n培训");
 				searchChannelText = "政工干部培训";
 				curPage = 1;
+				classify = "1";
 				GetData();
 			}
 
@@ -559,6 +570,8 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 				curPage = 1;
 				text_title.setText("党员培训");
 				searchChannelText = "党员培训";
+				classify = "2";
+				GetData();
 			}
 		});
 

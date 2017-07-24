@@ -1,9 +1,16 @@
 package wuxc.single.railwayparty.branch;
 
+import java.util.ArrayList;
+
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -11,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogtwo;
 
@@ -28,6 +36,10 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 	private String Str_target;
 	private TextView text_target;
 	private LinearLayout lin_rule;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private String ToId;
+	private String myid;
+	private int ticket;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +59,19 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 		btn_ok.setOnClickListener(this);
 		text_target.setOnClickListener(this);
 		lin_rule.setOnClickListener(this);
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
 		settext();
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		Str_name = PreUserInfo.getString("userName", "");
+		Str_party_name = PreUserInfo.getString("deptName", "");
+		Str_party_address = PreUserInfo.getString("address", "");
+		Str_party_time = PreUserInfo.getString("pInTime", "");
+		myid = PreUserInfo.getString("deptId", "");
+		ticket = PreUserInfo.getInt("ticket", 0);
 	}
 
 	private void settext() {
@@ -68,6 +92,7 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 		case 1:
 			if (!(data == null)) {
 				Str_target = bundle.getString("Name");
+				ToId = bundle.getString("ToId");
 				text_target.setText(Str_target);
 			}
 
@@ -105,6 +130,34 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 		}
 	}
 
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("relationChangeDto.fromOrg", myid));
+		ArrayValues.add(new BasicNameValuePair("relationChangeDto.toOrg", ToId));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pb/relationChange/save", ArrayValues);
+
+			}
+		}).start();
+
+	}
+
 	public void showAlertDialog() {
 
 		dialogtwo.Builder builder = new dialogtwo.Builder(this);
@@ -116,6 +169,8 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 				Intent intent_membership = new Intent();
 				intent_membership.setClass(getApplicationContext(), PartyMembershipTransAfterActivity.class);
 				startActivity(intent_membership);
+				GetData();
+
 			}
 		});
 

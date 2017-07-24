@@ -12,8 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Path.Op;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,14 +28,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Flag1Adapter;
-import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
-import wuxc.single.railwayparty.model.Flag1Model;
 import wuxc.single.railwayparty.model.Flag1Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
@@ -135,9 +130,9 @@ public class FlagFragment1 extends Fragment implements OnTouchListener, OnClickL
 					Flag1Model listinfo = new Flag1Model();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("content"));
+					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
 					listinfo.setGuanzhu(json_data.getString("hot"));
@@ -147,8 +142,8 @@ public class FlagFragment1 extends Fragment implements OnTouchListener, OnClickL
 					listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("content").equals("") || json_data.getString("content") == null
-								|| json_data.getString("content").equals("null")) {
+						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
+								|| json_data.getString("summary").equals("null")) {
 							listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
@@ -317,13 +312,13 @@ public class FlagFragment1 extends Fragment implements OnTouchListener, OnClickL
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		Flag1Model data = list.get(position - 1);
-		if (data.isCont()) {
+		if (true) {
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());
+			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -356,7 +351,7 @@ public class FlagFragment1 extends Fragment implements OnTouchListener, OnClickL
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "qtxs"));
+		ArrayValues.add(new BasicNameValuePair("chn", "qtxs"));chn="qtxs";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 

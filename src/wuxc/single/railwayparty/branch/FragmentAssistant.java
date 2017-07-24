@@ -68,7 +68,7 @@ public class FragmentAssistant extends Fragment implements OnTouchListener, OnCl
 			setonclicklistener();
 			setheadtextview();
 
-			getdatalist(curPage);
+//			getdatalist(curPage);
 		}
 
 		return view;
@@ -208,7 +208,7 @@ public class FragmentAssistant extends Fragment implements OnTouchListener, OnCl
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 0; i++) {
 
 				AssistantModel listinfo = new AssistantModel();
 				listinfo.setTime("2017-08-30");

@@ -6,7 +6,15 @@ public class Bbs4Model {
 	private String content;
 	private String zan;
 	private String guanzhu;
-	private boolean read;
+	private boolean read;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private String time;
 	private String keyid;
 	private int imageurl;

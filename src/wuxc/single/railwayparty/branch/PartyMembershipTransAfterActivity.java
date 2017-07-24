@@ -1,8 +1,10 @@
 package wuxc.single.railwayparty.branch;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +27,7 @@ public class PartyMembershipTransAfterActivity extends Activity implements OnCli
 	private String Str_party_address = "陕西省西安市雁塔北路1号";
 	private String Str_party_time = "2017年5月";
 	private String Str_target;
- 
+	private SharedPreferences PreUserInfo;// 存储个人信息
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,20 @@ public class PartyMembershipTransAfterActivity extends Activity implements OnCli
 		text_party_name = (TextView) findViewById(R.id.text_party_name);
 		text_party_address = (TextView) findViewById(R.id.text_party_address);
 		text_party_time = (TextView) findViewById(R.id.text_party_time);
- 
+
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
- 
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
 		settext();
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		Str_name = PreUserInfo.getString("userName", "");
+		Str_party_name = PreUserInfo.getString("deptName", "");
+		Str_party_address = PreUserInfo.getString("address", "");
+		Str_party_time = PreUserInfo.getString("pInTime", "");
 	}
 
 	private void settext() {
@@ -63,7 +74,7 @@ public class PartyMembershipTransAfterActivity extends Activity implements OnCli
 
 		case 1:
 			if (!(data == null)) {
-			 
+
 			}
 
 			break;

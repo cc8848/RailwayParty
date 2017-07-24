@@ -3,7 +3,15 @@ package wuxc.single.railwayparty.model;
 public class Flag1Model {
 	private String headimgUrl;
 	private String title;	private boolean Cont;
-	private String Summary;
+	private String Summary;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	public String getSummary() {
 		return Summary;
 	}

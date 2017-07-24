@@ -4,7 +4,15 @@ public class Clean3Model {
 	private String headimgUrl;
 	private String title;
 	private String content;
-	private String zan;
+	private String zan;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private String guanzhu;
 	private boolean read;
 	private String time;

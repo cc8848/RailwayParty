@@ -5,7 +5,15 @@ public class Clean1Model {
 	private String title;
 	private String content;
 	private String zan;
-	private String guanzhu;
+	private String guanzhu;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private boolean read;
 	private String time;
 	private String keyid;

@@ -56,7 +56,7 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 	private String BranchName;
 	private String BranchAddress;
 	private String Name;
-	private String ticket;
+	private int ticket;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_BRANCH_RESULT = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
@@ -120,7 +120,8 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 			Type = demoJson.getString("type");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-//				Toast.makeText(getApplicationContext(), "数据加载成功！", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "数据加载成功！",
+				// Toast.LENGTH_SHORT).show();
 				GetDataDetailFromBranch(Data);
 			} else {
 				Toast.makeText(getApplicationContext(), "数据加载失败！", Toast.LENGTH_SHORT).show();
@@ -168,7 +169,7 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getString("ticket", null);
+		ticket = PreUserInfo.getInt("ticket", 0);
 	}
 
 	protected void Searchlist(String string) {
@@ -209,12 +210,12 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 		// TODO Auto-generated method stub
 
 		final ArrayList ArrayValues = new ArrayList();
-		ArrayValues.add(new BasicNameValuePair("ticket", "7"));
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
 				String BranchResultData = "";
-				BranchResultData = HttpGetData.GetData(URLcontainer.GetAllOrg, ArrayValues);
+				BranchResultData = HttpGetData.GetData("api/common/getAllOrg", ArrayValues);
 				Message msg = new Message();
 				msg.obj = BranchResultData;
 				msg.what = GET_BRANCH_RESULT;

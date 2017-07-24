@@ -65,7 +65,7 @@ public class FragmentTest extends Fragment implements OnTouchListener, OnClickLi
 			setonclicklistener();
 			setheadtextview();
 
-			getdatalist(curPage);
+			//getdatalist(curPage);
 		}
 
 		return view;
@@ -199,7 +199,7 @@ public class FragmentTest extends Fragment implements OnTouchListener, OnClickLi
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 
 				TestModel listinfo = new TestModel();
 				listinfo.setTime("2017-09-18");

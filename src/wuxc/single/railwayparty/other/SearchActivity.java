@@ -1,6 +1,7 @@
 package wuxc.single.railwayparty.other;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,81 +74,83 @@ public class SearchActivity extends Activity implements OnClickListener {
 		case R.id.text_search:
 			String temp = EditSearch.getText().toString();
 			if (!(temp == null || temp.equals(""))) {
-				// Intent intent = new Intent();
-				// intent.setClass(getApplicationContext(),
-				// SearchDataListActivity.class);
-				// Bundle bundle = new Bundle();
-				// bundle.putString("search_text", temp);
-				// intent.putExtras(bundle);
-				// startActivity(intent);
+				 Intent intent = new Intent();
+				 intent.setClass(getApplicationContext(),
+				 SearchDataListActivity.class);
+				 Bundle bundle = new Bundle();
+				 bundle.putString("search_text", temp);
+				 intent.putExtras(bundle);
+				 startActivity(intent);
 			} else {
 				Toast.makeText(getApplicationContext(), "«Î ‰»Î≤È’“ƒ⁄»›", Toast.LENGTH_SHORT).show();
 			}
 
 			break;
 		case R.id.search_shortcutkey_label1:
-//			Intent intent1 = new Intent();
-//			intent1.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle1 = new Bundle();
-//			bundle1.putString("search_text", TextSearchShortCutLabel1.getText().toString());
-//			intent1.putExtras(bundle1);
-//			startActivity(intent1);
+			 Intent intent1 = new Intent();
+			 intent1.setClass(getApplicationContext(),
+			 SearchDataListActivity.class);
+			 Bundle bundle1 = new Bundle();
+			 bundle1.putString("search_text",
+			 TextSearchShortCutLabel1.getText().toString());
+			 intent1.putExtras(bundle1);
+			 startActivity(intent1);
 			break;
 		case R.id.search_shortcutkey_label2:
-//			Intent intent2 = new Intent();
-//			intent2.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle2 = new Bundle();
-//			bundle2.putString("search_text", TextSearchShortCutLabel2.getText().toString());
-//			intent2.putExtras(bundle2);
-//			startActivity(intent2);
+			Intent intent2 = new Intent();
+			intent2.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle2 = new Bundle();
+			bundle2.putString("search_text", TextSearchShortCutLabel2.getText().toString());
+			intent2.putExtras(bundle2);
+			startActivity(intent2);
 			break;
 		case R.id.search_shortcutkey_label3:
-//			Intent intent3 = new Intent();
-//			intent3.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle3 = new Bundle();
-//			bundle3.putString("search_text", TextSearchShortCutLabel3.getText().toString());
-//			intent3.putExtras(bundle3);
-//			startActivity(intent3);
+			Intent intent3 = new Intent();
+			intent3.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle3 = new Bundle();
+			bundle3.putString("search_text", TextSearchShortCutLabel3.getText().toString());
+			intent3.putExtras(bundle3);
+			startActivity(intent3);
 			break;
 		case R.id.search_shortcutkey_label4:
-//			Intent intent4 = new Intent();
-//			intent4.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle4 = new Bundle();
-//			bundle4.putString("search_text", TextSearchShortCutLabel4.getText().toString());
-//			intent4.putExtras(bundle4);
-//			startActivity(intent4);
+			Intent intent4 = new Intent();
+			intent4.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle4 = new Bundle();
+			bundle4.putString("search_text", TextSearchShortCutLabel4.getText().toString());
+			intent4.putExtras(bundle4);
+			startActivity(intent4);
 			break;
 		case R.id.search_shortcutkey_label5:
-//			Intent intent5 = new Intent();
-//			intent5.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle5 = new Bundle();
-//			bundle5.putString("search_text", TextSearchShortCutLabel5.getText().toString());
-//			intent5.putExtras(bundle5);
-//			startActivity(intent5);
+			Intent intent5 = new Intent();
+			intent5.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle5 = new Bundle();
+			bundle5.putString("search_text", TextSearchShortCutLabel5.getText().toString());
+			intent5.putExtras(bundle5);
+			startActivity(intent5);
 			break;
 		case R.id.search_shortcutkey_label6:
-//			Intent intent6 = new Intent();
-//			intent6.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle6 = new Bundle();
-//			bundle6.putString("search_text", TextSearchShortCutLabel6.getText().toString());
-//			intent6.putExtras(bundle6);
-//			startActivity(intent6);
+			Intent intent6 = new Intent();
+			intent6.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle6 = new Bundle();
+			bundle6.putString("search_text", TextSearchShortCutLabel6.getText().toString());
+			intent6.putExtras(bundle6);
+			startActivity(intent6);
 			break;
 		case R.id.search_shortcutkey_label7:
-//			Intent intent7 = new Intent();
-//			intent7.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle7 = new Bundle();
-//			bundle7.putString("search_text", TextSearchShortCutLabel7.getText().toString());
-//			intent7.putExtras(bundle7);
-//			startActivity(intent7);
+			Intent intent7 = new Intent();
+			intent7.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle7 = new Bundle();
+			bundle7.putString("search_text", TextSearchShortCutLabel7.getText().toString());
+			intent7.putExtras(bundle7);
+			startActivity(intent7);
 			break;
 		case R.id.search_shortcutkey_label8:
-//			Intent intent8 = new Intent();
-//			intent8.setClass(getApplicationContext(), SearchDataListActivity.class);
-//			Bundle bundle8 = new Bundle();
-//			bundle8.putString("search_text", TextSearchShortCutLabel8.getText().toString());
-//			intent8.putExtras(bundle8);
-//			startActivity(intent8);
+			Intent intent8 = new Intent();
+			intent8.setClass(getApplicationContext(), SearchDataListActivity.class);
+			Bundle bundle8 = new Bundle();
+			bundle8.putString("search_text", TextSearchShortCutLabel8.getText().toString());
+			intent8.putExtras(bundle8);
+			startActivity(intent8);
 			break;
 		default:
 			break;

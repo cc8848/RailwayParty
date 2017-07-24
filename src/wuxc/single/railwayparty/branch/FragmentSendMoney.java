@@ -1,13 +1,18 @@
 package wuxc.single.railwayparty.branch;
 
+import java.util.ArrayList;
+
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
 import wuxc.single.railwayparty.layout.dialogtwo;
 
@@ -106,7 +112,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	// 0-无这一年的数据
 	// 1-有这一年的数据
 
-	private String ticket;
+	private int ticket;
 	private final static int GET_USER_HEAD_IMAGE = 6;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_MONTH_RESULT_DATA = 1;
@@ -123,7 +129,127 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	private static final String GET_FAIL_RESULT = "fail";
 	private TextView text_last_month;
 	private TextView text_last_time;
+	private TextView text_name;
 	private Button btn_ok;
+	private double pMonthFaredouble;
+	public Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			case GET_MONTH_RESULT_DATA:
+				GetDataDetailFromMonth(msg.obj);
+				break;
+			case GET_DUE_DATA:
+				GetDataDueData(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = "";
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				orderId = "";
+				orderId = demoJson.getString("orderId");
+				totalpay = demoJson.getDouble("payMoney");
+				if (!orderId.equals("")) {
+					rechargeresult = "success";
+				} else {
+					rechargeresult = "";
+				}
+				// showalert();
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void GetDataDetailFromMonth(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			Data = demoJson.getString("data");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				GetDetailData(Data);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailData(String data) {
+		// TODO Auto-generated method stub
+
+		String months = null;
+		try {
+			JSONObject demoJson = new JSONObject(data);
+			name = demoJson.getString("name");
+			months = demoJson.getString("months");
+			// salary = demoJson.getDouble("salary");
+//			for (int i = 0; i < 12; i++) {
+//				money[i] = salary;
+//			}
+			Months = months;
+
+			GetMonth(months);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetMonth(String months) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < 12; i++) {
+			status[i] = 0;
+		}
+		JSONArray jArray;
+		try {
+			jArray = new JSONArray(months);
+
+			for (int i = 0; i < jArray.length(); i++) {
+
+				String month = jArray.getString(i);
+				for (int j = 0; j < 12; j++) {
+					if (month.equals(inityear + STR_MONTH[j])) {
+						status[j] = 1;
+					}
+				}
+			}
+			ShowResult();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -139,9 +265,29 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			setonclicklistener();
 			setlayoutheight();
 			setinitview();
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ReadTicket();
 		}
 
 		return view;
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		idnumber = PreUserInfo.getString("icardNo", "");
+		text_last_month.setText("截止日期：" + PreUserInfo.getString("pFareEndTime", ""));
+		text_last_time.setText("每月党费：" + PreUserInfo.getString("pMonthFare", ""));
+		try {
+			pMonthFaredouble = Double.parseDouble(PreUserInfo.getString("pMonthFare", ""));
+			for (int i = 0; i < money.length; i++) {
+				money[i] = pMonthFaredouble;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		// LoginId = PreUserInfo.getString("userName", "");
+
 	}
 
 	private void setinitview() {
@@ -457,10 +603,29 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 
 			ShowResult();
 
+			GetMonthData(idnumber);
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void GetMonthData(String idnumber) {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("idCardNo", idnumber));
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/pb/common/queryFare", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_MONTH_RESULT_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	private void selecttype() {
@@ -531,32 +696,32 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 
 	}
 
-	private void GetMonth(String months) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < 12; i++) {
-			status[i] = 0;
-		}
-		// JSONArray jArray;
-		// try {
-		// jArray = new JSONArray(months);
-		//
-		// for (int i = 0; i < jArray.length(); i++) {
-		//
-		// String month = jArray.getString(i);
-		// for (int j = 0; j < 12; j++) {
-		// if (month.equals(inityear + STR_MONTH[j])) {
-		// status[j] = 1;
-		// }
-		// }
-		// }
-		// ShowResult();
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		TextYear.setText("" + inityear);
-		setImage();
-	}
+	// private void GetMonth(String months) {
+	// // TODO Auto-generated method stub
+	// for (int i = 0; i < 12; i++) {
+	// status[i] = 0;
+	// }
+	// // JSONArray jArray;
+	// // try {
+	// // jArray = new JSONArray(months);
+	// //
+	// // for (int i = 0; i < jArray.length(); i++) {
+	// //
+	// // String month = jArray.getString(i);
+	// // for (int j = 0; j < 12; j++) {
+	// // if (month.equals(inityear + STR_MONTH[j])) {
+	// // status[j] = 1;
+	// // }
+	// // }
+	// // }
+	// // ShowResult();
+	// // } catch (JSONException e) {
+	// // // TODO Auto-generated catch block
+	// // e.printStackTrace();
+	// // }
+	// TextYear.setText("" + inityear);
+	// setImage();
+	// }
 
 	private void ShowResult() {
 		// TODO Auto-generated method stub

@@ -7,9 +7,20 @@ public class MycheckModel {
 	private String Title;
 	private String Time;
 	private String Id;
+	private String content;
 
-	private String detail;	private boolean Cont;
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	private String detail;
+	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -28,8 +39,6 @@ public class MycheckModel {
 
 	private String Link;
 
-	 
-
 	public String getLink() {
 		return Link;
 	}
@@ -37,7 +46,6 @@ public class MycheckModel {
 	public void setLink(String link) {
 		Link = link;
 	}
-
 
 	public String getDetail() {
 		return detail;

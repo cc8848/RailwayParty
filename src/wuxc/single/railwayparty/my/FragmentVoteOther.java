@@ -65,7 +65,7 @@ public class FragmentVoteOther extends Fragment implements OnTouchListener, OnCl
 			setonclicklistener();
 			setheadtextview();
 
-			getdatalist(curPage);
+			//getdatalist(curPage);
 		}
 
 		return view;
@@ -199,7 +199,7 @@ public class FragmentVoteOther extends Fragment implements OnTouchListener, OnCl
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 
 				VoteOtherModel listinfo = new VoteOtherModel();
 				listinfo.setTime("2017-09-18");

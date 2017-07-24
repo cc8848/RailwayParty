@@ -6,7 +6,15 @@ public class RewardModel {
 	private String content;
 	private String time;
 	private String keyid;
-	private int imageurl;
+	private int imageurl;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	private String label;
 	private int width;
 	private boolean Cont;

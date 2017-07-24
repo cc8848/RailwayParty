@@ -123,14 +123,14 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 	private void showtext() {
 		// TODO Auto-generated method stub
-		// text_1.setVisibility(View.GONE);
-		// text_2.setVisibility(View.GONE);
-		// text_3.setVisibility(View.GONE);
-		// text_4.setVisibility(View.GONE);
-		// text_5.setVisibility(View.GONE);
-		// text_6.setVisibility(View.GONE);
-		// text_7.setVisibility(View.GONE);
-		// text_8.setVisibility(View.GONE);
+		text_1.setVisibility(View.GONE);
+		text_2.setVisibility(View.GONE);
+		text_3.setVisibility(View.GONE);
+		text_4.setVisibility(View.GONE);
+		text_5.setVisibility(View.GONE);
+		text_6.setVisibility(View.GONE);
+		text_7.setVisibility(View.GONE);
+		text_8.setVisibility(View.GONE);
 	}
 
 	private void initheight(View view) {
@@ -208,41 +208,89 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.rel_inform:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_inform = new Intent();
 			intent_inform.setClass(getActivity(), InformActivity.class);
 			startActivity(intent_inform);
 			break;
 		case R.id.rel_policy:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_policy = new Intent();
 			intent_rel_policy.setClass(getActivity(), PolicyActivity.class);
 			startActivity(intent_rel_policy);
 			break;
 		case R.id.rel_party_manage:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_party_manage = new Intent();
 			intent_rel_party_manage.setClass(getActivity(), PartyManageActivity.class);
 			startActivity(intent_rel_party_manage);
 			break;
 		case R.id.rel_weblearn:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_weblearn = new Intent();
 			intent_rel_weblearn.setClass(getActivity(), WebLearnActivity.class);
 			startActivity(intent_rel_weblearn);
 			break;
 		case R.id.rel_clean:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_clean = new Intent();
 			intent_rel_clean.setClass(getActivity(), CleanActivity.class);
 			startActivity(intent_rel_clean);
 			break;
 		case R.id.rel_disciplinary:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_disciplinary = new Intent();
 			intent_rel_disciplinary.setClass(getActivity(), DisciplinaryActivity.class);
 			startActivity(intent_rel_disciplinary);
 			break;
 		case R.id.rel_member:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_member = new Intent();
 			intent_rel_member.setClass(getActivity(), MemberActivity.class);
 			startActivity(intent_rel_member);
 			break;
 		case R.id.rel_flag:
+			if (ticket == 0) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+				break;
+			}
 			Intent intent_rel_flag = new Intent();
 			intent_rel_flag.setClass(getActivity(), FlagActivity.class);
 			startActivity(intent_rel_flag);

@@ -200,12 +200,12 @@ public class FragmentPartygroupmember extends Fragment
 
 		try {
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 1; i++) {
 
 				MemberModel listinfo = new MemberModel();
 
 				listinfo.setTitle("政工干部");
-				listinfo.setName("张超");
+				listinfo.setName("业务管理员");
 				listinfo.setImageUrl("");
 				list.add(listinfo);
 

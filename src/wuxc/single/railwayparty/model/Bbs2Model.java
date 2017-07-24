@@ -10,7 +10,15 @@ public class Bbs2Model {
 	private String label;
 	private int width;
 	private boolean Cont;
-	private String Summary;
+	private String Summary;private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 	public String getSummary() {
 		return Summary;
 	}
