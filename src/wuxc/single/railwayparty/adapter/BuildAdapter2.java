@@ -19,9 +19,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
 import wuxc.single.railwayparty.cache.BuildCache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
@@ -35,13 +37,14 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public BuildAdapter2(Activity activity, List<BuildModel> imageAndTexts, ListView listView) {
+	public BuildAdapter2(Activity activity, List<BuildModel> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
-
+		mCallback = callback;
 	}
 
 	public interface Callback {
@@ -75,10 +78,11 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 			imageView.setImageResource(imageAndText.getImageurl());
 		} else {
 			try {
-				String imageName1 = getBitName(imageUrl);
-				String temppath = Environment.getExternalStorageDirectory() + "/trans/" + imageName1 + ".png";
+				// String imageName1 = getBitName(imageUrl);
+				// String temppath = Environment.getExternalStorageDirectory() +
+				// "/trans/" + imageName1 + ".png";
 				Bitmap bm1 = null;
-				bm1 = getBitmapByPath(temppath);
+				// bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
 					imageUrl = imageUrl;
 					// Log.e("imageUrl", imageUrl);
@@ -98,7 +102,7 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 						BitmapDrawable bd = (BitmapDrawable) d;
 
 						Bitmap bm = bd.getBitmap();
-						bm = cutBmp(bm);
+						// bm = cutBmp(bm);
 						imageView.setImageBitmap(bm);
 					}
 				} else {
@@ -126,7 +130,9 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 
 		TextView textzan = viewCache.gettextZan();
 		textzan.setText(imageAndText.getZan());
-
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		if (imageAndText.isRead()) {
 			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
 		} else {
@@ -134,66 +140,69 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 		}
 		return rowView;
 	}
-
-	public Bitmap getBitmapByPath(String fileName) {
-		// String myJpgPath =
-		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		// options.inSampleSize = 12;
-		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
-		return bm;
-	}
-
-	private String getBitName(String imageUrl) {
-		// TODO Auto-generated method stub
-		String[] temp = imageUrl.split("");
-		String result = "";
-		for (int i = 0; i < temp.length; i++) {
-			if (temp[i].equals("/") || temp[i].equals(".")) {
-				temp[i] = "";
-			}
-			result = result + temp[i];
-		}
-		return result;
-	}
-
-	public void saveMyBitmap(String bitName, Bitmap mBitmap) throws IOException {
-		String path = Environment.getExternalStorageDirectory() + "/chat/";
-		String myJpgPath = Environment.getExternalStorageDirectory() + "/chat/" + bitName + ".png";
-		File tmp = new File(path);
-		if (!tmp.exists()) {
-			tmp.mkdir();
-		}
-		File f = new File(myJpgPath);
-		f.createNewFile();
-		FileOutputStream fOut = null;
-		try {
-			fOut = new FileOutputStream(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-		try {
-			fOut.flush();
-			fOut.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Bitmap cutBmp(Bitmap bmp) {
-		Bitmap result;
-		int w = bmp.getWidth();// 输入长方形宽
-		int h = bmp.getHeight();// 输入长方形高
-		int nw;// 输出正方形宽
-		result = Bitmap.createBitmap(bmp, 15 * w / 100, 15 * h / 100, 7 * w / 10, 7 * h / 10);
-		// }
-		return result;
-	}
+	//
+	// public Bitmap getBitmapByPath(String fileName) {
+	// // String myJpgPath =
+	// // Environment.getExternalStorageDirectory()+"pepper/" + fileName;
+	// BitmapFactory.Options options = new BitmapFactory.Options();
+	// // options.inSampleSize = 12;
+	// Bitmap bm = BitmapFactory.decodeFile(fileName, options);
+	// return bm;
+	// }
+	//
+	// private String getBitName(String imageUrl) {
+	// // TODO Auto-generated method stub
+	// String[] temp = imageUrl.split("");
+	// String result = "";
+	// for (int i = 0; i < temp.length; i++) {
+	// if (temp[i].equals("/") || temp[i].equals(".")) {
+	// temp[i] = "";
+	// }
+	// result = result + temp[i];
+	// }
+	// return result;
+	// }
+	//
+	// public void saveMyBitmap(String bitName, Bitmap mBitmap) throws
+	// IOException {
+	// String path = Environment.getExternalStorageDirectory() + "/chat/";
+	// String myJpgPath = Environment.getExternalStorageDirectory() + "/chat/" +
+	// bitName + ".png";
+	// File tmp = new File(path);
+	// if (!tmp.exists()) {
+	// tmp.mkdir();
+	// }
+	// File f = new File(myJpgPath);
+	// f.createNewFile();
+	// FileOutputStream fOut = null;
+	// try {
+	// fOut = new FileOutputStream(f);
+	// } catch (FileNotFoundException e) {
+	// e.printStackTrace();
+	// }
+	// mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+	// try {
+	// fOut.flush();
+	// fOut.close();
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	//
+	// public Bitmap cutBmp(Bitmap bmp) {
+	// Bitmap result;
+	// int w = bmp.getWidth();// 输入长方形宽
+	// int h = bmp.getHeight();// 输入长方形高
+	// int nw;// 输出正方形宽
+	// result = Bitmap.createBitmap(bmp, 15 * w / 100, 15 * h / 100, 7 * w / 10,
+	// 7 * h / 10);
+	// // }
+	// return result;
+	// }
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
+		mCallback.click(v);
 	}
 }

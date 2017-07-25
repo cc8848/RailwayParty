@@ -35,14 +35,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Bbs2Adapter;
+import wuxc.single.railwayparty.adapter.Bbs2Adapter.Callback;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs2Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Bbs2Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BbsFragment2 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BbsFragment2 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Bbs2Model> list = new ArrayList<Bbs2Model>();
 	private static Bbs2Adapter mAdapter;
@@ -600,7 +602,7 @@ public class BbsFragment2 extends Fragment implements OnTouchListener, OnClickLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Bbs2Adapter(getActivity(), list, ListData);
+		mAdapter = new Bbs2Adapter(getActivity(), list, ListData,this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -676,6 +678,32 @@ public class BbsFragment2 extends Fragment implements OnTouchListener, OnClickLi
 			text_line_4.setBackgroundColor(Color.parseColor("#cc0502"));
 			classify = "4";
 			GetData();
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Bbs2Model data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "É¾³ýµÚ" + + "Ìõ",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

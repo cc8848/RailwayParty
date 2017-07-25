@@ -32,12 +32,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.BuildAdapter2;
+import wuxc.single.railwayparty.adapter.BuildAdapter2.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BuildFragment2 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BuildFragment2 extends Fragment
+		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<BuildModel> list = new ArrayList<BuildModel>();
 	private static BuildAdapter2 mAdapter;
@@ -129,7 +131,8 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 					BuildModel listinfo = new BuildModel();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
@@ -215,6 +218,7 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 		return view;
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -225,7 +229,9 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -243,6 +249,7 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 			startActivity(intent);
 		}
 	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -257,7 +264,8 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "djyw"));chn="djyw";
+		ArrayValues.add(new BasicNameValuePair("chn", "djyw"));
+		chn = "djyw";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -371,30 +379,31 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 		return false;
 	}
 
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		// TODO Auto-generated method stub
-//		// recommendModel data = list.get(position - 1);
-//		// Intent intent = new Intent();
-//		// intent.setClass(getActivity(), SpecialDetailActivity.class);
-//		// Bundle bundle = new Bundle();
-//		// bundle.putString("Title", data.getTitle());
-//		// bundle.putString("detail", data.getDetail());
-//		// bundle.putString("Time", data.getTime());
-//		// bundle.putString("Name", "名字");
-//		// intent.putExtras(bundle);
-//		// startActivity(intent);
-//		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
-//		// Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent();
-//		intent.setClass(getActivity(), DetailActivity.class);
-//		Bundle bundle = new Bundle();
-//		bundle.putInt("source", R.drawable.detail);
-//		bundle.putInt("height", 3048);
-//		bundle.putInt("width", 750);
-//		intent.putExtras(bundle);
-//		startActivity(intent);
-//	}
+	// @Override
+	// public void onItemClick(AdapterView<?> parent, View view, int position,
+	// long id) {
+	// // TODO Auto-generated method stub
+	// // recommendModel data = list.get(position - 1);
+	// // Intent intent = new Intent();
+	// // intent.setClass(getActivity(), SpecialDetailActivity.class);
+	// // Bundle bundle = new Bundle();
+	// // bundle.putString("Title", data.getTitle());
+	// // bundle.putString("detail", data.getDetail());
+	// // bundle.putString("Time", data.getTime());
+	// // bundle.putString("Name", "名字");
+	// // intent.putExtras(bundle);
+	// // startActivity(intent);
+	// // Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+	// // Toast.LENGTH_SHORT).show();
+	// Intent intent = new Intent();
+	// intent.setClass(getActivity(), DetailActivity.class);
+	// Bundle bundle = new Bundle();
+	// bundle.putInt("source", R.drawable.detail);
+	// bundle.putInt("height", 3048);
+	// bundle.putInt("width", 750);
+	// intent.putExtras(bundle);
+	// startActivity(intent);
+	// }
 
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());
@@ -445,7 +454,7 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new BuildAdapter2(getActivity(), list, ListData);
+		mAdapter = new BuildAdapter2(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -495,6 +504,31 @@ public class BuildFragment2 extends Fragment implements OnTouchListener, OnClick
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			BuildModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			// Toast.makeText(getActivity(), "删除第" + (Integer) v.getTag() + "条",
+			// Toast.LENGTH_SHORT).show();
+			break;
 		default:
 			break;
 		}

@@ -228,6 +228,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".main.PublishadviceActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".main.DisciplinaryActivity"
             android:screenOrientation="portrait" >
         </activity>

@@ -34,14 +34,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Bbs1Adapter;
+import wuxc.single.railwayparty.adapter.Bbs1Adapter.Callback;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs1Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Bbs1Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BbsFragment1 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BbsFragment1 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Bbs1Model> list = new ArrayList<Bbs1Model>();
 	private static Bbs1Adapter mAdapter;
@@ -156,9 +158,20 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, OnClickLi
 					listinfo.setCont(true);
 					listinfo.setGuanzhu("231");
 					listinfo.setZan("453");
+					listinfo.setPl(json_data.getString("browser"));
+					listinfo.setName(json_data.getString("author"));
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(true);
+					if (json_data.getInt("classify") == 1) {
+						listinfo.setLabel("党内活动");
+					} else if (json_data.getInt("classify") == 2) {
+						listinfo.setLabel("党员教育");
+					} else if (json_data.getInt("classify") == 3) {
+						listinfo.setLabel("党员生活");
+					} else {
+						listinfo.setLabel("其他");
+					}
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -494,7 +507,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, OnClickLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Bbs1Adapter(getActivity(), list, ListData);
+		mAdapter = new Bbs1Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -570,6 +583,32 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, OnClickLi
 			text_line_4.setBackgroundColor(Color.parseColor("#cc0502"));
 			classify = "3";
 			GetData();
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Bbs1Model data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

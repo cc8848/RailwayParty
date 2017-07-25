@@ -35,15 +35,18 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.SchoolAdapter;
+import wuxc.single.railwayparty.adapter.SchoolAdapter.Callback;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BuildFragment6 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BuildFragment6 extends Fragment
+		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private LinearLayout lin_title;
 	private TextView text_title;
 	private TextView text_1;
@@ -459,7 +462,7 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new SchoolAdapter(getActivity(), list, ListData);
+		mAdapter = new SchoolAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -577,5 +580,31 @@ public class BuildFragment6 extends Fragment implements OnTouchListener, OnClick
 
 		builder.create().show();
 
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			SchoolModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "É¾³ýµÚ" + + "Ìõ",
+			// Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
 	}
 }

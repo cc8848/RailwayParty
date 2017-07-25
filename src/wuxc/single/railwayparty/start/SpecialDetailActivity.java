@@ -194,7 +194,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		webView = (android.webkit.WebView) findViewById(R.id.webview);
 		// StringBuilder sb = new StringBuilder();
 		// sb.append(detail);
-		Log.e("here", "here");
+		Log.e("here", "here1");
 		// webView.loadUrl("http://ww.baidu.com");
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebChromeClient(new WebChromeClient());
@@ -359,7 +359,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 			public void run() {
 
 				Message msg1 = new Message();
-				msg1.what = 0;
+				msg1.what = 3;
 				uiHandler.sendMessage(msg1);
 
 			}

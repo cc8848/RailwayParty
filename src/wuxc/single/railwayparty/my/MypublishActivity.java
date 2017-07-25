@@ -51,7 +51,7 @@ public class MypublishActivity extends Activity
 		initview();
 		setonclicklistener();
 		setheadtextview();
-		//getdatalist(curPage);
+		getdatalist(curPage);
 	}
 
 	private void setheadtextview() {
@@ -75,7 +75,7 @@ public class MypublishActivity extends Activity
 
 		try {
 
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < 10; i++) {
 
 				MypublishModel listinfo = new MypublishModel();
 				listinfo.setTime("2017-09-10");
@@ -230,7 +230,7 @@ public class MypublishActivity extends Activity
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.image_delete:
-//			Toast.makeText(getApplicationContext(), "删除第" + (Integer) v.getTag() + "条", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "删除第" + (Integer) v.getTag() + "条", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

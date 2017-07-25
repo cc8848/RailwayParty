@@ -34,14 +34,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Bbs3Adapter;
+import wuxc.single.railwayparty.adapter.Bbs3Adapter.Callback;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs3Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Bbs3Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BbsFragment3 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BbsFragment3 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Bbs3Model> list = new ArrayList<Bbs3Model>();
 	private static Bbs3Adapter mAdapter;
@@ -137,7 +139,7 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, OnClickLi
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					Bbs3Model listinfo = new Bbs3Model();
 
-					listinfo.setTime(json_data.getString("createtime"));
+					listinfo.setTime(json_data.getString("releaseDate"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -561,7 +563,7 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, OnClickLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Bbs3Adapter(getActivity(), list, ListData);
+		mAdapter = new Bbs3Adapter(getActivity(), list, ListData,this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -630,6 +632,29 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, OnClickLi
 			text_3.setBackgroundResource(R.drawable.shape18red);
 			classify = "3";
 			GetData();
+			break;
+		default:
+			break;
+		}
+	}@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Bbs3Model data = list.get((Integer) v.getTag());
+		 
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			 
+//			Toast.makeText(getActivity(), "É¾³ýµÚ" +  + "Ìõ", Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

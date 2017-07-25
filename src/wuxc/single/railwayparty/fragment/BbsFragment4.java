@@ -34,14 +34,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Bbs4Adapter;
+import wuxc.single.railwayparty.adapter.Bbs4Adapter.Callback;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.main.PublishTipsActivity;
+import wuxc.single.railwayparty.main.PublishadviceActivity;
 import wuxc.single.railwayparty.model.Bbs4Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Bbs4Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class BbsFragment4 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class BbsFragment4 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Bbs4Model> list = new ArrayList<Bbs4Model>();
 	private static Bbs4Adapter mAdapter;
@@ -139,17 +143,26 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, OnClickLi
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("title"));
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-					listinfo.setGuanzhu("231");
-					listinfo.setZan("453");
+					listinfo.setGuanzhu(json_data.getString("browser"));
+					listinfo.setZan(json_data.getString("hot"));
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setLabel("合理化建议");
 					listinfo.setHeadimgUrl("");
-					listinfo.setName(json_data.getString("title"));
-					listinfo.setZan("123");
-					listinfo.setGuanzhu("4532");
+					if (json_data.getInt("classify") == 1) {
+						listinfo.setLabel("合理化建议");
+					} else if (json_data.getInt("classify") == 2) {
+						listinfo.setLabel("党员权益维护");
+					} else if (json_data.getInt("classify") == 3) {
+						listinfo.setLabel("党员生活");
+					} else {
+						listinfo.setLabel("其他");
+					}
+					listinfo.setName(json_data.getString("author"));
+					// listinfo.setZan("123");
+					// listinfo.setGuanzhu("4532");
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(true);
 					try {
@@ -564,7 +577,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, OnClickLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Bbs4Adapter(getActivity(), list, ListData);
+		mAdapter = new Bbs4Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -620,11 +633,40 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, OnClickLi
 			GetData();
 			break;
 		case R.id.text_2:
-			clearcolor();
-			text_2.setTextColor(Color.parseColor("#ffffff"));
-			text_2.setBackgroundResource(R.drawable.shape18red);
-			list.clear();
-			mAdapter.notifyDataSetChanged();
+			// clearcolor();
+			// text_2.setTextColor(Color.parseColor("#ffffff"));
+			// text_2.setBackgroundResource(R.drawable.shape18red);
+			// list.clear();
+			// mAdapter.notifyDataSetChanged();
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), PublishadviceActivity.class);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Bbs4Model data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;
