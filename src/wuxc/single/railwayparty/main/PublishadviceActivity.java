@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
@@ -42,6 +43,13 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private LinearLayout lin_select;
+	private LinearLayout lin_center;
+	private TextView text_one;
+	private TextView text_two;
+	private TextView text_label;
+	private TextView text_load;
+	private int classify = 0;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -56,7 +64,7 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 	};
 
 	protected void GetDataDueData(Object obj) {
-
+		text_load.setVisibility(View.GONE);
 		// TODO Auto-generated method stub
 		String Type = null;
 		String Data = null;
@@ -89,7 +97,19 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 		setContentView(R.layout.wuxc_activity_publishtips2);
 		ImageView image_back = (ImageView) findViewById(R.id.image_back);
 		image_back.setOnClickListener(this);
+		lin_select = (LinearLayout) findViewById(R.id.lin_select);
+		lin_center = (LinearLayout) findViewById(R.id.lin_center);
+		text_one = (TextView) findViewById(R.id.text_one);
+		text_two = (TextView) findViewById(R.id.text_two);
+		text_label = (TextView) findViewById(R.id.text_label);
+		text_load = (TextView) findViewById(R.id.text_load);
 		edit_name = (EditText) findViewById(R.id.edit_name);
+		lin_select.setOnClickListener(this);
+		lin_center.setOnClickListener(this);
+		text_one.setOnClickListener(this);
+		text_two.setOnClickListener(this);
+		text_label.setOnClickListener(this);
+		text_load.setOnClickListener(this);
 		edit_content = (EditText) findViewById(R.id.edit_content);
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
@@ -114,11 +134,13 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("modelSign", "xinde"));
-		ArrayValues.add(new BasicNameValuePair("par_keyid", "886571396132638720"));
-		ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" + edit_name.getText().toString()));
-		ArrayValues.add(new BasicNameValuePair("xinde.hstate", "3"));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "xinde"));
+		// ArrayValues.add(new BasicNameValuePair("par_keyid",
+		// "886571396132638720"));
 		ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" + edit_content.getText().toString()));
+		// ArrayValues.add(new BasicNameValuePair("xinde.hstate", "3"));
+		// ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" +
+		// edit_content.getText().toString()));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -145,11 +167,44 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.lin_select:
+			lin_select.setVisibility(View.GONE);
+			break;
+		case R.id.lin_center:
+			lin_select.setVisibility(View.VISIBLE);
+			break;
+		case R.id.text_one:
+			lin_select.setVisibility(View.GONE);
+			classify = 1;
+			text_label.setText("合理化建议");
+			break;
+		case R.id.text_two:
+			lin_select.setVisibility(View.GONE);
+			classify = 2;
+			text_label.setText("党员权益维护");
+			break;
+		case R.id.text_label:
+			lin_select.setVisibility(View.VISIBLE);
+			break;
 		case R.id.image_back:
 			finish();
 			break;
 		case R.id.btn_ok:
-			GetData();
+
+			if (classify == 0) {
+				Toast.makeText(getApplicationContext(), "请选择分类", 0).show();
+
+			} else if (edit_name.getText().toString().equals("") || edit_name.getText().toString() == null) {
+				Toast.makeText(getApplicationContext(), "请输入标题", 0).show();
+
+			} else if (edit_content.getText().toString().equals("") || edit_content.getText().toString() == null) {
+				Toast.makeText(getApplicationContext(), "请输入内容", 0).show();
+
+			} else {
+				text_load.setVisibility(View.VISIBLE);
+				GetData();
+			}
+
 			break;
 		case R.id.text_upload:
 			Intent intent = null;

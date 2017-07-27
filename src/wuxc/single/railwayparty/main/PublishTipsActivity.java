@@ -100,7 +100,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		TextView text_upload = (TextView) findViewById(R.id.text_upload);
 		text_upload.setOnClickListener(this);
 		text_load = (TextView) findViewById(R.id.text_load);
-		text_upload.setOnClickListener(this);
+		text_load.setOnClickListener(this);
 		text_load.setVisibility(View.GONE);
 		// GetData();
 	}

@@ -84,7 +84,7 @@ public class UpLoadFile {
 	public static String uploadFile(File file, String RequestURL, String classify, String ticket) {
 		String result = null;
 		int res = 0;
-		RequestURL = RequestURL + "?classify=" + classify + "&ticket=" + ticket;
+		RequestURL = RequestURL + "?ticket=" + ticket;
 		String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
 		String PREFIX = "--", LINE_END = "\r\n";
 		String CONTENT_TYPE = "multipart/form-data"; // 内容类型
@@ -107,8 +107,8 @@ public class UpLoadFile {
 				sb.append(PREFIX);
 				sb.append(BOUNDARY);
 				sb.append(LINE_END);
-				sb.append(
-						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"" + LINE_END);
+				sb.append("Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\""
+						+ LINE_END);
 				sb.append("Content-Type: image/pjpeg; charset=" + CHARSET + LINE_END);
 				sb.append(LINE_END);
 				dos.write(sb.toString().getBytes());
@@ -122,8 +122,11 @@ public class UpLoadFile {
 				dos.write(LINE_END.getBytes());
 				byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
 				dos.write(end_data);
+				Log.e("res", "res"+2);
 				dos.flush();
+				Log.e("res", "res"+1);
 				res = conn.getResponseCode();
+				Log.e("res", "res"+res);
 				if (res == 200) {
 					InputStream input = conn.getInputStream();
 					StringBuffer sb1 = new StringBuffer();

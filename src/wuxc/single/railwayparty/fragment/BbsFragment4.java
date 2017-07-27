@@ -1,6 +1,9 @@
 package wuxc.single.railwayparty.fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -139,7 +142,48 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					Bbs4Model listinfo = new Bbs4Model();
 
-					listinfo.setTime(json_data.getString("createtime"));
+					Date date = null;
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					try {
+						date = formatter.parse(json_data.getString("createtime"));
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Date now = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");// 可以方便地修改日期格式
+					long time = now.getTime() - date.getTime();
+					time = time / 1000;
+					String thistime = json_data.getString("createtime");
+					if (time < 60) {
+						thistime = "刚刚";
+					} else if (time < 120) {
+						thistime = "一分钟前";
+					} else if (time < 300) {
+						thistime = "五分钟前";
+					} else if (time < 1800) {
+						thistime = "半小时前";
+					} else if (time < 3600) {
+						thistime = "一小时前";
+					} else if (time < 3600 * 24) {
+						thistime = "一天前";
+					} else if (time < 3600 * 24 * 2) {
+						thistime = "两天前";
+					} else if (time < 3600 * 24 * 3) {
+						thistime = "三天前";
+					} else if (time < 3600 * 24 * 4) {
+						thistime = "四天前";
+					} else if (time < 3600 * 24 * 5) {
+						thistime = "五天前";
+					} else if (time < 3600 * 24 * 6) {
+						thistime = "六天前";
+					} else if (time < 3600 * 24 * 7) {
+						thistime = "一周前";
+					} else {
+						thistime = "更久";
+					}
+					// System.out.println(date.g);
+					listinfo.setTime(thistime);
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -161,7 +205,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 						listinfo.setLabel("其他");
 					}
 					listinfo.setName(json_data.getString("author"));
-					// listinfo.setZan("123");
+					listinfo.setZan(json_data.getString("createtime"));
 					// listinfo.setGuanzhu("4532");
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(true);
@@ -633,14 +677,12 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			GetData();
 			break;
 		case R.id.text_2:
-			// clearcolor();
-			// text_2.setTextColor(Color.parseColor("#ffffff"));
-			// text_2.setBackgroundResource(R.drawable.shape18red);
-			// list.clear();
-			// mAdapter.notifyDataSetChanged();
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), PublishadviceActivity.class);
-			startActivity(intent);
+			clearcolor();
+			text_2.setTextColor(Color.parseColor("#ffffff"));
+			text_2.setBackgroundResource(R.drawable.shape18red);
+			list.clear();
+			mAdapter.notifyDataSetChanged();
+
 			break;
 		default:
 			break;
@@ -658,7 +700,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
-			bundle.putString("Time", data.getTime());
+			bundle.putString("Time", data.getZan());
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());

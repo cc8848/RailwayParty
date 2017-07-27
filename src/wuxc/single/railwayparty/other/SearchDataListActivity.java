@@ -39,13 +39,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.other.SearchAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.start.webview;
 
 public class SearchDataListActivity extends FragmentActivity
-		implements OnTouchListener, OnClickListener, OnItemClickListener {
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private RelativeLayout RelativeViewPage;
 	private Childviewpaper ViewPaper;
 	private ImageView dot1, dot2, dot3, dot4, dot5, dot6, dot7, dot8, dot9, dot10;
@@ -294,7 +295,7 @@ public class SearchDataListActivity extends FragmentActivity
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new SearchAdapter(this, list, ListData);
+		mAdapter = new SearchAdapter(this, list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -448,6 +449,40 @@ public class SearchDataListActivity extends FragmentActivity
 		// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			SearchModel data = list.get((Integer) v.getTag());
+			// Intent intent = new Intent();
+			// intent.setClass(getApplicationContext(),
+			// SearchDetailActivity.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("Title", data.getTitle());
+			// bundle.putString("detail", data.getDetail());
+			// bundle.putString("Time", data.getTime());
+			// bundle.putString("Name", "名字");
+			// intent.putExtras(bundle);
+			// startActivity(intent);
+			// CollectModel data = list.get(position - 1);
+			Intent intent = new Intent();
+			intent.setClass(getApplicationContext(), webview.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("url", URLcontainer.urlip + data.getNumber());
+			// // bundle.putString("Time", "2016-11-23");
+			// // bundle.putString("Name", "小李");
+			// // bundle.putString("PageTitle", "收藏详情");
+			// // bundle.putString("Detail",
+			// //
+			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+			intent.putExtras(bundle);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

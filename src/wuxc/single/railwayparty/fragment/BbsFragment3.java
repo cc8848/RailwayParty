@@ -78,7 +78,8 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 	private static final int GET_DUE_DATA = 6;
 	private TextView TextArticle;
 	private TextView TextVideo;
-	private int type = 2;	private String classify = "";
+	private int type = 2;
+	private String classify = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -563,7 +564,7 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Bbs3Adapter(getActivity(), list, ListData,this);
+		mAdapter = new Bbs3Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -636,25 +637,28 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 		default:
 			break;
 		}
-	}@Override
+	}
+
+	@Override
 	public void click(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.lin_all:
 			Bbs3Model data = list.get((Integer) v.getTag());
-		 
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SpecialDetailActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("Title", data.getTitle());
-				bundle.putString("Time", data.getTime());
-				bundle.putString("detail", data.getContent());
-				bundle.putString("chn", chn);
-				bundle.putString("Id", data.getId());
-				intent.putExtras(bundle);
-				startActivity(intent);
-			 
-//			Toast.makeText(getActivity(), "删除第" +  + "条", Toast.LENGTH_SHORT).show();
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

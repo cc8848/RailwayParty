@@ -256,6 +256,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".main.PublishDYQActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".main.DisciplinaryActivity"
             android:screenOrientation="portrait" >
         </activity>

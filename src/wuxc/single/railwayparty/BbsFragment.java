@@ -25,6 +25,8 @@ import wuxc.single.railwayparty.fragment.BbsFragment3;
 import wuxc.single.railwayparty.fragment.BbsFragment4;
 import wuxc.single.railwayparty.fragment.BbsFragment5;
 import wuxc.single.railwayparty.layout.Childviewpaper;
+import wuxc.single.railwayparty.main.PublishDYQActivity;
+import wuxc.single.railwayparty.main.PublishadviceActivity;
 import wuxc.single.railwayparty.other.SearchActivity;
 
 public class BbsFragment extends MainBaseFragment implements OnClickListener {
@@ -47,6 +49,8 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 5;
+	private ImageView image_edit;
+	private int page = 1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,26 +131,36 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 				text_1.setTextColor(Color.parseColor("#cc0502"));
 				image_1.setImageResource(R.drawable.icon01_dyq);
 				text_1.setTextColor(Color.parseColor("#cc0502"));
+				image_edit.setVisibility(View.VISIBLE);
+				page = 1;
 				break;
 			case 1:
 				clearcolor();
 				image_2.setImageResource(R.drawable.icon02_dyq);
 				text_2.setTextColor(Color.parseColor("#cc0502"));
+				page = 2;
+				image_edit.setVisibility(View.GONE);
 				break;
 			case 2:
 				clearcolor();
 				image_3.setImageResource(R.drawable.icon03_dyq);
 				text_3.setTextColor(Color.parseColor("#cc0502"));
+				page = 3;
+				image_edit.setVisibility(View.GONE);
 				break;
 			case 3:
 				clearcolor();
 				image_4.setImageResource(R.drawable.icon04_dyq);
 				text_4.setTextColor(Color.parseColor("#cc0502"));
+				page = 4;
+				image_edit.setVisibility(View.VISIBLE);
 				break;
 			case 4:
 				clearcolor();
 				image_5.setImageResource(R.drawable.icon05_dyq);
+				page = 5;
 				text_5.setTextColor(Color.parseColor("#cc0502"));
+				image_edit.setVisibility(View.GONE);
 				break;
 
 			default:
@@ -207,6 +221,8 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		lin_3.setOnClickListener(this);
 		lin_4.setOnClickListener(this);
 		lin_5.setOnClickListener(this);
+		image_edit = (ImageView) view.findViewById(R.id.image_edit);
+		image_edit.setOnClickListener(this);
 	}
 
 	@Override
@@ -226,30 +242,51 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			image_1.setImageResource(R.drawable.icon01_dyq);
 			text_1.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(0);
+			image_edit.setVisibility(View.VISIBLE);
+			page = 1;
 			break;
 		case R.id.lin_2:
 			clearcolor();
 			image_2.setImageResource(R.drawable.icon02_dyq);
 			text_2.setTextColor(Color.parseColor("#cc0502"));
+			page = 2;
+			image_edit.setVisibility(View.GONE);
 			ViewPaper.setCurrentItem(1);
 			break;
 		case R.id.lin_3:
 			clearcolor();
 			image_3.setImageResource(R.drawable.icon03_dyq);
+			page = 3;
 			text_3.setTextColor(Color.parseColor("#cc0502"));
+			image_edit.setVisibility(View.GONE);
 			ViewPaper.setCurrentItem(2);
 			break;
 		case R.id.lin_4:
 			clearcolor();
 			image_4.setImageResource(R.drawable.icon04_dyq);
 			text_4.setTextColor(Color.parseColor("#cc0502"));
+			page = 4;
 			ViewPaper.setCurrentItem(3);
+			image_edit.setVisibility(View.VISIBLE);
 			break;
 		case R.id.lin_5:
 			clearcolor();
 			image_5.setImageResource(R.drawable.icon05_dyq);
+			page = 5;
+			image_edit.setVisibility(View.GONE);
 			text_5.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(4);
+			break;
+		case R.id.image_edit:
+			if (page == 4) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), PublishadviceActivity.class);
+				startActivity(intent);
+			} else if (page == 1) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), PublishDYQActivity.class);
+				startActivity(intent);
+			}
 			break;
 		default:
 			break;

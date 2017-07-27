@@ -1,6 +1,10 @@
 package wuxc.single.railwayparty.fragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -146,17 +150,57 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					Bbs1Model listinfo = new Bbs1Model();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					Date date = null;
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					try {
+						date = formatter.parse(json_data.getString("createtime"));
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Date now = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");// 可以方便地修改日期格式
+					long time = now.getTime() - date.getTime();
+					time = time / 1000;
+					String thistime = json_data.getString("createtime");
+					if (time < 60) {
+						thistime = "刚刚";
+					} else if (time < 120) {
+						thistime = "一分钟前";
+					} else if (time < 300) {
+						thistime = "五分钟前";
+					} else if (time < 1800) {
+						thistime = "半小时前";
+					} else if (time < 3600) {
+						thistime = "一小时前";
+					} else if (time < 3600 * 24) {
+						thistime = "一天前";
+					} else if (time < 3600 * 24 * 2) {
+						thistime = "两天前";
+					} else if (time < 3600 * 24 * 3) {
+						thistime = "三天前";
+					} else if (time < 3600 * 24 * 4) {
+						thistime = "四天前";
+					} else if (time < 3600 * 24 * 5) {
+						thistime = "五天前";
+					} else if (time < 3600 * 24 * 6) {
+						thistime = "六天前";
+					} else if (time < 3600 * 24 * 7) {
+						thistime = "一周前";
+					} else {
+						thistime = "更久";
+					}
+					// System.out.println(date.g);
+					listinfo.setTime(thistime);
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));
-					listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("content"));
+					listinfo.setSummary(json_data.getString("content"));
 					listinfo.setCont(true);
 					listinfo.setGuanzhu("231");
-					listinfo.setZan("453");
+					listinfo.setZan(json_data.getString("createtime"));
 					listinfo.setPl(json_data.getString("browser"));
 					listinfo.setName(json_data.getString("author"));
 					listinfo.setImageurl(headimg[i]);
@@ -171,17 +215,18 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 					} else {
 						listinfo.setLabel("其他");
 					}
-					try {
-						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							listinfo.setContent(json_data.getString("source"));
-							listinfo.setCont(false);
-						}
-
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
+					// try {
+					// listinfo.setLink(json_data.getString("otherLinks"));
+					// if (json_data.getString("summary").equals("") ||
+					// json_data.getString("summary") == null
+					// || json_data.getString("summary").equals("null")) {
+					// listinfo.setContent(json_data.getString("source"));
+					// listinfo.setCont(false);
+					// }
+					//
+					// } catch (Exception e) {
+					// // TODO: handle exception
+					// }
 					list.add(listinfo);
 
 				}
@@ -302,7 +347,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putString("Title", data.getTitle());
+			bundle.putString("Title", data.getLabel());
 			bundle.putString("Time", data.getTime());
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
@@ -598,8 +643,8 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
-			bundle.putString("Title", data.getTitle());
-			bundle.putString("Time", data.getTime());
+			bundle.putString("Title", data.getLabel());
+			bundle.putString("Time", data.getZan());
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());
