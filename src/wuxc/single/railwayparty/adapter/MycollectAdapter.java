@@ -61,7 +61,7 @@ public class MycollectAdapter extends ArrayAdapter<MycollectModel> implements On
 		// Inflate the views from XML
 		View rowView = convertView;
 		MycollectCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_collect, null);

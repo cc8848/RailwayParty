@@ -33,7 +33,7 @@ public class EvaluationAdapter extends ArrayAdapter<EvaluationModel> implements 
 		View rowView = convertView;
 
 		EvaluationCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_evaluation, null);
 			viewCache = new EvaluationCache(rowView);

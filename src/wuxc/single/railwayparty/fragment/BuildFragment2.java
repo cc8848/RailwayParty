@@ -129,8 +129,13 @@ public class BuildFragment2 extends Fragment
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					BuildModel listinfo = new BuildModel();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					try {
+						listinfo.setBi(json_data.getInt("iszengread"));
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setBi(0);
+					}
+					listinfo.setTime(json_data.getString("releaseDate"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));

@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
@@ -33,13 +34,22 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public PartyCheckAdapter(Activity activity, List<PartyCheckModel> imageAndTexts, ListView listView) {
+	public PartyCheckAdapter(Activity activity, List<PartyCheckModel> imageAndTexts, ListView listView,
+			Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
+		mCallback = callback;
 
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public interface Callback {
@@ -54,7 +64,7 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 		View rowView = convertView;
 
 		PartyCheckCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_partycheck, null);
 			viewCache = new PartyCheckCache(rowView);
@@ -67,16 +77,18 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 
 		TextView texttime = viewCache.gettextTime();
 		texttime.setText(imageAndText.getTime());
-
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
 
 		return rowView;
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
+	// @Override
+	// public void onClick(View v) {
+	// // TODO Auto-generated method stub
+	//
+	// }
 }

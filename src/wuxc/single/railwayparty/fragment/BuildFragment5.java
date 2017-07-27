@@ -129,8 +129,13 @@ public class BuildFragment5 extends Fragment
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					BuildModel listinfo = new BuildModel();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					try {
+						listinfo.setBi(json_data.getInt("iszengread"));
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setBi(0);
+					}
+					listinfo.setTime(json_data.getString("releaseDate"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -142,6 +147,7 @@ public class BuildFragment5 extends Fragment
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(true);
+					listinfo.setGuanzhu(json_data.getString("browser"));
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null

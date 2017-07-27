@@ -36,8 +36,10 @@ import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Clean1Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
+import wuxc.single.railwayparty.adapter.Clean1Adapter.Callback;
 
-public class MemberFragment3 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class MemberFragment3 extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Clean1Model> list = new ArrayList<Clean1Model>();
 	private static Clean1Adapter mAdapter;
@@ -129,11 +131,13 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 					Clean1Model listinfo = new Clean1Model();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));	listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("summary"));
+					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-					listinfo.setGuanzhu(json_data.getString("hot"));
+					listinfo.setGuanzhu(json_data.getString("browser"));
 					listinfo.setZan("453");
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
@@ -214,6 +218,7 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 		return view;
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -224,7 +229,9 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -242,6 +249,31 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 			startActivity(intent);
 		}
 	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Clean1Model data = list.get((Integer) v.getTag());
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -256,7 +288,8 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "cyzn"));chn="cyzn";
+		ArrayValues.add(new BasicNameValuePair("chn", "cyzn"));
+		chn = "cyzn";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -370,30 +403,31 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 		return false;
 	}
 
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		// TODO Auto-generated method stub
-//		// recommendModel data = list.get(position - 1);
-//		// Intent intent = new Intent();
-//		// intent.setClass(getActivity(), SpecialDetailActivity.class);
-//		// Bundle bundle = new Bundle();
-//		// bundle.putString("Title", data.getTitle());
-//		// bundle.putString("detail", data.getDetail());
-//		// bundle.putString("Time", data.getTime());
-//		// bundle.putString("Name", "名字");
-//		// intent.putExtras(bundle);
-//		// startActivity(intent);
-//		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
-//		// Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent();
-//		intent.setClass(getActivity(), DetailActivity.class);
-//		Bundle bundle = new Bundle();
-//		bundle.putInt("source", R.drawable.detail);
-//		bundle.putInt("height", 3048);
-//		bundle.putInt("width", 750);
-//		intent.putExtras(bundle);
-//		startActivity(intent);
-//	}
+	// @Override
+	// public void onItemClick(AdapterView<?> parent, View view, int position,
+	// long id) {
+	// // TODO Auto-generated method stub
+	// // recommendModel data = list.get(position - 1);
+	// // Intent intent = new Intent();
+	// // intent.setClass(getActivity(), SpecialDetailActivity.class);
+	// // Bundle bundle = new Bundle();
+	// // bundle.putString("Title", data.getTitle());
+	// // bundle.putString("detail", data.getDetail());
+	// // bundle.putString("Time", data.getTime());
+	// // bundle.putString("Name", "名字");
+	// // intent.putExtras(bundle);
+	// // startActivity(intent);
+	// // Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+	// // Toast.LENGTH_SHORT).show();
+	// Intent intent = new Intent();
+	// intent.setClass(getActivity(), DetailActivity.class);
+	// Bundle bundle = new Bundle();
+	// bundle.putInt("source", R.drawable.detail);
+	// bundle.putInt("height", 3048);
+	// bundle.putInt("width", 750);
+	// intent.putExtras(bundle);
+	// startActivity(intent);
+	// }
 
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());
@@ -444,7 +478,7 @@ public class MemberFragment3 extends Fragment implements OnTouchListener, OnClic
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Clean1Adapter(getActivity(), list, ListData);
+		mAdapter = new Clean1Adapter(getActivity(), list, ListData,this);
 		ListData.setAdapter(mAdapter);
 	}
 

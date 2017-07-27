@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lin_all"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -9,7 +10,7 @@
         android:layout_width="120dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/t0162f022653122395c" />
+        android:src="@drawable/twoanddo" />
 
     <RelativeLayout
         android:layout_width="match_parent"

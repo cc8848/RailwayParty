@@ -1,6 +1,8 @@
 package wuxc.single.railwayparty.start;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -51,11 +53,14 @@ public class startLogoActivity extends Activity {
 			case GET_LOGININ_RESULT_DATA:
 				GetDataDetailFromLoginResultData(msg.obj);
 				break;
-
+			case 3:
+				go();
+				break;
 			default:
 				break;
 			}
 		}
+
 	};
 
 	@Override
@@ -88,6 +93,12 @@ public class startLogoActivity extends Activity {
 		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
 		PreGuidePage = getSharedPreferences("GuidePage", Context.MODE_PRIVATE);
 		GuidePage = PreGuidePage.getInt("GuidePage", 0);
+		starttimedelay();
+
+	}
+
+	private void go() {
+		// TODO Auto-generated method stub
 		if (GuidePage == 0) {
 			Intent intent = new Intent();
 			intent.setClass(this, guidePageActivity.class);
@@ -120,7 +131,23 @@ public class startLogoActivity extends Activity {
 
 			}
 		}
+	}
 
+	private void starttimedelay() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				Message msg1 = new Message();
+				msg1.what = 3;
+				uiHandler.sendMessage(msg1);
+
+			}
+
+		}, 1200);
 	}
 
 	public void GetDataDetailFromLoginResultData(Object obj) {

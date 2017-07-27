@@ -44,7 +44,6 @@
                     android:id="@+id/text_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="23dp"
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:text="标题 "
@@ -58,7 +57,8 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/bi" />
+                    android:src="@drawable/bi"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView

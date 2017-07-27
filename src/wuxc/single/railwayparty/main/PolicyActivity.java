@@ -251,16 +251,29 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 			clearselect();
 			text_one.setBackgroundResource(R.drawable.shape20line);
 			temp = "两学一做";
+			if (true) {
+				PolicyFragment policyFragment = new PolicyFragment();
+				policyFragment.Set(1);
+			}
 			break;
 		case R.id.text_two:
 			clearselect();
 			text_two.setBackgroundResource(R.drawable.shape20line);
 			temp = "三会一课";
+			if (true) {
+				PolicyFragment policyFragment = new PolicyFragment();
+				policyFragment.Set(2);
+			}
 			break;
 		case R.id.text_three:
 			clearselect();
 			text_three.setBackgroundResource(R.drawable.shape20line);
 			temp = "三严三实";
+			if (true) {
+				PolicyFragment policyFragment = new PolicyFragment();
+				policyFragment.Set(3);
+			}
+
 			break;
 		case R.id.btn_no:
 			lin_select.setVisibility(View.GONE);

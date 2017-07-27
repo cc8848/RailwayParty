@@ -71,7 +71,10 @@ public class Bbs1Adapter extends ArrayAdapter<Bbs1Model> implements OnClickListe
 			viewCache = new Bbs1Cache(rowView);
 			rowView.setTag(viewCache);
 		} else {
-			viewCache = (Bbs1Cache) rowView.getTag();
+			LayoutInflater inflater = activity.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.wuxc_item_bbs_1, null);
+			viewCache = new Bbs1Cache(rowView);
+			rowView.setTag(viewCache);
 		}
 
 		// Load the image and set it on the ImageView

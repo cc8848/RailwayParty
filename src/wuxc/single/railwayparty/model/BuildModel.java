@@ -7,7 +7,17 @@ public class BuildModel {
 	private String zan;
 	private String guanzhu;
 	private boolean read;
-	private String time;private String Id;
+	private String time;
+	private String Id;
+	private int bi;
+
+	public int getBi() {
+		return bi;
+	}
+
+	public void setBi(int bi) {
+		this.bi = bi;
+	}
 
 	public String getId() {
 		return Id;
@@ -16,10 +26,12 @@ public class BuildModel {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	private String keyid;
 	private int imageurl;
 	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -37,8 +49,6 @@ public class BuildModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

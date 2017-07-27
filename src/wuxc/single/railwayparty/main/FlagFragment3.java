@@ -12,8 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Path.Op;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,19 +28,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Flag3Adapter;
-import wuxc.single.railwayparty.detail.DetailActivity;
+import wuxc.single.railwayparty.adapter.Flag3Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
-import wuxc.single.railwayparty.model.Flag3Model;
 import wuxc.single.railwayparty.model.Flag3Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class FlagFragment3 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class FlagFragment3 extends Fragment implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private int screenwidth = 0;
 	private ListView ListData;
 	List<Flag3Model> list = new ArrayList<Flag3Model>();
@@ -344,6 +340,30 @@ public class FlagFragment3 extends Fragment implements OnTouchListener, OnClickL
 		}
 	}
 
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Flag3Model data = list.get((Integer) v.getTag());
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -431,7 +451,7 @@ public class FlagFragment3 extends Fragment implements OnTouchListener, OnClickL
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Flag3Adapter(getActivity(), list, ListData);
+		mAdapter = new Flag3Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 

@@ -1,18 +1,12 @@
 package wuxc.single.railwayparty.adapter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,12 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.MypublishAdapter.Callback;
 import wuxc.single.railwayparty.cache.BuildCache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
 import wuxc.single.railwayparty.internet.URLcontainer;
-import wuxc.single.railwayparty.internet.getcha;
 import wuxc.single.railwayparty.model.BuildModel;
 
 public class BuildAdapter extends ArrayAdapter<BuildModel> implements OnClickListener {
@@ -71,7 +63,10 @@ public class BuildAdapter extends ArrayAdapter<BuildModel> implements OnClickLis
 			viewCache = new BuildCache(rowView);
 			rowView.setTag(viewCache);
 		} else {
-			viewCache = (BuildCache) rowView.getTag();
+			LayoutInflater inflater = activity.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.wuxc_item_build, null);
+			viewCache = new BuildCache(rowView);
+			rowView.setTag(viewCache);
 		}
 
 		// Load the image and set it on the ImageView
@@ -111,8 +106,8 @@ public class BuildAdapter extends ArrayAdapter<BuildModel> implements OnClickLis
 						// bm = cutBmp(bm);
 						imageView.setImageBitmap(bm);
 					}
-//				} else {
-//					imageView.setImageBitmap(bm1);
+					// } else {
+					// imageView.setImageBitmap(bm1);
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -143,6 +138,12 @@ public class BuildAdapter extends ArrayAdapter<BuildModel> implements OnClickLis
 			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
 		} else {
 			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
+		ImageView bi = viewCache.getimagebi();
+		if (imageAndText.getBi() == 1) {
+			bi.setVisibility(View.VISIBLE);
+		} else {
+			bi.setVisibility(View.GONE);
 		}
 		return rowView;
 	}

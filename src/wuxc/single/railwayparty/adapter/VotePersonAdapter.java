@@ -49,7 +49,7 @@ public class VotePersonAdapter extends ArrayAdapter<VotePersonModel> {
 		// Inflate the views from XML
 		View rowView = convertView;
 		VotePersonCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_vote_person, null);

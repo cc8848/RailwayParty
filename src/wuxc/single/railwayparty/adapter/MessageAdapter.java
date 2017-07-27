@@ -34,7 +34,7 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> implements OnClic
 		View rowView = convertView;
 
 		MessageCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_message, null);
 			viewCache = new MessageCache(rowView);

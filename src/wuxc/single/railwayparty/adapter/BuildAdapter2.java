@@ -61,11 +61,14 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 		BuildCache viewCache;
 		if (rowView == null) {
 			LayoutInflater inflater = activity.getLayoutInflater();
-			rowView = inflater.inflate(R.layout.wuxc_item_build, null);
+			rowView = inflater.inflate(R.layout.wuxc_item_build5, null);
 			viewCache = new BuildCache(rowView);
 			rowView.setTag(viewCache);
 		} else {
-			viewCache = (BuildCache) rowView.getTag();
+			LayoutInflater inflater = activity.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.wuxc_item_build5, null);
+			viewCache = new BuildCache(rowView);
+			rowView.setTag(viewCache);
 		}
 
 		// Load the image and set it on the ImageView
@@ -137,6 +140,12 @@ public class BuildAdapter2 extends ArrayAdapter<BuildModel> implements OnClickLi
 			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
 		} else {
 			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
+		ImageView bi = viewCache.getimagebi();
+		if (imageAndText.getBi() == 1) {
+			bi.setVisibility(View.VISIBLE);
+		} else {
+			bi.setVisibility(View.GONE);
 		}
 		return rowView;
 	}

@@ -1,17 +1,11 @@
 package wuxc.single.railwayparty.adapter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.Bbs1Adapter.Callback;
 import wuxc.single.railwayparty.cache.Bbs3Cache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
@@ -63,7 +56,10 @@ public class Bbs3Adapter extends ArrayAdapter<Bbs3Model> implements OnClickListe
 			viewCache = new Bbs3Cache(rowView);
 			rowView.setTag(viewCache);
 		} else {
-			viewCache = (Bbs3Cache) rowView.getTag();
+			LayoutInflater inflater = activity.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.wuxc_item_bbs_3, null);
+			viewCache = new Bbs3Cache(rowView);
+			rowView.setTag(viewCache);
 		}
 
 		// Load the image and set it on the ImageView

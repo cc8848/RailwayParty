@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.PartyRuleAdapter.Callback;
 import wuxc.single.railwayparty.adapter.PartyRuleAdapter;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
@@ -41,7 +42,8 @@ import wuxc.single.railwayparty.model.PartyRuleModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class PartyRuleFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class PartyRuleFragment extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<PartyRuleModel> list = new ArrayList<PartyRuleModel>();
 	private static PartyRuleAdapter mAdapter;
@@ -132,15 +134,17 @@ public class PartyRuleFragment extends Fragment implements OnTouchListener, OnCl
 					PartyRuleModel listinfo = new PartyRuleModel();
 
 					listinfo.setTime(json_data.getString("releaseDate"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));	listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("summary"));
+					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-//					listinfo.setGuanzhu(json_data.getString("hot"));
-//					listinfo.setZan("453");
+					// listinfo.setGuanzhu(json_data.getString("hot"));
+					// listinfo.setZan("453");
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-//					listinfo.setRead(true);
+					// listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -318,24 +322,51 @@ public class PartyRuleFragment extends Fragment implements OnTouchListener, OnCl
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("url", data.getLink());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
+			// } else {
+			// Intent intent = new Intent();
+			// intent.setClass(getActivity(), webview.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("url", data.getLink());
+			// // // bundle.putString("Time", "2016-11-23");
+			// // // bundle.putString("Name", "小李");
+			// // // bundle.putString("PageTitle", "收藏详情");
+			// // // bundle.putString("Detail",
+			// // //
 			// //
 			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
-			intent.putExtras(bundle);
-			startActivity(intent);
+			// intent.putExtras(bundle);
+			// startActivity(intent);
 		}
 	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			PartyRuleModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -350,7 +381,8 @@ public class PartyRuleFragment extends Fragment implements OnTouchListener, OnCl
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "djfg"));chn="djfg";
+		ArrayValues.add(new BasicNameValuePair("chn", "djfg"));
+		chn = "djfg";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -422,7 +454,7 @@ public class PartyRuleFragment extends Fragment implements OnTouchListener, OnCl
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new PartyRuleAdapter(getActivity(), list, ListData);
+		mAdapter = new PartyRuleAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 

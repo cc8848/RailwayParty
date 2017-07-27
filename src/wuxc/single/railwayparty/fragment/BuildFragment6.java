@@ -44,6 +44,7 @@ import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
+import wuxc.single.railwayparty.start.wsdxActivity;
 
 public class BuildFragment6 extends Fragment
 		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
@@ -150,7 +151,7 @@ public class BuildFragment6 extends Fragment
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					SchoolModel listinfo = new SchoolModel();
 
-					listinfo.setTime(json_data.getString("createtime"));
+					listinfo.setTime(json_data.getString("releaseDate"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -165,9 +166,9 @@ public class BuildFragment6 extends Fragment
 					listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							listinfo.setContent(json_data.getString("source"));
+						if (!(json_data.getString("otherLinks").equals("") || json_data.getString("otherLinks") == null
+								|| json_data.getString("otherLinks").equals("null"))) {
+							// listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
 
@@ -356,7 +357,7 @@ public class BuildFragment6 extends Fragment
 		SchoolModel data = list.get(position - 1);
 		if (data.isCont()) {
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			intent.setClass(getActivity(), wsdxActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
@@ -587,21 +588,61 @@ public class BuildFragment6 extends Fragment
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.lin_all:
+			// SchoolModel data = list.get((Integer) v.getTag());
+			// if (data.isCont()) {
+			// Intent intent = new Intent();
+			// intent.setClass(getActivity(), SpecialDetailActivity.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("Title", data.getTitle());
+			// bundle.putString("Time", data.getTime());
+			// bundle.putString("detail", data.getContent());
+			// bundle.putString("chn", chn);
+			// bundle.putString("Id", data.getId());
+			// intent.putExtras(bundle);
+			// startActivity(intent);
+			// } else {
+			// Intent intent = new Intent();
+			// intent.setClass(getActivity(), webview.class);
+			// Bundle bundle = new Bundle();
+			// bundle.putString("url", data.getLink());
+			// // // bundle.putString("Time", "2016-11-23");
+			// // // bundle.putString("Name", "小李");
+			// // // bundle.putString("PageTitle", "收藏详情");
+			// // // bundle.putString("Detail",
+			// // //
+			// //
+			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+			// intent.putExtras(bundle);
+			// startActivity(intent);
+			// // Toast.makeText(getActivity(), "删除第" + + "条",
+			// // Toast.LENGTH_SHORT).show();
+			// }
 			SchoolModel data = list.get((Integer) v.getTag());
-
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), SpecialDetailActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("Title", data.getTitle());
-			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());
-			bundle.putString("chn", chn);
-			bundle.putString("Id", data.getId());
-			intent.putExtras(bundle);
-			startActivity(intent);
-
-			// Toast.makeText(getActivity(), "删除第" + + "条",
-			// Toast.LENGTH_SHORT).show();
+			if (data.isCont()) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), wsdxActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			} else {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), webview.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("url", data.getLink());
+				// // bundle.putString("Time", "2016-11-23");
+				// // bundle.putString("Name", "小李");
+				// // bundle.putString("PageTitle", "收藏详情");
+				// // bundle.putString("Detail",
+				// //
+				// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
 			break;
 		default:
 			break;

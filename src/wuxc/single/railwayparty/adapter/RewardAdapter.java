@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
@@ -33,13 +34,20 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public RewardAdapter(Activity activity, List<RewardModel> imageAndTexts, ListView listView) {
+	public RewardAdapter(Activity activity, List<RewardModel> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
+		mCallback = callback;
+	}
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public interface Callback {
@@ -54,7 +62,7 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 		View rowView = convertView;
 
 		RewardCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_party_reward, null);
 			viewCache = new RewardCache(rowView);
@@ -66,7 +74,7 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
+		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 		// Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(imageAndText.getImageurl());
@@ -77,7 +85,7 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 				Bitmap bm1 = null;
 				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
+					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
 					// Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
@@ -111,7 +119,9 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 
 		TextView texttime = viewCache.gettextTime();
 		texttime.setText(imageAndText.getTime());
-
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
 
@@ -174,9 +184,4 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 		return result;
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
 }

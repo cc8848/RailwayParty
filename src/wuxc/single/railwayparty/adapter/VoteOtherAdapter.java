@@ -49,7 +49,7 @@ public class VoteOtherAdapter extends ArrayAdapter<VoteOtherModel> {
 		// Inflate the views from XML
 		View rowView = convertView;
 		VoteOtherCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_vote_other, null);

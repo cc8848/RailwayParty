@@ -33,7 +33,7 @@ public class CreditsAdapter extends ArrayAdapter<CreditsModel> implements OnClic
 		View rowView = convertView;
 
 		CreditsCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_credits, null);
 			viewCache = new CreditsCache(rowView);

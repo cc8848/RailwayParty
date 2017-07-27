@@ -31,19 +31,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.BuildAdapter;
-import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
+import wuxc.single.railwayparty.adapter.BuildAdapter3;
+import wuxc.single.railwayparty.adapter.BuildAdapter3.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
-import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
+import wuxc.single.railwayparty.adapter.BuildAdapter3.Callback;
 
 public class BuildFragment4 extends Fragment
 		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<BuildModel> list = new ArrayList<BuildModel>();
-	private static BuildAdapter mAdapter;
+	private static BuildAdapter3 mAdapter;
 	private int firstItemIndex = 0;
 	private int lastItemIndex = 0;
 	private float startY = 0;
@@ -130,8 +130,13 @@ public class BuildFragment4 extends Fragment
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					BuildModel listinfo = new BuildModel();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					try {
+						listinfo.setBi(json_data.getInt("iszengread"));
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setBi(0);
+					}
+					listinfo.setTime(json_data.getString("releaseDate"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -455,7 +460,7 @@ public class BuildFragment4 extends Fragment
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new BuildAdapter(getActivity(), list, ListData, this);
+		mAdapter = new BuildAdapter3(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -516,7 +521,7 @@ public class BuildFragment4 extends Fragment
 		switch (v.getId()) {
 		case R.id.lin_all:
 			BuildModel data = list.get((Integer) v.getTag());
-			 
+
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), SpecialDetailActivity.class);
 			Bundle bundle = new Bundle();
@@ -527,7 +532,8 @@ public class BuildFragment4 extends Fragment
 			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-//			Toast.makeText(getActivity(), "删除第" + (Integer) v.getTag() + "条", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getActivity(), "删除第" + (Integer) v.getTag() + "条",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

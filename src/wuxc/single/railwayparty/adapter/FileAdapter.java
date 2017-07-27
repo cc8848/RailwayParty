@@ -49,7 +49,7 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
 		// Inflate the views from XML
 		View rowView = convertView;
 		FileCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_file, null);

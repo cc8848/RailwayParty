@@ -31,13 +31,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.BuildAdapter;
+import wuxc.single.railwayparty.adapter.BuildAdapter5;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
+import wuxc.single.railwayparty.adapter.BuildAdapter5.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
@@ -47,7 +47,7 @@ public class BuildFragment3 extends Fragment
 		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<BuildModel> list = new ArrayList<BuildModel>();
-	private static BuildAdapter mAdapter;
+	private static BuildAdapter5 mAdapter;
 	private int firstItemIndex = 0;
 	private int lastItemIndex = 0;
 	private float startY = 0;
@@ -134,8 +134,14 @@ public class BuildFragment3 extends Fragment
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					BuildModel listinfo = new BuildModel();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					try {
+						listinfo.setBi(json_data.getInt("iszengread"));
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setBi(0);
+					}
+					String date = getdate(json_data.getString("releaseDate"));
+					listinfo.setTime(date);
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -174,6 +180,18 @@ public class BuildFragment3 extends Fragment
 			mAdapter.notifyDataSetChanged();
 		}
 
+	}
+
+	private String getdate(String string) {
+		// TODO Auto-generated method stub
+		String result = "07-28";
+		try {
+			String[] bStrings = string.split("-");
+			result = bStrings[1] + "-" + bStrings[2];
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return result;
 	}
 
 	private void GetPager(String pager) {
@@ -462,7 +480,7 @@ public class BuildFragment3 extends Fragment
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new BuildAdapter(getActivity(), list, ListData, this);
+		mAdapter = new BuildAdapter5(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 

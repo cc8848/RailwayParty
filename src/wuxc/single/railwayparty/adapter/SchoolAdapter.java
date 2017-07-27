@@ -1,18 +1,12 @@
 package wuxc.single.railwayparty.adapter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.BuildAdapter2.Callback;
 import wuxc.single.railwayparty.cache.SchoolCache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
@@ -59,7 +52,7 @@ public class SchoolAdapter extends ArrayAdapter<SchoolModel> implements OnClickL
 		View rowView = convertView;
 
 		SchoolCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_build6, null);
 			viewCache = new SchoolCache(rowView);

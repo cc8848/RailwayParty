@@ -35,13 +35,21 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public PolicyAdapter(Activity activity, List<PolicyModel> imageAndTexts, ListView listView) {
+	public PolicyAdapter(Activity activity, List<PolicyModel> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
+		mCallback = callback;
 
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public interface Callback {
@@ -56,33 +64,18 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 		View rowView = convertView;
 
 		PolicyCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
-			if (position == 0) {
-				rowView = inflater.inflate(R.layout.wuxc_item_policy_pic, null);
-			} else if (position == 1) {
-
-				rowView = inflater.inflate(R.layout.wuxc_item_policy_2, null);
-
-			} else {
-				rowView = inflater.inflate(R.layout.wuxc_item_policy, null);
-
-			}
-
-			viewCache = new PolicyCache(rowView);
-			rowView.setTag(viewCache);
-		} else {
-			LayoutInflater inflater = activity.getLayoutInflater();
-			if (position == 0) {
-				rowView = inflater.inflate(R.layout.wuxc_item_policy_pic, null);
-			} else if (position == 1) {
-
-				rowView = inflater.inflate(R.layout.wuxc_item_policy_2, null);
-
-			} else {
-				rowView = inflater.inflate(R.layout.wuxc_item_policy, null);
-
-			}
+			// if (position == 0) {
+			// rowView = inflater.inflate(R.layout.wuxc_item_policy, null);
+			// } else if (position == 1) {
+			//
+			// rowView = inflater.inflate(R.layout.wuxc_item_policy, null);
+			//
+			// } else {
+			rowView = inflater.inflate(R.layout.wuxc_item_policy, null);
+			//
+			// }
 
 			viewCache = new PolicyCache(rowView);
 			rowView.setTag(viewCache);
@@ -91,7 +84,7 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
+		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 		// Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(imageAndText.getImageurl());
@@ -102,7 +95,7 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 				Bitmap bm1 = null;
 				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
+					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
 					// Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
@@ -133,15 +126,15 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 			}
 
 		}
-		if (position == 0) {
-			imageView.setImageResource(R.drawable.t0162f022653122395c);
-			LinearLayout.LayoutParams LayoutParams = (android.widget.LinearLayout.LayoutParams) imageView
-					.getLayoutParams();
-
-			LayoutParams.width = imageAndText.getScreenwidth();
-			LayoutParams.height = imageAndText.getScreenwidth() * 303 / 750;
-			imageView.setLayoutParams(LayoutParams);
-		}
+//		if (position == 0) {
+//			imageView.setImageResource(R.drawable.t0162f022653122395c);
+//			LinearLayout.LayoutParams LayoutParams = (android.widget.LinearLayout.LayoutParams) imageView
+//					.getLayoutParams();
+//
+//			LayoutParams.width = imageAndText.getScreenwidth();
+//			LayoutParams.height = imageAndText.getScreenwidth() * 303 / 750;
+//			imageView.setLayoutParams(LayoutParams);
+//		}
 		TextView texttime = viewCache.gettextTime();
 		texttime.setText(imageAndText.getTime());
 
@@ -150,7 +143,9 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
-
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		return rowView;
 	}
 
@@ -210,9 +205,4 @@ public class PolicyAdapter extends ArrayAdapter<PolicyModel> implements OnClickL
 		return result;
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -31,13 +31,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.Clean1Adapter.Callback;
 import wuxc.single.railwayparty.adapter.Clean1Adapter;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Clean1Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class MemberFragment4 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class MemberFragment4 extends Fragment implements Callback,OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<Clean1Model> list = new ArrayList<Clean1Model>();
 	private static Clean1Adapter mAdapter;
@@ -134,7 +135,7 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-					listinfo.setGuanzhu(json_data.getString("hot"));
+					listinfo.setGuanzhu(json_data.getString("browser"));
 					listinfo.setZan("453");
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
@@ -244,7 +245,29 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 			startActivity(intent);
 		}
 	}
-
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			Clean1Model data = list.get((Integer) v.getTag());
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+	break;
+		default:
+			break;
+		}
+	}
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -448,7 +471,7 @@ public class MemberFragment4 extends Fragment implements OnTouchListener, OnClic
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new Clean1Adapter(getActivity(), list, ListData);
+		mAdapter = new Clean1Adapter(getActivity(), list, ListData,this);
 		ListData.setAdapter(mAdapter);
 	}
 

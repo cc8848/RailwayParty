@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,17 +28,21 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.PolicyAdapter;
+import wuxc.single.railwayparty.adapter.PolicyAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.PolicyModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class PolicyFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class PolicyFragment extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<PolicyModel> list = new ArrayList<PolicyModel>();
 	private static PolicyAdapter mAdapter;
@@ -69,6 +74,12 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private int subClassify = 1;
+	private int classify = 1;
+	private TextView text_1;
+
+	private TextView text_2;
+	private RelativeLayout main_top_bac;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -113,14 +124,14 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 		;
 		if (arg == 1) {
 			list.clear();
-			PolicyModel listinfo = new PolicyModel();
-			listinfo.setTime("2017-09-18");
-			listinfo.setTitle("学党章党规");
-			listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-			listinfo.setImageurl(headimg[0]);
-			listinfo.setHeadimgUrl("");
-			listinfo.setScreenwidth(screenwidth);
-			list.add(listinfo);
+			// PolicyModel listinfo = new PolicyModel();
+			// listinfo.setTime("2017-09-18");
+			// listinfo.setTitle("学党章党规");
+			// listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
+			// listinfo.setImageurl(headimg[0]);
+			// listinfo.setHeadimgUrl("");
+			// listinfo.setScreenwidth(screenwidth);
+			// list.add(listinfo);
 		}
 		JSONArray jArray = null;
 		try {
@@ -138,7 +149,8 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 					PolicyModel listinfo = new PolicyModel();
 
 					listinfo.setTime(json_data.getString("releaseDate"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
@@ -219,12 +231,13 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 				parent.removeView(view);
 			}
 		} else {
-			view = inflater.inflate(R.layout.wuxc_a_only_list, container, false);
+			view = inflater.inflate(R.layout.wuxc_a_only_list2, container, false);
 			initview(view);
 			screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
-
+			initheight(view);
 			setonclicklistener();
 			setheadtextview();
+			initcolor();
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 			ReadTicket();
@@ -238,6 +251,21 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
+		text_1 = (TextView) view.findViewById(R.id.text_1);
+		text_2 = (TextView) view.findViewById(R.id.text_2);
+		text_1.setOnClickListener(this);
+		text_2.setOnClickListener(this);
+		main_top_bac = (RelativeLayout) view.findViewById(R.id.main_top_bac);
+
+	}
+
+	private void initheight(View view) {
+		// TODO Auto-generated method stub
+		int height = (int) (screenwidth * 300 / 750);
+		LinearLayout.LayoutParams LayoutParams2 = (android.widget.LinearLayout.LayoutParams) main_top_bac
+				.getLayoutParams();
+		LayoutParams2.height = height;
+		main_top_bac.setLayoutParams(LayoutParams2);
 
 	}
 
@@ -335,22 +363,12 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("url", data.getLink());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
-			// //
-			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
-			intent.putExtras(bundle);
-			startActivity(intent);
+
 		}
 	}
 
@@ -368,10 +386,12 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "lxyzxx"));chn="lxyzxx";
+		ArrayValues.add(new BasicNameValuePair("chn", "lxyzxx"));
+		chn = "lxyzxx";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-
+		ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+		ArrayValues.add(new BasicNameValuePair("subClassify", "" + subClassify));
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
@@ -384,6 +404,12 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 			}
 		}).start();
 
+	}
+
+	public void Set(int i) {
+		classify = i;
+		curPage = 1;
+		GetData();
 	}
 
 	private void ReadTicket() {
@@ -440,7 +466,7 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new PolicyAdapter(getActivity(), list, ListData);
+		mAdapter = new PolicyAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -485,11 +511,73 @@ public class PolicyFragment extends Fragment implements OnTouchListener, OnClick
 		super.onDetach();
 	}
 
+	private void initcolor() {
+		// TODO Auto-generated method stub
+		clearcolor();
+		text_1.setTextColor(Color.parseColor("#ffffff"));
+		text_1.setBackgroundResource(R.drawable.shape18red);
+	}
+
+	private void clearcolor() {
+		// TODO Auto-generated method stub
+		text_1.setTextColor(Color.parseColor("#cc0502"));
+		text_2.setTextColor(Color.parseColor("#cc0502"));
+		text_1.setBackgroundResource(Color.parseColor("#00000000"));
+		text_2.setBackgroundResource(Color.parseColor("#00000000"));
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.text_1:
+			clearcolor();
+			text_1.setTextColor(Color.parseColor("#ffffff"));
+			text_1.setBackgroundResource(R.drawable.shape18red);
+			subClassify = 1;
+			GetData();
+			break;
+		case R.id.text_2:
+			clearcolor();
+			text_2.setTextColor(Color.parseColor("#ffffff"));
+			text_2.setBackgroundResource(R.drawable.shape18red);
+			subClassify = 2;
+			GetData();
+			// list.clear();
+			// mAdapter.notifyDataSetChanged();
+			// Intent intent = new Intent();
+			// intent.setClass(getActivity(), PublishadviceActivity.class);
+			// startActivity(intent);
+			break;
+		default:
+			break;
+		}
+	}
 
+	// TODO Auto-generated method stub
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			// if ((Integer) v.getTag() == 0) {
+			//
+			// } else {
+			PolicyModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			// }
+
+			break;
 		default:
 			break;
 		}

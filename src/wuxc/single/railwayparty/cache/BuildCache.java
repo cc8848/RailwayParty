@@ -14,6 +14,15 @@ public class BuildCache {
 	private TextView textContent;
 	private TextView textGuanzhu;
 	private TextView textZan;
+	private ImageView imagebi;
+
+	public ImageView getimagebi() {
+		if (imagebi == null) {
+			imagebi = (ImageView) baseView.findViewById(R.id.image_bi);
+		}
+		return imagebi;
+	}
+
 	private LinearLayout lin_all;
 
 	public LinearLayout getlin_all() {

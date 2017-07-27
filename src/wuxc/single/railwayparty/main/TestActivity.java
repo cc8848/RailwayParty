@@ -28,11 +28,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.TestActivityAdapter.Callback;
 import wuxc.single.railwayparty.adapter.TestActivityAdapter;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.MemberModel;
 
-public class TestActivity extends Activity implements OnClickListener, OnTouchListener, OnItemClickListener {
+public class TestActivity extends Activity implements OnClickListener, Callback, OnTouchListener, OnItemClickListener {
 	private ListView ListData;
 	List<MemberModel> list = new ArrayList<MemberModel>();
 	private static TestActivityAdapter mAdapter;
@@ -239,7 +240,7 @@ public class TestActivity extends Activity implements OnClickListener, OnTouchLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new TestActivityAdapter(this, list, ListData);
+		mAdapter = new TestActivityAdapter(this, list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -358,6 +359,27 @@ public class TestActivity extends Activity implements OnClickListener, OnTouchLi
 	private void initview() {
 		// TODO Auto-generated method stub
 		ListData = (ListView) findViewById(R.id.list_data);
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			MemberModel data = list.get((Integer) v.getTag());
+			Intent intent = new Intent();
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getName());
+			bundle.putString("keyid", data.getId());
+			bundle.putInt("ticket", ticket);
+			intent.putExtras(bundle);
+			intent.setClass(getApplicationContext(), ExamActivity.class);
+			startActivity(intent);
+			finish();
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

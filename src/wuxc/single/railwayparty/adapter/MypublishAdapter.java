@@ -56,7 +56,7 @@ public class MypublishAdapter extends ArrayAdapter<MypublishModel> implements On
 		// Inflate the views from XML
 		View rowView = convertView;
 		MypublishCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_mypublish, null);

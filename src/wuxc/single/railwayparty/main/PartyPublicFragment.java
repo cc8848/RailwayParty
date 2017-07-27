@@ -31,13 +31,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.PartyCheckAdapter.Callback;
 import wuxc.single.railwayparty.adapter.PartyCheckAdapter;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.PartyCheckModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class PartyPublicFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class PartyPublicFragment extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<PartyCheckModel> list = new ArrayList<PartyCheckModel>();
 	private static PartyCheckAdapter mAdapter;
@@ -129,7 +131,9 @@ public class PartyPublicFragment extends Fragment implements OnTouchListener, On
 					PartyCheckModel listinfo = new PartyCheckModel();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
@@ -225,7 +229,9 @@ public class PartyPublicFragment extends Fragment implements OnTouchListener, On
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -258,7 +264,8 @@ public class PartyPublicFragment extends Fragment implements OnTouchListener, On
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "dwgk"));chn="dwgk";
+		ArrayValues.add(new BasicNameValuePair("chn", "dwgk"));
+		chn = "dwgk";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -447,7 +454,7 @@ public class PartyPublicFragment extends Fragment implements OnTouchListener, On
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new PartyCheckAdapter(getActivity(), list, ListData);
+		mAdapter = new PartyCheckAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -490,6 +497,30 @@ public class PartyPublicFragment extends Fragment implements OnTouchListener, On
 	@Override
 	public void onDetach() {
 		super.onDetach();
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			PartyCheckModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

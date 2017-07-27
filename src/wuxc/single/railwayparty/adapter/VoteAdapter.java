@@ -62,7 +62,7 @@ public class VoteAdapter extends ArrayAdapter<VoteModel> implements OnClickListe
 		// Inflate the views from XML
 		View rowView = convertView;
 		VoteCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			int temp = position % 2;
 			if (temp == 0) {

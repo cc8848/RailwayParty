@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.fragment.BuildFragment6;
 import wuxc.single.railwayparty.layout.Childviewpaper;
@@ -25,6 +26,7 @@ public class WebLearnActivity extends FragmentActivity implements OnClickListene
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 1;
+	private TextView text_title;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class WebLearnActivity extends FragmentActivity implements OnClickListene
 		ImageView image_back = (ImageView) findViewById(R.id.image_back);
 		image_back.setOnClickListener(this);
 		ViewPaper = (Childviewpaper) findViewById(R.id.viewPager);
+		text_title = (TextView) findViewById(R.id.text_title);
+		text_title.setText("网上党校");
 		Fragments.clear();// 清空list
 		initfragment();// list 装填fragment
 		FragmentManager = getSupportFragmentManager();

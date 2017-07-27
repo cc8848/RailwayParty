@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private TextView text_load;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -68,7 +70,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			// Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_SHORT).show();
-
+				text_load.setVisibility(View.GONE);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -97,6 +99,9 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		ReadTicket();
 		TextView text_upload = (TextView) findViewById(R.id.text_upload);
 		text_upload.setOnClickListener(this);
+		text_load = (TextView) findViewById(R.id.text_load);
+		text_upload.setOnClickListener(this);
+		text_load.setVisibility(View.GONE);
 		// GetData();
 	}
 
@@ -149,6 +154,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.btn_ok:
+			text_load.setVisibility(View.VISIBLE);
 			GetData();
 			break;
 		case R.id.text_upload:

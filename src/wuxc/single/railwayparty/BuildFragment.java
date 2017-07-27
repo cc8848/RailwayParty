@@ -2,10 +2,13 @@ package wuxc.single.railwayparty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,6 +29,13 @@ import wuxc.single.railwayparty.fragment.BuildFragment4;
 import wuxc.single.railwayparty.fragment.BuildFragment5;
 import wuxc.single.railwayparty.fragment.BuildFragment6;
 import wuxc.single.railwayparty.layout.Childviewpaper;
+import wuxc.single.railwayparty.main.WebLearnActivity;
+import wuxc.single.railwayparty.main.ZDJYW;
+import wuxc.single.railwayparty.main.ZDYFC;
+import wuxc.single.railwayparty.main.ZSZRD;
+import wuxc.single.railwayparty.main.ZTZGG;
+import wuxc.single.railwayparty.main.ZZDWJ;
+import wuxc.single.railwayparty.other.LoginActivity;
 import wuxc.single.railwayparty.other.SearchActivity;
 import wuxc.single.railwayparty.start.guidePageActivity.MyOnPageChangeListener;
 
@@ -60,6 +70,12 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 6;
+	private boolean doubleclick1 = false;
+	private boolean doubleclick2 = false;
+	private boolean doubleclick3 = false;
+	private boolean doubleclick4 = false;
+	private boolean doubleclick5 = false;
+	private boolean doubleclick6 = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -260,7 +276,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 
 	private void initheight(View view) {
 		// TODO Auto-generated method stub
-		int height = (int) (screenwidth / 1.9);
+		int height = (int) (screenwidth * 300 / 750);
 		RelativeLayout.LayoutParams LayoutParams2 = (android.widget.RelativeLayout.LayoutParams) main_top_bac
 				.getLayoutParams();
 		LayoutParams2.height = height;
@@ -285,36 +301,78 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_1.setTextColor(Color.parseColor("#cc0502"));
 			text_below_1.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(0);
+			// if (doubleclick1) {
+			// Intent intent_rel_weblearn = new Intent();
+			// intent_rel_weblearn.setClass(getActivity(), ZZDWJ.class);
+			// startActivity(intent_rel_weblearn);
+			// }
+			// doubleclick1 = true;
+			// starttimedelay1();
 			break;
 		case R.id.rel_2:
 			clearcolor();
 			text_2.setTextColor(Color.parseColor("#cc0502"));
 			text_below_2.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(1);
+			// if (doubleclick2) {
+			// Intent intent_rel_weblearn = new Intent();
+			// intent_rel_weblearn.setClass(getActivity(), ZDJYW.class);
+			// startActivity(intent_rel_weblearn);
+			// }
+			// doubleclick2 = true;
+			// starttimedelay2();
 			break;
 		case R.id.rel_3:
 			clearcolor();
 			text_3.setTextColor(Color.parseColor("#cc0502"));
 			text_below_3.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(2);
+			// if (doubleclick3) {
+			// Intent intent_rel_weblearn = new Intent();
+			// intent_rel_weblearn.setClass(getActivity(), ZTZGG.class);
+			// startActivity(intent_rel_weblearn);
+			// }
+			// doubleclick3 = true;
+			// starttimedelay3();
 			break;
 		case R.id.rel_4:
 			clearcolor();
 			text_4.setTextColor(Color.parseColor("#cc0502"));
 			text_below_4.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(3);
+			// if (doubleclick4) {
+			// Intent intent_rel_weblearn = new Intent();
+			// intent_rel_weblearn.setClass(getActivity(), ZSZRD.class);
+			// startActivity(intent_rel_weblearn);
+			// }
+			// doubleclick4 = true;
+			// starttimedelay4();
 			break;
 		case R.id.rel_5:
 			clearcolor();
 			text_5.setTextColor(Color.parseColor("#cc0502"));
 			text_below_5.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(4);
+			// if (doubleclick5) {
+			// Intent intent_rel_weblearn = new Intent();
+			// intent_rel_weblearn.setClass(getActivity(), ZDYFC.class);
+			// startActivity(intent_rel_weblearn);
+			// }
+			// doubleclick5 = true;
+			// starttimedelay5();
 			break;
 		case R.id.rel_6:
 			clearcolor();
 			text_6.setTextColor(Color.parseColor("#cc0502"));
 			text_below_6.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(5);
+			if (doubleclick6) {
+				Intent intent_rel_weblearn = new Intent();
+				intent_rel_weblearn.setClass(getActivity(), WebLearnActivity.class);
+				startActivity(intent_rel_weblearn);
+			}
+			doubleclick6 = true;
+			starttimedelay6();
 			break;
 
 		default:
@@ -322,4 +380,81 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}
 	}
 
+	private void starttimedelay1() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick1 = false;
+			}
+
+		}, 300);
+	}
+
+	private void starttimedelay2() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick2 = false;
+			}
+
+		}, 300);
+	}
+
+	private void starttimedelay3() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick3 = false;
+			}
+
+		}, 300);
+	}
+
+	private void starttimedelay4() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick4 = false;
+			}
+
+		}, 300);
+	}
+
+	private void starttimedelay5() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick5 = false;
+			}
+
+		}, 300);
+	}
+
+	private void starttimedelay6() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				doubleclick6 = false;
+			}
+
+		}, 300);
+	}
 }

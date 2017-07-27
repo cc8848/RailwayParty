@@ -31,13 +31,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.RewardAdapter.Callback;
 import wuxc.single.railwayparty.adapter.RewardAdapter;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.RewardModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class PartyRewardFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class PartyRewardFragment extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<RewardModel> list = new ArrayList<RewardModel>();
 	private static RewardAdapter mAdapter;
@@ -129,19 +131,21 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 					RewardModel listinfo = new RewardModel();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));	listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("summary"));
+					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
-					 int classify=json_data.getInt("classify");
-					 if (classify==2) {
-						 listinfo.setImageurl(R.drawable.cheng);
-					}else {
-						 listinfo.setImageurl(R.drawable.jiang);
+					int classify = json_data.getInt("classify");
+					if (classify == 2) {
+						listinfo.setImageurl(R.drawable.cheng);
+					} else {
+						listinfo.setImageurl(R.drawable.jiang);
 					}
-					
+
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-				 
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -218,6 +222,7 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 		return view;
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -228,7 +233,9 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -246,6 +253,31 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 			startActivity(intent);
 		}
 	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			RewardModel data = list.get((Integer) v.getTag());
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -260,7 +292,8 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "dnjc"));chn="dnjc";
+		ArrayValues.add(new BasicNameValuePair("chn", "dnjc"));
+		chn = "dnjc";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -374,30 +407,31 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 		return false;
 	}
 
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		// TODO Auto-generated method stub
-//		// recommendModel data = list.get(position - 1);
-//		// Intent intent = new Intent();
-//		// intent.setClass(getActivity(), SpecialDetailActivity.class);
-//		// Bundle bundle = new Bundle();
-//		// bundle.putString("Title", data.getTitle());
-//		// bundle.putString("detail", data.getDetail());
-//		// bundle.putString("Time", data.getTime());
-//		// bundle.putString("Name", "名字");
-//		// intent.putExtras(bundle);
-//		// startActivity(intent);
-//		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
-//		// Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent();
-//		intent.setClass(getActivity(), DetailActivity.class);
-//		Bundle bundle = new Bundle();
-//		bundle.putInt("source", R.drawable.detail);
-//		bundle.putInt("height", 3048);
-//		bundle.putInt("width", 750);
-//		intent.putExtras(bundle);
-//		startActivity(intent);
-//	}
+	// @Override
+	// public void onItemClick(AdapterView<?> parent, View view, int position,
+	// long id) {
+	// // TODO Auto-generated method stub
+	// // recommendModel data = list.get(position - 1);
+	// // Intent intent = new Intent();
+	// // intent.setClass(getActivity(), SpecialDetailActivity.class);
+	// // Bundle bundle = new Bundle();
+	// // bundle.putString("Title", data.getTitle());
+	// // bundle.putString("detail", data.getDetail());
+	// // bundle.putString("Time", data.getTime());
+	// // bundle.putString("Name", "名字");
+	// // intent.putExtras(bundle);
+	// // startActivity(intent);
+	// // Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+	// // Toast.LENGTH_SHORT).show();
+	// Intent intent = new Intent();
+	// intent.setClass(getActivity(), DetailActivity.class);
+	// Bundle bundle = new Bundle();
+	// bundle.putInt("source", R.drawable.detail);
+	// bundle.putInt("height", 3048);
+	// bundle.putInt("width", 750);
+	// intent.putExtras(bundle);
+	// startActivity(intent);
+	// }
 
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());
@@ -426,9 +460,9 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 				listinfo.setTime("2017-08-30");
 				listinfo.setTitle("杭州地区地铁项目");
 				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-//				listinfo.setGuanzhu("231");
-//				listinfo.setZan("453");
-//				listinfo.setRead(read[i]);
+				// listinfo.setGuanzhu("231");
+				// listinfo.setZan("453");
+				// listinfo.setRead(read[i]);
 				listinfo.setImageurl(headimg[i]);
 				listinfo.setHeadimgUrl("");
 				list.add(listinfo);
@@ -448,7 +482,7 @@ public class PartyRewardFragment extends Fragment implements OnTouchListener, On
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new RewardAdapter(getActivity(), list, ListData);
+		mAdapter = new RewardAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 

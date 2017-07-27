@@ -49,7 +49,7 @@ public class MyLearnAdapter extends ArrayAdapter<MyLearnModel> {
 		// Inflate the views from XML
 		View rowView = convertView;
 		MyLearnCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 
 			rowView = inflater.inflate(R.layout.wuxc_item_mylearn, null);

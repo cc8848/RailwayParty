@@ -12,8 +12,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Path.Op;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,19 +28,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.ArtAdapter;
-import wuxc.single.railwayparty.detail.DetailActivity;
+import wuxc.single.railwayparty.adapter.ArtAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
-import wuxc.single.railwayparty.model.ArtModel;
 import wuxc.single.railwayparty.model.ArtModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class FlagFragment2 extends Fragment implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private int screenwidth = 0;
 	private ListView ListData;
 	List<ArtModel> list = new ArrayList<ArtModel>();
@@ -134,7 +130,8 @@ public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickL
 					ArtModel listinfo = new ArtModel();
 
 					listinfo.setTime(json_data.getString("createtime"));
-					listinfo.setTitle(json_data.getString("title"));listinfo.setId(json_data.getString("keyid"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));
@@ -323,7 +320,9 @@ public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickL
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
-			bundle.putString("detail", data.getContent());	bundle.putString("chn", chn);bundle.putString("Id", data.getId());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -342,6 +341,30 @@ public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickL
 		}
 	}
 
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			ArtModel data = list.get((Integer) v.getTag());
+			if (true) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
 	private void GetData() {
 		// TODO Auto-generated method stub
 
@@ -356,7 +379,8 @@ public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickL
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "qwx"));chn="qwx";
+		ArrayValues.add(new BasicNameValuePair("chn", "qwx"));
+		chn = "qwx";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -426,7 +450,7 @@ public class FlagFragment2 extends Fragment implements OnTouchListener, OnClickL
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new ArtAdapter(getActivity(), list, ListData);
+		mAdapter = new ArtAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 

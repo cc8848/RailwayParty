@@ -150,8 +150,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
-					listinfo.setId(json_data.getString("keyid"));
-					listinfo.setId(json_data.getString("keyid"));
+
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setContent(json_data.getString("summary"));
 					listinfo.setSummary(json_data.getString("summary"));

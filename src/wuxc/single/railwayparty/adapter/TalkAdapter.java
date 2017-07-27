@@ -49,7 +49,7 @@ public class TalkAdapter extends ArrayAdapter<TalkModel> {
 		// Inflate the views from XML
 		View rowView = convertView;
 		TalkCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			if (imageAndText.isMy()) {
 				rowView = inflater.inflate(R.layout.wuxc_item_talk_my, null);

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,8 +32,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.BuildAdapter;
-import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
+import wuxc.single.railwayparty.adapter.BuildAdapter4;
+import wuxc.single.railwayparty.adapter.BuildAdapter4.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
@@ -42,7 +43,7 @@ public class BuildFragment1 extends Fragment
 		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<BuildModel> list = new ArrayList<BuildModel>();
-	private static BuildAdapter mAdapter;
+	private static BuildAdapter4 mAdapter;
 	private int firstItemIndex = 0;
 	private int lastItemIndex = 0;
 	private float startY = 0;
@@ -70,6 +71,14 @@ public class BuildFragment1 extends Fragment
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private TextView text_1;
+	private TextView text_2;
+	private TextView text_3;
+	private TextView text_4;
+	private TextView text_5;
+	private TextView text_6;
+	private TextView text_7;
+	private String fileClassify = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -129,8 +138,14 @@ public class BuildFragment1 extends Fragment
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					BuildModel listinfo = new BuildModel();
-
-					listinfo.setTime(json_data.getString("createtime"));
+					try {
+						listinfo.setBi(json_data.getInt("iszengread"));
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setBi(0);
+					}
+					String date = getdate(json_data.getString("releaseDate"));
+					listinfo.setTime(date);
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
@@ -171,6 +186,18 @@ public class BuildFragment1 extends Fragment
 
 	}
 
+	private String getdate(String string) {
+		// TODO Auto-generated method stub
+		String result = "07-28";
+		try {
+			String[] bStrings = string.split("-");
+			result = bStrings[1] + "-" + bStrings[2];
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return result;
+	}
+
 	private void GetPager(String pager) {
 		// TODO Auto-generated method stub
 		try {
@@ -204,7 +231,7 @@ public class BuildFragment1 extends Fragment
 				parent.removeView(view);
 			}
 		} else {
-			view = inflater.inflate(R.layout.wuxc_fragment_build_1, container, false);
+			view = inflater.inflate(R.layout.wuxc_fragment_build_3, container, false);
 			initview(view);
 			setonclicklistener();
 			setheadtextview();
@@ -268,6 +295,7 @@ public class BuildFragment1 extends Fragment
 		chn = "zdwj";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		ArrayValues.add(new BasicNameValuePair("classify", "" + fileClassify));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -293,6 +321,24 @@ public class BuildFragment1 extends Fragment
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
+		text_1 = (TextView) view.findViewById(R.id.text_1);
+		text_2 = (TextView) view.findViewById(R.id.text_2);
+		text_3 = (TextView) view.findViewById(R.id.text_3);
+
+		text_1.setOnClickListener(this);
+		text_2.setOnClickListener(this);
+		text_3.setOnClickListener(this);
+
+		text_4 = (TextView) view.findViewById(R.id.text_4);
+		text_5 = (TextView) view.findViewById(R.id.text_5);
+
+		text_4.setOnClickListener(this);
+		text_5.setOnClickListener(this);
+		text_6 = (TextView) view.findViewById(R.id.text_6);
+		text_7 = (TextView) view.findViewById(R.id.text_7);
+
+		text_6.setOnClickListener(this);
+		text_7.setOnClickListener(this);
 	}
 
 	private void setonclicklistener() {
@@ -454,7 +500,7 @@ public class BuildFragment1 extends Fragment
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new BuildAdapter(getActivity(), list, ListData, this);
+		mAdapter = new BuildAdapter4(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -504,9 +550,76 @@ public class BuildFragment1 extends Fragment
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 
+		case R.id.text_1:
+			clearcolor();
+			text_1.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "1";
+			GetData();
+			break;
+		case R.id.text_2:
+			clearcolor();
+			text_2.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "2";
+			GetData();
+			break;
+		case R.id.text_3:
+			clearcolor();
+			text_3.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "3";
+			GetData();
+			break;
+		case R.id.text_4:
+			clearcolor();
+			text_4.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "4";
+			GetData();
+			break;
+		case R.id.text_5:
+			clearcolor();
+			text_5.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "5";
+			GetData();
+			break;
+		case R.id.text_6:
+			clearcolor();
+			text_6.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "6";
+			GetData();
+			break;
+		case R.id.text_7:
+			clearcolor();
+			text_7.setTextColor(Color.parseColor(getString(R.color.main_color)));
+
+			curPage = 1;
+			fileClassify = "7";
+			GetData();
+			break;
 		default:
 			break;
 		}
+	}
+
+	private void clearcolor() {
+		// TODO Auto-generated method stub
+		text_1.setTextColor(Color.parseColor("#000000"));
+		text_2.setTextColor(Color.parseColor("#000000"));
+		text_3.setTextColor(Color.parseColor("#000000"));
+		text_4.setTextColor(Color.parseColor("#000000"));
+		text_5.setTextColor(Color.parseColor("#000000"));
+		text_6.setTextColor(Color.parseColor("#000000"));
+		text_7.setTextColor(Color.parseColor("#000000"));
 	}
 
 	@Override
@@ -515,19 +628,20 @@ public class BuildFragment1 extends Fragment
 		switch (v.getId()) {
 		case R.id.lin_all:
 			BuildModel data = list.get((Integer) v.getTag());
-		 
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SpecialDetailActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("Title", data.getTitle());
-				bundle.putString("Time", data.getTime());
-				bundle.putString("detail", data.getContent());
-				bundle.putString("chn", chn);
-				bundle.putString("Id", data.getId());
-				intent.putExtras(bundle);
-				startActivity(intent);
-			 
-//			Toast.makeText(getActivity(), "删除第" +  + "条", Toast.LENGTH_SHORT).show();
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
 			break;
 		default:
 			break;

@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
@@ -34,13 +35,21 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public Clean1Adapter(Activity activity, List<Clean1Model> imageAndTexts, ListView listView) {
+	public Clean1Adapter(Activity activity, List<Clean1Model> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
+		mCallback = callback;
 
+	}
+
+@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public interface Callback {
@@ -55,7 +64,7 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 		View rowView = convertView;
 
 		Clean1Cache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_clean_1, null);
 			viewCache = new Clean1Cache(rowView);
@@ -67,18 +76,18 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
+		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 		// Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(imageAndText.getImageurl());
 		} else {
 			try {
-				String imageName1 = getBitName(imageUrl);
-				String temppath = Environment.getExternalStorageDirectory() + "/trans/" + imageName1 + ".png";
+//				String imageName1 = getBitName(imageUrl);
+//				String temppath = Environment.getExternalStorageDirectory() + "/trans/" + imageName1 + ".png";
 				Bitmap bm1 = null;
-				bm1 = getBitmapByPath(temppath);
+//				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
+					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
 					// Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
@@ -96,7 +105,7 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 						BitmapDrawable bd = (BitmapDrawable) d;
 
 						Bitmap bm = bd.getBitmap();
-						bm = cutBmp(bm);
+//						bm = cutBmp(bm);
 						imageView.setImageBitmap(bm);
 					}
 				} else {
@@ -109,6 +118,9 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 			}
 
 		}
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 
 		TextView texttime = viewCache.gettextTime();
 		texttime.setText(imageAndText.getTime());
@@ -133,65 +145,65 @@ public class Clean1Adapter extends ArrayAdapter<Clean1Model> implements OnClickL
 		return rowView;
 	}
 
-	public Bitmap getBitmapByPath(String fileName) {
-		// String myJpgPath =
-		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		// options.inSampleSize = 12;
-		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
-		return bm;
-	}
-
-	private String getBitName(String imageUrl) {
-		// TODO Auto-generated method stub
-		String[] temp = imageUrl.split("");
-		String result = "";
-		for (int i = 0; i < temp.length; i++) {
-			if (temp[i].equals("/") || temp[i].equals(".")) {
-				temp[i] = "";
-			}
-			result = result + temp[i];
-		}
-		return result;
-	}
-
-	public void saveMyBitmap(String bitName, Bitmap mBitmap) throws IOException {
-		String path = Environment.getExternalStorageDirectory() + "/chat/";
-		String myJpgPath = Environment.getExternalStorageDirectory() + "/chat/" + bitName + ".png";
-		File tmp = new File(path);
-		if (!tmp.exists()) {
-			tmp.mkdir();
-		}
-		File f = new File(myJpgPath);
-		f.createNewFile();
-		FileOutputStream fOut = null;
-		try {
-			fOut = new FileOutputStream(f);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-		try {
-			fOut.flush();
-			fOut.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Bitmap cutBmp(Bitmap bmp) {
-		Bitmap result;
-		int w = bmp.getWidth();// 输入长方形宽
-		int h = bmp.getHeight();// 输入长方形高
-		int nw;// 输出正方形宽
-		result = Bitmap.createBitmap(bmp, 15 * w / 100, 15 * h / 100, 7 * w / 10, 7 * h / 10);
-		// }
-		return result;
-	}
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
+//	public Bitmap getBitmapByPath(String fileName) {
+//		// String myJpgPath =
+//		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
+//		BitmapFactory.Options options = new BitmapFactory.Options();
+//		// options.inSampleSize = 12;
+//		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
+//		return bm;
+//	}
+//
+//	private String getBitName(String imageUrl) {
+//		// TODO Auto-generated method stub
+//		String[] temp = imageUrl.split("");
+//		String result = "";
+//		for (int i = 0; i < temp.length; i++) {
+//			if (temp[i].equals("/") || temp[i].equals(".")) {
+//				temp[i] = "";
+//			}
+//			result = result + temp[i];
+//		}
+//		return result;
+//	}
+//
+//	public void saveMyBitmap(String bitName, Bitmap mBitmap) throws IOException {
+//		String path = Environment.getExternalStorageDirectory() + "/chat/";
+//		String myJpgPath = Environment.getExternalStorageDirectory() + "/chat/" + bitName + ".png";
+//		File tmp = new File(path);
+//		if (!tmp.exists()) {
+//			tmp.mkdir();
+//		}
+//		File f = new File(myJpgPath);
+//		f.createNewFile();
+//		FileOutputStream fOut = null;
+//		try {
+//			fOut = new FileOutputStream(f);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		mBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+//		try {
+//			fOut.flush();
+//			fOut.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	public Bitmap cutBmp(Bitmap bmp) {
+//		Bitmap result;
+//		int w = bmp.getWidth();// 输入长方形宽
+//		int h = bmp.getHeight();// 输入长方形高
+//		int nw;// 输出正方形宽
+//		result = Bitmap.createBitmap(bmp, 15 * w / 100, 15 * h / 100, 7 * w / 10, 7 * h / 10);
+//		// }
+//		return result;
+//	}
+//
+//	@Override
+//	public void onClick(View v) {
+//		// TODO Auto-generated method stub
+//
+//	}
 }

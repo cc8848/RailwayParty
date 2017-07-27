@@ -33,15 +33,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.TipsAdapter.Callback;
 import wuxc.single.railwayparty.adapter.TipsAdapter;
 import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.TipsModel;
 import wuxc.single.railwayparty.model.TipsModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class TipsFragment extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class TipsFragment extends Fragment implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<TipsModel> list = new ArrayList<TipsModel>();
 	private static TipsAdapter mAdapter;
@@ -139,20 +141,20 @@ public class TipsFragment extends Fragment implements OnTouchListener, OnClickLi
 					listinfo.setLabel("学党章党规");
 					listinfo.setHeadimgUrl("");
 					listinfo.setName(json_data.getString("userName"));
-					listinfo.setZan("123");
-					listinfo.setGuanzhu("4532");
-					listinfo.setPl("142");
+					listinfo.setZan("0");
+					listinfo.setGuanzhu("0");
+					listinfo.setPl("0");
 					listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));
-					// listinfo.setSummary(json_data.getString("summary"));
+					listinfo.setContent(json_data.getString("content"));
+					// listinfo.setSummary(json_data.getString("content"));
 					listinfo.setCont(true);
 					// listinfo.setGuanzhu(json_data.getString("hot"));
-					listinfo.setZan("453");
+					listinfo.setZan("0");
 					listinfo.setImageurl(headimg[i]);
-					listinfo.setName(json_data.getString("title"));
+					listinfo.setName(json_data.getString("userName"));
 					listinfo.setLabel(json_data.getString("title"));
 					int classify = 0;
 					if (classify == 1) {
@@ -163,12 +165,12 @@ public class TipsFragment extends Fragment implements OnTouchListener, OnClickLi
 					listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					listinfo.setRead(true);
 					try {
-						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							listinfo.setContent(json_data.getString("source"));
-							listinfo.setCont(false);
-						}
+//						listinfo.setLink(json_data.getString("otherLinks"));
+//						if (json_data.getString("content").equals("") || json_data.getString("content") == null
+//								|| json_data.getString("content").equals("null")) {
+//							listinfo.setContent(json_data.getString("source"));
+//							listinfo.setCont(false);
+//						}
 
 					} catch (Exception e) {
 						// TODO: handle exception
@@ -358,7 +360,8 @@ public class TipsFragment extends Fragment implements OnTouchListener, OnClickLi
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
 			bundle.putString("detail", data.getContent());
-			bundle.putString("chn", chn); bundle.putString("Id", data.getId());
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 		} else {
@@ -467,7 +470,7 @@ public class TipsFragment extends Fragment implements OnTouchListener, OnClickLi
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new TipsAdapter(getActivity(), list, ListData);
+		mAdapter = new TipsAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -534,4 +537,31 @@ public class TipsFragment extends Fragment implements OnTouchListener, OnClickLi
 			break;
 		}
 	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			TipsModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			chn = "wsdx";
+			bundle.putString("chn", chn);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
+	}
+
 }

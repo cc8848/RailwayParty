@@ -33,7 +33,7 @@ public class MycheckAdapter extends ArrayAdapter<MycheckModel> implements OnClic
 		View rowView = convertView;
 
 		MycheckCache viewCache;
-		if (rowView == null) {
+		if (true) {
 			LayoutInflater inflater = activity.getLayoutInflater();
 			rowView = inflater.inflate(R.layout.wuxc_item_mycheck, null);
 			viewCache = new MycheckCache(rowView);

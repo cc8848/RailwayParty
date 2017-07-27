@@ -585,15 +585,15 @@ public class ExamActivity extends Activity implements OnClickListener {
 							} else {
 								totalsccore = totalsccore + 0;
 							}
-							Log.e("examTopicModel.getRightAnswer()", ""+examTopicModel.getRightAnswer());
-							Log.e("examTopicModel.getUserAnswer()", ""+examTopicModel.getUserAnswer());
+							Log.e("examTopicModel.getRightAnswer()", "" + examTopicModel.getRightAnswer());
+							Log.e("examTopicModel.getUserAnswer()", "" + examTopicModel.getUserAnswer());
 						}
 						final ArrayList ArrayValues = new ArrayList();
 						ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 						ArrayValues.add(new BasicNameValuePair("examResultDto.par_keyid", "" + Id));
 						ArrayValues.add(new BasicNameValuePair("examResultDto.score", "" + totalsccore));
 						ArrayValues.add(new BasicNameValuePair("examResultDto.answer", "" + anwser));
-					Log.e("anwser", ""+anwser);
+						Log.e("anwser", "" + anwser);
 						new Thread(new Runnable() { // 开启线程上传文件
 							@Override
 							public void run() {
@@ -613,7 +613,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 						Log.e("totalsccore", "" + totalsccore);
 						bundle.putString("Title", Title);
 						bundle.putString("keyid", Id);
-						bundle.putString("anwser", right.toString());
+						bundle.putString("anwser", anwser.toString());
 						bundle.putInt("ticket", ticket);
 						bundle.putIntArray("user", user);
 						intent1.putExtras(bundle);

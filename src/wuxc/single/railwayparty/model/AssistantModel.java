@@ -12,6 +12,16 @@ public class AssistantModel {
 	private int imageurl;
 	private boolean Cont;
 	private String Summary;
+	private String Id;
+
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -29,8 +39,6 @@ public class AssistantModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;
