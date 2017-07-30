@@ -40,12 +40,24 @@
         android:textColor="@color/main_color"
         android:textSize="18dp" />
 
-    <wuxc.single.railwayparty.layout.PartViewforlevel
-        android:id="@+id/histogram"
-        android:layout_width="wrap_content"
-        android:layout_height="390dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="20dp" >
-    </wuxc.single.railwayparty.layout.PartViewforlevel>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="900dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <wuxc.single.railwayparty.layout.PartViewforlevel
+                android:id="@+id/histogram"
+                android:layout_width="900dp"
+                android:layout_height="390dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp" >
+            </wuxc.single.railwayparty.layout.PartViewforlevel>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </LinearLayout>

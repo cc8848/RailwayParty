@@ -24,7 +24,7 @@
             android:layout_marginRight="@dimen/top_height"
             android:gravity="center"
             android:singleLine="true"
-            android:text="消息通知"
+            android:text="消息提醒"
             android:textColor="#ffffff"
             android:textSize="@dimen/text_size" />
     </RelativeLayout>

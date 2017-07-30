@@ -4,8 +4,39 @@ public class TestModel {
 	private String ImageUrl;
 	private String Title;
 	private String time;
-	private String Id;	private boolean Cont;
+	private String Id;
+	private boolean Cont;
 	private String Summary;
+	private int score;
+	private String name;
+	private String answer;
+
+ 
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -23,8 +54,6 @@ public class TestModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

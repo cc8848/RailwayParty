@@ -147,7 +147,7 @@ public class startLogoActivity extends Activity {
 
 			}
 
-		}, 1200);
+		}, 2000);
 	}
 
 	public void GetDataDetailFromLoginResultData(Object obj) {

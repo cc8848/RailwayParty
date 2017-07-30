@@ -83,7 +83,7 @@ public class MypublishAdapter extends ArrayAdapter<MypublishModel> implements On
 		textlabel.setText("" + imageAndText.getLabel());
 
 		TextView textnumber = viewCache.getTextNumber();
-		textnumber.setText(""+(imageAndText.getNumber() - position));
+		textnumber.setText("" + (imageAndText.getNumber() - position));
 		ImageView imagedelete = viewCache.getImagedelete();
 		imagedelete.setTag(position);
 		imagedelete.setOnClickListener(this);

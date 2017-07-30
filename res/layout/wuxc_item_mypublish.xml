@@ -48,7 +48,8 @@
             android:gravity="center"
             android:maxLines="2"
             android:text="标题"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,7 +74,7 @@
 
                 <TextView
                     android:id="@+id/text_label"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:gravity="center"
                     android:singleLine="true"

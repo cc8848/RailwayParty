@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.branch.Statisticsforsex;
 
 public class PartViewforsex extends View {
 
@@ -47,7 +48,7 @@ public class PartViewforsex extends View {
 	private void init(Context context, AttributeSet attrs) {
 
 		ySteps = new String[] { "100%", "75%", "50%", "25%", "0" };
-		xWeeks = new String[] { "ÄÐ", "Å®" };
+		xWeeks = new String[] { "Å®", "ÄÐ" };
 		text = new int[] { 0, 0 };
 		aniProgress = new double[] { 0, 0 };
 		ani = new HistogramAnimation();
@@ -145,7 +146,7 @@ public class PartViewforsex extends View {
 
 				rect.left = 30 + step * (i + 1) - 40;
 				rect.right = 30 + step * (i + 1) + 40;
-				int rh = (int) (leftHeight - leftHeight * (value / 1000));
+				int rh = (int) (leftHeight - leftHeight * (value / Statisticsforsex.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 

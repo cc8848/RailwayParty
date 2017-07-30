@@ -83,12 +83,13 @@ public class ExamActivity extends Activity implements OnClickListener {
 	private ImageView image_d;
 	private TextView topic_d;
 	private List<ExamTopicModel> list = new ArrayList<ExamTopicModel>();
+	private List<ExamTopicModel> listall = new ArrayList<ExamTopicModel>();
 	private int Number = 1;
 	private int screenwidth = 0;
 	private float scale = 0;
 	private float scalepx = 0;
 	private float dp = 0;
-	private int recLen = 3600;
+	private int recLen = 600;
 	private int timelength = 60;
 	Timer timer = new Timer();
 	private String Title;
@@ -253,7 +254,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 
 			json_data = new JSONObject(data);
 			timelength = json_data.getInt("timeLength");
-			recLen = timelength * 60;
+//			recLen = timelength * 60;
 			String Subs = json_data.getString("subs");
 			getdata(Subs);
 		} catch (JSONException e) {
@@ -281,7 +282,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 					ExamTopicModel listinfo = new ExamTopicModel();
 
 					listinfo.setId(json_data.getString("keyid"));
-					listinfo.setTopic((i + 1) + "¡¢" + json_data.getString("title"));
+					listinfo.setTopic(json_data.getString("title"));
 					listinfo.setScore(json_data.getInt("score"));
 					JSONArray jArray1 = new JSONArray(json_data.getString("subs"));
 					listinfo.setAString("");
@@ -321,7 +322,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 							listinfo.setDid(json_data1.getString("keyid"));
 						}
 					}
-					list.add(listinfo);
+					listall.add(listinfo);
 
 				}
 			}
@@ -329,6 +330,16 @@ public class ExamActivity extends Activity implements OnClickListener {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if (listall.size() <= 20) {
+			list = listall;
+		} else {
+			for (int i = 0; i < 20; i++) {
+				int number = (int) (Math.random() * (listall.size()));
+				ExamTopicModel listinfo = listall.get(number);
+				list.add(listinfo);
+				listall.remove(number);
+			}
 		}
 		topicnumber = list.size();
 		showTop();

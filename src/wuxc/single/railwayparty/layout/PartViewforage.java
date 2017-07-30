@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.branch.Statisticsforage;
+import wuxc.single.railwayparty.branch.Statisticsfornation;
 
 public class PartViewforage extends View {
 
@@ -47,9 +49,9 @@ public class PartViewforage extends View {
 	private void init(Context context, AttributeSet attrs) {
 
 		ySteps = new String[] { "100%", "75%", "50%", "25%", "0" };
-		xWeeks = new String[] { "<30", "30~40", "40~50", "50~60", "60~70", ">70" };
-		text = new int[] { 0, 0, 0, 0, 0, 0 };
-		aniProgress = new double[] { 0, 0, 0, 0, 0, 0 };
+		xWeeks = new String[] { "<25", "25~50", ">50" };
+		text = new int[] { 0, 0, 0 };
+		aniProgress = new double[] { 0, 0, 0 };
 		ani = new HistogramAnimation();
 		ani.setDuration(100);
 
@@ -145,7 +147,7 @@ public class PartViewforage extends View {
 
 				rect.left = 60 + step * (i + 1) - 20;
 				rect.right = 60 + step * (i + 1) + 20;
-				int rh = (int) (leftHeight - leftHeight * (value / 1000));
+				int rh = (int) (leftHeight - leftHeight * (value / Statisticsforage.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 

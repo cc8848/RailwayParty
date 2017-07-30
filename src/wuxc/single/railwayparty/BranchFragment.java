@@ -1,7 +1,17 @@
 package wuxc.single.railwayparty;
 
+import java.util.ArrayList;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +26,7 @@ import wuxc.single.railwayparty.branch.PartyBranchStatisicActivity;
 import wuxc.single.railwayparty.branch.PartyMembershipActivity;
 import wuxc.single.railwayparty.branch.PartyMoneyActivity;
 import wuxc.single.railwayparty.branch.PartyOrgActivity;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.other.SearchActivity;
 import android.view.ViewGroup;
 
@@ -33,6 +44,34 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private LinearLayout rel_org;
 	private LinearLayout rel_statisic;
 	private LinearLayout rel_group;
+	private int ticket = 0;
+	private String loginId;
+	private String sex;
+	private String sessionId;
+	private String username;
+	private static final int GET_LOGININ_RESULT_DATA = 1;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	public static String id = "0";
+	public static String name = "党支部";
+	public static String description = "为人民服务";
+	public static String time = "2017-07-30";
+	private LinearLayout lin_main_top;
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_LOGININ_RESULT_DATA:
+				GetDataDetailFromLoginResultData(msg.obj);
+				break;
+			case 3:
+				// go();
+				break;
+			default:
+				break;
+			}
+		}
+
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +90,70 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 				startActivity(intent);
 			}
 		});
+		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("deptId", sessionId));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/pb/chatGroup/getByDept", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_LOGININ_RESULT_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 		return view;
+	}
+
+	protected void GetDataDetailFromLoginResultData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals("success")) {
+				Data = demoJson.getString("data");
+				// Toast.makeText(getApplicationContext(), "登陆成功",
+				// Toast.LENGTH_SHORT).show();
+				demoJson = new JSONObject(Data);
+				id = demoJson.getString("keyid");
+				name = demoJson.getString("name");
+				time = demoJson.getString("createTime");
+				description = demoJson.getString("description");
+				// finish();
+			} else if (Type.equals("accountPwdError")) {
+				// Toast.makeText(getApplicationContext(), "用户名和密码不匹配",
+				// Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("userLocked")) {
+				// Toast.makeText(getApplicationContext(), "账号被禁用",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				// Toast.makeText(getApplicationContext(), "登陆失败",
+				// Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		// userPhoto = PreUserInfo.getString("userPhoto", "");
+		sessionId = PreUserInfo.getString("deptId", "");
 	}
 
 	private void initheight(View view) {
@@ -104,6 +206,12 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		LayoutParams8.height = rel_height;
 		LayoutParams8.width = rel_width;
 		rel_group.setLayoutParams(LayoutParams8);
+		LinearLayout.LayoutParams LayoutParams9 = (android.widget.LinearLayout.LayoutParams) lin_main_top
+				.getLayoutParams();
+		LayoutParams9.height = screenwidth * 400 / 750;
+		LayoutParams9.width = screenwidth;
+		lin_main_top.setLayoutParams(LayoutParams9);
+
 	}
 
 	private void initview(View view) {
@@ -132,6 +240,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		rel_org.setOnClickListener(this);
 		rel_statisic.setOnClickListener(this);
 		rel_group.setOnClickListener(this);
+		lin_main_top = (LinearLayout) view.findViewById(R.id.lin_main_top);
 	}
 
 	@Override

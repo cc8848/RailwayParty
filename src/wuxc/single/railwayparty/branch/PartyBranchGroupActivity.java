@@ -3,8 +3,14 @@ package wuxc.single.railwayparty.branch;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -12,12 +18,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import wuxc.single.railwayparty.BranchFragment;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.my.FragmentMyLearn;
 import wuxc.single.railwayparty.my.FragmentTest;
@@ -36,6 +45,35 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 3;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private String userPhoto;
+	private String address;
+	private int ticket = 0;
+	private String loginId;
+	private String sex;
+	private String sessionId;
+	private String username;
+	private TextView text_name;
+	private TextView text_description;
+	private TextView text_time;
+	private static final int GET_LOGININ_RESULT_DATA = 1;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_LOGININ_RESULT_DATA:
+				// GetDataDetailFromLoginResultData(msg.obj);
+				break;
+			case 3:
+				// go();
+				break;
+			default:
+				break;
+			}
+		}
+
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +84,8 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 		image_back.setOnClickListener(this);
 		initview();
 
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
 		initcolor();
 		ViewPaper = (Childviewpaper) findViewById(R.id.viewPager);
 		Fragments.clear();// 清空list
@@ -54,6 +94,14 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 		ViewPaper.setOffscreenPageLimit(NumberPicture);
 		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
 		ViewPaper.setAdapter(new MyPagerAdapter());
+
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		// userPhoto = PreUserInfo.getString("userPhoto", "");
+		sessionId = PreUserInfo.getString("deptId", "");
 	}
 
 	private void initfragment() {
@@ -164,6 +212,13 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 		text_1.setOnClickListener(this);
 		text_2.setOnClickListener(this);
 		text_3.setOnClickListener(this);
+		text_name = (TextView) findViewById(R.id.text_name);
+		text_description = (TextView) findViewById(R.id.text_description);
+		text_time = (TextView) findViewById(R.id.text_time);
+
+		text_name.setText(BranchFragment.name);
+		text_time.setText(BranchFragment.time);
+		text_description.setText(BranchFragment.description);
 	}
 
 	@Override

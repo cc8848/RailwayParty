@@ -74,7 +74,7 @@ public class BuildAdapter3 extends ArrayAdapter<BuildModel> implements OnClickLi
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(imageUrl);
+		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 		// Log.e("imageUrl", imageUrl);
 
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
@@ -87,7 +87,7 @@ public class BuildAdapter3 extends ArrayAdapter<BuildModel> implements OnClickLi
 				Bitmap bm1 = null;
 				// bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = imageUrl;
+					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
 					// Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {

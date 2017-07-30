@@ -1,46 +1,65 @@
 package wuxc.single.railwayparty.model;
 
-public class VoteModel {	private boolean Cont;
-private String Summary;
-public String getSummary() {
-	return Summary;
-}
+public class VoteModel {
+	private boolean Cont;
+	private String Summary;
+	private String endtime;
+	private String Starttime;
 
-public void setSummary(String summary) {
-	Summary = summary;
-}
+	public String getEndtime() {
+		return endtime;
+	}
 
-public boolean isCont() {
-	return Cont;
-}
+	public void setEndtime(String endtime) {
+		this.endtime = endtime;
+	}
 
-public void setCont(boolean cont) {
-	Cont = cont;
-}
+	public String getStarttime() {
+		return Starttime;
+	}
 
-private String Link;
+	public void setStarttime(String starttime) {
+		Starttime = starttime;
+	}
 
- 
+	public String getSummary() {
+		return Summary;
+	}
 
-public String getLink() {
-	return Link;
-}
+	public void setSummary(String summary) {
+		Summary = summary;
+	}
 
-public void setLink(String link) {
-	Link = link;
-}
+	public boolean isCont() {
+		return Cont;
+	}
+
+	public void setCont(boolean cont) {
+		Cont = cont;
+	}
+
+	private String Link;
+
+	public String getLink() {
+		return Link;
+	}
+
+	public void setLink(String link) {
+		Link = link;
+	}
 
 	private String ImageUrl;
 	private String Title;
 	private String Detail;
-private String Id;
-	public String getId() {
-	return Id;
-}
+	private String Id;
 
-public void setId(String id) {
-	Id = id;
-}
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
 
 	public String getImageUrl() {
 		return ImageUrl;

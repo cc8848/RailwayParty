@@ -69,7 +69,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 	private int score = 0;
 	private int[] user;
 	private String answer = "";
-
+	private String tempanswer = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -138,7 +138,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 		try {
 			Intent intent = this.getIntent(); // 获取已有的intent对象
 			Bundle bundle = intent.getExtras(); // 获取intent里面的bundle对象
-
+			tempanswer = bundle.getString("anwser");
 			Title = bundle.getString("Title");
 			Id = bundle.getString("keyid");
 			ticket = bundle.getInt("ticket");
@@ -181,11 +181,12 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 		String pager = null;
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
+			// Log.e("list.size()", "tytrytr888888888888");
 			Type = demoJson.getString("type");
-
+			// Log.e("list.size()", "tytryt666666666r");
 			Data = demoJson.getString("data");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-
+				// Log.e("list.size()", "tytdffdrytr");
 				GetDataList(Data);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -206,10 +207,11 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 		try {
 
 			JSONObject json_data = null;
-
+			// Log.e("list.size()", "tytfsdfsdfdsfrytr");
 			json_data = new JSONObject(data);
-
+			// Log.e("list.size()", "tytwwwwwwwwwwwrytr");
 			String Subs = json_data.getString("subs");
+			// Log.e("list.size()", "tyt444444444rytr");
 			getdata(Subs);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -221,24 +223,32 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 	private void getdata(String subs) {
 		// TODO Auto-generated method stub
 		list.clear();
+		// Log.e("list.size()", "tytrytr");
 		JSONArray jArray = null;
 		try {
+			// Log.e("list.size()", "1");
 			jArray = new JSONArray(subs);
+			// Log.e("list.size()", "2");
 			JSONObject json_data = null;
 			if (jArray.length() == 0) {
 				Toast.makeText(getApplicationContext(), "无数据", Toast.LENGTH_SHORT).show();
-
+				// Log.e("list.size()", "3");
 			} else {
+				// Log.e("list.size()", "4");
 				for (int i = 0; i < jArray.length(); i++) {
 					json_data = jArray.getJSONObject(i);
-
+					// Log.e("list.size()", "5");
 					// json_data = json_data.getJSONObject("data");
 					ExamTopicModel listinfo = new ExamTopicModel();
-
+					// Log.e("list.size()", "6");
 					listinfo.setId(json_data.getString("keyid"));
+					// Log.e("list.size()", "7");
 					listinfo.setTopic((i + 1) + "、" + json_data.getString("title"));
+					// Log.e("list.size()", "8");
 					listinfo.setScore(json_data.getInt("score"));
+					// Log.e("list.size()", "9");
 					listinfo.setDetail(json_data.getString("analysis"));
+
 					JSONArray jArray1 = new JSONArray(json_data.getString("subs"));
 					listinfo.setAString("");
 					listinfo.setBString("");
@@ -265,7 +275,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 						listinfo.setRightAnswer(4);
 						listinfo.setUserAnswer(4);
 					}
-					listinfo.setUserAnswer(user[i]);
+					// listinfo.setUserAnswer(user[i]);
 					for (int j = 0; j < jArray1.length(); j++) {
 						JSONObject json_data1 = jArray1.getJSONObject(j);
 						if (j == 0) {
@@ -282,6 +292,8 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 							listinfo.setDid(json_data1.getString("keyid"));
 						}
 					}
+					// Log.e("list.size()", "10");
+					// Log.e("list.size()", "json_data" + i);
 					list.add(listinfo);
 
 				}
@@ -290,13 +302,15 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.e("answer", "error");
 		}
-		topicnumber = list.size();
+		Log.e("answer", "here");
+		Log.e("list.size()", list.size() + "");
 		for (int j = 0; j < list.size(); j++) {
 			// Log.e("answer", answer);
 			ExamTopicModel examTopicModel = list.get(j);
 			String answer = getuseranswer(examTopicModel.getId());
-			Log.e("answer", answer + "wuxc");
+			// Log.e("answer", answer + "wuxc");
 			if (answer.equals("A")) {
 
 				examTopicModel.setUserAnswer(1);
@@ -309,8 +323,12 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			} else if (answer.equals("D")) {
 
 				examTopicModel.setUserAnswer(4);
+			} else {
+				list.remove(j);
+				j--;
 			}
 		}
+		topicnumber = list.size();
 		Showdetail();
 	}
 
@@ -320,7 +338,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 		try {
 
 			JSONObject jsonObject = new JSONObject(answer);
-			Log.e("jsonObject", ""+jsonObject);
+			Log.e("jsonObject", "" + jsonObject);
 			try {
 				temp = jsonObject.getString(aid);
 			} catch (Exception e) {
@@ -341,6 +359,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			btn[i].setTextColor(Color.parseColor("#000000"));
 			btn[i].setText("第" + (i + 1) + "题");
 		}
+		Log.e("list.size()", list.size() + "");
 		for (int i = 0; i < list.size(); i++) {
 			ExamTopicModel examTopicModel = list.get(i);
 			if (examTopicModel.getUserAnswer() == examTopicModel.getRightAnswer()) {
@@ -355,6 +374,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			}
 		}
 		Log.e("mark", mark + "");
+		Log.e("list.size()", list.size() + "");
 		int temp = score / 5;
 		image_mark.setImageResource(imagemark[temp]);
 		text_mark.setText(score + "");
@@ -468,6 +488,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 				user[j] = examTopicModel.getUserAnswer();
 			}
 			bundle.putIntArray("user", user);
+			bundle.putString("answer", tempanswer);
 			intent.putExtras(bundle);
 			startActivity(intent);
 		}

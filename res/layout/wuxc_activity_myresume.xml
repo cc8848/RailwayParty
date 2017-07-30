@@ -25,7 +25,7 @@
             android:layout_marginRight="@dimen/top_height"
             android:gravity="center"
             android:singleLine="true"
-            android:text="意见反馈"
+            android:text="个人资料"
             android:textColor="#ffffff"
             android:textSize="@dimen/text_size" />
 
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="姓名"
+                    android:text="姓        名"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 
@@ -95,7 +95,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="性别"
+                    android:text="用  户  名"
+                    android:textColor="@color/text_grey"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/text_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:background="#ffffff"
+                    android:gravity="center_vertical"
+                    android:text="李超"
+                    android:textColor="@color/text_grey"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/text_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="25dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="性        别"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 
@@ -161,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="宣言"
+                    android:text="宣        言"
                     android:textColor="#000000"
                     android:textSize="16dp" />
 
@@ -241,7 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="学历"
+                    android:text="学        历"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 
@@ -307,7 +341,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="党龄"
+                    android:text="转正时间"
+                    android:textColor="@color/text_grey"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/text_party_time_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:gravity="center_vertical"
+                    android:text="2016年5月4日"
+                    android:textColor="@color/text_grey"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/text_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="25dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="党        龄"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 
@@ -373,7 +440,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="身份"
+                    android:text="身        份"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 
@@ -406,7 +473,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="党费缴纳截止时间"
+                    android:text="党费缴纳\n截止时间"
                     android:textColor="@color/text_grey"
                     android:textSize="16dp" />
 

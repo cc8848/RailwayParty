@@ -1,13 +1,27 @@
 package wuxc.single.railwayparty.branch;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,13 +30,19 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import wuxc.single.railwayparty.BranchFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.FileAdapter;
+import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
+import wuxc.single.railwayparty.model.FileModel;
 import wuxc.single.railwayparty.model.FileModel;
 
 public class FragmentPartygroupfile extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
@@ -41,6 +61,122 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
+	private int ticket = 0;
+	private String chn;
+	private String userPhoto;
+	private String LoginId;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private SharedPreferences PreALLChannel;// 存储所用频道信息
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final String GET_FAIL_RESULT = "fail";
+	private static final int GET_DUE_DATA = 6;
+	private TextView TextArticle;
+	private TextView TextVideo;
+	private int type = 2;
+	private String classify = "";
+	private Button btn_file;
+	public Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_DUE_DATA:
+				GetDataDueData(msg.obj);
+				break;
+			case 1:
+				// GetDataDueData(msg.obj);
+				Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+
+				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			// pager = demoJson.getString("pager");
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				GetPager(Data);
+				GetDataList(Data, curPage);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+//				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+//				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDataList(String data, int arg) {
+		;
+		if (arg == 1) {
+			list.clear();
+		}
+		JSONArray jArray = null;
+		try {
+			jArray = new JSONArray(data);
+			JSONObject json_data = null;
+			if (jArray.length() == 0) {
+				// / Toast.makeText(getActivity(), "无数据",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				for (int i = 0; i < jArray.length(); i++) {
+					json_data = jArray.getJSONObject(i);
+					Log.e("json_data", "" + json_data);
+					JSONObject jsonObject = json_data.getJSONObject("data");
+					FileModel listinfo = new FileModel();
+
+					listinfo.setId(json_data.getString("filePath"));
+					listinfo.setTitle(json_data.getString("fileName"));
+					listinfo.setTime(json_data.getString("createTime"));
+					listinfo.setFrom(json_data.getString("createUserName"));
+					listinfo.setDetail(json_data.getString("size"));
+					list.add(listinfo);
+
+				}
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (arg == 1) {
+			go();
+		} else {
+			mAdapter.notifyDataSetChanged();
+		}
+
+	}
+
+	private void GetPager(String pager) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(pager);
+
+			totalPage = demoJson.getInt("totalPage");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -64,8 +200,12 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 			initview(view);
 			setonclicklistener();
 			setheadtextview();
-
-			getdatalist(curPage);
+			btn_file = (Button) view.findViewById(R.id.btn_file);
+			btn_file.setOnClickListener(this);
+			// getdatalist(curPage);
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ReadTicket();
+			GetData();
 		}
 
 		return view;
@@ -81,6 +221,47 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 	private void setonclicklistener() {
 		// TODO Auto-generated method stub
 		ListData.setOnItemClickListener(this);
+	}
+
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("par_keyid", BranchFragment.id));
+		// chn = "dqlh";
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pb/chatGroupAtt/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = GET_DUE_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		userPhoto = PreUserInfo.getString("userPhoto", "");
+		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	@Override
@@ -127,7 +308,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 			} else {
 				curPage = 1;
 				Toast.makeText(getActivity(), "正在刷新", Toast.LENGTH_SHORT).show();
-				getdatalist(pageSize);
+				GetData();
 			}
 			int temp = 1;
 			temp = (lastItemIndex) % pageSize;
@@ -138,7 +319,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 					Toast.makeText(getActivity(), " 没有更多了", Toast.LENGTH_SHORT).show();
 					// // listinfoagain();
 				} else {
-					getdatalist(pageSize);
+					GetData();
 					Toast.makeText(getActivity(), "正在加载下一页", Toast.LENGTH_SHORT).show();
 				}
 
@@ -274,6 +455,97 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
+		case R.id.btn_file:
+			Intent intent = null;
+			// if (Build.VERSION.SDK_INT < 19) {
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("*/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			// } else {
+			// intent = new Intent(Intent.ACTION_PICK,
+			// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			// }
+			startActivityForResult(intent, 0);
+			break;
+		default:
+			break;
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (data == null)
+			return;
+		Bundle bundle = data.getExtras();
+		switch (requestCode) {
+
+		case 0:
+			// 发送选择的文件
+			if (data != null) {
+				Uri uri = data.getData();
+				if (uri != null) {
+					final File file = GetFile(uri);
+					// text_load.setVisibility(View.VISIBLE);
+					if (!(file == null)) {
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String UpLoadResult = UpLoadFile.uploadFileatt(file,
+										URLcontainer.urlip + "console/pb/chatgroupfileUpload/uploadMultiple",
+										BranchFragment.id, "" + ticket);
+								Message msg = new Message();
+								msg.what = 1;
+								msg.obj = UpLoadResult;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
+
+				}
+			}
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 获取文件
+	 * 
+	 * @param uri
+	 */
+	private File GetFile(Uri uri) {
+		String filePath = null;
+		if ("content".equalsIgnoreCase(uri.getScheme())) {
+			String[] projection = { "_data" };
+			Cursor cursor = null;
+
+			try {
+				cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+				int column_index = cursor.getColumnIndexOrThrow("_data");
+				if (cursor.moveToFirst()) {
+					filePath = cursor.getString(column_index);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if ("file".equalsIgnoreCase(uri.getScheme())) {
+			filePath = uri.getPath();
+		}
+		File file = new File(filePath);
+		if (file == null || !file.exists()) {
+
+			Toast.makeText(getActivity(), "文件不存在", 0).show();
+			return file;
+		}
+		if (file.length() > 20 * 1024 * 1024) {
+
+			Toast.makeText(getActivity(), "文件不能大于20M", 0).show();
+			return null;
+		}
+		return file;
 	}
 }

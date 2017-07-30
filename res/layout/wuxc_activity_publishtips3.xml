@@ -195,7 +195,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/shape7red"
                     android:gravity="center"
-                    android:text="发表意见"
+                    android:text="发布帖子"
                     android:textColor="#ffffff"
                     android:textSize="16dp" />
             </LinearLayout>

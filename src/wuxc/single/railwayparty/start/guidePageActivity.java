@@ -71,7 +71,7 @@ public class guidePageActivity extends FragmentActivity {
 
 					if (page == 2) {
 						Intent intent = new Intent();
-						intent.setClass(getApplicationContext(), MainActivity.class);
+						intent.setClass(getApplicationContext(), startLogoActivity.class);
 						startActivity(intent);
 						finish();
 						Editor edit = PreGuidePage.edit();

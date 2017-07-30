@@ -145,7 +145,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				.getLayoutParams();
 		LayoutParams1.bottomMargin = height;
 		rel_main.setLayoutParams(LayoutParams1);
-		height = (int) (screenwidth / 2.2);
+		height = (int) (screenwidth * 338 / 750);
 		RelativeLayout.LayoutParams LayoutParams2 = (android.widget.RelativeLayout.LayoutParams) main_top_bac
 				.getLayoutParams();
 		LayoutParams2.height = height;

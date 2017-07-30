@@ -36,6 +36,7 @@ import wuxc.single.railwayparty.adapter.VoteAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.VoteModel;
+import wuxc.single.railwayparty.other.ChangeTermsDetailActivity;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
 public class BbsFragment5 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
@@ -125,32 +126,35 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 				for (int i = 0; i < jArray.length(); i++) {
 					json_data = jArray.getJSONObject(i);
 					Log.e("json_data", "" + json_data);
-					// JSONObject jsonObject = json_data.getJSONObject("data");
+					json_data = json_data.getJSONObject("data");
 					VoteModel listinfo = new VoteModel();
 
 					// listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					// listinfo.setContent(json_data.getString("summary"));
+					listinfo.setDetail("暂无详情");
+					listinfo.setEndtime(json_data.getString("endDate"));
+					listinfo.setStarttime(json_data.getString("startDate"));
 					// listinfo.setSummary(json_data.getString("summary"));
-					listinfo.setCont(true);
+					// listinfo.setCont(true);
 					// listinfo.setGuanzhu("231");
 					// listinfo.setZan("453");
 					// listinfo.setImageurl(headimg[i]);
-					// listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
+					listinfo.setImageUrl(json_data.getString("coverImage"));
 					// listinfo.setRead(true);
-					try {
-						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							// listinfo.setContent(json_data.getString("source"));
-							listinfo.setCont(false);
-						}
-
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
+					// try {
+					// listinfo.setLink(json_data.getString("otherLinks"));
+					// if (json_data.getString("summary").equals("") ||
+					// json_data.getString("summary") == null
+					// || json_data.getString("summary").equals("null")) {
+					// // listinfo.setContent(json_data.getString("source"));
+					// listinfo.setCont(false);
+					// }
+					//
+					// } catch (Exception e) {
+					// // TODO: handle exception
+					// }
 					list.add(listinfo);
 
 				}
@@ -272,8 +276,8 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "wtp"));
-		chn = "wtp";
+		ArrayValues.add(new BasicNameValuePair("voteDto.hstate", "1"));
+		// chn = "wtp";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -281,7 +285,7 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/channel/channleListData", ArrayValues);
+				DueData = HttpGetData.GetData("api/cms/vote/getListJsonData", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;
@@ -599,18 +603,18 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.lin_all:
-			// VoteModel data = list.get((Integer) v.getTag());
-			//
-			// Intent intent = new Intent();
-			// intent.setClass(getActivity(), SpecialDetailActivity.class);
-			// Bundle bundle = new Bundle();
-			// bundle.putString("Title", data.getTitle());
-			// bundle.putString("Time", data.getTime());
-			// bundle.putString("detail", data.getContent());
+			VoteModel data = list.get((Integer) v.getTag());
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), ChangeTermsDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("StartTime", data.getStarttime());
+			bundle.putString("EndTime", data.getEndtime());
 			// bundle.putString("chn", chn);
-			// bundle.putString("Id", data.getId());
-			// intent.putExtras(bundle);
-			// startActivity(intent);
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
 
 			// Toast.makeText(getActivity(), "删除第" + + "条",
 			// Toast.LENGTH_SHORT).show();

@@ -7,11 +7,14 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,10 +27,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import wuxc.single.railwayparty.internet.APPVersion;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.layout.dialogtwo;
 import wuxc.single.railwayparty.other.LoginActivity;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
@@ -48,8 +55,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private int ticket = 0;
 	private String userid;
+	public static Activity activity;
 	private static final int GET_LOGININ_RESULT_DATA = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
+	private static final int GET_VERSION_RESULT = 5;
+
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -57,19 +67,90 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			case GET_LOGININ_RESULT_DATA:
 				GetDataDetailFromLoginResultData(msg.obj);
 				break;
-
+			case GET_VERSION_RESULT:
+				GetDataDetailFromVersion(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
 
+	protected void GetDataDetailFromVersion(Object obj) {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		String versionId = null;
+		String versionNum = null;
+		String versionPath = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			versionId = demoJson.getString("versionId");
+			versionNum = demoJson.getString("versionNum");
+			versionPath = demoJson.getString("versionPath");
+			if (versionId.equals(APPVersion.APPVersion)) {
+				Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
+			} else {
+				showAlertDialog(versionNum, versionPath);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	public void showAlertDialog(String versionNum, final String versionPath) {
+
+		dialogtwo.Builder builder = new dialogtwo.Builder(this);
+		builder.setMessage("是否更新新版本？\n" + "版本号：" + versionNum);
+		builder.setTitle("版本更新");
+		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Intent intent = new Intent();
+				intent.setAction("android.intent.action.VIEW");
+				String path = URLcontainer.urlip + URLcontainer.GetFile + versionPath;
+				Uri content_url = Uri.parse(path);
+				intent.setData(content_url);
+				startActivity(intent);
+
+			}
+		});
+
+		builder.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+
+		builder.create().show();
+
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wuxc_activity_main);
+		activity = this;
 		initview();
 		getdata();
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/pubshare/sysVersion/getLatestVersion", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_VERSION_RESULT;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	public void GetDataDetailFromLoginResultData(Object obj) {
@@ -155,8 +236,25 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			edit.putString("pAllowOnLinFare", demoJson.getString("pAllowOnLinFare"));
 			edit.commit();
 			// GetAllData();
+			final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("chatGroupDto.par_keyid", demoJson.getString("deptId")));
+			ArrayValues.add(new BasicNameValuePair("chatGroupDto.description", "为人民服务"));
+			ArrayValues.add(new BasicNameValuePair("chatGroupDto.classify", "1"));
+			ArrayValues.add(new BasicNameValuePair("chatGroupDto.adminId", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("chatGroupDto.name", demoJson.getString("deptName")));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/pb/chatGroup/save", ArrayValues);
 
-		} catch (JSONException e) {
+				}
+			}).start();
+
+		} catch (
+
+		JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -369,6 +467,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		write(0);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		getdata();
 	}
 
 	@Override

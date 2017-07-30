@@ -563,7 +563,7 @@ public class BuildFragment1 extends Fragment
 			text_2.setTextColor(Color.parseColor(getString(R.color.main_color)));
 
 			curPage = 1;
-			fileClassify = "2";
+			fileClassify = "5";
 			GetData();
 			break;
 		case R.id.text_3:
@@ -571,7 +571,7 @@ public class BuildFragment1 extends Fragment
 			text_3.setTextColor(Color.parseColor(getString(R.color.main_color)));
 
 			curPage = 1;
-			fileClassify = "3";
+			fileClassify = "4";
 			GetData();
 			break;
 		case R.id.text_4:
@@ -579,7 +579,7 @@ public class BuildFragment1 extends Fragment
 			text_4.setTextColor(Color.parseColor(getString(R.color.main_color)));
 
 			curPage = 1;
-			fileClassify = "4";
+			fileClassify = "2";
 			GetData();
 			break;
 		case R.id.text_5:
@@ -587,7 +587,7 @@ public class BuildFragment1 extends Fragment
 			text_5.setTextColor(Color.parseColor(getString(R.color.main_color)));
 
 			curPage = 1;
-			fileClassify = "5";
+			fileClassify = "3";
 			GetData();
 			break;
 		case R.id.text_6:

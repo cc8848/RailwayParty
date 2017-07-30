@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.URLcontainer;
@@ -67,12 +68,15 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private RelativeLayout rel_mypublish;
 	private RelativeLayout rel_mycheck;
 	private RelativeLayout rel_myvote;
+	private RelativeLayout rel_credits;
 	private RelativeLayout rel_evaluation;
 	private LinearLayout lin_credits;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String LoginId;
 	private int ticket;
 	private String userPhoto;
+	private TextView text_username;
+	private TextView text_sign;
 	private final static int GET_USER_HEAD_IMAGE = 6;
 	private boolean UploadImage = false;
 	private Handler uiHandler = new Handler() {
@@ -185,6 +189,13 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		LoginId = PreUserInfo.getString("loginId", null);
 		ticket = PreUserInfo.getInt("ticket", 0);
 		userPhoto = PreUserInfo.getString("userPhoto", null);
+		try {
+			text_username.setText(PreUserInfo.getString("userName", "系统"));
+			text_sign.setText(PreUserInfo.getString("sign", "忠诚于党，为民服务"));
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	private void initheight(View view) {
@@ -225,6 +236,11 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		rel_mycheck = (RelativeLayout) view.findViewById(R.id.rel_mycheck);
 		rel_myvote = (RelativeLayout) view.findViewById(R.id.rel_myvote);
 		rel_evaluation = (RelativeLayout) view.findViewById(R.id.rel_evaluation);
+		rel_credits = (RelativeLayout) view.findViewById(R.id.rel_credits);
+		text_username = (TextView) view.findViewById(R.id.text_username);
+
+		text_sign = (TextView) view.findViewById(R.id.text_sign);
+
 		lin_credits = (LinearLayout) view.findViewById(R.id.lin_credits);
 		rel_message.setOnClickListener(this);
 		lin_credits.setOnClickListener(this);
@@ -234,6 +250,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		rel_mycheck.setOnClickListener(this);
 		rel_myvote.setOnClickListener(this);
 		rel_evaluation.setOnClickListener(this);
+		rel_credits.setOnClickListener(this);
 	}
 
 	@Override
@@ -353,7 +370,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private void selecttype() {
 
 		dialogselecttwo.Builder builder = new dialogselecttwo.Builder(getActivity());
-		builder.setMessage("修改头像");
+		builder.setMessage("免冠证件照");
 		builder.setTitle("提示");
 		builder.setPositiveButton("拍照", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
@@ -391,9 +408,19 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			startActivity(intent_search);
 			break;
 		case R.id.lin_credits:
-//			Intent intent_credits = new Intent();
-//			intent_credits.setClass(getActivity(), CreditsActivity.class);
-//			startActivity(intent_credits);
+			if (true) {
+				Intent intent_credits = new Intent();
+				intent_credits.setClass(getActivity(), CreditsActivity.class);
+				startActivity(intent_credits);
+			}
+			break;
+		case R.id.rel_credits:
+			if (true) {
+				Intent intent_credits = new Intent();
+				intent_credits.setClass(getActivity(), CreditsActivity.class);
+				startActivity(intent_credits);
+			}
+
 			break;
 		case R.id.rel_message:
 			Intent intent_message = new Intent();

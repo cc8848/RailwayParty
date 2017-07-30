@@ -21,6 +21,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogtwo;
+import wuxc.single.railwayparty.start.SpecialDetailActivity2;
 
 public class PartyMembershipTransActivity extends Activity implements OnClickListener {
 	private RoundImageView image_headimg;
@@ -122,7 +123,7 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 			break;
 		case R.id.lin_rule:
 			Intent intent_rule = new Intent();
-			intent_rule.setClass(getApplicationContext(), PartyBranchDataListActivity.class);
+			intent_rule.setClass(getApplicationContext(), SpecialDetailActivity2.class);
 			startActivity(intent_rule);
 			break;
 		default:

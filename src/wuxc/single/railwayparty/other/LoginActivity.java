@@ -24,6 +24,8 @@ import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.my.CreditsActivity;
+import wuxc.single.railwayparty.my.MyResumeActivity;
 
 public class LoginActivity extends Activity implements OnClickListener {
 	private EditText edit_username;
@@ -98,6 +100,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 				Data = demoJson.getString("data");
 				Toast.makeText(getApplicationContext(), "登陆成功", Toast.LENGTH_SHORT).show();
 				GetDetailData(Data);
+				if (true) {
+					Intent intent_credits = new Intent();
+					intent_credits.setClass(getApplicationContext(), MyResumeActivity.class);
+					startActivity(intent_credits);
+				}
 				finish();
 			} else if (Type.equals("accountPwdError")) {
 				Toast.makeText(getApplicationContext(), "用户名和密码不匹配", Toast.LENGTH_SHORT).show();

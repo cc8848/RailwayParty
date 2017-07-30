@@ -19,28 +19,41 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.BuildAdapter.Callback;
 import wuxc.single.railwayparty.cache.TestCache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.TestModel;;
 
-public class TestAdapter extends ArrayAdapter<TestModel> {
+public class TestAdapter extends ArrayAdapter<TestModel> implements OnClickListener {
 	private ListView listView;
 	private ImageLoader ImageLoader;
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
+	private Callback mCallback;
 
-	public TestAdapter(Activity activity, List<TestModel> imageAndTexts, ListView listView) {
+	public TestAdapter(Activity activity, List<TestModel> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
 		ImageLoader = new ImageLoader();
+		mCallback = callback;
+	}
 
+	public interface Callback {
+		public void click(View v);
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -64,7 +77,7 @@ public class TestAdapter extends ArrayAdapter<TestModel> {
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getImageUrl();
 		ImageView imageView = viewCache.getImageHeadimg();
-		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
+		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 		Log.e("imageUrl", imageUrl);
 		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
 			imageView.setImageResource(R.drawable.file0001_s);
@@ -75,7 +88,7 @@ public class TestAdapter extends ArrayAdapter<TestModel> {
 				Bitmap bm1 = null;
 				bm1 = getBitmapByPath(temppath);
 				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
+					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
 					Log.e("imageUrl", imageUrl);
 					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
 						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
@@ -112,6 +125,9 @@ public class TestAdapter extends ArrayAdapter<TestModel> {
 		texttime.setText("" + imageAndText.getTime());
 		TextView textdetail = viewCache.getTextDetail();
 		textdetail.setText("" + imageAndText.getDetail());
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		return rowView;
 	}
 

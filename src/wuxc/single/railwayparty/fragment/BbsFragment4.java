@@ -82,6 +82,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private String URL = "api/cms/channel/channleListData";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -674,14 +675,17 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			clearcolor();
 			text_1.setTextColor(Color.parseColor("#ffffff"));
 			text_1.setBackgroundResource(R.drawable.shape18red);
+			curPage = 1;
+			URL = "api/cms/channel/channleListData";
 			GetData();
 			break;
 		case R.id.text_2:
 			clearcolor();
 			text_2.setTextColor(Color.parseColor("#ffffff"));
 			text_2.setBackgroundResource(R.drawable.shape18red);
-			list.clear();
-			mAdapter.notifyDataSetChanged();
+			curPage = 1;
+			URL = "api/pb/yijian/getListJsonData";
+			GetData();
 
 			break;
 		default:

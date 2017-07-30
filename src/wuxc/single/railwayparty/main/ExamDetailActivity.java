@@ -17,6 +17,7 @@ import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -59,6 +60,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 	private static final int GET_DUE_DATA = 6;
 	private int topicnumber = 2;
 	private int[] user;
+	private String answer = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -106,6 +108,8 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 		Id = bundle.getString("keyid");
 		ticket = bundle.getInt("ticket");
 		user = bundle.getIntArray("user");
+		answer = bundle.getString("answer");
+		Log.e("answer", answer);
 		text_topic_detail = (TextView) findViewById(R.id.text_topic_detail);
 		image_number = (ImageView) findViewById(R.id.image_number);
 		if (Number == 1) {
@@ -207,7 +211,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 					ExamTopicModel listinfo = new ExamTopicModel();
 
 					listinfo.setId(json_data.getString("keyid"));
-					listinfo.setTopic((i + 1) + "¡¢" + json_data.getString("title"));
+					listinfo.setTopic(json_data.getString("title"));
 					listinfo.setScore(json_data.getInt("score"));
 					listinfo.setDetail("½âÎö£º" + json_data.getString("analysis"));
 					JSONArray jArray1 = new JSONArray(json_data.getString("subs"));
@@ -222,7 +226,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 					String anwser = "";
 					anwser = json_data.getString("answer");
 					listinfo.setRightAnswer(0);
-					listinfo.setUserAnswer(user[i]);
+					// listinfo.setUserAnswer(user[i]);
 					if (anwser.equals("A")) {
 						listinfo.setRightAnswer(1);
 					} else if (anwser.equals("B")) {
@@ -257,9 +261,52 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		for (int j = 0; j < list.size(); j++) {
+			// Log.e("answer", answer);
+			ExamTopicModel examTopicModel = list.get(j);
+			String answer = getuseranswer(examTopicModel.getId());
+			Log.e("answer", answer + "wuxc");
+			if (answer.equals("A")) {
+
+				examTopicModel.setUserAnswer(1);
+			} else if (answer.equals("B")) {
+
+				examTopicModel.setUserAnswer(2);
+			} else if (answer.equals("C")) {
+
+				examTopicModel.setUserAnswer(3);
+			} else if (answer.equals("D")) {
+
+				examTopicModel.setUserAnswer(4);
+			} else {
+				list.remove(j);
+				j--;
+			}
+		}
+
 		topicnumber = list.size();
 		showTop();
 		showtopic();
+	}
+
+	private String getuseranswer(String aid) {
+		// TODO Auto-generated method stub
+		String temp = "";
+		try {
+
+			JSONObject jsonObject = new JSONObject(answer);
+			Log.e("jsonObject", "" + jsonObject);
+			try {
+				temp = jsonObject.getString(aid);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return temp;
 	}
 
 	private void showtopic() {

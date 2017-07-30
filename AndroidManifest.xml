@@ -59,7 +59,7 @@
         android:label="@string/app_name"
         android:theme="@style/notitle" >
         <activity
-            android:name=".start.startLogoActivity"
+            android:name=".start.startLogoActivityagain"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,11 +72,23 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".start.startLogoActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".start.webview"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".start.SpecialDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.SpecialDetailActivity2"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.SpecialDetailActivity3"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -309,7 +321,19 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".other.ChangeTermsDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".other.CandicateDetailActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".other.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".other.LoginActivity2"
             android:screenOrientation="portrait" >
         </activity>
         <activity

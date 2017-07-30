@@ -1,12 +1,25 @@
 package wuxc.single.railwayparty.my;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +35,8 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.CreditsAdapter;
+import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.CreditsModel;
 import wuxc.single.railwayparty.model.CreditsModel;
 
 public class CreditsActivity extends Activity implements OnClickListener, OnTouchListener, OnItemClickListener {
@@ -42,6 +57,120 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 	private int curPage = 1;
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
+	private int ticket = 0;
+	private String chn;
+	private String userPhoto;
+	private String LoginId;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private SharedPreferences PreALLChannel;// 存储所用频道信息
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final String GET_FAIL_RESULT = "fail";
+	private static final int GET_DUE_DATA = 6;
+	private TextView TextArticle;
+	private TextView TextVideo;
+	private int type = 2;
+	private String classify = "";
+	public Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_DUE_DATA:
+				GetDataDueData(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			// pager = demoJson.getString("pager");
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				GetPager(Data);
+				GetDataList(Data, curPage);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDataList(String data, int arg) {
+		;
+		if (arg == 1) {
+			list.clear();
+		}
+		JSONArray jArray = null;
+		try {
+			jArray = new JSONArray(data);
+			JSONObject json_data = null;
+			if (jArray.length() == 0) {
+				// / Toast.makeText(getApplicationContext(), "无数据",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				for (int i = 0; i < jArray.length(); i++) {
+					json_data = jArray.getJSONObject(i);
+					Log.e("json_data", "" + json_data);
+					json_data = json_data.getJSONObject("data");
+					CreditsModel listinfo = new CreditsModel();
+					listinfo.setTime(json_data.getString("createTime"));
+					listinfo.setTitle(json_data.getString("reason"));
+					String mark = "+";
+					if (json_data.getString("inOut").equals("1")) {
+						mark = "+";
+					} else {
+						mark = "-";
+					}
+					listinfo.setNumber(mark+json_data.getString("amount"));
+//					listinfo.setDetail("完善个人资料信息获得积分");
+					list.add(listinfo);
+
+				}
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (arg == 1) {
+			go();
+		} else {
+			mAdapter.notifyDataSetChanged();
+		}
+
+	}
+
+	private void GetPager(String pager) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(pager);
+
+			totalPage = demoJson.getInt("totalPage");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +187,140 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 		initview();
 		setonclicklistener();
 		setheadtextview();
-		getdatalist(curPage);
+		// getdatalist(curPage);
+		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
+		GetData();
+	}
+
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+//		ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
+//		chn = "dyq";
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+//		ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/console/userScore/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = GET_DUE_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		userPhoto = PreUserInfo.getString("userPhoto", "");
+		LoginId = PreUserInfo.getString("userName", "");
+	}
+
+	// private void initview(View view2) {
+	// // TODO Auto-generated method stub
+	// ListData = (ListView) view.findViewById(R.id.list_data);
+	// }
+	//
+	// private void setonclicklistener() {
+	// // TODO Auto-generated method stub
+	// ListData.setOnItemClickListener(this);
+	// }
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		float tempY = event.getY();
+		float tempyfoot = event.getY();
+		firstItemIndex = ListData.getFirstVisiblePosition();
+		lastItemIndex = ListData.getLastVisiblePosition();
+		// Toast.makeText(getApplicationContext(), " lastItemIndex" +
+		// lastItemIndex, Toast.LENGTH_SHORT).show();
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_MOVE:
+			if (!isRecored && (firstItemIndex == 0)) {
+				isRecored = true;
+				startY = tempY;
+			}
+			int temp = 1;
+			temp = (lastItemIndex) % pageSize;
+			if (!isRecoredfoot && (temp == 0)) {
+				isRecoredfoot = true;
+				startYfoot = tempyfoot;
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
+			isRecored = false;
+			isRecoredfoot = false;
+			break;
+
+		default:
+			break;
+		}
+
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			break;
+		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
+			ListData.setPadding(0, 0, 0, 0);
+			if (tempY - startY < 400) {
+				ListData.setPadding(0, -100, 0, 0);
+			} else {
+				curPage = 1;
+				Toast.makeText(getApplicationContext(), "正在刷新", Toast.LENGTH_SHORT).show();
+				GetData();
+			}
+			int temp = 1;
+			temp = (lastItemIndex) % pageSize;
+			// temp = 0;
+			if (temp == 0 && (startYfoot - tempyfoot > 400)) {
+				curPage++;
+				if (curPage > totalPage) {
+					Toast.makeText(getApplicationContext(), " 没有更多了", Toast.LENGTH_SHORT).show();
+					// // listinfoagain();
+				} else {
+					GetData();
+					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
+				}
+
+			} else {
+
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			if (isRecored && tempY > startY) {
+				ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
+			}
+			if (isRecoredfoot && startYfoot > tempyfoot) {
+				// footTextView.setVisibility(View.VISIBLE);
+				ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) / RATIO));
+			}
+			break;
+
+		default:
+			break;
+		}
+		return false;
 	}
 
 	private void setheadtextview() {
@@ -116,85 +378,6 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
-		float tempY = event.getY();
-		float tempyfoot = event.getY();
-		firstItemIndex = ListData.getFirstVisiblePosition();
-		lastItemIndex = ListData.getLastVisiblePosition();
-		// Toast.makeText(getApplicationContext(), " lastItemIndex" +
-		// lastItemIndex, Toast.LENGTH_SHORT).show();
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-		case MotionEvent.ACTION_MOVE:
-			if (!isRecored && (firstItemIndex == 0)) {
-				isRecored = true;
-				startY = tempY;
-			}
-			int temp = 1;
-			temp = (lastItemIndex) % pageSize;
-			if (!isRecoredfoot && (temp == 0)) {
-				isRecoredfoot = true;
-				startYfoot = tempyfoot;
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_CANCEL:
-			isRecored = false;
-			isRecoredfoot = false;
-			break;
-
-		default:
-			break;
-		}
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_CANCEL:
-			ListData.setPadding(0, 0, 0, 0);
-			if (tempY - startY < 400) {
-				ListData.setPadding(0, -100, 0, 0);
-			} else {
-				curPage = 1;
-				Toast.makeText(getApplicationContext(), "正在刷新", Toast.LENGTH_SHORT).show();
-				getdatalist(pageSize);
-			}
-			int temp = 1;
-			temp = (lastItemIndex) % pageSize;
-			// temp = 0;
-			if (temp == 0 && (startYfoot - tempyfoot > 400)) {
-				curPage++;
-				if (curPage > totalPage) {
-					Toast.makeText(getApplicationContext(), " 没有更多了", Toast.LENGTH_SHORT).show();
-					// // listinfoagain();
-				} else {
-					getdatalist(pageSize);
-					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
-				}
-
-			} else {
-
-			}
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (isRecored && tempY > startY) {
-				ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
-			}
-			if (isRecoredfoot && startYfoot > tempyfoot) {
-				// footTextView.setVisibility(View.VISIBLE);
-				ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) / RATIO));
-			}
-			break;
-
-		default:
-			break;
-		}
-		return false;
-	}
-
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
 		// recommendModel data = list.get(position - 1);
@@ -233,8 +416,8 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 			finish();
 			break;
 		case R.id.image_rule:
-		Intent intent =new Intent();
-		intent.setClass(getApplicationContext(), CreditsRuleActivity.class);
+			Intent intent = new Intent();
+			intent.setClass(getApplicationContext(), CreditsRuleActivity.class);
 			startActivity(intent);
 			break;
 		default:

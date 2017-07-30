@@ -39,7 +39,7 @@
                         android:layout_marginRight="@dimen/top_height"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="我的意见"
+                        android:text="发表意见"
                         android:textColor="#ffffff"
                         android:textSize="@dimen/text_size" />
                 </RelativeLayout>

@@ -67,7 +67,10 @@ public class SearchAdapter extends ArrayAdapter<SearchModel> implements OnClickL
 			viewCache = new SearchCache(rowView);
 			rowView.setTag(viewCache);
 		} else {
-			viewCache = (SearchCache) rowView.getTag();
+			LayoutInflater inflater = activity.getLayoutInflater();
+			rowView = inflater.inflate(R.layout.item_search, null);
+			viewCache = new SearchCache(rowView);
+			rowView.setTag(viewCache);
 		}
 		SearchModel imageAndText = getItem(position);
 

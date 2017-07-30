@@ -1,10 +1,47 @@
 package wuxc.single.railwayparty.model;
+
 public class PartyBranchDataListModel {
 	private String PartyName;
 	private String PartyAddress;
 	private String PartyPhonenumber;
-	private String Id;	private boolean Cont;
+	private String Id;
+	private boolean Cont;
 	private String Summary;
+	private String Pid;
+	private boolean hasparent;
+
+	public String getstring() {
+
+		return Id + "  " + PartyName + "  " + isHasparent() + "  " + isHaschild() + "  " + Pid;
+
+	}
+
+	public String getPid() {
+		return Pid;
+	}
+
+	public void setPid(String pid) {
+		Pid = pid;
+	}
+
+	public boolean isHasparent() {
+		return hasparent;
+	}
+
+	public void setHasparent(boolean hasparent) {
+		this.hasparent = hasparent;
+	}
+
+	public boolean isHaschild() {
+		return haschild;
+	}
+
+	public void setHaschild(boolean haschild) {
+		this.haschild = haschild;
+	}
+
+	private boolean haschild;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -22,8 +59,6 @@ public class PartyBranchDataListModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

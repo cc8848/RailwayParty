@@ -3,9 +3,19 @@ package wuxc.single.railwayparty.my;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +30,8 @@ import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.MypublishAdapter;
 import wuxc.single.railwayparty.adapter.MypublishAdapter.Callback;
+import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.MypublishModel;
 import wuxc.single.railwayparty.model.MypublishModel;
 
 public class MypublishActivity extends Activity
@@ -40,6 +52,123 @@ public class MypublishActivity extends Activity
 	private TextView headTextView = null;
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
+	private int ticket = 0;
+	private String chn;
+	private String userPhoto;
+	private String LoginId;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private SharedPreferences PreALLChannel;// 存储所用频道信息
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final String GET_FAIL_RESULT = "fail";
+	private static final int GET_DUE_DATA = 6;
+	private TextView TextArticle;
+	private TextView TextVideo;
+	private int type = 2;
+	private String classify = "";
+	public Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case GET_DUE_DATA:
+				GetDataDueData(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			// pager = demoJson.getString("pager");
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				GetPager(Data);
+				GetDataList(Data, curPage);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDataList(String data, int arg) {
+		;
+		if (arg == 1) {
+			list.clear();
+		}
+		JSONArray jArray = null;
+		try {
+			jArray = new JSONArray(data);
+			JSONObject json_data = null;
+			if (jArray.length() == 0) {
+				// / Toast.makeText(getApplicationContext(), "无数据",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				for (int i = 0; i < jArray.length(); i++) {
+					json_data = jArray.getJSONObject(i);
+					Log.e("json_data", "" + json_data);
+					// json_data = json_data.getJSONObject("data");
+					MypublishModel listinfo = new MypublishModel();
+					listinfo.setTime(json_data.getString("createtime"));
+					listinfo.setTitle("跳动的音符");
+					listinfo.setNumber(json_data.getInt("browser"));
+					if (json_data.getString("classify").equals("1")) {
+						listinfo.setLabel("党内活动");
+
+					} else if (json_data.getString("classify").equals("2")) {
+						listinfo.setLabel("党员教育");
+					} else {
+						listinfo.setLabel("党员生活");
+					}
+					listinfo.setDetail(json_data.getString("content"));
+
+					list.add(listinfo);
+
+				}
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (arg == 1) {
+			go();
+		} else {
+			mAdapter.notifyDataSetChanged();
+		}
+
+	}
+
+	private void GetPager(String pager) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(pager);
+
+			totalPage = demoJson.getInt("totalPage");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +180,10 @@ public class MypublishActivity extends Activity
 		initview();
 		setonclicklistener();
 		setheadtextview();
-		getdatalist(curPage);
+		// getdatalist(curPage);
+		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
+		GetData();
 	}
 
 	private void setheadtextview() {
@@ -111,6 +243,57 @@ public class MypublishActivity extends Activity
 		ListData.setOnItemClickListener(this);
 	}
 
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		// ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
+		// chn = "dyq";
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pb/tiezi/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = GET_DUE_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getInt("ticket", 0);
+		userPhoto = PreUserInfo.getString("userPhoto", "");
+		LoginId = PreUserInfo.getString("userName", "");
+	}
+
+	// private void initview(View view2) {
+	// // TODO Auto-generated method stub
+	// ListData = (ListView) view.findViewById(R.id.list_data);
+	// }
+	//
+	// private void setonclicklistener() {
+	// // TODO Auto-generated method stub
+	// ListData.setOnItemClickListener(this);
+	// }
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
@@ -155,7 +338,7 @@ public class MypublishActivity extends Activity
 			} else {
 				curPage = 1;
 				Toast.makeText(getApplicationContext(), "正在刷新", Toast.LENGTH_SHORT).show();
-				getdatalist(pageSize);
+				GetData();
 			}
 			int temp = 1;
 			temp = (lastItemIndex) % pageSize;
@@ -166,7 +349,7 @@ public class MypublishActivity extends Activity
 					Toast.makeText(getApplicationContext(), " 没有更多了", Toast.LENGTH_SHORT).show();
 					// // listinfoagain();
 				} else {
-					getdatalist(pageSize);
+					GetData();
 					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
 				}
 
@@ -204,7 +387,8 @@ public class MypublishActivity extends Activity
 		// bundle.putString("Name", "名字");
 		// intent.putExtras(bundle);
 		// startActivity(intent);
-		Toast.makeText(getApplicationContext(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getApplicationContext(), "点击第" + position + "条" +
+		// "item", Toast.LENGTH_SHORT).show();
 	}
 
 	private void initview() {

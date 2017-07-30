@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.branch.Statisticsfornation;
 
 public class PartViewfornation extends View {
 
@@ -47,9 +48,9 @@ public class PartViewfornation extends View {
 	private void init(Context context, AttributeSet attrs) {
 
 		ySteps = new String[] { "100%", "75%", "50%", "25%", "0" };
-		xWeeks = new String[] { "汉族", "少数名族" };
-		text = new int[] { 0, 0 };
-		aniProgress = new double[] { 0, 0 };
+		xWeeks = new String[] { "汉族", "蒙古族", "土家族" };
+		text = new int[] { 0, 0, 0 };
+		aniProgress = new double[] { 0, 0, 0 };
 		ani = new HistogramAnimation();
 		ani.setDuration(100);
 
@@ -126,7 +127,7 @@ public class PartViewfornation extends View {
 		int xAxisLength = width - 30;
 		int columCount = xWeeks.length + 1;
 		int step = xAxisLength / columCount;
-		int temp = step ;
+		int temp = step;
 		for (int i = 0; i < columCount - 1; i++) {
 			// text, baseX, baseY, textPaint
 			canvas.drawText(xWeeks[i], 55 + temp * (i + 1), height + 60, titlePaint);
@@ -145,7 +146,7 @@ public class PartViewfornation extends View {
 
 				rect.left = 30 + step * (i + 1) - 40;
 				rect.right = 30 + step * (i + 1) + 40;
-				int rh = (int) (leftHeight - leftHeight * (value / 1000));
+				int rh = (int) (leftHeight - leftHeight * (value / Statisticsfornation.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 

@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="发展党员的民族分析"
+            android:text="党员的民族分析"
             android:textColor="#000000"
             android:textSize="18dp" />
 
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="发展党员的性别分析"
+            android:text="党员的性别分析"
             android:textColor="#000000"
             android:textSize="18dp" />
 
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="发展党员的年龄分析"
+            android:text="党员的年龄分析"
             android:textColor="#000000"
             android:textSize="18dp" />
 
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
-            android:text="发展党员的学历分析"
+            android:text="党员的学历分析"
             android:textColor="#000000"
             android:textSize="18dp" />
 

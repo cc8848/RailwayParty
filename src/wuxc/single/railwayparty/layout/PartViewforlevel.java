@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.branch.Statisticsforlevel;
 
 public class PartViewforlevel extends View {
 
@@ -46,10 +47,11 @@ public class PartViewforlevel extends View {
 
 	private void init(Context context, AttributeSet attrs) {
 
-		ySteps = new String[] { "100%", "75%", "50%", "25%", "0" };
-		xWeeks = new String[] { "<初中", "高中", "中专", "大专", "本科", ">本科" };
-		text = new int[] { 0, 0, 0, 0, 0, 0 };
-		aniProgress = new double[] { 0, 0, 0, 0, 0, 0 };
+		ySteps = new String[] { "25%", "18%", "12%", "6%", "0" };
+		xWeeks = new String[] { "大专", "高中", "本科", "大学", "中专", "中央党校大专", "初中", "技校", "职高", "研究生", "中央党校大学", "大学普通班",
+				"其他", "小学" };
+		text = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		aniProgress = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		ani = new HistogramAnimation();
 		ani.setDuration(100);
 
@@ -126,7 +128,7 @@ public class PartViewforlevel extends View {
 		int xAxisLength = width - 30;
 		int columCount = xWeeks.length + 1;
 		int step = xAxisLength / columCount;
-		int temp = step ;
+		int temp = step;
 		for (int i = 0; i < columCount - 1; i++) {
 			// text, baseX, baseY, textPaint
 			canvas.drawText(xWeeks[i], 85 + temp * (i + 1), height + 60, titlePaint);
@@ -145,7 +147,7 @@ public class PartViewforlevel extends View {
 
 				rect.left = 60 + step * (i + 1) - 20;
 				rect.right = 60 + step * (i + 1) + 20;
-				int rh = (int) (leftHeight - leftHeight * (value / 1000));
+				int rh = (int) (leftHeight - leftHeight * (value / Statisticsforlevel.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 
