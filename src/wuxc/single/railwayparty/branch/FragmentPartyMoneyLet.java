@@ -58,7 +58,7 @@ public class FragmentPartyMoneyLet extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// ª∫¥ÊFragment view
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -311,7 +311,7 @@ public class FragmentPartyMoneyLet extends Fragment
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

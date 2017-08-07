@@ -23,8 +23,8 @@ public class PartViewforlevel extends View {
 	private Paint hLinePaint;// 坐标轴水平内部 虚线画笔
 	private Paint titlePaint;// 绘制文本的画笔
 	private Paint paint;// 矩形画笔 柱状图的样式信息
-	private double[] progress;// 7 条
-	private double[] aniProgress;// 实现动画的值
+	private int[] progress;// 7 条
+	private int[] aniProgress;// 实现动画的值
 	private final int TRUE = 0;// 在柱状图上显示数字
 	private int[] text;
 	// 坐标轴左侧的数标
@@ -48,10 +48,9 @@ public class PartViewforlevel extends View {
 	private void init(Context context, AttributeSet attrs) {
 
 		ySteps = new String[] { "25%", "18%", "12%", "6%", "0" };
-		xWeeks = new String[] { "大专", "高中", "本科", "大学", "中专", "中央党校大专", "初中", "技校", "职高", "研究生", "中央党校大学", "大学普通班",
-				"其他", "小学" };
-		text = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		aniProgress = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		xWeeks = new String[] { "初中以下", "高中", "中专", "大专", "本科", "研究生" };
+		text = new int[] { 0, 0, 0, 0, 0, 0 };
+		aniProgress = new int[] { 0, 0, 0, 0, 0, 0 };
 		ani = new HistogramAnimation();
 		ani.setDuration(100);
 
@@ -72,8 +71,9 @@ public class PartViewforlevel extends View {
 		this.postInvalidate();// 可以子线程 更新视图的方法调用。
 	}
 
-	public void setProgress(double[] data) {
+	public void setProgress(int[] data, String[] y) {
 		this.progress = data;
+		this.ySteps = y;
 		// this.invalidate(); //失效的意思。
 		// this.postInvalidate(); // 可以子线程 更新视图的方法调用。
 		this.startAnimation(ani);
@@ -138,7 +138,7 @@ public class PartViewforlevel extends View {
 
 		if (aniProgress != null && aniProgress.length > 0) {
 			for (int i = 0; i < aniProgress.length; i++) {// 循环遍历将7条柱状图形画出来
-				double value = aniProgress[i];
+				int value = aniProgress[i];
 				paint.setAntiAlias(true);// 抗锯齿效果
 				paint.setStyle(Paint.Style.FILL);
 				paint.setTextSize(22);// 字体大小
@@ -147,7 +147,7 @@ public class PartViewforlevel extends View {
 
 				rect.left = 60 + step * (i + 1) - 20;
 				rect.right = 60 + step * (i + 1) + 20;
-				int rh = (int) (leftHeight - leftHeight * (value / Statisticsforlevel.total));
+				int rh = (int) (leftHeight - leftHeight * (((double) value) / Statisticsforlevel.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 
@@ -156,7 +156,7 @@ public class PartViewforlevel extends View {
 				canvas.drawBitmap(bitmap, null, rect, paint);
 
 				if (this.text[i] == TRUE) {
-					canvas.drawText(value + "", 60 + step * (i + 1) - 30, rh + 10, paint);
+					canvas.drawText(value + "", 60 + step * (i + 1) - 20, rh + 10, paint);
 				}
 
 			}

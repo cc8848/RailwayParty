@@ -23,7 +23,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
 
 public class PartyBranchStatisicActivity extends Activity implements OnClickListener {
-	private int ticket = 0;
+	private String ticket = "";
 
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	public Handler uiHandler = new Handler() {
@@ -73,6 +73,17 @@ public class PartyBranchStatisicActivity extends Activity implements OnClickList
 					startActivity(intent);
 				}
 				break;
+			case 5:
+
+				if (true) {
+					Intent intent = new Intent();
+					intent.setClass(getApplicationContext(), Statisticsforposition.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("data", msg.obj.toString());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+				break;
 			default:
 				break;
 			}
@@ -104,8 +115,12 @@ public class PartyBranchStatisicActivity extends Activity implements OnClickList
 		text_2.setText(time);
 		text_3.setText(time);
 		text_4.setText(time);
+		TextView text_5 = (TextView) findViewById(R.id.text_5);
+		text_5.setText(time);
+		LinearLayout lin_5 = (LinearLayout) findViewById(R.id.lin_5);
+		lin_5.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 	}
 
 	public static String GetCurrentTime() {
@@ -276,6 +291,46 @@ public class PartyBranchStatisicActivity extends Activity implements OnClickList
 						Message msg = new Message();
 						msg.obj = DueData;
 						msg.what = 4;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+			}
+
+			break;
+		case R.id.lin_5:
+			if (true) {
+
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+				// type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+				// curPage));
+				// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+				// pageSize));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
+				// chn = "dyq";
+				// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+				// curPage));
+				// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+				// pageSize));
+				// ArrayValues.add(new BasicNameValuePair("classify", "" +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/pb/statics/getSex", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 5;
 						uiHandler.sendMessage(msg);
 					}
 				}).start();

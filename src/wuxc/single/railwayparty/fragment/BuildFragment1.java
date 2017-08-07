@@ -2,6 +2,8 @@ package wuxc.single.railwayparty.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -31,12 +33,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import wuxc.single.railwayparty.BuildFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.BuildAdapter4;
 import wuxc.single.railwayparty.adapter.BuildAdapter4.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
+import wuxc.single.railwayparty.start.StandardImageXML;
 import wuxc.single.railwayparty.start.webview;
 
 public class BuildFragment1 extends Fragment
@@ -59,7 +63,7 @@ public class BuildFragment1 extends Fragment
 	private boolean[] read = { false, false, true, true, true, true, true, true, true, true, true };
 	private int[] headimg = { R.drawable.pic1, R.drawable.pic4, R.drawable.pic3, R.drawable.pic2, R.drawable.pic3,
 			R.drawable.pic1, R.drawable.pic4, R.drawable.pic1, R.drawable.pic2, R.drawable.pic3, R.drawable.pic4 };
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -78,13 +82,22 @@ public class BuildFragment1 extends Fragment
 	private TextView text_5;
 	private TextView text_6;
 	private TextView text_7;
-	private String fileClassify = "";
+	public String fileClassify = "";
+	private int sy = 0;
+	public Fragment Fragment1;
+	public BuildFragment buildFragment = new BuildFragment();
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
+				// Log.e("1111", "11111");
+				break;
+			case 8:
+				curPage = 1;
+				fileClassify = "1";
+				GetData();
 				break;
 			default:
 				break;
@@ -93,7 +106,7 @@ public class BuildFragment1 extends Fragment
 	};
 
 	protected void GetDataDueData(Object obj) {
-
+		Log.e("1111", "22222");
 		// TODO Auto-generated method stub
 		String Type = null;
 		String Data = null;
@@ -119,9 +132,40 @@ public class BuildFragment1 extends Fragment
 		}
 	}
 
+	private void starttimedelay() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				try {
+					int sys = 0;
+					sys = PreUserInfo.getInt("sys", 0);
+
+					if (sys == 0) {
+
+					} else {
+						fileClassify = "" + sys;
+						curPage = 1;
+						GetData();
+					}
+					starttimedelay();
+				} catch (Exception e) {
+					// TODO: handle exceptioni
+
+				}
+
+			}
+
+		}, 200);
+	}
+
 	private void GetDataList(String data, int arg) {
-		;
+		Log.e("1111", "33333");
 		if (arg == 1) {
+			Log.e("1111", "3344");
 			list.clear();
 		}
 		JSONArray jArray = null;
@@ -177,9 +221,12 @@ public class BuildFragment1 extends Fragment
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		Log.e("1111", "" + list.size());
 		if (arg == 1) {
+			Log.e("1111", "44444");
+
 			go();
+
 		} else {
 			mAdapter.notifyDataSetChanged();
 		}
@@ -235,10 +282,11 @@ public class BuildFragment1 extends Fragment
 			initview(view);
 			setonclicklistener();
 			setheadtextview();
-
+			Fragment1 = this;
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 			ReadTicket();
+			starttimedelay();
 			GetData();
 		}
 
@@ -313,7 +361,7 @@ public class BuildFragment1 extends Fragment
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -492,6 +540,7 @@ public class BuildFragment1 extends Fragment
 		}
 		if (arg == 1) {
 			go();
+
 		} else {
 			mAdapter.notifyDataSetChanged();
 		}
@@ -499,9 +548,13 @@ public class BuildFragment1 extends Fragment
 	}
 
 	protected void go() {
+		ListData = (ListView) view.findViewById(R.id.list_data);
 		ListData.setPadding(0, -100, 0, 0);
+		Log.e("1111", "555555555");
 		mAdapter = new BuildAdapter4(getActivity(), list, ListData, this);
+		Log.e("1111", "666666666");
 		ListData.setAdapter(mAdapter);
+		Log.e("1111", "777777777");
 	}
 
 	@Override
@@ -518,6 +571,10 @@ public class BuildFragment1 extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
+		// if (view != null) {
+		// fileClassify = "" + 1;
+		// GetData();
+		// }
 	}
 
 	@Override
@@ -543,6 +600,72 @@ public class BuildFragment1 extends Fragment
 	@Override
 	public void onDetach() {
 		super.onDetach();
+	}
+
+	public void setdata(int position) {
+
+		// TODO Auto-generated method stub
+		switch (position) {
+
+		case 1:
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String DueData = "";
+					// DueData =
+					// HttpGetData.GetData("api/cms/channel/channleListData",
+					// ArrayValues);
+					Message msg = new Message();
+					msg.obj = DueData;
+					msg.what = 8;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
+
+			break;
+		case 2:
+			// text_1=(TextView) view.findViewById(R.id.text_1);
+			this.text_1.setText("ee");
+
+			sy = 1;
+			curPage = 1;
+			fileClassify = "5";
+			GetData();
+			break;
+		case 3:
+
+			curPage = 1;
+			fileClassify = "4";
+			GetData();
+			break;
+		case 4:
+
+			curPage = 1;
+			fileClassify = "2";
+			GetData();
+			break;
+		case 5:
+
+			curPage = 1;
+			fileClassify = "3";
+			GetData();
+			break;
+		case 6:
+
+			curPage = 1;
+			fileClassify = "6";
+			GetData();
+			break;
+		case 7:
+
+			curPage = 1;
+			fileClassify = "7";
+			GetData();
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	@Override

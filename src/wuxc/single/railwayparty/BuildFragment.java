@@ -5,9 +5,18 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,14 +29,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import wuxc.single.railwayparty.fragment.BuildFragment1;
 import wuxc.single.railwayparty.fragment.BuildFragment2;
 import wuxc.single.railwayparty.fragment.BuildFragment3;
 import wuxc.single.railwayparty.fragment.BuildFragment4;
 import wuxc.single.railwayparty.fragment.BuildFragment5;
 import wuxc.single.railwayparty.fragment.BuildFragment6;
+import wuxc.single.railwayparty.internet.APPVersion;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.main.WebLearnActivity;
 import wuxc.single.railwayparty.main.ZDJYW;
@@ -76,6 +89,37 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	private boolean doubleclick4 = false;
 	private boolean doubleclick5 = false;
 	private boolean doubleclick6 = false;
+	private LinearLayout lin_select;
+	private TextView btn_1;
+	private TextView btn_2;
+	private TextView btn_3;
+	private TextView btn_4;
+	private TextView btn_5;
+	private TextView btn_6;
+	private TextView btn_7;
+	public int sys = 0;
+	private int t1 = 0;
+	private int t2 = 0;
+	private int t3 = 0;
+	private int t4 = 0;
+	private int t5 = 0;
+	private int t6 = 0;
+	private SharedPreferences PreUserInfo;// 存储个人信息
+	private static final int GET_VERSION_RESULT = 5;
+
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			case GET_VERSION_RESULT:
+				GetDataDetailFromVersion(msg.obj);
+				break;
+			default:
+				break;
+			}
+		}
+	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +128,8 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
 		initview(view);
 		initheight(view);
+		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+
 		initcolor();
 		ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
 		Fragments.clear();// 清空list
@@ -103,7 +149,49 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				startActivity(intent);
 			}
 		});
+		String ticket = PreUserInfo.getString("ticket", "");
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("chns", "zdwj,djyw,tzgg,szrd,dyfc,wsdx"));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_VERSION_RESULT;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 		return view;
+	}
+
+	protected void GetDataDetailFromVersion(Object obj) {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		String data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+
+			data = demoJson.getString("data");
+			demoJson = new JSONObject(data);
+			t1 = demoJson.getInt("zdwj");
+			t2 = demoJson.getInt("djyw");
+			t3 = demoJson.getInt("tzgg");
+			t4 = demoJson.getInt("szrd");
+			t5 = demoJson.getInt("dyfc");
+			t6 = demoJson.getInt("wsdx");
+			intnumber();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	private void initfragment() {
@@ -205,6 +293,39 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}
 	}
 
+	private void intnumber() {
+		text_number_1.setVisibility(View.GONE);
+		text_number_2.setVisibility(View.GONE);
+		text_number_3.setVisibility(View.GONE);
+		text_number_4.setVisibility(View.GONE);
+		text_number_5.setVisibility(View.GONE);
+		text_number_6.setVisibility(View.GONE);
+		if (t1 != 0) {
+			text_number_1.setVisibility(View.VISIBLE);
+			text_number_1.setText("" + t1);
+		}
+		if (t2 != 0) {
+			text_number_2.setVisibility(View.VISIBLE);
+			text_number_2.setText("" + t2);
+		}
+		if (t3 != 0) {
+			text_number_3.setVisibility(View.VISIBLE);
+			text_number_3.setText("" + t3);
+		}
+		if (t4 != 0) {
+			text_number_4.setVisibility(View.VISIBLE);
+			text_number_4.setText("" + t4);
+		}
+		if (t5 != 0) {
+			text_number_5.setVisibility(View.VISIBLE);
+			text_number_5.setText("" + t5);
+		}
+		if (t6 != 0) {
+			text_number_6.setVisibility(View.VISIBLE);
+			text_number_6.setText("" + t6);
+		}
+	}
+
 	private void initcolor() {
 		// TODO Auto-generated method stub
 		clearcolor();
@@ -272,6 +393,24 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		text_6 = (TextView) view.findViewById(R.id.text_6);
 		text_number_6 = (TextView) view.findViewById(R.id.text_number_6);
 		text_below_6 = (TextView) view.findViewById(R.id.text_below_6);
+
+		lin_select = (LinearLayout) view.findViewById(R.id.lin_select);
+		btn_1 = (TextView) view.findViewById(R.id.btn_1);
+		btn_2 = (TextView) view.findViewById(R.id.btn_2);
+		btn_3 = (TextView) view.findViewById(R.id.btn_3);
+		btn_4 = (TextView) view.findViewById(R.id.btn_4);
+		btn_5 = (TextView) view.findViewById(R.id.btn_5);
+		btn_6 = (TextView) view.findViewById(R.id.btn_6);
+		btn_7 = (TextView) view.findViewById(R.id.btn_7);
+		btn_1.setOnClickListener(this);
+		btn_2.setOnClickListener(this);
+		btn_3.setOnClickListener(this);
+		btn_4.setOnClickListener(this);
+		btn_5.setOnClickListener(this);
+		btn_6.setOnClickListener(this);
+		btn_7.setOnClickListener(this);
+		lin_select.setOnClickListener(this);
+		lin_select.setVisibility(View.GONE);
 	}
 
 	private void initheight(View view) {
@@ -301,6 +440,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_1.setTextColor(Color.parseColor("#cc0502"));
 			text_below_1.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(0);
+			lin_select.setVisibility(View.VISIBLE);
+			t1 = 0;
+			intnumber();
 			// if (doubleclick1) {
 			// Intent intent_rel_weblearn = new Intent();
 			// intent_rel_weblearn.setClass(getActivity(), ZZDWJ.class);
@@ -314,6 +456,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_2.setTextColor(Color.parseColor("#cc0502"));
 			text_below_2.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(1);
+			lin_select.setVisibility(View.GONE);
+			t2 = 0;
+			intnumber();
 			// if (doubleclick2) {
 			// Intent intent_rel_weblearn = new Intent();
 			// intent_rel_weblearn.setClass(getActivity(), ZDJYW.class);
@@ -327,7 +472,10 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_3.setTextColor(Color.parseColor("#cc0502"));
 			text_below_3.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(2);
-			// if (doubleclick3) {
+			lin_select.setVisibility(View.GONE);
+			t3 = 0;
+			intnumber();
+			// if (doubleclick3) {lin_select.setVisibility(View.GONE);
 			// Intent intent_rel_weblearn = new Intent();
 			// intent_rel_weblearn.setClass(getActivity(), ZTZGG.class);
 			// startActivity(intent_rel_weblearn);
@@ -340,7 +488,10 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_4.setTextColor(Color.parseColor("#cc0502"));
 			text_below_4.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(3);
-			// if (doubleclick4) {
+			lin_select.setVisibility(View.GONE);
+			t4 = 0;
+			intnumber();
+			// if (doubleclick4) {lin_select.setVisibility(View.GONE);
 			// Intent intent_rel_weblearn = new Intent();
 			// intent_rel_weblearn.setClass(getActivity(), ZSZRD.class);
 			// startActivity(intent_rel_weblearn);
@@ -353,6 +504,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_5.setTextColor(Color.parseColor("#cc0502"));
 			text_below_5.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(4);
+			lin_select.setVisibility(View.GONE);
+			t5 = 0;
+			intnumber();
 			// if (doubleclick5) {
 			// Intent intent_rel_weblearn = new Intent();
 			// intent_rel_weblearn.setClass(getActivity(), ZDYFC.class);
@@ -366,6 +520,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_6.setTextColor(Color.parseColor("#cc0502"));
 			text_below_6.setBackgroundColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(5);
+			lin_select.setVisibility(View.GONE);
 			if (doubleclick6) {
 				Intent intent_rel_weblearn = new Intent();
 				intent_rel_weblearn.setClass(getActivity(), WebLearnActivity.class);
@@ -373,8 +528,88 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			}
 			doubleclick6 = true;
 			starttimedelay6();
+			t6 = 0;
+			intnumber();
 			break;
+		case R.id.btn_1:
+			if (true) {
+				// BuildFragment1 buildFragment1 = new BuildFragment1();
+				// buildFragment1.setdata(1);
+				lin_select.setVisibility(View.GONE);
 
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 1);
+				edit.commit();
+				starttimedelay();
+			}
+
+			break;
+		case R.id.btn_2:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 5);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.btn_3:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 4);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.btn_4:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 2);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.btn_5:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 3);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.btn_6:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 6);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.btn_7:
+			if (true) {
+				lin_select.setVisibility(View.GONE);
+
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("sys", 7);
+				edit.commit();
+				starttimedelay();
+			}
+			break;
+		case R.id.lin_select:
+			if (true) {
+
+				lin_select.setVisibility(View.GONE);
+			}
+			break;
 		default:
 			break;
 		}
@@ -391,6 +626,29 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			}
 
 		}, 300);
+	}
+
+	private void starttimedelay() {
+		// 原因：不延时的话list会滑到顶部
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				try {
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("sys", 0);
+					edit.commit();
+
+				} catch (Exception e) {
+					// TODO: handle exceptioni
+
+				}
+
+			}
+
+		}, 3000);
 	}
 
 	private void starttimedelay2() {

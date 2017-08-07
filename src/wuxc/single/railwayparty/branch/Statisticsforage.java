@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -21,9 +22,11 @@ import wuxc.single.railwayparty.layout.PartViewforage;
 
 public class Statisticsforage extends Activity implements OnClickListener {
 
-	private double[] data = new double[] { 600, 400, 500 };
+	private int[] data = new int[] { 0, 0, 0, 0, 0 };
 	private PartViewforage histogramView;
 	public static int total = 0;
+
+	private String[] ySteps = new String[] { "", "", "", "", "" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +58,34 @@ public class Statisticsforage extends Activity implements OnClickListener {
 					finish();
 				} else {
 					int temp = 0;
-					if (jArray.length() < 3) {
+					if (jArray.length() < 5) {
 						temp = jArray.length();
 					} else {
-						temp = 3;
+						temp = 5;
 					}
 					for (int i = 0; i < temp; i++) {
 						json_data = jArray.getJSONObject(i);
 						data[i] = json_data.getInt("num");
-						total = (int) (total + data[i]);
+
+						if (data[i] > total) {
+							total = data[i];
+						}
 					}
+					total = total + 40;
+					ySteps[0] = "" + total / 40 * 40;
+					ySteps[1] = "" + total / 40 * 30;
+					ySteps[2] = "" + total / 40 * 20;
+					ySteps[3] = "" + total / 40 * 10;
+					ySteps[4] = "" + total / 40 * 0;
+					// histogramView.setY(ySteps);
 					histogramView = (PartViewforage) this.findViewById(R.id.histogram);
 
-					histogramView.setProgress(data);
+					histogramView.setProgress(data,ySteps);
 				}
 
 			} else {
 				Toast.makeText(getApplicationContext(), "Êý¾Ý´íÎó", Toast.LENGTH_SHORT).show();
-				finish();
+				// finish();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

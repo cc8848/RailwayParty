@@ -70,7 +70,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	private TextView text_1;
 
 	private TextView text_2;
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -185,10 +185,10 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					}
 					// System.out.println(date.g);
 					listinfo.setTime(thistime);
-					listinfo.setTitle(json_data.getString("title"));
+
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("title"));
+
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
 					listinfo.setGuanzhu(json_data.getString("browser"));
@@ -205,10 +205,12 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					} else {
 						listinfo.setLabel("ÆäËû");
 					}
-					listinfo.setName(json_data.getString("author"));
+					listinfo.setContent(json_data.getString("content"));
 					listinfo.setZan(json_data.getString("createtime"));
 					// listinfo.setGuanzhu("4532");
-					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
+					listinfo.setTitle(json_data.getString("content"));
+					listinfo.setName(json_data.getString("title"));
+					listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					listinfo.setRead(true);
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
@@ -371,7 +373,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/channel/channleListData", ArrayValues);
+				DueData = HttpGetData.GetData(URL, ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;
@@ -383,7 +385,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

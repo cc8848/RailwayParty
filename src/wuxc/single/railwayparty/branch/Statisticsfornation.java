@@ -22,9 +22,10 @@ import wuxc.single.railwayparty.layout.PartViewfornation;
 
 public class Statisticsfornation extends Activity implements OnClickListener {
 
-	private double[] data = new double[] { 600, 400, 100 };
+	private int[] data = new int[] { 600, 400, 100 };
 	private PartViewfornation histogramView;
 	public static int total = 0;
+	private String[] ySteps = new String[] { "", "", "", "", "" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +63,20 @@ public class Statisticsfornation extends Activity implements OnClickListener {
 					for (int i = 0; i < temp; i++) {
 						json_data = jArray.getJSONObject(i);
 						data[i] = json_data.getInt("num");
-						total = (int) (total + data[i]);
+
+						if (data[i] > total) {
+							total = data[i];
+						}
 					}
-					total = total + 100;
+					total = total + 40;
+					ySteps[0] = "" + total / 40 * 40;
+					ySteps[1] = "" + total / 40 * 30;
+					ySteps[2] = "" + total / 40 * 20;
+					ySteps[3] = "" + total / 40 * 10;
+					ySteps[4] = "" + total / 40 * 0;
 					histogramView = (PartViewfornation) this.findViewById(R.id.histogram);
 
-					histogramView.setProgress(data);
+					histogramView.setProgress(data,ySteps);
 				}
 
 			} else {

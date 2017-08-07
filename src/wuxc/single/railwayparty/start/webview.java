@@ -28,6 +28,13 @@ public class webview extends Activity implements OnClickListener {
 	private LinearLayout lin_text;
 
 	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		WebView.destroy();
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);

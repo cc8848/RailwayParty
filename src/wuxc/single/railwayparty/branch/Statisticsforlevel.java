@@ -22,10 +22,11 @@ import wuxc.single.railwayparty.layout.PartViewforlevel;
 
 public class Statisticsforlevel extends Activity implements OnClickListener {
 
-	private double[] data = new double[] { 600, 400, 500, 200, 100, 800, 600, 400, 500, 200, 100, 800, 600, 400, 500,
-			200, 100, 800, 600, 400, 500, 200, 100, 800 };
+	private int[] data = new int[] { 0, 0, 0, 0, 0, 0, 0, 400, 500, 200, 100, 800, 600, 400, 500, 200, 100, 800, 600,
+			400, 500, 200, 100, 800 };
 	private PartViewforlevel histogramView;
 	public static int total = 0;
+	private String[] ySteps = new String[] { "", "", "", "", "" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +56,49 @@ public class Statisticsforlevel extends Activity implements OnClickListener {
 					finish();
 				} else {
 					int temp = 0;
-					if (jArray.length() < 14) {
+					if (jArray.length() < 6) {
 						temp = jArray.length();
 					} else {
-						temp = 14;
+						temp = 6;
 					}
 					for (int i = 0; i < temp; i++) {
-
 						json_data = jArray.getJSONObject(i);
-						data[i] = json_data.getInt("num");
-						total = (int) (total + data[i]);
+
+						if (json_data.getString("title").equals("初中")) {
+							data[0] = json_data.getInt("num");
+						} else if (json_data.getString("title").equals("高中")) {
+							data[1] = json_data.getInt("num");
+						} else if (json_data.getString("title").equals("中专")) {
+							data[2] = json_data.getInt("num");
+						} else if (json_data.getString("title").equals("大专")) {
+							data[3] = json_data.getInt("num");
+						} else if (json_data.getString("title").equals("本科")) {
+							data[4] = json_data.getInt("num");
+						} else {
+							data[5] = json_data.getInt("num");
+						}
 
 					}
-					total = total / 4;
+					for (int i = 0; i < temp; i++) {
+						if (data[i] > total) {
+							total = data[i];
+						}
+					}
+					total = total + 40;
+					ySteps[0] = "" + total / 40 * 40;
+					ySteps[1] = "" + total / 40 * 30;
+					ySteps[2] = "" + total / 40 * 20;
+					ySteps[3] = "" + total / 40 * 10;
+					ySteps[4] = "" + total / 40 * 0;
+
 					histogramView = (PartViewforlevel) this.findViewById(R.id.histogram);
 
-					histogramView.setProgress(data);
+					histogramView.setProgress(data, ySteps);
 				}
 
 			} else {
 				Toast.makeText(getApplicationContext(), "数据错误", Toast.LENGTH_SHORT).show();
-				finish();
+			 
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

@@ -94,7 +94,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 	Timer timer = new Timer();
 	private String Title;
 	private String Id;
-	private int ticket = 0;
+	private String ticket = "";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
@@ -183,7 +183,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 
 		Title = bundle.getString("Title");
 		Id = bundle.getString("keyid");
-		ticket = bundle.getInt("ticket");
+		ticket = bundle.getString("ticket");
 		text_title.setText(Title);
 		text_time.setText("60:00");
 		GetData();
@@ -625,7 +625,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 						bundle.putString("Title", Title);
 						bundle.putString("keyid", Id);
 						bundle.putString("anwser", anwser.toString());
-						bundle.putInt("ticket", ticket);
+						bundle.putString("ticket", ticket);
 						bundle.putIntArray("user", user);
 						intent1.putExtras(bundle);
 						startActivity(intent1);

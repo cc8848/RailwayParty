@@ -2,8 +2,10 @@ package wuxc.single.railwayparty.main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,12 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
 
 public class PublishadviceActivity extends FragmentActivity implements OnClickListener {
 	private EditText edit_name;
 	private EditText edit_content;
 	private Button btn_ok;
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -50,6 +55,15 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 	private TextView text_label;
 	private TextView text_load;
 	private int classify = 0;
+	private String attachment_ext;
+	private String attachment_scalePath;
+	private String attachment_classify;
+	private String attachment_fileName;
+	private String attachment_par_keyid;
+	private String attachment_size;
+	private String attachment_filePath;
+	private String attachment_pathType;
+	private String attachment_key;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -57,11 +71,61 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 1:
+				GetDataAttachment(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetDataAttachment(Object obj) {
+		text_load.setVisibility(View.GONE);
+
+		// TODO Auto-generated method stub
+		String state = null;
+		String fileInfo = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			state = demoJson.getString("state");
+			fileInfo = demoJson.getString("fileInfo");
+			if (state.equals("1")) {
+				Toast.makeText(getApplicationContext(), "文件上传成功", 0).show();
+
+				GetDetailDataAttachment(fileInfo);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Toast.makeText(getApplicationContext(), "", 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailDataAttachment(String fileInfo) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(fileInfo);
+
+			attachment_ext = demoJson.getString("ext");
+			attachment_classify = demoJson.getString("classify");
+			attachment_fileName = demoJson.getString("fileName");
+			attachment_filePath = demoJson.getString("filePath");
+			attachment_key = demoJson.getString("key");
+			attachment_par_keyid = demoJson.getString("par_keyid");
+			attachment_pathType = demoJson.getString("pathType");
+			attachment_scalePath = demoJson.getString("scalePath");
+			attachment_size = demoJson.getString("size");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 		text_load.setVisibility(View.GONE);
@@ -137,16 +201,63 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 		// ArrayValues.add(new BasicNameValuePair("modelSign", "xinde"));
 		// ArrayValues.add(new BasicNameValuePair("par_keyid",
 		// "886571396132638720"));
-		ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" + edit_content.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("article.releaseDate", getTimeByCalendar()));
+		ArrayValues.add(new BasicNameValuePair("chn", "dyyj"));
+		ArrayValues.add(new BasicNameValuePair("article.content", edit_content.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("article.classify", "" + classify));
+		ArrayValues.add(new BasicNameValuePair("article.hstate", "3"));
+		ArrayValues.add(new BasicNameValuePair("article.title", edit_name.getText().toString()));
+		// ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" +
+		// edit_content.getText().toString()));
 		// ArrayValues.add(new BasicNameValuePair("xinde.hstate", "3"));
 		// ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" +
 		// edit_content.getText().toString()));
+		JSONArray kArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject.put("operateFlag", "1");
+			jsonObject.put("ext", attachment_ext);
+			jsonObject.put("scalePath", attachment_scalePath);
+			jsonObject.put("classify", attachment_classify);
+			jsonObject.put("fileName", attachment_fileName);
+			jsonObject.put("par_keyid", attachment_par_keyid);
+			jsonObject.put("size", attachment_size);
+			jsonObject.put("filePath", attachment_filePath);
+			jsonObject.put("pathType", attachment_key);
+			jsonObject.put("key", attachment_key);
+			kArray.put(jsonObject);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// ArrayValues.add(new BasicNameValuePair("attacement.operateFlag",
+		// "1"));
+		// ArrayValues.add(new BasicNameValuePair("attacement.ext",
+		// attachment_ext));
+		// ArrayValues.add(new BasicNameValuePair("attacement.scalePath",
+		// attachment_scalePath));
+		// ArrayValues.add(new BasicNameValuePair("attacement.classify",
+		// attachment_classify));
+		// ArrayValues.add(new BasicNameValuePair("attacement.fileName",
+		// attachment_fileName));
+		// ArrayValues.add(new BasicNameValuePair("attacement.par_keyid",
+		// attachment_par_keyid));
+		// ArrayValues.add(new BasicNameValuePair("attacement.size",
+		// attachment_size));
+		// ArrayValues.add(new BasicNameValuePair("attacement.filePath",
+		// attachment_filePath));
+		// ArrayValues.add(new BasicNameValuePair("attacement.pathType",
+		// attachment_key));
+		// ArrayValues.add(new BasicNameValuePair("attacement.key",
+		// attachment_key));
+		Log.e("kArray", jsonObject.toString()) ;
+		ArrayValues.add(new BasicNameValuePair("attacement", jsonObject.toString()));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/pubshare/suggestions/save", ArrayValues);
+				DueData = HttpGetData.GetData("api/pb/yijian/saveData", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;
@@ -156,9 +267,33 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 
 	}
 
+	public String getTimeByCalendar() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = cal.get(Calendar.MONTH);// 获取月份
+		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+		// int hour=cal.get(Calendar.HOUR);//小时
+		// int minute=cal.get(Calendar.MINUTE);//分
+		// int second=cal.get(Calendar.SECOND);//秒
+		// int WeekOfYear = cal.get(Calendar.DAY_OF_WEEK);//一周的第几天
+		// System.out.println("现在的时间是：公元"+year+"年"+month+"月"+day+"日
+		// "+hour+"时"+minute+"分"+second+"秒 星期"+WeekOfYear);
+		String Mon = "";
+		String Day = "";
+		month++;
+		if (month < 10) {
+			Mon = "0" + month;
+		}
+		if (day < 10) {
+			Day = "0" + day;
+		}
+		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
+		return year + "-" + Mon + "-" + Day;
+	}
+
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -210,7 +345,7 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 			Intent intent = null;
 			// if (Build.VERSION.SDK_INT < 19) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
+			intent.setType("file/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			// } else {
 			// intent = new Intent(Intent.ACTION_PICK,
@@ -237,9 +372,25 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 			if (data != null) {
 				Uri uri = data.getData();
 				if (uri != null) {
-					Toast.makeText(getApplicationContext(), "正在上传", 0).show();
+					// Toast.makeText(getApplicationContext(), "正在上传",
+					// 0).show();
 
-					GetFile(uri);
+					final File file = GetFile(uri);
+					text_load.setVisibility(View.VISIBLE);
+					if (!(file == null)) {
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String UpLoadResult = UpLoadFile.uploadFileatt(file,
+										URLcontainer.urlip + "console/form/formfileUpload/uploadSignle", "xinde",
+										"" + ticket);
+								Message msg = new Message();
+								msg.what = 1;
+								msg.obj = UpLoadResult;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
 				}
 			}
 
@@ -254,14 +405,14 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 	 * 
 	 * @param uri
 	 */
-	private void GetFile(Uri uri) {
+	private File GetFile(Uri uri) {
 		String filePath = null;
 		if ("content".equalsIgnoreCase(uri.getScheme())) {
 			String[] projection = { "_data" };
 			Cursor cursor = null;
 
 			try {
-				cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, null);
+				cursor = getContentResolver().query(uri, projection, null, null, null);
 				int column_index = cursor.getColumnIndexOrThrow("_data");
 				if (cursor.moveToFirst()) {
 					filePath = cursor.getString(column_index);
@@ -276,12 +427,13 @@ public class PublishadviceActivity extends FragmentActivity implements OnClickLi
 		if (file == null || !file.exists()) {
 
 			Toast.makeText(getApplicationContext(), "文件不存在", 0).show();
-			return;
+			return file;
 		}
 		if (file.length() > 20 * 1024 * 1024) {
 
 			Toast.makeText(getApplicationContext(), "文件不能大于20M", 0).show();
-			return;
+			return null;
 		}
+		return file;
 	}
 }

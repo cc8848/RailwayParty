@@ -40,7 +40,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	private Button btn_exit;
 	private boolean IsExit = true;
 	private MainActivity MainActivity;
-	private int ticket;
+	private String ticket="";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_VERSION_RESULT = 1;
 
@@ -136,7 +136,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		btn_exit = (Button) findViewById(R.id.btn_exit);
 		btn_exit.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 	}
 
 	@Override

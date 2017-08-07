@@ -43,6 +43,9 @@ import wuxc.single.railwayparty.other.SearchAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.Childviewpaper;
+import wuxc.single.railwayparty.model.Bbs1Model;
+import wuxc.single.railwayparty.start.SpecialDetailActivity;
+import wuxc.single.railwayparty.start.SpecialDetailActivity4;
 import wuxc.single.railwayparty.start.webview;
 
 public class SearchDataListActivity extends FragmentActivity
@@ -75,7 +78,7 @@ public class SearchDataListActivity extends FragmentActivity
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 
-	private int ticket;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -113,9 +116,9 @@ public class SearchDataListActivity extends FragmentActivity
 				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-				Toast.makeText(getApplicationContext(), "服务器返回数据失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "无数据", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "无数据", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -156,6 +159,7 @@ public class SearchDataListActivity extends FragmentActivity
 					// + arg);
 					// listinfo.setTitle("宁县开展非公企业党建工作专项督查活动" + arg);
 					// listinfo.setBackGround("");
+					listinfo.setId(jsonObject.getString("keyid"));
 					list.add(listinfo);
 
 				}
@@ -191,7 +195,7 @@ public class SearchDataListActivity extends FragmentActivity
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -203,7 +207,7 @@ public class SearchDataListActivity extends FragmentActivity
 		final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		Log.d("eeeeee", SearchText);
-		ArrayValues.add(new BasicNameValuePair("searchContent.title", SearchText));
+		ArrayValues.add(new BasicNameValuePair("searchContentDto.title", SearchText));
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 		new Thread(new Runnable() { // 开启线程上传文件
@@ -244,6 +248,7 @@ public class SearchDataListActivity extends FragmentActivity
 		Intent intent = this.getIntent(); // 获取已有的intent对象
 		Bundle bundle = intent.getExtras(); // 获取intent里面的bundle对象
 		SearchText = bundle.getString("search_text");
+		Log.e("search_text", SearchText);
 		GetData();
 	}
 
@@ -456,27 +461,15 @@ public class SearchDataListActivity extends FragmentActivity
 		switch (v.getId()) {
 		case R.id.lin_all:
 			SearchModel data = list.get((Integer) v.getTag());
-			// Intent intent = new Intent();
-			// intent.setClass(getApplicationContext(),
-			// SearchDetailActivity.class);
-			// Bundle bundle = new Bundle();
-			// bundle.putString("Title", data.getTitle());
-			// bundle.putString("detail", data.getDetail());
-			// bundle.putString("Time", data.getTime());
-			// bundle.putString("Name", "名字");
-			// intent.putExtras(bundle);
-			// startActivity(intent);
-			// CollectModel data = list.get(position - 1);
+
 			Intent intent = new Intent();
-			intent.setClass(getApplicationContext(), webview.class);
+			intent.setClass(this, SpecialDetailActivity4.class);
 			Bundle bundle = new Bundle();
-			bundle.putString("url", URLcontainer.urlip + data.getNumber());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
-			// //
-			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", "");
+			bundle.putString("detail", data.getTitle());
+			bundle.putString("chn", "search");
+			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
 			break;

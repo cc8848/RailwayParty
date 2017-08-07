@@ -319,6 +319,99 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="#ffffff" />
+
+        <LinearLayout
+            android:id="@+id/lin_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/lin_title"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/three_title"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/btn_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="党办"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="组织部"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="宣传部"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="干部部"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="纪委"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="工会"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/btn_7"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="@color/three_title"
+                    android:gravity="center"
+                    android:text="团委"
+                    android:textColor="#000000"
+                    android:textSize="14dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

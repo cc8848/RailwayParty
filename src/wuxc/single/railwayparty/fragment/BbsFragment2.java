@@ -79,7 +79,7 @@ public class BbsFragment2 extends Fragment implements OnTouchListener, Callback,
 	private float scale = 0;
 	private float scalepx = 0;
 	private float dp = 0;
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -364,7 +364,7 @@ public class BbsFragment2 extends Fragment implements OnTouchListener, Callback,
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

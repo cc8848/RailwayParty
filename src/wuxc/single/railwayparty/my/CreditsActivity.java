@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,7 +58,7 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 	private int curPage = 1;
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -70,6 +71,9 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 	private TextView TextVideo;
 	private int type = 2;
 	private String classify = "";
+	private int creditsym = 0;
+	private int credit = 0;
+	private TextView text_credit;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -137,8 +141,8 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 					} else {
 						mark = "-";
 					}
-					listinfo.setNumber(mark+json_data.getString("amount"));
-//					listinfo.setDetail("完善个人资料信息获得积分");
+					listinfo.setNumber(mark + json_data.getString("amount"));
+					// listinfo.setDetail("完善个人资料信息获得积分");
 					list.add(listinfo);
 
 				}
@@ -190,6 +194,15 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 		// getdatalist(curPage);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
+		if (creditsym == 0) {
+			Intent intent = new Intent();
+			intent.setClass(getApplicationContext(), CreditsRuleActivity.class);
+			startActivity(intent);
+			Editor edit = PreUserInfo.edit();
+			edit.putInt("creditsym", 1);
+			edit.commit();
+		}
+		text_credit.setText("" + credit);
 		GetData();
 	}
 
@@ -207,11 +220,11 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-//		ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
-//		chn = "dyq";
+		// ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
+		// chn = "dyq";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-//		ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+		// ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -229,9 +242,11 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
+		creditsym = PreUserInfo.getInt("creditsym", 0);
+		credit = PreUserInfo.getInt("credit", 0);
 	}
 
 	// private void initview(View view2) {
@@ -397,6 +412,7 @@ public class CreditsActivity extends Activity implements OnClickListener, OnTouc
 	private void initview() {
 		// TODO Auto-generated method stub
 		ListData = (ListView) findViewById(R.id.list_data);
+		text_credit = (TextView) findViewById(R.id.text_credit);
 	}
 
 	private void initheight() {

@@ -55,7 +55,7 @@ public class MycollectActivity extends Activity
 	private TextView headTextView = null;
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -310,7 +310,7 @@ public class MycollectActivity extends Activity
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

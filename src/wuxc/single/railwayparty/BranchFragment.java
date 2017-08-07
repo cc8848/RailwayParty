@@ -44,7 +44,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private LinearLayout rel_org;
 	private LinearLayout rel_statisic;
 	private LinearLayout rel_group;
-	private int ticket = 0;
+	private String ticket ;
 	private String loginId;
 	private String sex;
 	private String sessionId;
@@ -151,7 +151,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		// userPhoto = PreUserInfo.getString("userPhoto", "");
 		sessionId = PreUserInfo.getString("deptId", "");
 	}

@@ -43,7 +43,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 	private static final String GET_SUCCESS_RESULT = "success";
 	private String userPhoto;
 	private String address;
-	private int ticket;
+	private String ticket;
 	private String loginId;
 	private String sex;
 	private String sessionId;
@@ -131,7 +131,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 
 			userPhoto = demoJson.getString("userPhoto");
 			address = demoJson.getString("address");
-			ticket = demoJson.getInt("ticket");
+			ticket = demoJson.getString("ticket");
 			loginId = demoJson.getString("loginId");
 			sex = demoJson.getString("sex");
 			sessionId = demoJson.getString("sessionId");
@@ -153,7 +153,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 		Editor edit = PreUserInfo.edit();
 		edit.putString("userPhoto", userPhoto);
 		edit.putString("address", address);
-		edit.putInt("ticket", ticket);
+		edit.putString("ticket", ticket);
 		edit.putString("sex", sex);
 		edit.putString("loginId", loginId);
 		edit.putString("sessionId", sessionId);

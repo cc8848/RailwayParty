@@ -42,6 +42,7 @@ import wuxc.single.railwayparty.layout.dialogselecttwo;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.model.SchoolModel;
+import wuxc.single.railwayparty.start.ImagePPT;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 import wuxc.single.railwayparty.start.wsdxActivity;
@@ -76,7 +77,7 @@ public class BuildFragment6 extends Fragment
 			R.drawable.video_bg, R.drawable.ppt };
 	private boolean[] bi = { true, true, false, false, false, false, false, false, false, false, false, false, false,
 			false, false, false, false, false, false, false };
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -160,6 +161,7 @@ public class BuildFragment6 extends Fragment
 					listinfo.setCont(true);
 					listinfo.setGuanzhu("231");
 					listinfo.setZan("453");
+					listinfo.setFileClassify(json_data.getInt("fileClassify"));
 					listinfo.setNumber(json_data.getInt("hot"));
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
@@ -420,7 +422,7 @@ public class BuildFragment6 extends Fragment
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -618,17 +620,32 @@ public class BuildFragment6 extends Fragment
 			// // Toast.LENGTH_SHORT).show();
 			// }
 			SchoolModel data = list.get((Integer) v.getTag());
+
 			if (data.isCont()) {
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), wsdxActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("Title", data.getTitle());
-				bundle.putString("Time", data.getTime());
-				bundle.putString("detail", data.getContent());
-				bundle.putString("chn", chn);
-				bundle.putString("Id", data.getId());
-				intent.putExtras(bundle);
-				startActivity(intent);
+				if (data.getFileClassify() == 1) {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), ImagePPT.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("Title", data.getTitle());
+					bundle.putString("Time", data.getTime());
+					bundle.putString("detail", data.getContent());
+					bundle.putString("chn", chn);
+					bundle.putString("Id", data.getId());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), wsdxActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("Title", data.getTitle());
+					bundle.putString("Time", data.getTime());
+					bundle.putString("detail", data.getContent());
+					bundle.putString("chn", chn);
+					bundle.putString("Id", data.getId());
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+
 			} else {
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), webview.class);

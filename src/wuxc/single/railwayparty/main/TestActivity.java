@@ -51,7 +51,7 @@ public class TestActivity extends Activity implements OnClickListener, Callback,
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private int ticket;
+	private String ticket="";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
@@ -84,7 +84,7 @@ public class TestActivity extends Activity implements OnClickListener, Callback,
 		// PreALLChannel = getSharedPreferences("ALLChannel",
 		// Context.MODE_PRIVATE);
 		// ReadTicket();
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		GetData();
 	}
 
@@ -349,7 +349,7 @@ public class TestActivity extends Activity implements OnClickListener, Callback,
 		Bundle bundle = new Bundle();
 		bundle.putString("Title", data.getName());
 		bundle.putString("keyid", data.getId());
-		bundle.putInt("ticket", ticket);
+		bundle.putString("ticket", ticket);
 		intent.putExtras(bundle);
 		intent.setClass(getApplicationContext(), ExamActivity.class);
 		startActivity(intent);
@@ -371,7 +371,7 @@ public class TestActivity extends Activity implements OnClickListener, Callback,
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getName());
 			bundle.putString("keyid", data.getId());
-			bundle.putInt("ticket", ticket);
+			bundle.putString("ticket", ticket);
 			intent.putExtras(bundle);
 			intent.setClass(getApplicationContext(), ExamActivity.class);
 			startActivity(intent);

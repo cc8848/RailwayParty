@@ -28,12 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
 
 public class PublishDYQActivity extends FragmentActivity implements OnClickListener {
 	private EditText edit_name;
 	private EditText edit_content;
 	private Button btn_ok;
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -53,6 +55,15 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 	private TextView text_label;
 	private TextView text_load;
 	private int classify = 0;
+	private String attachment_ext;
+	private String attachment_scalePath;
+	private String attachment_classify;
+	private String attachment_fileName;
+	private String attachment_par_keyid;
+	private String attachment_size;
+	private String attachment_filePath;
+	private String attachment_pathType;
+	private String attachment_key;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -60,11 +71,61 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 1:
+				GetDataAttachment(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetDataAttachment(Object obj) {
+		text_load.setVisibility(View.GONE);
+
+		// TODO Auto-generated method stub
+		String state = null;
+		String fileInfo = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			state = demoJson.getString("state");
+			fileInfo = demoJson.getString("fileInfo");
+			if (state.equals("1")) {
+				Toast.makeText(getApplicationContext(), "文件上传成功", 0).show();
+
+				GetDetailDataAttachment(fileInfo);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Toast.makeText(getApplicationContext(), "", 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailDataAttachment(String fileInfo) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(fileInfo);
+
+			attachment_ext = demoJson.getString("ext");
+			attachment_classify = demoJson.getString("classify");
+			attachment_fileName = demoJson.getString("fileName");
+			attachment_filePath = demoJson.getString("filePath");
+			attachment_key = demoJson.getString("key");
+			attachment_par_keyid = demoJson.getString("par_keyid");
+			attachment_pathType = demoJson.getString("pathType");
+			attachment_scalePath = demoJson.getString("scalePath");
+			attachment_size = demoJson.getString("size");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 		text_load.setVisibility(View.GONE);
@@ -78,7 +139,7 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 			// pager = demoJson.getString("pager");
 			// Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT).show();
 
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -147,8 +208,20 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 		ArrayValues.add(new BasicNameValuePair("article.content", edit_content.getText().toString()));
 		ArrayValues.add(new BasicNameValuePair("article.classify", "" + classify));
 		ArrayValues.add(new BasicNameValuePair("article.hstate", "3"));
-		// ArrayValues.add(new BasicNameValuePair("suggestionsDto.content", "" +
-		// edit_content.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("article.title", "" + edit_name.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
+		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
+		Log.e("attachment_filePath", attachment_ext);
+		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
+		Log.e("attachment_filePath", attachment_scalePath);
+		ArrayValues.add(new BasicNameValuePair("attacement.classify", attachment_classify));
+		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
+		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
+		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
+		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
+		Log.e("attachment_filePath", attachment_filePath);
+		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
+		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -169,19 +242,22 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 		int year = cal.get(Calendar.YEAR);// 获取年份
 		int month = cal.get(Calendar.MONTH);// 获取月份
 		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
-		// int hour=cal.get(Calendar.HOUR);//小时
-		// int minute=cal.get(Calendar.MINUTE);//分
-		// int second=cal.get(Calendar.SECOND);//秒
-		// int WeekOfYear = cal.get(Calendar.DAY_OF_WEEK);//一周的第几天
-		// System.out.println("现在的时间是：公元"+year+"年"+month+"月"+day+"日
-		// "+hour+"时"+minute+"分"+second+"秒 星期"+WeekOfYear);
-		Log.e("getTimeByCalendar", year + "-" + month + "-" + day);
-		return year + "-" + month + "-" + day;
+		String Mon = "";
+		String Day = "";
+		month++;
+		if (month < 10) {
+			Mon = "0" + month;
+		}
+		if (day < 10) {
+			Day = "0" + day;
+		}
+		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
+		return year + "-" + Mon + "-" + Day;
 	}
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -238,7 +314,7 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 			Intent intent = null;
 			// if (Build.VERSION.SDK_INT < 19) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
+			intent.setType("file/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			// } else {
 			// intent = new Intent(Intent.ACTION_PICK,
@@ -265,9 +341,25 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 			if (data != null) {
 				Uri uri = data.getData();
 				if (uri != null) {
-					Toast.makeText(getApplicationContext(), "正在上传", 0).show();
-
-					GetFile(uri);
+					// Toast.makeText(getApplicationContext(), "正在上传",
+					// 0).show();
+					Log.e("file", uri+"");
+					final File file = GetFile(uri);
+					text_load.setVisibility(View.VISIBLE);
+					if (!(file == null)) {
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String UpLoadResult = UpLoadFile.uploadFileatt(file,
+										URLcontainer.urlip + "console/form/formfileUpload/uploadSignle", "teizi",
+										"" + ticket);
+								Message msg = new Message();
+								msg.what = 1;
+								msg.obj = UpLoadResult;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
 				}
 			}
 
@@ -282,14 +374,14 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 	 * 
 	 * @param uri
 	 */
-	private void GetFile(Uri uri) {
+	private File GetFile(Uri uri) {
 		String filePath = null;
 		if ("content".equalsIgnoreCase(uri.getScheme())) {
 			String[] projection = { "_data" };
 			Cursor cursor = null;
 
 			try {
-				cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, null);
+				cursor = getContentResolver().query(uri, projection, null, null, null);
 				int column_index = cursor.getColumnIndexOrThrow("_data");
 				if (cursor.moveToFirst()) {
 					filePath = cursor.getString(column_index);
@@ -304,12 +396,13 @@ public class PublishDYQActivity extends FragmentActivity implements OnClickListe
 		if (file == null || !file.exists()) {
 
 			Toast.makeText(getApplicationContext(), "文件不存在", 0).show();
-			return;
+			return file;
 		}
 		if (file.length() > 20 * 1024 * 1024) {
 
 			Toast.makeText(getApplicationContext(), "文件不能大于20M", 0).show();
-			return;
+			return null;
 		}
+		return file;
 	}
 }

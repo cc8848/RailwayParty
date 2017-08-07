@@ -29,7 +29,7 @@ import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.UpLoadFile;
 
 public class ReportOutnameActivity extends FragmentActivity implements OnClickListener {
-	private int ticket = 0;
+	private String ticket = "";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String attachment_ext;
 	private String attachment_scalePath;
@@ -114,8 +114,8 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 			// pager = demoJson.getString("pager");
 			// Data = demoJson.getString("datas");
 			if (Type.equals("success")) {
-				Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_SHORT).show();
-				text_load.setVisibility(View.GONE);
+				Toast.makeText(getApplicationContext(), "举报成功", Toast.LENGTH_SHORT).show();
+
 			} else if (Type.equals("fail")) {
 				// Toast.makeText(getApplicationContext(), "服务器数据失败",
 				// Toast.LENGTH_SHORT).show();
@@ -141,7 +141,9 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 			JSONObject demoJson = new JSONObject(obj.toString());
 			state = demoJson.getString("state");
 			fileInfo = demoJson.getString("fileInfo");
-			if (state.equals("success")) {
+			if (state.equals("1")) {
+				Toast.makeText(getApplicationContext(), "文件上传成功", 0).show();
+
 				GetDetailDataAttachment(fileInfo);
 			}
 		} catch (JSONException e) {
@@ -162,7 +164,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 			attachment_classify = demoJson.getString("classify");
 			attachment_fileName = demoJson.getString("fileName");
 			attachment_filePath = demoJson.getString("filePath");
-			attachment_key = demoJson.getString("par_keyid");
+			attachment_key = demoJson.getString("key");
 			attachment_par_keyid = demoJson.getString("par_keyid");
 			attachment_pathType = demoJson.getString("pathType");
 			attachment_scalePath = demoJson.getString("scalePath");
@@ -178,7 +180,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 
 	}
 
@@ -193,7 +195,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 			Intent intent = null;
 			// if (Build.VERSION.SDK_INT < 19) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
+			intent.setType("file/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			// } else {
 			// intent = new Intent(Intent.ACTION_PICK,
@@ -259,26 +261,16 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 		ArrayValues.add(new BasicNameValuePair("informDto.unit", unit));
 		ArrayValues.add(new BasicNameValuePair("informDto.title", title));
 		ArrayValues.add(new BasicNameValuePair("informDto.content", content));
-		// ArrayValues.add(new BasicNameValuePair("attacement.operateFlag",
-		// "1"));
-		// ArrayValues.add(new BasicNameValuePair("attacement.ext",
-		// attachment_ext));
-		// ArrayValues.add(new BasicNameValuePair("attacement.scalePath",
-		// attachment_scalePath));
-		// ArrayValues.add(new BasicNameValuePair("attacement.classify",
-		// attachment_classify));
-		// ArrayValues.add(new BasicNameValuePair("attacement.fileName",
-		// attachment_fileName));
-		// ArrayValues.add(new BasicNameValuePair("attacement.par_keyid",
-		// attachment_par_keyid));
-		// ArrayValues.add(new BasicNameValuePair("attacement.size",
-		// attachment_size));
-		// ArrayValues.add(new BasicNameValuePair("attacement.filePath",
-		// attachment_filePath));
-		// ArrayValues.add(new BasicNameValuePair("attacement.pathType",
-		// attachment_pathType));
-		// ArrayValues.add(new BasicNameValuePair("attacement.key",
-		// attachment_key));
+		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
+		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
+		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
+		ArrayValues.add(new BasicNameValuePair("attacement.classify", attachment_classify));
+		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
+		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
+		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
+		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
+		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
+		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -315,7 +307,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 							@Override
 							public void run() {
 								String UpLoadResult = UpLoadFile.uploadFile(file,
-										URLcontainer.urlip + "pb/informfileUpload/uploadMultiple", "attachment",
+										URLcontainer.urlip + "console/pb/informfileUpload/uploadMultiple", "attachment",
 										"" + ticket);
 								Message msg = new Message();
 								msg.what = 1;

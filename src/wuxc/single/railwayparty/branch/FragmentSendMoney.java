@@ -112,7 +112,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	// 0-无这一年的数据
 	// 1-有这一年的数据
 
-	private int ticket;
+	private String ticket = "";
 	private final static int GET_USER_HEAD_IMAGE = 6;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_MONTH_RESULT_DATA = 1;
@@ -211,9 +211,9 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			name = demoJson.getString("name");
 			months = demoJson.getString("months");
 			// salary = demoJson.getDouble("salary");
-//			for (int i = 0; i < 12; i++) {
-//				money[i] = salary;
-//			}
+			// for (int i = 0; i < 12; i++) {
+			// money[i] = salary;
+			// }
 			Months = months;
 
 			GetMonth(months);
@@ -274,9 +274,11 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		idnumber = PreUserInfo.getString("icardNo", "");
-		text_last_month.setText("截止日期：" + PreUserInfo.getString("pFareEndTime", ""));
+		text_name = (TextView) view.findViewById(R.id.text_name);
+		text_name.setText(PreUserInfo.getString("userName", ""));
+		text_last_month.setText("截止日期：" + PreUserInfo.getString("pFareEndMonth", ""));
 		text_last_time.setText("每月党费：" + PreUserInfo.getString("pMonthFare", ""));
 		try {
 			pMonthFaredouble = Double.parseDouble(PreUserInfo.getString("pMonthFare", ""));

@@ -51,7 +51,7 @@ public class CreditsAdapter extends ArrayAdapter<CreditsModel> implements OnClic
 		texttitle.setText(imageAndText.getTitle());
 
 		TextView textdetail = viewCache.getTextDetail();
-		textdetail.setText(imageAndText.getDetail());
+		textdetail.setText(imageAndText.getTime());
 
 		TextView textnumber = viewCache.getTextNumber();
 		textnumber.setText(imageAndText.getNumber());

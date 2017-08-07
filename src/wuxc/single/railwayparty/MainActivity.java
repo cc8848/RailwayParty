@@ -1,5 +1,6 @@
 package wuxc.single.railwayparty;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -8,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +18,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -53,7 +58,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private TextView text_gobg;
 	private int screenwidth = 0;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private int ticket = 0;
+	private String ticket = "";
 	private String userid;
 	public static Activity activity;
 	private static final int GET_LOGININ_RESULT_DATA = 1;
@@ -90,7 +95,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			versionNum = demoJson.getString("versionNum");
 			versionPath = demoJson.getString("versionPath");
 			if (versionId.equals(APPVersion.APPVersion)) {
-				Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
 			} else {
 				showAlertDialog(versionNum, versionPath);
 			}
@@ -208,6 +213,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			edit.putString("address", demoJson.getString("address"));
 			edit.putString("permisons", demoJson.getString("permisons"));
 			edit.putString("userLevel", demoJson.getString("userLevel"));
+			edit.putString("pFormalTime", demoJson.getString("pFormalTime"));
 			edit.putString("position", demoJson.getString("position"));
 			edit.putString("sign", demoJson.getString("sign"));
 			edit.putString("hobby", demoJson.getString("hobby"));
@@ -264,6 +270,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	private void getdata() {
 		// TODO Auto-generated method stub
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ticket = PreUserInfo.getString("ticket", "");
 		final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("queryUserId", userid));
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
@@ -284,7 +292,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		screenwidth = getWindow().getWindowManager().getDefaultDisplay().getWidth();
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userid = PreUserInfo.getString("loginId", "");
 		FragmentPage = getSharedPreferences("fragmentinfo", MODE_PRIVATE);
 		RelativeBuild = (RelativeLayout) findViewById(R.id.relative_build);
@@ -473,6 +481,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+
 		getdata();
 	}
 
@@ -480,8 +489,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.relative_build:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);
@@ -492,8 +501,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			RelativeBuild.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.relative_branch:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);
@@ -504,8 +513,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.text_gobg:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);
@@ -516,8 +525,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			RelativeBranch.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.image_main:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);
@@ -527,8 +536,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			setTabSelection(getString(R.string.str_main));
 			break;
 		case R.id.relative_bbs:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);
@@ -539,8 +548,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			RelativeBbs.setBackgroundColor(Color.parseColor("#a80402"));
 			break;
 		case R.id.relative_my:
-			ticket = PreUserInfo.getInt("ticket", 0);
-			if (ticket == 0) {
+			ticket = PreUserInfo.getString("ticket", "");
+			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getApplicationContext(), LoginActivity.class);
 				startActivity(intent_top_bac);

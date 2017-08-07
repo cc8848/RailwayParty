@@ -2,7 +2,9 @@ package wuxc.single.railwayparty;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.internet.GetBitmapFromServer;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.UpLoadFile;
 import wuxc.single.railwayparty.internet.getImageAbsolutePath;
@@ -38,7 +41,9 @@ import wuxc.single.railwayparty.internet.saveBitmap;
 import wuxc.single.railwayparty.internet.savePNG;
 import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
+import wuxc.single.railwayparty.layout.dialogtwo;
 import wuxc.single.railwayparty.my.CreditsActivity;
+import wuxc.single.railwayparty.my.CreditsRuleActivity;
 import wuxc.single.railwayparty.my.EvaluationActivity;
 import wuxc.single.railwayparty.my.MessageActivity;
 import wuxc.single.railwayparty.my.MycheckActivity;
@@ -73,12 +78,15 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private LinearLayout lin_credits;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String LoginId;
-	private int ticket;
+	private String ticket = "";
 	private String userPhoto;
 	private TextView text_username;
 	private TextView text_sign;
 	private final static int GET_USER_HEAD_IMAGE = 6;
 	private boolean UploadImage = false;
+	private int credit = 0;
+	private TextView text_credit;
+	private int warning = 0;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -88,6 +96,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				break;
 			case GET_USER_HEAD_IMAGE:
 				ShowHeadImage(msg.obj);
+				break;
+			case 9:
+				Showcredit(msg.obj);
 				break;
 			default:
 				break;
@@ -103,8 +114,73 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		initheight(view);
 		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
+		if (warning == 0) {
+			showAlertDialog("", "");
+		}
 		GetHeadPic();
+		getd();
 		return view;
+	}
+
+	public void showAlertDialog(String versionNum, final String versionPath) {
+
+		dialogtwo.Builder builder = new dialogtwo.Builder(getActivity());
+		builder.setMessage("请修改个人资料及头像\n如已修改请忽略此消息");
+		builder.setTitle("温馨提示");
+
+		builder.setNegativeButton("知道了", new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Editor edit = PreUserInfo.edit();
+				edit.putInt("warning", 1);
+				edit.commit();
+			}
+		});
+
+		builder.create().show();
+
+	}
+
+	protected void Showcredit(Object obj) {
+		// TODO Auto-generated method stub
+		String datacre = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			datacre = demoJson.getString("data");
+			demoJson = new JSONObject(datacre);
+			credit = demoJson.getInt("totalNum");
+			Editor edit = PreUserInfo.edit();
+			edit.putInt("credit", credit);
+			edit.commit();
+			text_credit.setText("" + credit);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	private void getd() {
+		// TODO Auto-generated method stub
+
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/console/userScore/getListJsonStaticsDataRecord",
+						ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = 9;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	protected void ShowHeadImage(Object obj) {
@@ -186,8 +262,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
+		warning = PreUserInfo.getInt("warning", 0);
 		LoginId = PreUserInfo.getString("loginId", null);
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", null);
 		try {
 			text_username.setText(PreUserInfo.getString("userName", "系统"));
@@ -224,6 +301,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		// 0.5f);
 		dp = screenwidth / scale + 0.5f;
 		scalepx = screenwidth / dp;
+		text_credit = (TextView) view.findViewById(R.id.text_credit);
 		lin_top = (LinearLayout) view.findViewById(R.id.lin_top);
 		round_headimg = (RoundImageView) view.findViewById(R.id.round_headimg);
 		round_headimg.setOnClickListener(this);

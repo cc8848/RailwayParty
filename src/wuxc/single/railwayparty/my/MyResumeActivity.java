@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,7 +48,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private TextView text_statue;
 	private TextView text_partymoney_endtime;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private int ticket = 0;
+	private String ticket = "";
 	private String Str_text_username = "李超";
 	private String Str_text_party_time_yes = "无数据";
 	private EditText text_username;
@@ -56,7 +57,12 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
+	private String userid;
 	private String classify = "";
+	private int creditsym = 0;
+	private static final int GET_LOGININ_RESULT_DATA = 1;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final int GET_VERSION_RESULT = 5;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -64,11 +70,110 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case GET_LOGININ_RESULT_DATA:
+				GetDataDetailFromLoginResultData(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	public void GetDataDetailFromLoginResultData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				// Toast.makeText(getApplicationContext(), "登陆成功",
+				// Toast.LENGTH_SHORT).show();
+				GetDetailData(Data);
+				// finish();
+			} else if (Type.equals("accountPwdError")) {
+				// Toast.makeText(getApplicationContext(), "用户名和密码不匹配",
+				// Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("userLocked")) {
+				// Toast.makeText(getApplicationContext(), "账号被禁用",
+				// Toast.LENGTH_SHORT).show();
+
+			} else {
+				// Toast.makeText(getApplicationContext(), "登陆失败",
+				// Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailData(String data) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(data);
+
+			Editor edit = PreUserInfo.edit();
+			edit.putString("deptId", demoJson.getString("deptId"));
+			edit.putString("deptName", demoJson.getString("deptName"));
+			edit.putString("companyId", demoJson.getString("companyId"));
+			edit.putString("companyName", demoJson.getString("companyName"));
+			edit.putString("userPhoto", demoJson.getString("userPhoto"));
+			edit.putString("userName", demoJson.getString("userName"));
+			edit.putString("sex", demoJson.getString("sex"));
+			edit.putString("loginId", demoJson.getString("loginId"));
+			edit.putString("memberLevel", demoJson.getString("memberLevel"));
+			edit.putString("memberLevelDesc", demoJson.getString("memberLevelDesc"));
+			edit.putString("address", demoJson.getString("address"));
+			edit.putString("permisons", demoJson.getString("permisons"));
+			edit.putString("userLevel", demoJson.getString("userLevel"));
+			edit.putString("position", demoJson.getString("position"));
+			edit.putString("sign", demoJson.getString("sign"));
+			edit.putString("hobby", demoJson.getString("hobby"));
+			edit.putString("balance", demoJson.getString("balance"));
+			edit.putString("cashBalance", demoJson.getString("cashBalance"));
+			edit.putString("realName", demoJson.getString("realName"));
+			edit.putString("cityCode", demoJson.getString("cityCode"));
+			edit.putString("mobile", demoJson.getString("mobile"));
+			edit.putString("alipayAccount", demoJson.getString("alipayAccount"));
+			edit.putString("alipayRealname", demoJson.getString("alipayRealname"));
+			edit.putString("renzhengName", demoJson.getString("renzhengName"));
+			edit.putString("renzheng", demoJson.getString("renzheng"));
+			edit.putString("icardNo", demoJson.getString("icardNo"));
+			edit.putString("sixin", demoJson.getString("sixin"));
+			edit.putString("guanzhu", demoJson.getString("guanzhu"));
+			edit.putString("fensi", demoJson.getString("fensi"));
+			edit.putString("shoucang", demoJson.getString("shoucang"));
+			edit.putString("other1", demoJson.getString("other1"));
+			edit.putString("other2", demoJson.getString("other2"));
+			edit.putString("other3", demoJson.getString("other3"));
+			edit.putString("pAge", demoJson.getString("pAge"));
+			edit.putString("pInTime", demoJson.getString("pInTime"));
+			edit.putString("pFormalTime", demoJson.getString("pFormalTime"));
+			edit.putString("pMonthFare", demoJson.getString("pMonthFare"));
+			edit.putString("pFareEndTime", demoJson.getString("pFareEndTime"));
+			edit.putString("pUser", demoJson.getString("pUser"));
+			edit.putString("pAllowOnLinFare", demoJson.getString("pAllowOnLinFare"));
+			edit.commit();
+			// GetAllData();
+			ReadTicket();
+			settext();
+		} catch (
+
+		JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -83,6 +188,14 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 			if (Type.equals("success")) {
 				Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
+				if (creditsym == 0) {
+					Intent intent = new Intent();
+					intent.setClass(getApplicationContext(), CreditsRuleActivity.class);
+					startActivity(intent);
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("creditsym", 1);
+					edit.commit();
+				}
 				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "修改失败，请重试", Toast.LENGTH_SHORT).show();
@@ -123,14 +236,36 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		text_phone.setOnClickListener(this);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
-		settext();
+		getdata();
+
+	}
+
+	private void getdata() {
+		// TODO Auto-generated method stub
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ticket = PreUserInfo.getString("ticket", "");
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("queryUserId", userid));
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/member/getUserInfo", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = GET_LOGININ_RESULT_DATA;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		creditsym = PreUserInfo.getInt("creditsym", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		Str_text_name = PreUserInfo.getString("realName", "无数据");
-
+		userid = PreUserInfo.getString("loginId", "");
 		Str_text_sex = PreUserInfo.getString("sex", "male");
 		if (Str_text_sex.equals("male")) {
 			Str_text_sex = "男";
@@ -180,7 +315,10 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			Str_text_statue = "一般党员";
 		} else if (Str_text_statue.equals("3")) {
 			Str_text_statue = "公司领导";
+		} else {
+			Str_text_statue = "一般党员";
 		}
+		Str_text_party_time_yes = PreUserInfo.getString("pFormalTime", "无数据");
 		Str_text_partymoney_endtime = PreUserInfo.getString("pFareEndTime", "无数据");
 		Str_text_username = PreUserInfo.getString("userName", "无数据");
 	}

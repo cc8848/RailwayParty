@@ -40,7 +40,7 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String ToId;
 	private String myid;
-	private int ticket;
+	private String ticket="";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 		Str_party_address = PreUserInfo.getString("address", "");
 		Str_party_time = PreUserInfo.getString("pInTime", "");
 		myid = PreUserInfo.getString("deptId", "");
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 	}
 
 	private void settext() {

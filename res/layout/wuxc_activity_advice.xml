@@ -66,7 +66,7 @@
         android:layout_marginTop="35dp"
         android:background="@drawable/shape7red"
         android:gravity="center"
-        android:text="确认修改"
+        android:text="确认提交"
         android:textColor="#ffffff"
         android:textSize="18dp" >
     </Button>

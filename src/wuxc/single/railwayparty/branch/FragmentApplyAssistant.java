@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
 
 public class FragmentApplyAssistant extends Fragment implements OnClickListener {
 
@@ -35,23 +39,111 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 	private EditText edit_content;
 	private TextView text_load;
 	private Button btn_ok;
-	private int ticket = 0;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
+	private String attachment_ext;
+	private String attachment_scalePath;
+	private String attachment_classify;
+	private String attachment_fileName;
+	private String attachment_par_keyid;
+	private String attachment_size;
+	private String attachment_filePath;
+	private String attachment_pathType;
+	private String attachment_key;
+	private static final String GET_SUCCESS_RESULT = "success";
+	private static final String GET_FAIL_RESULT = "fail";
+	private static final int GET_DUE_DATA = 6;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 14:
-				text_load.setVisibility(view.GONE);
+				GetDataDueData(msg.obj);
+				break;
+			case 1:
+				GetDataAttachment(msg.obj);
 				break;
 			default:
 				break;
 			}
 		}
 	};
+	protected void GetDataAttachment(Object obj) {
+		text_load.setVisibility(View.GONE);
+
+		// TODO Auto-generated method stub
+		String state = null;
+		String fileInfo = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			state = demoJson.getString("state");
+			fileInfo = demoJson.getString("fileInfo");
+			if (state.equals("1")) {
+				Toast.makeText(getActivity(), "文件上传成功", 0).show();
+
+				GetDetailDataAttachment(fileInfo);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Toast.makeText(getActivity(), "", 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailDataAttachment(String fileInfo) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(fileInfo);
+
+			attachment_ext = demoJson.getString("ext");
+			attachment_classify = demoJson.getString("classify");
+			attachment_fileName = demoJson.getString("fileName");
+			attachment_filePath = demoJson.getString("filePath");
+			attachment_key = demoJson.getString("key");
+			attachment_par_keyid = demoJson.getString("par_keyid");
+			attachment_pathType = demoJson.getString("pathType");
+			attachment_scalePath = demoJson.getString("scalePath");
+			attachment_size = demoJson.getString("size");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			// pager = demoJson.getString("pager");
+			// Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Toast.makeText(getActivity(), "申请成功", Toast.LENGTH_SHORT).show();
+				text_load.setVisibility(View.GONE);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -100,7 +192,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("deptName", "");
 	}
@@ -123,7 +215,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			Intent intent = null;
 			// if (Build.VERSION.SDK_INT < 19) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
+			intent.setType("file/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			// } else {
 			// intent = new Intent(Intent.ACTION_PICK,
@@ -205,13 +297,28 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		switch (requestCode) {
 
 		case 0:
-			// 发送选择的文件
 			if (data != null) {
 				Uri uri = data.getData();
 				if (uri != null) {
-					Toast.makeText(getActivity(), "正在上传", 0).show();
+					// Toast.makeText(getActivity(), "正在上传",
+					// 0).show();
 
-					GetFile(uri);
+					final File file = GetFile(uri);
+					text_load.setVisibility(View.VISIBLE);
+					if (!(file == null)) {
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String UpLoadResult = UpLoadFile.uploadFile(file,
+										URLcontainer.urlip + "console/form/formfileUpload/uploadSignle", "xinde",
+										"" + ticket);
+								Message msg = new Message();
+								msg.what = 1;
+								msg.obj = UpLoadResult;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
 				}
 			}
 
@@ -226,7 +333,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 	 * 
 	 * @param uri
 	 */
-	private void GetFile(Uri uri) {
+	private File GetFile(Uri uri) {
 		String filePath = null;
 		if ("content".equalsIgnoreCase(uri.getScheme())) {
 			String[] projection = { "_data" };
@@ -248,13 +355,13 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		if (file == null || !file.exists()) {
 
 			Toast.makeText(getActivity(), "文件不存在", 0).show();
-			return;
+			return file;
 		}
 		if (file.length() > 20 * 1024 * 1024) {
 
 			Toast.makeText(getActivity(), "文件不能大于20M", 0).show();
-			return;
+			return null;
 		}
-
+		return file;
 	}
 }

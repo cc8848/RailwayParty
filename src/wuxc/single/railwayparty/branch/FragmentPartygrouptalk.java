@@ -62,7 +62,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 	private View view;// 缓存Fragment view
 	// private boolean[] type = { true, true, false, false, false, false, false,
 	// false, false, false, false, false };
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -139,7 +139,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 				for (int i = 0; i < jArray.length(); i++) {
 					json_data = jArray.getJSONObject(i);
 					Log.e("json_data", "" + json_data);
-					// JSONObject jsonObject = json_data.getJSONObject("data");
+					json_data = json_data.getJSONObject("data");
 					TalkModel listinfo = new TalkModel();
 					// try {
 					// listinfo.setBi(json_data.getInt("iszengread"));
@@ -161,8 +161,11 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 					// listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					// listinfo.setRead(true);
 					listinfo.setName(json_data.getString("user_name"));
-					listinfo.setDetail(json_data.getString("content"));
+				
 					listinfo.setImageUrl(json_data.getString("userPhoto"));
+					json_data = 	new JSONObject(json_data.getString("content"));
+//					json_data = json_data.getJSONObject(json_data.getString("content"));
+					listinfo.setDetail(json_data.getString("data"));
 					listinfo.setMy(true);
 					list.add(listinfo);
 					// try {
@@ -289,7 +292,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 		ArrayValues.add(new BasicNameValuePair("par_keyid", BranchFragment.id));
-		chn = "djyw";
+		Log.e("par_keyid", BranchFragment.id);
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
 
@@ -309,7 +312,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}
@@ -543,7 +546,8 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 				// final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-				ArrayValues.add(new BasicNameValuePair("par_keyid", BranchFragment.id));
+				ArrayValues.add(new BasicNameValuePair("chatInfoDto.par_keyid", BranchFragment.id));
+			Log.e("par_keyid",  BranchFragment.id);
 				JSONObject jsonObject = new JSONObject();
 				try {
 					jsonObject.put("msgType", "text");

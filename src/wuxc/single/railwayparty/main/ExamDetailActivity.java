@@ -54,7 +54,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 	private TextView text_topic_detail;
 	private ImageView image_number;
 	private String Id;
-	private int ticket = 0;
+	private String ticket = "";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
@@ -106,7 +106,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 		Bundle bundle = intent.getExtras(); // 获取intent里面的bundle对象
 		Number = bundle.getInt("Number");
 		Id = bundle.getString("keyid");
-		ticket = bundle.getInt("ticket");
+		ticket = bundle.getString("ticket");
 		user = bundle.getIntArray("user");
 		answer = bundle.getString("answer");
 		Log.e("answer", answer);

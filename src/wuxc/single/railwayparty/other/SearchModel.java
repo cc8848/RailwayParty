@@ -8,6 +8,15 @@ public class SearchModel {
 	private String Time;
 	private String link;
 	private boolean cont;
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getLink() {
 		return link;
@@ -24,6 +33,7 @@ public class SearchModel {
 	public void setCont(boolean cont) {
 		this.cont = cont;
 	}
+
 	public String getDetail() {
 		return Detail;
 	}

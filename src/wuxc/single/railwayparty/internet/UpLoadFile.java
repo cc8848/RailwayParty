@@ -153,7 +153,7 @@ public class UpLoadFile {
 	public static String uploadFileatt(File file, String RequestURL, String classify, String ticket) {
 		String result = null;
 		int res = 0;
-		RequestURL = RequestURL + "?ticket=" + ticket + "&par_keyid=" + classify;
+		RequestURL = RequestURL + "?ticket=" + ticket + "&classify=" + classify;
 		String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
 		String PREFIX = "--", LINE_END = "\r\n";
 		String CONTENT_TYPE = "multipart/form-data"; // 内容类型

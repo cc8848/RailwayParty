@@ -48,7 +48,7 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 	private static final String GET_SUCCESS_RESULT = "success";
 	private String userPhoto;
 	private String address;
-	private int ticket = 0;
+	private String ticket="";
 	private String loginId;
 	private String sex;
 	private String sessionId;
@@ -99,7 +99,7 @@ public class PartyBranchGroupActivity extends FragmentActivity implements OnClic
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		// userPhoto = PreUserInfo.getString("userPhoto", "");
 		sessionId = PreUserInfo.getString("deptId", "");
 	}

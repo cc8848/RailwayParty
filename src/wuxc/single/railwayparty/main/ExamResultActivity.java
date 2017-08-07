@@ -60,7 +60,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			R.drawable.mark95, R.drawable.mark100 };
 	private String Title;
 	private String Id;
-	private int ticket = 0;
+	private String ticket = "";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
@@ -141,7 +141,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			tempanswer = bundle.getString("anwser");
 			Title = bundle.getString("Title");
 			Id = bundle.getString("keyid");
-			ticket = bundle.getInt("ticket");
+			ticket = bundle.getString("ticket");
 			user = bundle.getIntArray("user");
 			score = bundle.getInt("score");
 			answer = bundle.getString("anwser");
@@ -481,7 +481,7 @@ public class ExamResultActivity extends Activity implements OnClickListener {
 			Bundle bundle = new Bundle();
 			bundle.putInt("Number", i);
 			bundle.putString("keyid", Id);
-			bundle.putInt("ticket", ticket);
+			bundle.putString("ticket", ticket);
 			for (int j = 0; j < list.size(); j++) {
 
 				ExamTopicModel examTopicModel = list.get(j);

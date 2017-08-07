@@ -4,7 +4,17 @@ public class SchoolModel {
 	private String headimgUrl;
 	private String title;
 	private String content;
-	private String zan;private String Id;
+	private String zan;
+	private String Id;
+	private int fileClassify;
+
+	public int getFileClassify() {
+		return fileClassify;
+	}
+
+	public void setFileClassify(int fileClassify) {
+		this.fileClassify = fileClassify;
+	}
 
 	public String getId() {
 		return Id;
@@ -13,6 +23,7 @@ public class SchoolModel {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	private String guanzhu;
 	private boolean read;
 	private String time;

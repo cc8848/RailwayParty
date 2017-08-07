@@ -53,7 +53,7 @@ public class TestAnswerActivity extends Activity
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private int ticket;
+	private String ticket="";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
@@ -86,7 +86,7 @@ public class TestAnswerActivity extends Activity
 		// PreALLChannel = getSharedPreferences("ALLChannel",
 		// Context.MODE_PRIVATE);
 		// ReadTicket();
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		GetData();
 	}
 
@@ -353,7 +353,7 @@ public class TestAnswerActivity extends Activity
 		Bundle bundle = new Bundle();
 		bundle.putString("Title", data.getName());
 		bundle.putString("keyid", data.getId());
-		bundle.putInt("ticket", ticket);
+		bundle.putString("ticket", ticket);
 		bundle.putInt("score", data.getScore());
 		bundle.putString("anwser", data.getAnswer());
 		int[] user = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -380,7 +380,7 @@ public class TestAnswerActivity extends Activity
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getName());
 			bundle.putString("keyid", data.getId());
-			bundle.putInt("ticket", ticket);
+			bundle.putString("ticket", ticket);
 			bundle.putInt("score", data.getScore());
 			bundle.putString("anwser", data.getAnswer());
 			int[] user = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

@@ -36,16 +36,40 @@
         android:layout_height="80dp"
         android:layout_marginLeft="20dp"
         android:gravity="center"
-        android:text="发展党员的性别分析"
+        android:text="党员的性别分析"
         android:textColor="@color/main_color"
         android:textSize="18dp" />
 
-    <wuxc.single.railwayparty.layout.PartViewforsex
-        android:id="@+id/histogram"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="390dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="20dp" >
-    </wuxc.single.railwayparty.layout.PartViewforsex>
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal" >
+
+        <wuxc.single.railwayparty.layout.PartViewforsex
+            android:id="@+id/histogram"
+            android:layout_width="wrap_content"
+            android:layout_height="390dp"
+            android:layout_marginRight="20dp" >
+        </wuxc.single.railwayparty.layout.PartViewforsex>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical|left"
+            android:text="人\n数\n\n"
+            android:textColor="@color/main_color"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:text="性别"
+            android:textColor="@color/main_color"
+            android:textSize="14dp" />
+    </RelativeLayout>
 
 </LinearLayout>

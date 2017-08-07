@@ -1,13 +1,19 @@
 package wuxc.single.railwayparty.start;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.Validate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,6 +22,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +40,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -69,7 +78,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	private float dp = 0;
 	private String detail = "此次专项检查的范围是招用农民工较多的建筑、制造、采矿、餐饮和其他中小型劳动密集型企业以及个体经济组织。检查内容包括：非公企业与劳动者签订劳动合同情况；按照工资支付有关规定支付职工工资情况；遵守最低工资规定及依法支付加班工资情况；依法参加社会保险和缴纳社会保险费情况；遵守禁止使用童工规定以及女职工和未成年工特殊劳动保护规定情况；其他遵守劳动保障法律法规的情况。";
 	private String Id = "";
-	private int ticket;
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -79,7 +88,15 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	private static final int GET_DUE_DATA = 6;
 	private TextView text_detail;
 	private String content;
-	private SharedPreferences PreUserInfo;// 存储个人信息
+	private static SharedPreferences PreUserInfo;// 存储个人信息
+	private TextView text_tupian;
+	private TextView text_fujian;
+	private LinearLayout lin_fujian;
+	private LinearLayout lin_tupian;
+	private static int number = 0;
+	private int fujian = 0;
+	private String filePath = "";
+	private String ext = "";
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -117,7 +134,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		chn = bundle.getString("chn");
 		try {
 			detail = bundle.getString("detail");
-			ticket = bundle.getInt("ticket");
+			ticket = bundle.getString("ticket");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -154,7 +171,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 
 	}
 
@@ -326,12 +343,30 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	// }
 
 	private void GetDataList(String data, int curPage2) {
+		fujian = 0;
 		// TODO Auto-generated method stub
 		try {
 			JSONObject demoJson = new JSONObject(data);
 
 			content = demoJson.getString("content");
+			try {
+				JSONArray jArray = null;
+				jArray = new JSONArray(demoJson.getString("docAtt"));
+				JSONObject json_data = null;
+				json_data = jArray.getJSONObject(0);
 
+				filePath = json_data.getString("filePath");
+				ext = json_data.getString("ext");
+				fujian = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			getImgaddress(content);
+			if (number != 0) {
+				lin_tupian.setVisibility(View.VISIBLE);
+			} else {
+				lin_tupian.setVisibility(View.GONE);
+			}
 			new Thread(new Runnable() { // 开启线程上传文件
 				@Override
 				public void run() {
@@ -347,6 +382,18 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+		if (fujian == 1) {
+			lin_fujian.setVisibility(View.VISIBLE);
+		} else {
+			lin_fujian.setVisibility(View.GONE);
+		}
+		if (ext.equals("mp4")) {
+			text_fujian.setText("打开视频");
+		} else if (ext.equals("mp3")) {
+			text_fujian.setText("打开音频");
+		} else {
+			text_fujian.setText("下载附件");
 		}
 	}
 
@@ -452,6 +499,15 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		TextName = (TextView) findViewById(R.id.text_name);
 		TextTitle = (TextView) findViewById(R.id.text_title);
 		text_detail = (TextView) findViewById(R.id.text_detail);
+		text_tupian = (TextView) findViewById(R.id.text_tupian);
+		text_fujian = (TextView) findViewById(R.id.text_fujian);
+		lin_fujian = (LinearLayout) findViewById(R.id.lin_fujian);
+		lin_tupian = (LinearLayout) findViewById(R.id.lin_tupian);
+		number = 0;
+		lin_fujian.setOnClickListener(this);
+		lin_tupian.setOnClickListener(this);
+		lin_tupian.setVisibility(View.GONE);
+		lin_fujian.setVisibility(View.GONE);
 	}
 
 	private void setonclicklistener() {
@@ -468,6 +524,55 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		switch (v.getId()) {
 		case R.id.image_back:
 			finish();
+			// Intent intent = new Intent();
+			// intent.setClass(getApplicationContext(), imageshow.class);
+			// startActivity(intent);
+			break;
+		case R.id.lin_tupian:
+			// finish();
+			if (true) {
+				Intent intent = new Intent();
+				Bundle bundle = new Bundle();
+				bundle.putInt("number", number);
+				intent.putExtras(bundle);
+				intent.setClass(getApplicationContext(), imageshow.class);
+				startActivity(intent);
+			}
+
+			break;
+		case R.id.lin_fujian:
+			// finish();
+			if (true) {
+				int classify = 0;
+				filePath = URLcontainer.urlip + "upload" + filePath;
+				if (ext.equals("mp4")) {
+					classify = 3;
+				} else if (ext.equals("mp3")) {
+					classify = 2;
+				}
+				if (classify == 1) {
+					Intent intent = new Intent();
+					intent.setAction("android.intent.action.VIEW");
+					Uri content_url = Uri.parse(filePath);
+					intent.setData(content_url);
+					startActivity(intent);
+				} else if (classify == 2) {
+					Intent it = new Intent(Intent.ACTION_VIEW);
+					it.setDataAndType(Uri.parse(filePath), "audio/MP3");
+					startActivity(it);
+				} else if (classify == 3) {
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setDataAndType(Uri.parse(filePath), "video/mp4");
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent();
+					intent.setAction("android.intent.action.VIEW");
+					Uri content_url = Uri.parse(filePath);
+					intent.setData(content_url);
+					startActivity(intent);
+				}
+			}
+
 			break;
 		// case R.id.btn_answer:
 		// break;
@@ -483,6 +588,129 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		default:
 			break;
 		}
+	}
+
+	// public static void get(String args) throws IOException {
+	//// Validate.isTrue(args.length == 1, "usage: supply url to fetch");
+	// String url = args;
+	// print("Fetching %s...", url);
+	//
+	// Document doc = Jsoup.connect(url).get();
+	// Elements links = doc.select("a[href]");
+	// Elements media = doc.select("[src]");
+	// Elements imports = doc.select("link[href]");
+	//
+	// print("\nMedia: (%d)", media.size());
+	// for (Element src : media) {
+	// if (src.tagName().equals("img"))
+	// print(" * %s: <%s> %sx%s (%s)",
+	// src.tagName(), src.attr("abs:src"), src.attr("width"),
+	// src.attr("height"),
+	// trim(src.attr("alt"), 20));
+	// else
+	// print(" * %s: <%s>", src.tagName(), src.attr("abs:src"));
+	// }
+	//
+	// print("\nImports: (%d)", imports.size());
+	// for (Element link : imports) {
+	// print(" * %s <%s> (%s)", link.tagName(),link.attr("abs:href"),
+	// link.attr("rel"));
+	// }
+	//
+	// print("\nLinks: (%d)", links.size());
+	// for (Element link : links) {
+	// print(" * a: <%s> (%s)", link.attr("abs:href"), trim(link.text(), 35));
+	// }
+	// }
+	//
+	// private static void print(String msg, Object... args) {
+	// System.out.println(String.format(msg, args));
+	// }
+	//
+	// private static String trim(String s, int width) {
+	// if (s.length() > width)
+	// return s.substring(0, width-1) + ".";
+	// else
+	// return s;
+	// }
+	// public static List getImgStr(String htmlStr) {
+	// String img = "";
+	// Pattern p_image;
+	// Matcher m_image;
+	// List pics = new ArrayList();
+	// String regEx_img = "]*?>";
+	// p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+	// m_image = p_image.matcher(htmlStr);
+	// while (m_image.find()) {
+	// img = img + "," + m_image.group();
+	// Matcher m =
+	// Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+	// while (m.find()) {
+	// pics.add(m.group(1));
+	// }
+	// Log.e("getImgStr", img);
+	// }
+	// for (int i = 0; i < pics.size(); i++) {
+	// Log.e("pics",""+ pics.get(i));
+	// }
+	// return pics;
+	// }
+	/**
+	 * @param s
+	 * @return 获得图片
+	 */
+	public static List<String> getImg(String s) {
+		String regex;
+		List<String> list = new ArrayList<String>();
+		regex = "src=\"(.*?)\"";
+		Pattern pa = Pattern.compile(regex, Pattern.DOTALL);
+		Matcher ma = pa.matcher(s);
+		while (ma.find()) {
+			list.add(ma.group());
+		}
+		for (int i = 0; i < list.size(); i++) {
+			Log.e("list.get(i) ", "" + list.get(i).indexOf("data:image"));
+			if (list.get(i).indexOf("data:image") >= 0) {
+				Log.e("list.get(i) remove ", "" + list.get(i).indexOf("data:image"));
+
+				list.remove(i);
+				i--;
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * 返回存有图片地址的数组
+	 * 
+	 * @param tar
+	 * @return
+	 */
+	public static String[] getImgaddress(String tar) {
+		List<String> imgList = getImg(tar);
+
+		String res[] = new String[imgList.size()];
+
+		if (imgList.size() > 0) {
+			for (int i = 0; i < imgList.size(); i++) {
+				int begin = imgList.get(i).indexOf("\"") + 1;
+				int end = imgList.get(i).lastIndexOf("\"");
+				String url[] = imgList.get(i).substring(begin, end).split("/");
+				Log.e("url", imgList.get(i).substring(begin, end));
+
+				res[i] = imgList.get(i).substring(begin, end);
+			}
+		} else {
+		}
+
+		for (int i = 0; i < res.length; i++) {
+			Log.e("res", res[i]);
+			Editor edit = PreUserInfo.edit();
+			number++;
+			edit.putString("image" + i, res[i]);
+			edit.commit();
+		}
+		return res;
 	}
 
 	@Override

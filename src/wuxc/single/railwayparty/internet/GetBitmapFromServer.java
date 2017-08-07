@@ -30,7 +30,10 @@ public class GetBitmapFromServer {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} catch (OutOfMemoryError e) {
+			e.printStackTrace();
+		} 
+	 
 		Log.e("wuxc", imagePath);
 		return pic;
 	}

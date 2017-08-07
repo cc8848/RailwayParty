@@ -58,7 +58,7 @@ public class ChangeTermsDetailActivity extends Activity
 	private String StartTime;
 	private String EndTime;
 	private String Id = "";
-	private int ticket;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -299,7 +299,7 @@ public class ChangeTermsDetailActivity extends Activity
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

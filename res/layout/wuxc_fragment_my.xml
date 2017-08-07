@@ -279,6 +279,7 @@
                     android:textSize="@dimen/member_transform_size" />
 
                 <TextView
+                    android:id="@+id/text_credit"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"

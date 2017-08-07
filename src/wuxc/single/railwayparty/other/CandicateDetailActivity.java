@@ -36,7 +36,7 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 	private String Number;
 	private String Id = "";
 	private String remark = "";
-	private int ticket;
+	private String ticket="";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
@@ -109,7 +109,7 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 
 	}
 

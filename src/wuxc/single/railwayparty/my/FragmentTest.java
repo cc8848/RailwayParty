@@ -61,7 +61,7 @@ public class FragmentTest extends Fragment implements OnTouchListener, Callback,
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// ª∫¥ÊFragment view
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -176,7 +176,7 @@ public class FragmentTest extends Fragment implements OnTouchListener, Callback,
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getName());
 			bundle.putString("keyid", data.getId());
-			bundle.putInt("ticket", ticket);
+			bundle.putString("ticket", ticket);
 			bundle.putInt("score", data.getScore());
 			bundle.putString("anwser", data.getAnswer());
 			int[] user = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -287,7 +287,7 @@ public class FragmentTest extends Fragment implements OnTouchListener, Callback,
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

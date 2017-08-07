@@ -78,7 +78,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 	private RelativeLayout rel_4;
 	private TextView text_4;
 	private TextView text_line_4;
-	private int ticket = 0;
+	private String ticket="";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -202,9 +202,9 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setGuanzhu("231");
 					listinfo.setZan(json_data.getString("createtime"));
 					listinfo.setPl(json_data.getString("browser"));
-					listinfo.setName(json_data.getString("author"));
+					listinfo.setName(json_data.getString("userName"));
 					listinfo.setImageurl(headimg[i]);
-					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
+					listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					listinfo.setRead(true);
 					if (json_data.getInt("classify") == 1) {
 						listinfo.setLabel("党内活动");
@@ -394,7 +394,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/channel/channleListData", ArrayValues);
+				DueData = HttpGetData.GetData("api/pb/tiezi/getAllListJsonData", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;
@@ -406,7 +406,7 @@ public class BbsFragment1 extends Fragment implements OnTouchListener, Callback,
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 		userPhoto = PreUserInfo.getString("userPhoto", "");
 		LoginId = PreUserInfo.getString("userName", "");
 	}

@@ -21,7 +21,8 @@
             android:layout_width="27dp"
             android:layout_height="80dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ppt_bg" />
+            android:src="@drawable/ppt_bg"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/image_pic"

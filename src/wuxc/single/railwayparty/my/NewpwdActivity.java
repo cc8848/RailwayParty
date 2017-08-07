@@ -28,7 +28,7 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 	private EditText edit_new1;
 	private Button btn_ok;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private int ticket = 0;
+	private String ticket="";
 	private static final int GET_DUE_DATA = 6;
 	private TextView TextArticle;
 	private TextView TextVideo;
@@ -85,7 +85,7 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 	}
 
 	@Override

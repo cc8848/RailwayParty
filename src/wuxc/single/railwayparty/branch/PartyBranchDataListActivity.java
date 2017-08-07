@@ -56,7 +56,7 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 	private String BranchName;
 	private String BranchAddress;
 	private String Name;
-	private int ticket;
+	private String ticket="";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_BRANCH_RESULT = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
@@ -169,7 +169,7 @@ public class PartyBranchDataListActivity extends Activity implements OnClickList
 
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
-		ticket = PreUserInfo.getInt("ticket", 0);
+		ticket = PreUserInfo.getString("ticket", "");
 	}
 
 	protected void Searchlist(String string) {

@@ -66,9 +66,24 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".start.guidePageActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.ImagePPT"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.imageshow"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.StandardImageXML"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -85,6 +100,10 @@
         </activity>
         <activity
             android:name=".start.SpecialDetailActivity2"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.SpecialDetailActivity4"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -205,6 +224,10 @@
         </activity>
         <activity
             android:name=".branch.Statisticsforlevel"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".branch.Statisticsforposition"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -344,6 +367,28 @@
             android:name=".other.SearchDataListActivity"
             android:screenOrientation="portrait" >
         </activity>
+          <!-- 图片相关 -->
+        <activity
+            android:name="com.example.newsapp.photo.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photoviewer.photoviewerinterface.ImageViewerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerDeleteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerBitmapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photo.PhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.newsapp.photo.photo.PhotoAlbumActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
