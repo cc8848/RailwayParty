@@ -113,11 +113,11 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 	private int pic_number = 0;
 	private int screenwidth = 0;
 	private JSONArray kArray = new JSONArray();
-	private JSONObject jsonObject = new JSONObject();
+	
 	private boolean write = false;
+	private int load = 0;
 
 	protected void GetDataAttachment(Object obj) {
-		text_load.setVisibility(View.GONE);
 
 		// TODO Auto-generated method stub
 		String state = null;
@@ -138,6 +138,11 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		load++;
+		if (load == photoList.size()) {
+			Log.e("kArray", kArray.toString());
+			GetData();
+		}
 	}
 
 	private void GetDetailDataAttachment(String fileInfo) {
@@ -154,7 +159,9 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			attachment_pathType = demoJson.getString("pathType");
 			attachment_scalePath = demoJson.getString("scalePath");
 			attachment_size = demoJson.getString("size");
+			attachment_classify = "imageList";
 			try {
+				  JSONObject jsonObject = new JSONObject();
 				jsonObject.put("operateFlag", "1");
 				jsonObject.put("ext", attachment_ext);
 				jsonObject.put("scalePath", attachment_scalePath);
@@ -176,10 +183,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		if (kArray.length() == photoList.size()) {
-			Log.e("kArray", kArray.toString());
-			GetData();
-		}
+
 	}
 
 	@SuppressLint("NewApi")
@@ -200,7 +204,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			// Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT).show();
-				text_load.setVisibility(View.GONE);
+				finish();text_load.setVisibility(View.GONE);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -285,18 +289,38 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		ArrayValues.add(new BasicNameValuePair("modelSign", "xinde"));
 		ArrayValues.add(new BasicNameValuePair("par_keyid", "886571396132638720"));
 		ArrayValues.add(new BasicNameValuePair("xinde.title", "" + edit_name.getText().toString()));
-		ArrayValues.add(new BasicNameValuePair(" xinde.hstate", "3"));
-		ArrayValues.add(new BasicNameValuePair(" xinde.content", "" + edit_content.getText().toString()));
-		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
-		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
-		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
-		ArrayValues.add(new BasicNameValuePair("attacement.classify", attachment_classify));
-		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
-		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
-		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
-		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
-		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
-		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
+		ArrayValues.add(new BasicNameValuePair("xinde.hstate", "3"));
+		ArrayValues.add(new BasicNameValuePair("xinde.content", "" + edit_content.getText().toString()));
+		for (int i = 0; i < kArray.length(); i++) {
+			try {
+				JSONObject jsonObject = kArray.getJSONObject(i);
+//				jsonObject.put("operateFlag", "1");
+//				jsonObject.put("ext", attachment_ext);
+//				jsonObject.put("scalePath", attachment_scalePath);
+//				jsonObject.put("classify", attachment_classify);
+//				jsonObject.put("fileName", attachment_fileName);
+//				jsonObject.put("par_keyid", attachment_par_keyid);
+//				jsonObject.put("size", attachment_size);
+//				jsonObject.put("filePath", attachment_filePath);
+//				jsonObject.put("pathType", attachment_key);
+//				jsonObject.put("key", attachment_key);
+				ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", jsonObject.getString("operateFlag")));
+				ArrayValues.add(new BasicNameValuePair("attacement.ext", jsonObject.getString("ext")));
+				ArrayValues.add(new BasicNameValuePair("attacement.scalePath", jsonObject.getString("scalePath")));
+				ArrayValues.add(new BasicNameValuePair("attacement.classify", jsonObject.getString("classify")));
+				ArrayValues.add(new BasicNameValuePair("attacement.fileName", jsonObject.getString("fileName")));
+				ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", jsonObject.getString("par_keyid")));
+				ArrayValues.add(new BasicNameValuePair("attacement.size", jsonObject.getString("size")));
+				ArrayValues.add(new BasicNameValuePair("attacement.filePath", jsonObject.getString("filePath")));
+				ArrayValues.add(new BasicNameValuePair("attacement.pathType", jsonObject.getString("pathType")));
+				ArrayValues.add(new BasicNameValuePair("attacement.key", jsonObject.getString("key")));
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -327,11 +351,10 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			finish();
 			break;
 		case R.id.btn_ok:
-
+			text_load.setVisibility(View.VISIBLE);
+			load = 0;
 			for (int i = 0; i < photoList.size(); i++) {
-
-				text_load.setVisibility(View.VISIBLE);
-				text_load.setText("正在上传第" + i + "张");
+				text_load.setText("正在上传");
 				Log.e("photoList", photoList.get(i).getPhotoPath());
 				final File file = GetFile(photoList.get(i).getPhotoPath());
 				text_load.setVisibility(View.VISIBLE);

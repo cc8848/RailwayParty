@@ -283,6 +283,14 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".main.PublishTipsYIJANActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PublishTipsDYQActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".main.PublishTipsActivity"
             android:screenOrientation="portrait" >
         </activity>
@@ -304,6 +312,10 @@
         </activity>
         <activity
             android:name=".main.ReportInnameActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.TipsDetailActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -367,7 +379,7 @@
             android:name=".other.SearchDataListActivity"
             android:screenOrientation="portrait" >
         </activity>
-          <!-- 图片相关 -->
+        <!-- 图片相关 -->
         <activity
             android:name="com.example.newsapp.photo.MainActivity"
             android:screenOrientation="portrait" />

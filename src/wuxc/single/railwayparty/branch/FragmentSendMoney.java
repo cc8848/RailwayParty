@@ -86,10 +86,11 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	private boolean GetMonth = true;
 	private int[] DotResourceId = { R.drawable.dot_ok, R.drawable.dot_grey };
 	private int[][] NumberResourceId = {
-			{ R.drawable.b1, R.drawable.b2, R.drawable.b3, R.drawable.b4, R.drawable.b5, R.drawable.b6, R.drawable.b7,
-					R.drawable.b8, R.drawable.b9, R.drawable.b10, R.drawable.b11, R.drawable.b12 },
-			{ R.drawable.r1, R.drawable.r2, R.drawable.r3, R.drawable.r4, R.drawable.r5, R.drawable.r6, R.drawable.r7,
-					R.drawable.r8, R.drawable.r9, R.drawable.r10, R.drawable.r11, R.drawable.r12 }, };
+			{ R.drawable.h1, R.drawable.h2, R.drawable.h3, R.drawable.h4, R.drawable.h5, R.drawable.h6, R.drawable.h7,
+					R.drawable.h8, R.drawable.h9, R.drawable.h10, R.drawable.h11, R.drawable.h12 },
+			{ R.drawable.ns1, R.drawable.ns2, R.drawable.ns3, R.drawable.ns4, R.drawable.ns5, R.drawable.ns6,
+					R.drawable.ns7, R.drawable.ns8, R.drawable.ns9, R.drawable.ns10, R.drawable.ns11,
+					R.drawable.ns12 }, };
 	// 0--ÒÑ½»
 	// 1--Î´½»
 
@@ -415,10 +416,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[0] == 0) {
 					condition[0] = 1;
-					ImageDot1.setImageResource(R.drawable.dot_red);
+					ImageNumber1.setImageResource(R.drawable.rs1);
 				} else {
 					condition[0] = 0;
-					ImageDot1.setImageResource(R.drawable.dot_grey);
+					ImageNumber1.setImageResource(R.drawable.ns1);
 				}
 				ShowPayMoney();
 			}
@@ -429,10 +430,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[1] == 0) {
 					condition[1] = 1;
-					ImageDot2.setImageResource(R.drawable.dot_red);
+					ImageNumber2.setImageResource(R.drawable.rs2);
 				} else {
 					condition[1] = 0;
-					ImageDot2.setImageResource(R.drawable.dot_grey);
+					ImageNumber2.setImageResource(R.drawable.ns2);
 				}
 				ShowPayMoney();
 			}
@@ -443,10 +444,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[2] == 0) {
 					condition[2] = 1;
-					ImageDot3.setImageResource(R.drawable.dot_red);
+					ImageNumber3.setImageResource(R.drawable.rs3);
 				} else {
 					condition[2] = 0;
-					ImageDot3.setImageResource(R.drawable.dot_grey);
+					ImageNumber3.setImageResource(R.drawable.ns3);
 				}
 				ShowPayMoney();
 			}
@@ -457,10 +458,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[3] == 0) {
 					condition[3] = 1;
-					ImageDot4.setImageResource(R.drawable.dot_red);
+					ImageNumber4.setImageResource(R.drawable.rs4);
 				} else {
 					condition[3] = 0;
-					ImageDot4.setImageResource(R.drawable.dot_grey);
+					ImageNumber4.setImageResource(R.drawable.ns4);
 				}
 				ShowPayMoney();
 			}
@@ -471,10 +472,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[4] == 0) {
 					condition[4] = 1;
-					ImageDot5.setImageResource(R.drawable.dot_red);
+					ImageNumber5.setImageResource(R.drawable.rs5);
 				} else {
 					condition[4] = 0;
-					ImageDot5.setImageResource(R.drawable.dot_grey);
+					ImageNumber5.setImageResource(R.drawable.ns5);
 				}
 				ShowPayMoney();
 			}
@@ -485,10 +486,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[5] == 0) {
 					condition[5] = 1;
-					ImageDot6.setImageResource(R.drawable.dot_red);
+					ImageNumber6.setImageResource(R.drawable.rs6);
 				} else {
 					condition[5] = 0;
-					ImageDot6.setImageResource(R.drawable.dot_grey);
+					ImageNumber6.setImageResource(R.drawable.ns6);
 				}
 				ShowPayMoney();
 			}
@@ -499,10 +500,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[6] == 0) {
 					condition[6] = 1;
-					ImageDot7.setImageResource(R.drawable.dot_red);
+					ImageNumber7.setImageResource(R.drawable.rs7);
 				} else {
 					condition[6] = 0;
-					ImageDot7.setImageResource(R.drawable.dot_grey);
+					ImageNumber7.setImageResource(R.drawable.ns7);
 				}
 				ShowPayMoney();
 			}
@@ -513,10 +514,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[7] == 0) {
 					condition[7] = 1;
-					ImageDot8.setImageResource(R.drawable.dot_red);
+					ImageNumber8.setImageResource(R.drawable.rs8);
 				} else {
 					condition[7] = 0;
-					ImageDot8.setImageResource(R.drawable.dot_grey);
+					ImageNumber8.setImageResource(R.drawable.ns8);
 				}
 				ShowPayMoney();
 			}
@@ -527,10 +528,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[8] == 0) {
 					condition[8] = 1;
-					ImageDot9.setImageResource(R.drawable.dot_red);
+					ImageNumber9.setImageResource(R.drawable.rs9);
 				} else {
 					condition[8] = 0;
-					ImageDot9.setImageResource(R.drawable.dot_grey);
+					ImageNumber9.setImageResource(R.drawable.ns9);
 				}
 				ShowPayMoney();
 			}
@@ -541,10 +542,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[9] == 0) {
 					condition[9] = 1;
-					ImageDot10.setImageResource(R.drawable.dot_red);
+					ImageNumber10.setImageResource(R.drawable.rs10);
 				} else {
 					condition[9] = 0;
-					ImageDot10.setImageResource(R.drawable.dot_grey);
+					ImageNumber10.setImageResource(R.drawable.ns10);
 				}
 				ShowPayMoney();
 			}
@@ -555,10 +556,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[10] == 0) {
 					condition[10] = 1;
-					ImageDot11.setImageResource(R.drawable.dot_red);
+					ImageNumber11.setImageResource(R.drawable.rs11);
 				} else {
 					condition[10] = 0;
-					ImageDot11.setImageResource(R.drawable.dot_grey);
+					ImageNumber11.setImageResource(R.drawable.ns11);
 				}
 				ShowPayMoney();
 			}
@@ -569,10 +570,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			} else {
 				if (condition[11] == 0) {
 					condition[11] = 1;
-					ImageDot12.setImageResource(R.drawable.dot_red);
+					ImageNumber12.setImageResource(R.drawable.rs12);
 				} else {
 					condition[11] = 0;
-					ImageDot12.setImageResource(R.drawable.dot_grey);
+					ImageNumber12.setImageResource(R.drawable.ns12);
 				}
 				ShowPayMoney();
 			}

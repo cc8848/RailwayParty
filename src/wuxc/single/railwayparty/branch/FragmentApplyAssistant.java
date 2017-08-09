@@ -2,6 +2,8 @@ package wuxc.single.railwayparty.branch;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -17,12 +19,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
@@ -44,18 +48,22 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 	private String userPhoto;
 	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private String attachment_ext;
-	private String attachment_scalePath;
-	private String attachment_classify;
-	private String attachment_fileName;
-	private String attachment_par_keyid;
-	private String attachment_size;
-	private String attachment_filePath;
-	private String attachment_pathType;
-	private String attachment_key;
+	private String attachment_ext = "";
+	private String attachment_scalePath = "";
+	private String attachment_classify = "";
+	private String attachment_fileName = "";
+	private String attachment_par_keyid = "";
+	private String attachment_size = "";
+	private String attachment_filePath = "";
+	private String attachment_pathType = "";
+	private String attachment_key = "";
+	private RelativeLayout rel_file;
+	private TextView text_filename;
+	private TextView text_dele;
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
+	private int number = 0;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -71,6 +79,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			}
 		}
 	};
+
 	protected void GetDataAttachment(Object obj) {
 		text_load.setVisibility(View.GONE);
 
@@ -102,13 +111,14 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 
 			attachment_ext = demoJson.getString("ext");
 			attachment_classify = demoJson.getString("classify");
-			attachment_fileName = demoJson.getString("fileName");
+//			attachment_fileName = demoJson.getString("fileName");
 			attachment_filePath = demoJson.getString("filePath");
 			attachment_key = demoJson.getString("key");
 			attachment_par_keyid = demoJson.getString("par_keyid");
 			attachment_pathType = demoJson.getString("pathType");
 			attachment_scalePath = demoJson.getString("scalePath");
 			attachment_size = demoJson.getString("size");
+			number = 1;
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -116,6 +126,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		showfile();
 	}
 
 	protected void GetDataDueData(Object obj) {
@@ -132,6 +143,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getActivity(), "申请成功", Toast.LENGTH_SHORT).show();
 				text_load.setVisibility(View.GONE);
+				 
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -170,6 +182,12 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			ReadTicket();
 			TextView text_upload = (TextView) view.findViewById(R.id.text_upload);
 			text_upload.setOnClickListener(this);
+			rel_file = (RelativeLayout) view.findViewById(R.id.rel_file);
+
+			text_filename = (TextView) view.findViewById(R.id.text_filename);
+
+			text_dele = (TextView) view.findViewById(R.id.text_dele);
+			text_dele.setOnClickListener(this);
 			edit_name = (EditText) view.findViewById(R.id.edit_name);
 
 			edit_id = (EditText) view.findViewById(R.id.edit_id);
@@ -183,11 +201,21 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			btn_ok = (Button) view.findViewById(R.id.btn_ok);
 			btn_ok.setOnClickListener(this);
 			text_load.setOnClickListener(this);
-
+			showfile();
 		}
 
 		return view;
 
+	}
+
+	private void showfile() {
+		// TODO Auto-generated method stub
+		if (number == 0) {
+			rel_file.setVisibility(view.GONE);
+		} else {
+			rel_file.setVisibility(view.VISIBLE);
+			text_filename.setText(attachment_fileName);
+		}
 	}
 
 	private void ReadTicket() {
@@ -222,6 +250,19 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 			// }
 			startActivityForResult(intent, 0);
+			break;
+		case R.id.text_dele:
+			number = 0;
+			attachment_ext = "";
+			attachment_scalePath = "";
+			attachment_classify = "";
+			attachment_fileName = "";
+			attachment_par_keyid = "";
+			attachment_size = "";
+			attachment_filePath = "";
+			attachment_pathType = "";
+			attachment_key = "";
+			showfile();
 			break;
 		case R.id.btn_ok:
 			String name = edit_name.getText().toString();
@@ -271,7 +312,20 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.idCardNo", "" + edit_id.getText().toString()));
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.hstate", "0"));
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.orgName", LoginId));
-		ArrayValues.add(new BasicNameValuePair("xinde.content", "" + edit_content.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("kndy_apply.content", "" + edit_content.getText().toString()));
+		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
+		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
+	 
+		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
+	 
+		ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
+		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
+		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
+		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
+		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
+	 
+		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
+		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -302,8 +356,10 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 				if (uri != null) {
 					// Toast.makeText(getActivity(), "正在上传",
 					// 0).show();
-
+			 
 					final File file = GetFile(uri);
+					Log.e("getName", file.getName());
+					attachment_fileName= file.getName();
 					text_load.setVisibility(View.VISIBLE);
 					if (!(file == null)) {
 						new Thread(new Runnable() { // 开启线程上传文件

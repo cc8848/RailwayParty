@@ -24,7 +24,7 @@ import wuxc.single.railwayparty.internet.HttpGetData;
 public class AdviceActivity extends Activity implements OnClickListener {
 	private EditText edit_advice;
 	private Button btn_ok;
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -55,7 +55,7 @@ public class AdviceActivity extends Activity implements OnClickListener {
 
 			if (Type.equals("success")) {
 				Toast.makeText(getApplicationContext(), "反馈成功", Toast.LENGTH_SHORT).show();
-
+				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "反馈失败", Toast.LENGTH_SHORT).show();
 			}

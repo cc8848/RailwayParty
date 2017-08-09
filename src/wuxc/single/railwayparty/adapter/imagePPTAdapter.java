@@ -83,45 +83,9 @@ public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnCl
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
 		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
-		// Log.e("imageUrl", imageUrl);
 
-		// if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
-		// imageView.setImageResource(imageAndText.getImageurl());
-		// } else {
 		try {
-			// String imageName1 = getBitName(imageUrl);
-			// String temppath = Environment.getExternalStorageDirectory() +
-			// "/trans/" + imageName1 + ".png";
-			// Bitmap bm1 = null;
-			// // bm1 = getBitmapByPath(temppath);
-			// if (bm1 == null) {
-			// imageUrl = URLcontainer.urlip + "upload" + imageUrl;
-			// // Log.e("imageUrl", imageUrl);
-			// Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new
-			// ImageCallback() {
-			// public void imageLoaded(Drawable imageDrawable, String
-			// imageUrl) {
-			// ImageView imageViewByTag = (ImageView)
-			// listView.findViewWithTag(imageUrl);
-			// if (imageViewByTag != null) {
-			// imageViewByTag.setImageDrawable(imageDrawable);
-			// }
-			// }
-			// });
-			// if (cachedImage == null) {
-			// imageView.setImageResource(imageAndText.getImageurl());
-			// } else {
-			// Drawable d = cachedImage; // xxx根据自己的情况获取drawable
-			//
-			// BitmapDrawable bd = (BitmapDrawable) d;
-			//
-			// Bitmap bm = bd.getBitmap();
-			// // bm = cutBmp(bm);
-			// imageView.setImageBitmap(bm);
-			// }
-			// // } else {
-			// // imageView.setImageBitmap(bm1);
-			// }
+
 			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity, imageView,
 					imageAndText.getImageurl());
 		} catch (Exception e) {

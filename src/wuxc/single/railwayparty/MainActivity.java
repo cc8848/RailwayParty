@@ -237,7 +237,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			edit.putString("pAge", demoJson.getString("pAge"));
 			edit.putString("pInTime", demoJson.getString("pInTime"));
 			edit.putString("pMonthFare", demoJson.getString("pMonthFare"));
-			edit.putString("pFareEndTime", demoJson.getString("pFareEndTime"));
+			edit.putString("pFareEndMonth", demoJson.getString("pFareEndMonth"));
 			edit.putString("pUser", demoJson.getString("pUser"));
 			edit.putString("pAllowOnLinFare", demoJson.getString("pAllowOnLinFare"));
 			edit.commit();

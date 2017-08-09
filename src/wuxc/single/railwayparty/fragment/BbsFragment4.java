@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.main.PublishTipsActivity;
 import wuxc.single.railwayparty.main.PublishadviceActivity;
+import wuxc.single.railwayparty.main.TipsDetailActivity;
 import wuxc.single.railwayparty.model.Bbs4Model;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Bbs4Model;
@@ -82,7 +84,14 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	private TextView TextArticle;
 	private TextView TextVideo;
 	private int type = 2;
-	private String URL = "api/cms/channel/channleListData";
+	private String URL = "api/pb/yijian/getAllListJsonData";
+	private int number = 0;
+
+	private String[] photo = { "", "", "", "", "", "", "", "", "", "" };
+	private int screenwidth = 0;
+	private float scale = 0;
+	private float scalepx = 0;
+	private float dp = 0;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -208,21 +217,76 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setContent(json_data.getString("content"));
 					listinfo.setZan(json_data.getString("createtime"));
 					// listinfo.setGuanzhu("4532");
-					listinfo.setTitle(json_data.getString("content"));
-					listinfo.setName(json_data.getString("title"));
+					listinfo.setTitle(json_data.getString("title"));
+					listinfo.setName(json_data.getString("userName"));
 					listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					listinfo.setRead(true);
-					try {
-						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							listinfo.setContent(json_data.getString("source"));
-							listinfo.setCont(false);
-						}
 
-					} catch (Exception e) {
-						// TODO: handle exception
+					listinfo.setImage1("");
+					listinfo.setImage2("");
+					listinfo.setImage3("");
+					listinfo.setImage4("");
+					listinfo.setImage5("");
+					listinfo.setImage6("");
+					listinfo.setImage7("");
+					listinfo.setImage8("");
+					listinfo.setImage9("");
+					if (true) {
+						JSONArray jArray1 = null;
+						number = 0;
+						try {
+							listinfo.setImageList(json_data.getString("imageList"));
+							jArray1 = new JSONArray(json_data.getString("imageList"));
+							JSONObject json_data1 = null;
+							for (int j = 0; j < jArray1.length(); j++) {
+								json_data1 = jArray1.getJSONObject(j);
+								photo[j] = json_data1.getString("filePath");
+								Log.e("photo", photo[j]);
+
+								if (j == 0) {
+									listinfo.setImage1(photo[j]);
+								} else if (j == 1) {
+									listinfo.setImage2(photo[j]);
+								} else if (j == 2) {
+									listinfo.setImage3(photo[j]);
+								} else if (j == 3) {
+									listinfo.setImage4(photo[j]);
+								} else if (j == 4) {
+									listinfo.setImage5(photo[j]);
+								} else if (j == 5) {
+									listinfo.setImage6(photo[j]);
+								} else if (j == 6) {
+									listinfo.setImage7(photo[j]);
+								} else if (j == 7) {
+									listinfo.setImage8(photo[j]);
+								} else if (j == 8) {
+									listinfo.setImage9(photo[j]);
+								}
+								number++;
+							}
+						} catch (Exception e) {
+							// TODO: handle exception
+						}
 					}
+					if (json_data.getString("todown").equals("null")) {
+						listinfo.setPl("0");
+					} else {
+						listinfo.setPl(json_data.getString("todown"));
+					}
+					if (json_data.getString("toup").equals("null")) {
+						listinfo.setZan("0");
+					} else {
+						listinfo.setZan(json_data.getString("toup"));
+					}
+					if (json_data.getString("browser").equals("null")) {
+						listinfo.setGuanzhu("0");
+					} else {
+						listinfo.setGuanzhu(json_data.getString("browser"));
+					}
+					listinfo.setWidth((int) (screenwidth - 120 * scalepx));
+					listinfo.setPhoto(photo);
+					listinfo.setNumber(number);
+					listinfo.setSummary("createtime");
 					list.add(listinfo);
 
 				}
@@ -275,6 +339,15 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			}
 		} else {
 			view = inflater.inflate(R.layout.wuxc_fragment_bbs_4, container, false);
+			screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
+			DisplayMetrics mMetrics = new DisplayMetrics();
+			getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
+			scale = getActivity().getResources().getDisplayMetrics().density;
+			// Log.e("mMetrics", mMetrics.toString() + "scale=" + scale + "0.5f"
+			// +
+			// 0.5f);
+			dp = screenwidth / scale + 0.5f;
+			scalepx = screenwidth / dp;
 			initview(view);
 			setonclicklistener();
 			setheadtextview();
@@ -642,6 +715,10 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (view != null) {
+			curPage = 1;
+			GetData();
+		}
 	}
 
 	@Override
@@ -678,7 +755,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			text_1.setTextColor(Color.parseColor("#ffffff"));
 			text_1.setBackgroundResource(R.drawable.shape18red);
 			curPage = 1;
-			URL = "api/cms/channel/channleListData";
+			URL = "api/pb/yijian/getAllListJsonData";
 			GetData();
 			break;
 		case R.id.text_2:
@@ -703,13 +780,22 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 			Bbs4Model data = list.get((Integer) v.getTag());
 
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			intent.setClass(getActivity(), TipsDetailActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
-			bundle.putString("Time", data.getZan());
+			bundle.putString("Time", data.getSummary());
 			bundle.putString("detail", data.getContent());
-			bundle.putString("chn", chn);
+			bundle.putString("chn", "chn");
 			bundle.putString("Id", data.getId());
+			bundle.putInt("number", data.getNumber());
+			bundle.putStringArray("photo", data.getPhoto());
+			for (int i = 0; i < data.getPhoto().length; i++) {
+				Log.e("data.getPhoto()", data.getPhoto()[i]);
+			}
+			bundle.putString("modelSign", "dyyj");
+			bundle.putString("imagelist", data.getImageList());
+			bundle.putString("url", "api/cms/common/getChannelCommentData");
+			bundle.putString("curl", "api/cms/common/saveChannelComment2");
 			intent.putExtras(bundle);
 			startActivity(intent);
 

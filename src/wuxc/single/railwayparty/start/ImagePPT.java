@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.imagePPTAdapter;
 import wuxc.single.railwayparty.adapter.imagePPTAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.imagePPTModel;
 
 public class ImagePPT extends Activity implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
@@ -51,7 +54,10 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private boolean[] read = { false, false, true, true, true, true, true, true, true, true, true , false, false, true, true, true, true, true, true, true, true, true , false, false, true, true, true, true, true, true, true, true, true , false, false, true, true, true, true, true, true, true, true, true , false, false, true, true, true, true, true, true, true, true, true };
+	private boolean[] read = { false, false, true, true, true, true, true, true, true, true, true, false, false, true,
+			true, true, true, true, true, true, true, true, false, false, true, true, true, true, true, true, true,
+			true, true, false, false, true, true, true, true, true, true, true, true, true, false, false, true, true,
+			true, true, true, true, true, true, true };
 	private int[] headimg = { R.drawable.ppt1, R.drawable.ppt2, R.drawable.ppt3, R.drawable.ppt4, R.drawable.ppt5,
 			R.drawable.ppt6, R.drawable.ppt7, R.drawable.ppt8, R.drawable.ppt9, R.drawable.ppt10, R.drawable.ppt11,
 			R.drawable.ppt12, R.drawable.ppt13, R.drawable.ppt14, R.drawable.ppt15, R.drawable.ppt16, R.drawable.ppt17,
@@ -79,7 +85,9 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	private String Name;
 	private String Title;
 	private String Time;
-
+	private int classify = 0;
+	private String filePath = "";
+	private LinearLayout lin_fujian;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -96,21 +104,23 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
-		String Type = null;
+		// String Type = null;
 		String Data = null;
-		String pager = null;
+		// String pager = null;
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
-			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
-			Data = demoJson.getString("datas");
+			String Type = demoJson.getString("type");
+
+			Data = demoJson.getString("data");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "服务器数据失败",
+				// Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "数据格式校验失败",
+				// Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -121,70 +131,60 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	}
 
 	private void GetDataList(String data, int arg) {
-		;
-		if (arg == 1) {
-			list.clear();
-		}
-		JSONArray jArray = null;
+		// TODO Auto-generated method stub
 		try {
-			jArray = new JSONArray(data);
-			JSONObject json_data = null;
-			if (jArray.length() == 0) {
-				// / Toast.makeText(getApplicationContext(), "无数据",
-				// Toast.LENGTH_SHORT).show();
+			JSONObject demoJson = new JSONObject(data);
 
-			} else {
-				for (int i = 0; i < jArray.length(); i++) {
-					json_data = jArray.getJSONObject(i);
-					Log.e("json_data", "" + json_data);
-					// JSONObject jsonObject = json_data.getJSONObject("data");
-					imagePPTModel listinfo = new imagePPTModel();
-					try {
-						listinfo.setBi(json_data.getInt("iszengread"));
-					} catch (Exception e) {
-						// TODO: handle exception
-						listinfo.setBi(0);
+			classify = demoJson.getInt("fileClassify");
+			JSONArray jArray = null;
+
+			jArray = new JSONArray(demoJson.getString("videoFile"));
+			for (int i = 0; i < jArray.length(); i++) {
+				try {
+					JSONObject demoJson1 = jArray.getJSONObject(i);
+					String temp = demoJson1.getString("filePath");
+					Log.e("temp", temp);
+					String bStrings = demoJson1.getString("ext");
+					if (bStrings.equals("ppt") || bStrings.equals("pptx") || bStrings.equals("PPT")
+							|| bStrings.equals("PPTX")) {
+						filePath = URLcontainer.urlip + "upload" + demoJson1.getString("filePath");
+					} else if (bStrings.equals("png") || bStrings.equals("jpg") || bStrings.equals("JPG")
+							|| bStrings.equals("PNG") || bStrings.equals("JPEG") || bStrings.equals("jpeg")) {
+						imagePPTModel listinfo = new imagePPTModel();
+						listinfo.setTime("2017-08-30");
+						listinfo.setTitle("杭州地区地铁项目");
+						listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
+						listinfo.setGuanzhu("231");
+						listinfo.setZan("453");
+						listinfo.setRead(true);
+						listinfo.setImageurl(0);
+
+						listinfo.setHeadimgUrl(temp);
+
+						listinfo.setWidth(screenwidth);
+						Log.e("temp", temp + screenwidth);
+						list.add(listinfo);
 					}
-					String date = getdate(json_data.getString("releaseDate"));
-					listinfo.setTime(date);
-					listinfo.setTitle(json_data.getString("title"));
-					listinfo.setId(json_data.getString("keyid"));
-					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setContent(json_data.getString("summary"));
-					listinfo.setSummary(json_data.getString("summary"));
-					listinfo.setCont(true);
-					listinfo.setGuanzhu("231");
-					listinfo.setZan("453");
-					listinfo.setImageurl(headimg[i]);
-					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-					listinfo.setRead(true);
-					try {
-						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
-							listinfo.setContent(json_data.getString("source"));
-							listinfo.setCont(false);
-						}
 
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					list.add(listinfo);
-
+				} catch (Exception e) {
+					// TODO: handle exception
+					filePath = "";
 				}
 			}
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-
-		if (arg == 1) {
-			go();
+		if (filePath.equals("")||filePath==null) {
+			lin_fujian.setVisibility(view.GONE);
 		} else {
-			mAdapter.notifyDataSetChanged();
+			lin_fujian.setVisibility(view.VISIBLE);
 		}
-
+		Log.e("temp", filePath);
+		go();
 	}
 
 	private String getdate(String string) {
@@ -192,7 +192,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		String result = "07-28";
 		try {
 			String[] bStrings = string.split("-");
-			result = bStrings[1] + "-" + bStrings[2];
+			result = bStrings + "-" + bStrings[2];
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -239,10 +239,10 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		setonclicklistener();
 		setheadtextview();
 
-		getdatalist(curPage);
+		// getdatalist(curPage);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
-		// GetData();
+		GetData();
 
 	}
 
@@ -294,16 +294,15 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-		ArrayValues.add(new BasicNameValuePair("chn", "tzggd"));
-		chn = "tzggd";
-		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
-		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		ArrayValues.add(new BasicNameValuePair("chn", "wsdx"));
+
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/channel/channleListData", ArrayValues);
+				DueData = HttpGetData.GetData("api/cms/channel/channleContentData", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;
@@ -326,6 +325,8 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		text_title = (TextView) findViewById(R.id.text_title);
 		text_time = (TextView) findViewById(R.id.text_time);
 		image_back = (ImageView) findViewById(R.id.image_back);
+		lin_fujian = (LinearLayout) findViewById(R.id.lin_fujian);
+		lin_fujian.setOnClickListener(this);
 		image_back.setOnClickListener(this);
 		text_time.setText(Time);
 		text_title.setText(Title);
@@ -338,84 +339,84 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
-		 float tempY = event.getY();
-		 float tempyfoot = event.getY();
-		 firstItemIndex = ListData.getFirstVisiblePosition();
-		 lastItemIndex = ListData.getLastVisiblePosition();
-		 // Toast.makeText(getApplicationContext(), " lastItemIndex" +
-		 // lastItemIndex, Toast.LENGTH_SHORT).show();
-		 switch (event.getAction()) {
-		 case MotionEvent.ACTION_DOWN:
-		 case MotionEvent.ACTION_MOVE:
-		 if (!isRecored && (firstItemIndex == 0)) {
-		 isRecored = true;
-		 startY = tempY;
-		 }
-		 int temp = 1;
-		 temp = (lastItemIndex) % pageSize;
-		 if (!isRecoredfoot && (temp == 0)) {
-		 isRecoredfoot = true;
-		 startYfoot = tempyfoot;
-		 }
-		 break;
-		 case MotionEvent.ACTION_UP:
-		 case MotionEvent.ACTION_CANCEL:
-		 isRecored = false;
-		 isRecoredfoot = false;
-		 break;
-		
-		 default:
-		 break;
-		 }
-		
-		 switch (event.getAction()) {
-		 case MotionEvent.ACTION_DOWN:
-		 break;
-		 case MotionEvent.ACTION_UP:
-		 case MotionEvent.ACTION_CANCEL:
-		 ListData.setPadding(0, 0, 0, 0);
-		 if (tempY - startY < 400) {
-		 ListData.setPadding(0, -100, 0, 0);
-		 } else {
-		 curPage = 1;
-		 Toast.makeText(getApplicationContext(), "正在刷新",
-		 Toast.LENGTH_SHORT).show();
-			getdatalist(curPage);
-		 }
-		 int temp = 1;
-		 temp = (lastItemIndex) % pageSize;
-		 // temp = 0;
-		 if (temp == 0 && (startYfoot - tempyfoot > 400)) {
-		 curPage++;
-		 if (curPage > totalPage) {
-		 Toast.makeText(getApplicationContext(), " 没有更多了",
-		 Toast.LENGTH_SHORT).show();
-		 // // listinfoagain();
-		 } else {
-		getdatalist(curPage);
-		 Toast.makeText(getApplicationContext(), "正在加载下一页",
-		 Toast.LENGTH_SHORT).show();
-		 }
-		
-		 } else {
-		
-		 }
-		 break;
-		 case MotionEvent.ACTION_MOVE:
-		 if (isRecored && tempY > startY) {
-		 ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
-		 }
-		 if (isRecoredfoot && startYfoot > tempyfoot) {
-		 // footTextView.setVisibility(View.VISIBLE);
-		 ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) /
-		 RATIO));
-		 }
-		 break;
-		
-		 default:
-		 break;
-		 }
+		// // TODO Auto-generated method stub
+		// float tempY = event.getY();
+		// float tempyfoot = event.getY();
+		// firstItemIndex = ListData.getFirstVisiblePosition();
+		// lastItemIndex = ListData.getLastVisiblePosition();
+		// // Toast.makeText(getApplicationContext(), " lastItemIndex" +
+		// // lastItemIndex, Toast.LENGTH_SHORT).show();
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// case MotionEvent.ACTION_MOVE:
+		// if (!isRecored && (firstItemIndex == 0)) {
+		// isRecored = true;
+		// startY = tempY;
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// if (!isRecoredfoot && (temp == 0)) {
+		// isRecoredfoot = true;
+		// startYfoot = tempyfoot;
+		// }
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// isRecored = false;
+		// isRecoredfoot = false;
+		// break;
+		//
+		// default:
+		// break;
+		// }
+		//
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// ListData.setPadding(0, 0, 0, 0);
+		// if (tempY - startY < 400) {
+		// ListData.setPadding(0, -100, 0, 0);
+		// } else {
+		// curPage = 1;
+		// Toast.makeText(getApplicationContext(), "正在刷新",
+		// Toast.LENGTH_SHORT).show();
+		// getdatalist(curPage);
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// // temp = 0;
+		// if (temp == 0 && (startYfoot - tempyfoot > 400)) {
+		// curPage++;
+		// if (curPage > totalPage) {
+		// Toast.makeText(getApplicationContext(), " 没有更多了",
+		// Toast.LENGTH_SHORT).show();
+		// // // listinfoagain();
+		// } else {
+		// getdatalist(curPage);
+		// Toast.makeText(getApplicationContext(), "正在加载下一页",
+		// Toast.LENGTH_SHORT).show();
+		// }
+		//
+		// } else {
+		//
+		// }
+		// break;
+		// case MotionEvent.ACTION_MOVE:
+		// if (isRecored && tempY > startY) {
+		// ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
+		// }
+		// if (isRecoredfoot && startYfoot > tempyfoot) {
+		// // footTextView.setVisibility(View.VISIBLE);
+		// ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) /
+		// RATIO));
+		// }
+		// break;
+		//
+		// default:
+		// break;
+		// }
 		return false;
 	}
 
@@ -479,9 +480,9 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 				listinfo.setImageurl(headimg[i]);
 				if (i % 2 == 0) {
 					listinfo.setHeadimgUrl("/2017/08/07/894263289180196864.png");
-				}else {
+				} else {
 					listinfo.setHeadimgUrl("/2017/08/07/894265226881536000.png");
-					
+
 				}
 
 				listinfo.setWidth(screenwidth);
@@ -537,6 +538,19 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		switch (v.getId()) {
 		case R.id.image_back:
 			finish();
+			break;
+		case R.id.lin_fujian:
+			// finish();
+			if (true) {
+
+				Intent intent = new Intent();
+				intent.setAction("android.intent.action.VIEW");
+				Uri content_url = Uri.parse(filePath);
+				intent.setData(content_url);
+				startActivity(intent);
+
+			}
+
 			break;
 		default:
 			break;

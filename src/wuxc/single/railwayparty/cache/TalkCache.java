@@ -11,6 +11,14 @@ public class TalkCache {
 	private TextView TextName;
 	private ImageView ImageHeadimg;
 	private TextView TextDetail;
+	private ImageView image;
+
+	public ImageView getimage() {
+		if (image == null) {
+			image = (ImageView) baseView.findViewById(R.id.image);
+		}
+		return image;
+	}
 
 	public TalkCache(View baseView) {
 		this.baseView = baseView;

@@ -26,6 +26,8 @@ import wuxc.single.railwayparty.fragment.BbsFragment4;
 import wuxc.single.railwayparty.fragment.BbsFragment5;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.main.PublishDYQActivity;
+import wuxc.single.railwayparty.main.PublishTipsDYQActivity;
+import wuxc.single.railwayparty.main.PublishTipsYIJANActivity;
 import wuxc.single.railwayparty.main.PublishadviceActivity;
 import wuxc.single.railwayparty.other.SearchActivity;
 
@@ -280,11 +282,11 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		case R.id.image_edit:
 			if (page == 4) {
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), PublishadviceActivity.class);
+				intent.setClass(getActivity(), PublishTipsYIJANActivity.class);
 				startActivity(intent);
 			} else if (page == 1) {
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), PublishDYQActivity.class);
+				intent.setClass(getActivity(), PublishTipsDYQActivity.class);
 				startActivity(intent);
 			}
 			break;

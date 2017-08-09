@@ -6,7 +6,125 @@ public class Bbs4Model {
 	private String content;
 	private String zan;
 	private String guanzhu;
-	private boolean read;private String Id;
+	private boolean read;
+	private String Id;
+	private String[] photo;
+	private int number;
+	private String ImageList;
+	private String Image1;
+	private String Image2;
+	private String Image3;
+	private String Image4;
+	private String Image5;
+	private String Image6;
+	private String Image7;
+	private String Image8;
+	private String Image9;
+	private int width;
+
+	public String[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String[] photo) {
+		this.photo = photo;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public String getImageList() {
+		return ImageList;
+	}
+
+	public void setImageList(String imageList) {
+		ImageList = imageList;
+	}
+
+	public String getImage1() {
+		return Image1;
+	}
+
+	public void setImage1(String image1) {
+		Image1 = image1;
+	}
+
+	public String getImage2() {
+		return Image2;
+	}
+
+	public void setImage2(String image2) {
+		Image2 = image2;
+	}
+
+	public String getImage3() {
+		return Image3;
+	}
+
+	public void setImage3(String image3) {
+		Image3 = image3;
+	}
+
+	public String getImage4() {
+		return Image4;
+	}
+
+	public void setImage4(String image4) {
+		Image4 = image4;
+	}
+
+	public String getImage5() {
+		return Image5;
+	}
+
+	public void setImage5(String image5) {
+		Image5 = image5;
+	}
+
+	public String getImage6() {
+		return Image6;
+	}
+
+	public void setImage6(String image6) {
+		Image6 = image6;
+	}
+
+	public String getImage7() {
+		return Image7;
+	}
+
+	public void setImage7(String image7) {
+		Image7 = image7;
+	}
+
+	public String getImage8() {
+		return Image8;
+	}
+
+	public void setImage8(String image8) {
+		Image8 = image8;
+	}
+
+	public String getImage9() {
+		return Image9;
+	}
+
+	public void setImage9(String image9) {
+		Image9 = image9;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
 	public String getId() {
 		return Id;
@@ -15,6 +133,7 @@ public class Bbs4Model {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	private String time;
 	private String keyid;
 	private int imageurl;
@@ -24,6 +143,7 @@ public class Bbs4Model {
 	private String pl;
 	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -41,8 +161,6 @@ public class Bbs4Model {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

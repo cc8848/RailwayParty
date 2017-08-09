@@ -361,8 +361,8 @@ public class MycheckActivity extends Activity implements OnClickListener, OnTouc
 					Toast.makeText(getApplicationContext(), " 没有更多了", Toast.LENGTH_SHORT).show();
 					// // listinfoagain();
 				} else {
-					GetData();
-					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
+//					GetData();
+//					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
 				}
 
 			} else {

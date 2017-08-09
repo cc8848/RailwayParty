@@ -277,7 +277,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 
 	private void initheight(View view) {
 		// TODO Auto-generated method stub
-		int height = (int) (screenwidth * 683 / 1125);
+		int height = (int) (screenwidth * 683 / 1625);
 
 		LinearLayout.LayoutParams LayoutParams = (android.widget.LinearLayout.LayoutParams) lin_top.getLayoutParams();
 		LayoutParams.height = height;
@@ -285,8 +285,8 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 
 		LinearLayout.LayoutParams LayoutParams1 = (android.widget.LinearLayout.LayoutParams) round_headimg
 				.getLayoutParams();
-		LayoutParams1.height = (int) (height / 2.5);
-		LayoutParams1.width = (int) (height / 2.5);
+		LayoutParams1.height = (int) (height / 2);
+		LayoutParams1.width = (int) (height / 2);
 		round_headimg.setLayoutParams(LayoutParams1);
 	}
 

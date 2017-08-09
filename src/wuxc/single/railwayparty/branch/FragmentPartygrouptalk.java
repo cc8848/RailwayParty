@@ -1,5 +1,6 @@
 package wuxc.single.railwayparty.branch;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.transition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,9 +29,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
@@ -38,6 +44,8 @@ import wuxc.single.railwayparty.BranchFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.TalkAdapter;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.internet.UpLoadFile;
 import wuxc.single.railwayparty.model.TalkModel;
 import wuxc.single.railwayparty.model.TalkModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
@@ -62,7 +70,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 	private View view;// 缓存Fragment view
 	// private boolean[] type = { true, true, false, false, false, false, false,
 	// false, false, false, false, false };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -76,6 +84,8 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 	private int type = 2;
 	private EditText edit_comment;
 	private Button btn_comment;
+	private ImageView image;
+	private String fileInfo = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -87,11 +97,75 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 				curPage = 1;
 				GetData();
 				break;
+			case 1:
+				GetDataAttachment(msg.obj);
+
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetDataAttachment(Object obj) {
+
+		// TODO Auto-generated method stub
+		String state = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			state = demoJson.getString("state");
+			fileInfo = demoJson.getString("fileInfo");
+			if (state.equals("1")) {
+
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+				// type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+				// curPage));
+				// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+				// pageSize));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				ArrayValues.add(new BasicNameValuePair("chatInfoDto.par_keyid", BranchFragment.id));
+				Log.e("par_keyid", BranchFragment.id);
+				JSONObject jsonObject = new JSONObject();
+				try {
+					jsonObject.put("msgType", "image");
+					jsonObject.put("data", fileInfo);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ArrayValues.add(new BasicNameValuePair("chatInfoDto.content", "" + jsonObject));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/pb/chatInfo/save", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 9;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Toast.makeText(getActivity(), "", 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -161,12 +235,26 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 					// listinfo.setHeadimgUrl(json_data.getString("userPhoto"));
 					// listinfo.setRead(true);
 					listinfo.setName(json_data.getString("user_name"));
-				
+					if (json_data.getString("senderId").equals(ticket)) {
+						listinfo.setMy(true);
+					} else {
+						listinfo.setMy(false);
+					}
 					listinfo.setImageUrl(json_data.getString("userPhoto"));
-					json_data = 	new JSONObject(json_data.getString("content"));
-//					json_data = json_data.getJSONObject(json_data.getString("content"));
+					json_data = new JSONObject(json_data.getString("content"));
+					// json_data =
+					// json_data.getJSONObject(json_data.getString("content"));
 					listinfo.setDetail(json_data.getString("data"));
-					listinfo.setMy(true);
+					try {
+						json_data = new JSONObject(json_data.getString("data"));
+						// json_data =
+						// json_data.getJSONObject(json_data.getString("content"));
+						listinfo.setImage(json_data.getString("filePath"));
+						listinfo.setPic(true);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+
 					list.add(listinfo);
 					// try {
 					// listinfo.setLink(json_data.getString("otherLinks"));
@@ -180,7 +268,6 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 					// } catch (Exception e) {
 					// // TODO: handle exception
 					// }
-					list.add(listinfo);
 
 				}
 			}
@@ -189,7 +276,10 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		for (int i = 0; i < list.size(); i++) {
+			TalkModel talkModel = list.get(list.size() - 1 - i);
+			listshow.add(talkModel);
+		}
 		if (arg == 1) {
 			go();
 		} else {
@@ -323,6 +413,8 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 		edit_comment = (EditText) view.findViewById(R.id.edit_comment);
 		btn_comment = (Button) view.findViewById(R.id.btn_comment);
 		btn_comment.setOnClickListener(this);
+		image = (ImageView) view.findViewById(R.id.image);
+		image.setOnClickListener(this);
 	}
 
 	private void setonclicklistener() {
@@ -332,86 +424,91 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
-		float tempY = event.getY();
-		float tempyfoot = event.getY();
-		firstItemIndex = ListData.getFirstVisiblePosition();
-		lastItemIndex = ListData.getLastVisiblePosition();
-		// Toast.makeText(getActivity(), " lastItemIndex" +
-		// lastItemIndex, Toast.LENGTH_SHORT).show();
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-		case MotionEvent.ACTION_MOVE:
-			if (!isRecored && (firstItemIndex == 0)) {
-				isRecored = true;
-				startY = tempY;
-			}
-			int temp = 1;
-			temp = (lastItemIndex) % pageSize;
-			if (!isRecoredfoot && (temp == 0)) {
-				isRecoredfoot = true;
-				startYfoot = tempyfoot;
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_CANCEL:
-			isRecored = false;
-			isRecoredfoot = false;
-			break;
-
-		default:
-			break;
-		}
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			break;
-		case MotionEvent.ACTION_UP:
-		case MotionEvent.ACTION_CANCEL:
-			ListData.setPadding(0, 0, 0, 0);
-			if (tempY - startY < 400) {
-				ListData.setPadding(0, -100, 0, 0);
-			} else {
-				curPage++;
-				if (curPage > totalPage) {
-					Toast.makeText(getActivity(), " 没有更多了", Toast.LENGTH_SHORT).show();
-					// // listinfoagain();
-				} else {
-					Toast.makeText(getActivity(), "正在刷新下一页", Toast.LENGTH_SHORT).show();
-					GetData();
-				}
-
-			}
-			int temp = 1;
-			temp = (lastItemIndex) % pageSize;
-			// temp = 0;
-			if (temp == 0 && (startYfoot - tempyfoot > 400)) {
-				curPage = 1;
-				if (curPage > totalPage) {
-					Toast.makeText(getActivity(), " 没有更多了", Toast.LENGTH_SHORT).show();
-					// // listinfoagain();
-				} else {
-					GetData();
-					Toast.makeText(getActivity(), "正在刷新", Toast.LENGTH_SHORT).show();
-				}
-
-			} else {
-
-			}
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (isRecored && tempY > startY) {
-				ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
-			}
-			if (isRecoredfoot && startYfoot > tempyfoot) {
-				// footTextView.setVisibility(View.VISIBLE);
-				ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) / RATIO));
-			}
-			break;
-
-		default:
-			break;
-		}
+		// // TODO Auto-generated method stub
+		// float tempY = event.getY();
+		// float tempyfoot = event.getY();
+		// firstItemIndex = ListData.getFirstVisiblePosition();
+		// lastItemIndex = ListData.getLastVisiblePosition();
+		// // Toast.makeText(getActivity(), " lastItemIndex" +
+		// // lastItemIndex, Toast.LENGTH_SHORT).show();
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// case MotionEvent.ACTION_MOVE:
+		// if (!isRecored && (firstItemIndex == 0)) {
+		// isRecored = true;
+		// startY = tempY;
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// if (!isRecoredfoot && (temp == 0)) {
+		// isRecoredfoot = true;
+		// startYfoot = tempyfoot;
+		// }
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// isRecored = false;
+		// isRecoredfoot = false;
+		// break;
+		//
+		// default:
+		// break;
+		// }
+		//
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// // ListData.setPadding(0, 0, 0, 0);
+		// if (tempY - startY < 400) {
+		// // ListData.setPadding(0, -100, 0, 0);
+		// } else {
+		// curPage++;
+		// if (curPage > totalPage) {
+		// // Toast.makeText(getActivity(), " 没有更多了",
+		// // Toast.LENGTH_SHORT).show();
+		// // // listinfoagain();
+		// } else {
+		// // Toast.makeText(getActivity(), "正在刷新下一页",
+		// // Toast.LENGTH_SHORT).show();
+		// // GetData();
+		// }
+		//
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// // temp = 0;
+		// if (temp == 0 && (startYfoot - tempyfoot > 400)) {
+		// curPage = 1;
+		// if (curPage > totalPage) {
+		// // Toast.makeText(getActivity(), " 没有更多了",
+		// // Toast.LENGTH_SHORT).show();
+		// // // listinfoagain();
+		// } else {
+		// // GetData();
+		// // Toast.makeText(getActivity(), "正在刷新",
+		// // Toast.LENGTH_SHORT).show();
+		// }
+		//
+		// } else {
+		//
+		// }
+		// break;
+		// case MotionEvent.ACTION_MOVE:
+		// if (isRecored && tempY > startY) {
+		// ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
+		// }
+		// if (isRecoredfoot && startYfoot > tempyfoot) {
+		// // footTextView.setVisibility(View.VISIBLE);
+		// ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) /
+		// RATIO));
+		// }
+		// break;
+		//
+		// default:
+		// break;
+		// }
 		return false;
 	}
 
@@ -437,7 +534,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 		headTextView = new TextView(getActivity());
 		headTextView.setGravity(Gravity.CENTER);
 		headTextView.setMinHeight(100);
-		headTextView.setText("正在刷新...");
+		headTextView.setText("");
 		headTextView.setTypeface(Typeface.DEFAULT_BOLD);
 		headTextView.setTextSize(15);
 		headTextView.invalidate();
@@ -478,9 +575,17 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new TalkAdapter(getActivity(), list, ListData);
+		mAdapter = new TalkAdapter(getActivity(), listshow, ListData);
 		ListData.setAdapter(mAdapter);
 		ListData.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+
+		ListData.setSelection(mAdapter.getCount() - 1);
+		InputMethodManager inputManager =
+
+				(InputMethodManager) edit_comment.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		inputManager.hideSoftInputFromWindow(edit_comment.getWindowToken(), 0);
+		edit_comment.setText("");
 	}
 
 	@Override
@@ -547,7 +652,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 				ArrayValues.add(new BasicNameValuePair("chatInfoDto.par_keyid", BranchFragment.id));
-			Log.e("par_keyid",  BranchFragment.id);
+				Log.e("par_keyid", BranchFragment.id);
 				JSONObject jsonObject = new JSONObject();
 				try {
 					jsonObject.put("msgType", "text");
@@ -573,8 +678,97 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 			}
 
 			break;
+		case R.id.image:
+			Intent intent = null;
+			// if (Build.VERSION.SDK_INT < 19) {
+			intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			// } else {
+			// intent = new Intent(Intent.ACTION_PICK,
+			// android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			// }
+			startActivityForResult(intent, 0);
+			break;
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (data == null)
+			return;
+		Bundle bundle = data.getExtras();
+		switch (requestCode) {
+
+		case 0:
+			// 发送选择的文件
+			if (data != null) {
+				Uri uri = data.getData();
+				if (uri != null) {
+					final File file = GetFile(uri);
+					// text_load.setVisibility(View.VISIBLE);
+					if (!(file == null)) {
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String UpLoadResult = UpLoadFile.uploadFileatt(file,
+										URLcontainer.urlip + "console/pb/chatgroupfileUpload/uploadMultiple",
+										BranchFragment.id, "" + ticket);
+								Message msg = new Message();
+								msg.what = 1;
+								msg.obj = UpLoadResult;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
+
+				}
+			}
+
+			break;
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 获取文件
+	 * 
+	 * @param uri
+	 */
+	private File GetFile(Uri uri) {
+		String filePath = null;
+		if ("content".equalsIgnoreCase(uri.getScheme())) {
+			String[] projection = { "_data" };
+			Cursor cursor = null;
+
+			try {
+				cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
+				int column_index = cursor.getColumnIndexOrThrow("_data");
+				if (cursor.moveToFirst()) {
+					filePath = cursor.getString(column_index);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else if ("file".equalsIgnoreCase(uri.getScheme())) {
+			filePath = uri.getPath();
+		}
+		File file = new File(filePath);
+		if (file == null || !file.exists()) {
+
+			Toast.makeText(getActivity(), "文件不存在", 0).show();
+			return file;
+		}
+		if (file.length() > 20 * 1024 * 1024) {
+
+			Toast.makeText(getActivity(), "文件不能大于20M", 0).show();
+			return null;
+		}
+		return file;
 	}
 }

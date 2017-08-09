@@ -422,6 +422,12 @@ public class ChangeTermsDetailActivity extends Activity
 	}
 
 	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();	GetData();
+	}
+
+	@Override
 	public void click(View v) {
 		// TODO Auto-generated method stub
 		CandicateModel data = list.get((Integer) v.getTag());

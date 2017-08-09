@@ -36,7 +36,7 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 	private String Number;
 	private String Id = "";
 	private String remark = "";
-	private String ticket="";
+	private String ticket = "";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
@@ -89,7 +89,7 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getApplicationContext(), "投票成功", Toast.LENGTH_SHORT).show();
-
+				TextNumber.setText("当前票数：" + (Number + 1));
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "投票失败", Toast.LENGTH_SHORT).show();
 			} else if (Type.equals("voteExpire")) {
@@ -129,6 +129,12 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 		// TODO Auto-generated method stub
 		ImageBack.setOnClickListener(this);
 		ImageSelected.setOnClickListener(this);
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 	}
 
 	@Override

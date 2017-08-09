@@ -1,16 +1,26 @@
 package wuxc.single.railwayparty.branch;
 
+import java.util.ArrayList;
+
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.RoundImageView;
 
 public class PartyMembershipActivity extends Activity implements OnClickListener {
@@ -25,6 +35,51 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 	private String Str_party_address = "陕西省西安市雁塔北路1号";
 	private String Str_party_time = "2017年5月";
 	private SharedPreferences PreUserInfo;// 存储个人信息
+	private String ticket = "";
+	private String myid = "";
+	private Handler uiHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+
+			case 7:
+				GetDataDueData(msg.obj);
+				break;
+			default:
+				break;
+
+			}
+		}
+
+	};
+
+	protected void GetDataDueData(Object obj) {
+
+		// TODO Auto-generated method stub
+		// String Type = null;
+		String Data = null;
+		// String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			String Type = demoJson.getString("type");
+
+			Data = demoJson.getString("data");
+			if (Type.equals("success")) {
+
+				JSONObject json = new JSONObject(Data);
+				Str_party_address = json.getString("address");
+			} else {
+				// Toast.makeText(getApplicationContext(), "数据格式校验失败",
+				// Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		settext();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +98,7 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
 		settext();
+		GetData();
 	}
 
 	private void ReadTicket() {
@@ -51,6 +107,8 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		Str_party_name = PreUserInfo.getString("deptName", "");
 		Str_party_address = PreUserInfo.getString("address", "");
 		Str_party_time = PreUserInfo.getString("pInTime", "");
+		ticket = PreUserInfo.getString("ticket", "");
+		myid = PreUserInfo.getString("deptId", "");
 	}
 
 	private void settext() {
@@ -59,6 +117,41 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		text_party_name.setText("党组织名称：" + Str_party_name);
 		text_party_address.setText("党组织地址：" + Str_party_address);
 		text_party_time.setText("转入本组织时间：" + Str_party_time);
+		Editor edit = PreUserInfo.edit();
+
+		edit.putString("detailaddress", Str_party_address);
+		edit.commit();
+	}
+
+	private void GetData() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + myid));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/common/getOrg", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 7;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
 	}
 
 	@Override

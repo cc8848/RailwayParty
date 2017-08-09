@@ -69,7 +69,7 @@ public class PartyMembershipTransActivity extends Activity implements OnClickLis
 		// TODO Auto-generated method stub
 		Str_name = PreUserInfo.getString("userName", "");
 		Str_party_name = PreUserInfo.getString("deptName", "");
-		Str_party_address = PreUserInfo.getString("address", "");
+		Str_party_address = PreUserInfo.getString("detailaddress", "");
 		Str_party_time = PreUserInfo.getString("pInTime", "");
 		myid = PreUserInfo.getString("deptId", "");
 		ticket = PreUserInfo.getString("ticket", "");

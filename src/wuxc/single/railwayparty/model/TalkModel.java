@@ -8,6 +8,25 @@ public class TalkModel {
 	private boolean my;
 	private boolean Cont;
 	private String Summary;
+	private String Image;
+	private boolean pic;
+
+	public boolean isPic() {
+		return pic;
+	}
+
+	public void setPic(boolean pic) {
+		this.pic = pic;
+	}
+
+	public String getImage() {
+		return Image;
+	}
+
+	public void setImage(String image) {
+		Image = image;
+	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -25,8 +44,6 @@ public class TalkModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

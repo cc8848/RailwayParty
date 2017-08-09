@@ -61,7 +61,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -75,6 +75,16 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 	private int type = 2;
 	private String classify = "";
 	private Button btn_file;
+	private String fileInfo = "";
+	private String attachment_ext = "";
+	private String attachment_scalePath = "";
+	private String attachment_classify = "";
+	private String attachment_fileName = "";
+	private String attachment_par_keyid = "";
+	private String attachment_size = "";
+	private String attachment_filePath = "";
+	private String attachment_pathType = "";
+	private String attachment_key = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -84,14 +94,94 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				break;
 			case 1:
 				// GetDataDueData(msg.obj);
-				Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+				GetDataAttachment(msg.obj);
 
+				break;
+			case 9:
+				curPage = 1;
+				GetData();
 				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetDataAttachment(Object obj) {
+
+		// TODO Auto-generated method stub
+		String state = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			state = demoJson.getString("state");
+			fileInfo = demoJson.getString("fileInfo");
+			if (state.equals("1")) {
+				GetDetailDataAttachment(fileInfo);
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				ArrayValues.add(new BasicNameValuePair("par_keyid", BranchFragment.id));
+				ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
+				ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
+			 
+				ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
+			 
+				ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
+				ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
+				ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
+				ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
+				ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
+			 
+				ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
+				ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
+
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("console/pb/chatgroupfileUpload/uploadMultiple", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 9;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			// Toast.makeText(getActivity(), "", 0).show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	private void GetDetailDataAttachment(String fileInfo) {
+		// TODO Auto-generated method stub
+		try {
+			JSONObject demoJson = new JSONObject(fileInfo);
+
+			attachment_ext = demoJson.getString("ext");
+			attachment_classify = demoJson.getString("classify");
+			// attachment_fileName = demoJson.getString("fileName");
+			attachment_filePath = demoJson.getString("filePath");
+			attachment_key = demoJson.getString("key");
+			attachment_par_keyid = demoJson.getString("par_keyid");
+			attachment_pathType = demoJson.getString("pathType");
+			attachment_scalePath = demoJson.getString("scalePath");
+			attachment_size = demoJson.getString("size");
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -108,9 +198,11 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				GetPager(Data);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-//				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), "服务器数据失败",
+				// Toast.LENGTH_SHORT).show();
 			} else {
-//				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), "数据格式校验失败",
+				// Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -459,7 +551,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 			Intent intent = null;
 			// if (Build.VERSION.SDK_INT < 19) {
 			intent = new Intent(Intent.ACTION_GET_CONTENT);
-			intent.setType("*/*");
+			intent.setType("file/*");
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			// } else {
 			// intent = new Intent(Intent.ACTION_PICK,
@@ -487,6 +579,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				Uri uri = data.getData();
 				if (uri != null) {
 					final File file = GetFile(uri);
+					attachment_fileName= file.getName();
 					// text_load.setVisibility(View.VISIBLE);
 					if (!(file == null)) {
 						new Thread(new Runnable() { // 开启线程上传文件

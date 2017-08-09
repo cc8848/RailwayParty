@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <color name="main">#00a7ff</color>
     <color name="main_color">#cc0502</color>
     <color name="btn_press">#a80402</color>
     <color name="line">#3fe6e6e6</color>
@@ -22,10 +22,7 @@
     <color name="color_qh">#7bd1d2</color>
     <color name="color_sg">#ec6564</color>
     <color name="background_grey">#f5f5f5</color>
-
-    
-    
-      <color name="white">#ffffff</color>
+    <color name="white">#ffffff</color>
     <color name="main_red">#00a7ff</color>
     <!-- 主调红色 -->
     <color name="text_white">#ffffff</color>
@@ -80,5 +77,7 @@
     <color name="reward2">#58A263</color>
     <color name="reward3">#B38865</color>
     <color name="reward4">#C163B1</color>
-    
+    <color name="list_bac">#eeeeee</color>
+    <color name="myinfo_bac">#ebebeb</color>
+
 </resources>

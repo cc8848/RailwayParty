@@ -42,7 +42,7 @@ public class UpLoadFile {
 				sb.append(BOUNDARY);
 				sb.append(LINE_END);
 				sb.append(
-						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"" + LINE_END);
+						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"; charset=" + CHARSET  + LINE_END);
 				sb.append("Content-Type: image/pjpeg; charset=" + CHARSET + LINE_END);
 				sb.append(LINE_END);
 				dos.write(sb.toString().getBytes());
@@ -108,7 +108,7 @@ public class UpLoadFile {
 				sb.append(BOUNDARY);
 				sb.append(LINE_END);
 				sb.append(
-						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"" + LINE_END);
+						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"; charset=" + CHARSET  + LINE_END);
 				sb.append("Content-Type: image/pjpeg; charset=" + CHARSET + LINE_END);
 				sb.append(LINE_END);
 				dos.write(sb.toString().getBytes());
@@ -177,7 +177,7 @@ public class UpLoadFile {
 				sb.append(BOUNDARY);
 				sb.append(LINE_END);
 				sb.append(
-						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName() + "\"" + LINE_END);
+						"Content-Disposition: form-data; name=\"fup\"; filename=\"" + file.getName()  + "\"; charset=" + CHARSET  + LINE_END);
 				sb.append("Content-Type: image/pjpeg; charset=" + CHARSET + LINE_END);
 				sb.append(LINE_END);
 				dos.write(sb.toString().getBytes());

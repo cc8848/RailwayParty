@@ -327,7 +327,7 @@ public class PartyBranchStatisicActivity extends Activity implements OnClickList
 					@Override
 					public void run() {
 						String DueData = "";
-						DueData = HttpGetData.GetData("api/pb/statics/getSex", ArrayValues);
+						DueData = HttpGetData.GetData("api/pb/statics/getInPosition", ArrayValues);
 						Message msg = new Message();
 						msg.obj = DueData;
 						msg.what = 5;

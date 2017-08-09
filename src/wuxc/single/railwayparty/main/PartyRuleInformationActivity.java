@@ -56,6 +56,7 @@ public class PartyRuleInformationActivity extends Activity implements OnClickLis
 				Intent intent = new Intent();
 				intent.setClass(getApplicationContext(), ReportInnameActivity.class);
 				startActivity(intent);
+				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "请同意以上条款", Toast.LENGTH_SHORT).show();
 			}
@@ -65,6 +66,7 @@ public class PartyRuleInformationActivity extends Activity implements OnClickLis
 				Intent intent = new Intent();
 				intent.setClass(getApplicationContext(), ReportOutnameActivity.class);
 				startActivity(intent);
+				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "请同意以上条款", Toast.LENGTH_SHORT).show();
 			}

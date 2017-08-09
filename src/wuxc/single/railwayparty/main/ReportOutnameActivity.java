@@ -16,11 +16,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
@@ -59,6 +61,10 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 	private EditText edit_title;
 	private EditText edit_content;
 	private Button btn_ok;
+	private RelativeLayout rel_file;
+	private TextView text_filename;
+	private TextView text_dele;
+	private int number = 0;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -84,6 +90,12 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 		image_back.setOnClickListener(this);
 		TextView text_upload = (TextView) findViewById(R.id.text_upload);
 		text_upload.setOnClickListener(this);
+		rel_file = (RelativeLayout) findViewById(R.id.rel_file);
+
+		text_filename = (TextView) findViewById(R.id.text_filename);
+
+		text_dele = (TextView) findViewById(R.id.text_dele);
+		text_dele.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
 		text_load = (TextView) findViewById(R.id.text_load);
@@ -99,6 +111,17 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 		edit_content = (EditText) findViewById(R.id.edit_content);
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
+		showfile();
+	}
+
+	private void showfile() {
+		// TODO Auto-generated method stub
+		if (number == 0) {
+			rel_file.setVisibility(View.GONE);
+		} else {
+			rel_file.setVisibility(View.VISIBLE);
+			text_filename.setText(attachment_fileName);
+		}
 	}
 
 	protected void GetDataDueData(Object obj) {
@@ -115,7 +138,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 			// Data = demoJson.getString("datas");
 			if (Type.equals("success")) {
 				Toast.makeText(getApplicationContext(), "举报成功", Toast.LENGTH_SHORT).show();
-
+				finish();
 			} else if (Type.equals("fail")) {
 				// Toast.makeText(getApplicationContext(), "服务器数据失败",
 				// Toast.LENGTH_SHORT).show();
@@ -162,20 +185,21 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 
 			attachment_ext = demoJson.getString("ext");
 			attachment_classify = demoJson.getString("classify");
-			attachment_fileName = demoJson.getString("fileName");
+			// attachment_fileName = demoJson.getString("fileName");
 			attachment_filePath = demoJson.getString("filePath");
 			attachment_key = demoJson.getString("key");
 			attachment_par_keyid = demoJson.getString("par_keyid");
 			attachment_pathType = demoJson.getString("pathType");
 			attachment_scalePath = demoJson.getString("scalePath");
 			attachment_size = demoJson.getString("size");
-
+			number = 1;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		showfile();
 	}
 
 	private void ReadTicket() {
@@ -233,6 +257,19 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 				GetData();
 			}
 			break;
+		case R.id.text_dele:
+			number = 0;
+			attachment_ext = "";
+			attachment_scalePath = "";
+			attachment_classify = "";
+			attachment_fileName = "";
+			attachment_par_keyid = "";
+			attachment_size = "";
+			attachment_filePath = "";
+			attachment_pathType = "";
+			attachment_key = "";
+			showfile();
+			break;
 		default:
 			break;
 		}
@@ -264,7 +301,7 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
 		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
 		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
-		ArrayValues.add(new BasicNameValuePair("attacement.classify", attachment_classify));
+		ArrayValues.add(new BasicNameValuePair("attacement.classify", "main"));
 		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
 		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
 		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
@@ -301,6 +338,8 @@ public class ReportOutnameActivity extends FragmentActivity implements OnClickLi
 				Uri uri = data.getData();
 				if (uri != null) {
 					final File file = GetFile(uri);
+					Log.e("getName", file.getName());
+					attachment_fileName = file.getName();
 					text_load.setVisibility(View.VISIBLE);
 					if (!(file == null)) {
 						new Thread(new Runnable() { // 开启线程上传文件

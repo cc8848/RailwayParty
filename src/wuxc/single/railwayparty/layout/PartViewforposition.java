@@ -48,7 +48,7 @@ public class PartViewforposition extends View {
 	private void init(Context context, AttributeSet attrs) {
 
 		ySteps = new String[] { "100%", "75%", "50%", "25%", "0" };
-		xWeeks = new String[] { "不在岗", "在岗" };
+		xWeeks = new String[] { "离退休党员", "在职党员" };
 		text = new int[] { 0, 0 };
 		aniProgress = new int[] { 0, 0 };
 		ani = new HistogramAnimation();
