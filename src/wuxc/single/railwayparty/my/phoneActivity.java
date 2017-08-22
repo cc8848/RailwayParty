@@ -23,7 +23,7 @@ public class phoneActivity extends Activity implements OnClickListener, OnTouchL
 	private EditText editphone;
 	private TextView textChar;
 	private TextView textSave;
-	private static final int MAX_COUNT = 13;
+	private static final int MAX_COUNT = 11;
 	private ImageView imageBack;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String phone = "";

@@ -274,7 +274,7 @@ public class Bbs1Adapter extends ArrayAdapter<Bbs1Model> implements OnClickListe
 		texttime.setText(imageAndText.getTime());
 
 		TextView textcontent = viewCache.gettextContent();
-		textcontent.setText(imageAndText.getSummary());
+		textcontent.setText(imageAndText.getContent());
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());

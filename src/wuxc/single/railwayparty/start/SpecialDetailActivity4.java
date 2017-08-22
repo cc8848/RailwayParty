@@ -133,6 +133,32 @@ public class SpecialDetailActivity4 extends Activity implements OnClickListener,
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
 				+ "</html>";
 		text_detail.setText("摘要：" + detail);
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+		// type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign",
+		// "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+		// curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+		// pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("chn", chn));
+
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/cms/common/browserModelItem", ArrayValues);
+
+			}
+		}).start();
 		if (chn.equals("wsdx")) {
 			webView = (android.webkit.WebView) findViewById(R.id.webview);
 			// StringBuilder sb = new StringBuilder();

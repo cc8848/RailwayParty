@@ -96,7 +96,7 @@
                         android:gravity="center"
                         android:text="请继续加油！"
                         android:textColor="@color/main_color"
-                        android:textSize="16dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -115,7 +115,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_2"
@@ -126,7 +126,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_3"
@@ -137,7 +137,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_4"
@@ -148,7 +148,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -166,7 +166,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_6"
@@ -177,7 +177,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_7"
@@ -188,7 +188,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_8"
@@ -199,7 +199,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -217,7 +217,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_10"
@@ -228,7 +228,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_11"
@@ -239,7 +239,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_12"
@@ -250,7 +250,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -268,7 +268,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_14"
@@ -279,7 +279,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_15"
@@ -290,7 +290,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_16"
@@ -301,7 +301,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -319,7 +319,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_18"
@@ -330,7 +330,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_19"
@@ -341,7 +341,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <Button
                     android:id="@+id/btn_20"
@@ -352,7 +352,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="第1题"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

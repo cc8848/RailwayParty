@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
@@ -39,13 +41,18 @@ import android.widget.Toast;
 import wuxc.single.railwayparty.BranchFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.FileAdapter;
+import wuxc.single.railwayparty.adapter.FileAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.UpLoadFile;
+import wuxc.single.railwayparty.layout.dialogselecttwo;
+import wuxc.single.railwayparty.main.TipsDetailActivity;
+import wuxc.single.railwayparty.model.Bbs1Model;
 import wuxc.single.railwayparty.model.FileModel;
 import wuxc.single.railwayparty.model.FileModel;
 
-public class FragmentPartygroupfile extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class FragmentPartygroupfile extends Fragment
+		implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<FileModel> list = new ArrayList<FileModel>();
 	private static FileAdapter mAdapter;
@@ -101,6 +108,10 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				curPage = 1;
 				GetData();
 				break;
+			case 12:
+				curPage = 1;
+				GetData();
+				break;
 			default:
 				break;
 			}
@@ -117,37 +128,54 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 			state = demoJson.getString("state");
 			fileInfo = demoJson.getString("fileInfo");
 			if (state.equals("1")) {
-				GetDetailDataAttachment(fileInfo);
-				final ArrayList ArrayValues = new ArrayList();
-				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-				ArrayValues.add(new BasicNameValuePair("par_keyid", BranchFragment.id));
-				ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
-				ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
-			 
-				ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
-			 
-				ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
-				ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
-				ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
-				ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
-				ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
-			 
-				ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
-				ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
-
-
-				new Thread(new Runnable() { // 开启线程上传文件
-					@Override
-					public void run() {
-						String DueData = "";
-						DueData = HttpGetData.GetData("console/pb/chatgroupfileUpload/uploadMultiple", ArrayValues);
-						Message msg = new Message();
-						msg.obj = DueData;
-						msg.what = 9;
-						uiHandler.sendMessage(msg);
-					}
-				}).start();
+				GetData();
+				// GetDetailDataAttachment(fileInfo);
+				// final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket", "" +
+				// ticket));
+				// // chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("par_keyid",
+				// BranchFragment.id));
+				// ArrayValues.add(new
+				// BasicNameValuePair("attacement.operateFlag", "1"));
+				// ArrayValues.add(new BasicNameValuePair("attacement.ext",
+				// attachment_ext));
+				//
+				// ArrayValues.add(new
+				// BasicNameValuePair("attacement.scalePath",
+				// attachment_scalePath));
+				//
+				// ArrayValues.add(new BasicNameValuePair("attacement.classify",
+				// "attachFile"));
+				// ArrayValues.add(new BasicNameValuePair("attacement.fileName",
+				// attachment_fileName));
+				// ArrayValues.add(new
+				// BasicNameValuePair("attacement.par_keyid",
+				// attachment_par_keyid));
+				// ArrayValues.add(new BasicNameValuePair("attacement.size",
+				// attachment_size));
+				// ArrayValues.add(new BasicNameValuePair("attacement.filePath",
+				// attachment_filePath));
+				//
+				// ArrayValues.add(new BasicNameValuePair("attacement.pathType",
+				// attachment_pathType));
+				// ArrayValues.add(new BasicNameValuePair("attacement.key",
+				// attachment_key));
+				//
+				//
+				// new Thread(new Runnable() { // 开启线程上传文件
+				// @Override
+				// public void run() {
+				// String DueData = "";
+				// DueData =
+				// HttpGetData.GetData("console/pb/chatgroupfileUpload/uploadMultiple",
+				// ArrayValues);
+				// Message msg = new Message();
+				// msg.obj = DueData;
+				// msg.what = 9;
+				// uiHandler.sendMessage(msg);
+				// }
+				// }).start();
 
 			}
 		} catch (JSONException e) {
@@ -229,14 +257,29 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				for (int i = 0; i < jArray.length(); i++) {
 					json_data = jArray.getJSONObject(i);
 					Log.e("json_data", "" + json_data);
-					JSONObject jsonObject = json_data.getJSONObject("data");
+					json_data = json_data.getJSONObject("data");
 					FileModel listinfo = new FileModel();
 
 					listinfo.setId(json_data.getString("filePath"));
-					listinfo.setTitle(json_data.getString("fileName"));
+					listinfo.setTitle(json_data.getString("fileName") + "." + json_data.getString("ext"));
 					listinfo.setTime(json_data.getString("createTime"));
 					listinfo.setFrom(json_data.getString("createUserName"));
-					listinfo.setDetail(json_data.getString("size"));
+					listinfo.setSummary(json_data.getString("keyid"));
+					String Size = "0B";
+					int size = 0;
+					try {
+						size = json_data.getInt("size");
+						if (size < 1024) {
+							Size = size + "B";
+						} else if (size < 1024 * 1024) {
+							Size = (size / 1024) + "KB";
+						} else {
+							Size = (size / 1024 / 1024) + "MB";
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					listinfo.setDetail(Size);
 					list.add(listinfo);
 
 				}
@@ -448,7 +491,8 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 		// bundle.putString("Name", "名字");
 		// intent.putExtras(bundle);
 		// startActivity(intent);
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
+		// Toast.LENGTH_SHORT).show();
 	}
 
 	private void setheadtextview() {
@@ -498,7 +542,7 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new FileAdapter(getActivity(), list, ListData);
+		mAdapter = new FileAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -579,13 +623,13 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 				Uri uri = data.getData();
 				if (uri != null) {
 					final File file = GetFile(uri);
-					attachment_fileName= file.getName();
+					attachment_fileName = file.getName();
 					// text_load.setVisibility(View.VISIBLE);
 					if (!(file == null)) {
 						new Thread(new Runnable() { // 开启线程上传文件
 							@Override
 							public void run() {
-								String UpLoadResult = UpLoadFile.uploadFileatt(file,
+								String UpLoadResult = UpLoadFile.uploadFileachat(file,
 										URLcontainer.urlip + "console/pb/chatgroupfileUpload/uploadMultiple",
 										BranchFragment.id, "" + ticket);
 								Message msg = new Message();
@@ -640,5 +684,89 @@ public class FragmentPartygroupfile extends Fragment implements OnTouchListener,
 			return null;
 		}
 		return file;
+	}
+
+	private void selecttype(final int position) {
+
+		dialogselecttwo.Builder builder = new dialogselecttwo.Builder(getActivity());
+		builder.setMessage("操作类型");
+		builder.setTitle("提示");
+		builder.setPositiveButton("下载文件", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				FileModel data = list.get(position);
+
+				Intent intent = new Intent();
+				intent.setAction("android.intent.action.VIEW");
+				String path = URLcontainer.urlip + URLcontainer.GetFile + data.getId();
+				Uri content_url = Uri.parse(path);
+				intent.setData(content_url);
+				startActivity(intent);
+			}
+
+		});
+
+		builder.setNegativeButton("删除文件", new android.content.DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				FileModel data = list.get(position);
+				// TODO Auto-generated method stub
+
+				// TODO Auto-generated method stub
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+				// type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+				// curPage));
+				// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+				// pageSize));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				ArrayValues.add(new BasicNameValuePair("datakey", data.getSummary()));
+				// chn = "dqlh";
+				// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+				// curPage));
+				// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+				// pageSize));
+				// ArrayValues.add(new BasicNameValuePair("classify", "" +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("console/pb/chatgroupfileUpload/delete", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 12;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+		});
+
+		builder.create().show();
+
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+
+			selecttype((Integer) v.getTag());
+			// Toast.makeText(getActivity(), "删除第" + + "条",
+			// Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
 	}
 }

@@ -36,6 +36,7 @@ import wuxc.single.railwayparty.adapter.ArtAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.ArtModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
+import wuxc.single.railwayparty.start.artDetail;
 import wuxc.single.railwayparty.start.webview;
 
 public class FlagFragment2 extends Fragment implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
@@ -57,7 +58,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 	private View view;// ª∫¥ÊFragment view
 	private int[] headimg = { R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234,
 			R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234 };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -316,7 +317,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 		ArtModel data = list.get(position - 1);
 		if (true) {
 			Intent intent = new Intent();
-			intent.setClass(getActivity(), SpecialDetailActivity.class);
+			intent.setClass(getActivity(), artDetail.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", data.getTime());
@@ -349,7 +350,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 			ArtModel data = list.get((Integer) v.getTag());
 			if (true) {
 				Intent intent = new Intent();
-				intent.setClass(getActivity(), SpecialDetailActivity.class);
+				intent.setClass(getActivity(), artDetail.class);
 				Bundle bundle = new Bundle();
 				bundle.putString("Title", data.getTitle());
 				bundle.putString("Time", data.getTime());

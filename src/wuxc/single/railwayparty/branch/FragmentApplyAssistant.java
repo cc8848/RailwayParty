@@ -111,7 +111,7 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 
 			attachment_ext = demoJson.getString("ext");
 			attachment_classify = demoJson.getString("classify");
-//			attachment_fileName = demoJson.getString("fileName");
+			// attachment_fileName = demoJson.getString("fileName");
 			attachment_filePath = demoJson.getString("filePath");
 			attachment_key = demoJson.getString("key");
 			attachment_par_keyid = demoJson.getString("par_keyid");
@@ -143,7 +143,11 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getActivity(), "申请成功", Toast.LENGTH_SHORT).show();
 				text_load.setVisibility(View.GONE);
-				 
+				showfile();
+				edit_content.setText("");
+				edit_name.setText("");
+				edit_id.setText("");
+				edit_phone.setText("");
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -315,15 +319,15 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.content", "" + edit_content.getText().toString()));
 		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
 		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
-	 
+
 		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
-	 
+
 		ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
 		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
 		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
 		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
 		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
-	 
+
 		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
 		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
 
@@ -356,10 +360,10 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 				if (uri != null) {
 					// Toast.makeText(getActivity(), "正在上传",
 					// 0).show();
-			 
+
 					final File file = GetFile(uri);
 					Log.e("getName", file.getName());
-					attachment_fileName= file.getName();
+					attachment_fileName = file.getName();
 					text_load.setVisibility(View.VISIBLE);
 					if (!(file == null)) {
 						new Thread(new Runnable() { // 开启线程上传文件

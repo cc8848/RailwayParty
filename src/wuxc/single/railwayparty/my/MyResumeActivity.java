@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
@@ -60,6 +61,10 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private String userid;
 	private String classify = "";
 	private int creditsym = 0;
+	private LinearLayout lin_code;
+	private EditText text_code;
+	private TextView text_send;
+	private String b_phone;
 	private static final int GET_LOGININ_RESULT_DATA = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final int GET_VERSION_RESULT = 5;
@@ -72,6 +77,9 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 				break;
 			case GET_LOGININ_RESULT_DATA:
 				GetDataDetailFromLoginResultData(msg.obj);
+				break;
+			case 12:
+				GetDataDetailFromLoginResultDatacode(msg.obj);
 				break;
 			default:
 				break;
@@ -106,6 +114,38 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			} else {
 				// Toast.makeText(getApplicationContext(), "登陆失败",
 				// Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void GetDataDetailFromLoginResultDatacode(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				// Data = demoJson.getString("data");
+				Toast.makeText(getApplicationContext(), "发送成功", Toast.LENGTH_SHORT).show();
+				// GetDetailData(Data);
+				// finish();
+			} else if (Type.equals("notNull")) {
+				Toast.makeText(getApplicationContext(), "手机号为空", Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("mobileUsed")) {
+				Toast.makeText(getApplicationContext(), "手机号已被使用", Toast.LENGTH_SHORT).show();
+
+			} else {
+				Toast.makeText(getApplicationContext(), "获取失败", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -217,6 +257,11 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 		ImageView image_back = (ImageView) findViewById(R.id.image_back);
 		image_back.setOnClickListener(this);
+		lin_code = (LinearLayout) findViewById(R.id.lin_code);
+		text_code = (EditText) findViewById(R.id.text_code);
+		text_send = (TextView) findViewById(R.id.text_send);
+		text_send.setOnClickListener(this);
+
 		text_ok = (TextView) findViewById(R.id.text_ok);
 		text_ok.setOnClickListener(this);
 		text_name = (TextView) findViewById(R.id.text_name);
@@ -275,6 +320,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		Str_text_id_number = PreUserInfo.getString("icardNo", "无数据");
 		Str_text_motto = PreUserInfo.getString("sign", "无数据");
 		Str_text_phone = PreUserInfo.getString("mobile", "点击绑定手机号码");
+		b_phone = Str_text_phone;
 		Str_text_level = PreUserInfo.getString("education", "本科");
 		if (Str_text_level.equals("2")) {
 			Str_text_level = "大专";
@@ -358,6 +404,11 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			if (!(data == null)) {
 				ReadPhone();
 				settext();
+				if (!b_phone.equals(Str_text_phone)) {
+					lin_code.setVisibility(View.VISIBLE);
+				} else {
+
+				}
 			}
 
 			break;
@@ -397,38 +448,140 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			intent_phone.setClass(getApplicationContext(), phoneActivity.class);
 			startActivityForResult(intent_phone, 2);
 			break;
-		case R.id.text_ok:
-			final ArrayList ArrayValues = new ArrayList();
-			// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
-			// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
-			// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
-			// ArrayValues.add(new BasicNameValuePair("modelSign",
-			// "KNDY_APPLY"));
-			// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
-			// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
-			// pageSize));
-			// final ArrayList ArrayValues = new ArrayList();
-			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-			// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-			// ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
-			// chn = "dyq";
-			ArrayValues.add(new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
-			ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
-			ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
-			// ArrayValues.add(new BasicNameValuePair("classify", "" +
-			// classify));
+		case R.id.text_send:
+			if (true) {
 
-			new Thread(new Runnable() { // 开启线程上传文件
-				@Override
-				public void run() {
-					String DueData = "";
-					DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
-					Message msg = new Message();
-					msg.obj = DueData;
-					msg.what = GET_DUE_DATA;
-					uiHandler.sendMessage(msg);
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket",
+				// ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType",
+				// "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType",
+				// "" + type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", ""
+				// + curPage));
+				ArrayValues.add(new BasicNameValuePair("mobile", "" + text_phone.getText().toString()));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn",
+				// "dyq"));
+				// chn = "dyq";
+				ArrayValues.add(new BasicNameValuePair("templateName", "mpAndbindMobile"));
+				// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
+				// "" + Str_text_motto));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.mobile", "" +
+				// Str_text_phone));
+				// ArrayValues.add(new BasicNameValuePair("classify", ""
+				// +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/member/checkMobileAndSend", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 12;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+			break;
+		case R.id.text_ok:
+			if (!b_phone.equals(Str_text_phone)) {
+				if (text_code.getText().toString().equals("") || text_code == null) {
+					Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
+				} else {
+					if (true) {
+						final ArrayList ArrayValues = new ArrayList();
+						// ArrayValues.add(new BasicNameValuePair("ticket",
+						// ticket));
+						// ArrayValues.add(new BasicNameValuePair("applyType",
+						// "" + 2));
+						// ArrayValues.add(new BasicNameValuePair("helpSType",
+						// "" + type));
+						// ArrayValues.add(new BasicNameValuePair("modelSign",
+						// "KNDY_APPLY"));
+						// ArrayValues.add(new BasicNameValuePair("curPage", ""
+						// + curPage));
+						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobileValCode",
+								"" + text_code.getText().toString()));
+						// final ArrayList ArrayValues = new ArrayList();
+						ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+						// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+						// ArrayValues.add(new BasicNameValuePair("chn",
+						// "dyq"));
+						// chn = "dyq";
+						ArrayValues.add(
+								new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
+						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
+						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
+						// ArrayValues.add(new BasicNameValuePair("classify", ""
+						// +
+						// classify));
+
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String DueData = "";
+								DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
+								Message msg = new Message();
+								msg.obj = DueData;
+								msg.what = GET_DUE_DATA;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					}
 				}
-			}).start();
+			} else {
+
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket",
+				// ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType",
+				// "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType",
+				// "" + type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", ""
+				// + curPage));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.mobileValCode",
+				// "" + text_code.getText().toString()));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn",
+				// "dyq"));
+				// chn = "dyq";
+				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
+				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
+				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
+				// ArrayValues.add(new BasicNameValuePair("classify", ""
+				// +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = GET_DUE_DATA;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+
 			break;
 		default:
 			break;

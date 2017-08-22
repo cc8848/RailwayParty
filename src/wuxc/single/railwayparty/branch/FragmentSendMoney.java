@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
+import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
 import wuxc.single.railwayparty.layout.dialogtwo;
 
@@ -133,11 +137,28 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	private TextView text_name;
 	private Button btn_ok;
 	private double pMonthFaredouble;
+
+	private RoundImageView round_headimg;
+	private String userPhoto;
+	protected void ShowHeadImage(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj == null)) {
+			try {
+				Bitmap HeadImage = (Bitmap) obj;
+				round_headimg.setImageBitmap(HeadImage);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-
+			case GET_USER_HEAD_IMAGE:
+				ShowHeadImage(msg.obj);
+				break;
 			case GET_MONTH_RESULT_DATA:
 				GetDataDetailFromMonth(msg.obj);
 				break;
@@ -268,13 +289,29 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			setinitview();
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 			ReadTicket();
+			GetHeadPic();
 		}
 
 		return view;
 	}
-
+	private void GetHeadPic() {
+		// TODO Auto-generated method stub
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				Bitmap HeadImage = null;
+				HeadImage = GetBitmapFromServer
+						.getBitmapFromServer(URLcontainer.urlip + URLcontainer.GetFile + userPhoto);
+				Message msg = new Message();
+				msg.what = GET_USER_HEAD_IMAGE;
+				msg.obj = HeadImage;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
+		userPhoto = PreUserInfo.getString("userPhoto", null);
 		ticket = PreUserInfo.getString("ticket", "");
 		idnumber = PreUserInfo.getString("icardNo", "");
 		text_name = (TextView) view.findViewById(R.id.text_name);
@@ -351,8 +388,138 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		btn_ok.setOnClickListener(this);
 	}
 
+	private void showmonth(int i) {
+		// TODO Auto-generated method stub
+
+		if (i == 11) {
+			if (condition[i] == 1) {
+				for (int j = 0; j < 12; j++) {
+					condition[j] = 0;
+				}
+			} else {
+				for (int j = 0; j < 12; j++) {
+					condition[j] = 1;
+				}
+			}
+		} else {
+			if (condition[i] == 1 && condition[i + 1] == 1) {
+				for (int j = 0; j < i + 1; j++) {
+					condition[j] = 1;
+				}
+				for (int j = i + 1; j < 12; j++) {
+					condition[j] = 0;
+				}
+			} else if (condition[i] == 1 && condition[i + 1] == 0) {
+				for (int j = 0; j < 12; j++) {
+					condition[j] = 0;
+				}
+			} else if (condition[i] == 0 && condition[i + 1] == 0) {
+				for (int j = 0; j < i + 1; j++) {
+					condition[j] = 1;
+				}
+				for (int j = i + 1; j < 12; j++) {
+					condition[j] = 0;
+				}
+			} else {
+				for (int j = 0; j < i + 1; j++) {
+					condition[j] = 1;
+				}
+				for (int j = i + 1; j < 12; j++) {
+					condition[j] = 0;
+				}
+			}
+		}
+		if (status[0] != 0) {
+			if (condition[0] == 1) {
+				ImageNumber1.setImageResource(R.drawable.rs1);
+			} else {
+				ImageNumber1.setImageResource(R.drawable.ns1);
+			}
+		}
+		if (status[1] != 0) {
+			if (condition[1] == 1) {
+				ImageNumber2.setImageResource(R.drawable.rs2);
+			} else {
+				ImageNumber2.setImageResource(R.drawable.ns2);
+			}
+		}
+		if (status[2] != 0) {
+			if (condition[2] == 1) {
+				ImageNumber3.setImageResource(R.drawable.rs3);
+			} else {
+				ImageNumber3.setImageResource(R.drawable.ns3);
+			}
+		}
+		if (status[3] != 0) {
+			if (condition[3] == 1) {
+				ImageNumber4.setImageResource(R.drawable.rs4);
+			} else {
+				ImageNumber4.setImageResource(R.drawable.ns4);
+			}
+		}
+		if (status[4] != 0) {
+			if (condition[4] == 1) {
+				ImageNumber5.setImageResource(R.drawable.rs5);
+			} else {
+				ImageNumber5.setImageResource(R.drawable.ns5);
+			}
+		}
+		if (status[5] != 0) {
+			if (condition[5] == 1) {
+				ImageNumber6.setImageResource(R.drawable.rs6);
+			} else {
+				ImageNumber6.setImageResource(R.drawable.ns6);
+			}
+		}
+		if (status[6] != 0) {
+			if (condition[6] == 1) {
+				ImageNumber7.setImageResource(R.drawable.rs7);
+			} else {
+				ImageNumber7.setImageResource(R.drawable.ns7);
+			}
+		}
+		if (status[7] != 0) {
+			if (condition[7] == 1) {
+				ImageNumber8.setImageResource(R.drawable.rs8);
+			} else {
+				ImageNumber8.setImageResource(R.drawable.ns8);
+			}
+		}
+		if (status[8] != 0) {
+			if (condition[8] == 1) {
+				ImageNumber9.setImageResource(R.drawable.rs9);
+			} else {
+				ImageNumber9.setImageResource(R.drawable.ns9);
+			}
+		}
+		if (status[9] != 0) {
+			if (condition[9] == 1) {
+				ImageNumber10.setImageResource(R.drawable.rs10);
+			} else {
+				ImageNumber10.setImageResource(R.drawable.ns10);
+			}
+		}
+		if (status[10] != 0) {
+			if (condition[10] == 1) {
+				ImageNumber11.setImageResource(R.drawable.rs11);
+			} else {
+				ImageNumber11.setImageResource(R.drawable.ns11);
+			}
+		}
+		if (status[11] != 0) {
+			if (condition[11] == 1) {
+				ImageNumber12.setImageResource(R.drawable.rs12);
+			} else {
+				ImageNumber12.setImageResource(R.drawable.ns12);
+			}
+		}
+		ShowPayMoney();
+	}
+
 	private void initview(View view) {
 		// TODO Auto-generated method stub
+		round_headimg = (RoundImageView) view.findViewById(R.id.image_headimg);
+
 		btn_ok = (Button) view.findViewById(R.id.btn_ok);
 		TextYear = (TextView) view.findViewById(R.id.text_year);
 		TextTotalPay = (TextView) view.findViewById(R.id.text_total_pay);
@@ -414,168 +581,84 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			if (status[0] == 0) {
 				Toast.makeText(getActivity(), "1月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[0] == 0) {
-					condition[0] = 1;
-					ImageNumber1.setImageResource(R.drawable.rs1);
-				} else {
-					condition[0] = 0;
-					ImageNumber1.setImageResource(R.drawable.ns1);
-				}
-				ShowPayMoney();
+				showmonth(0);
 			}
 			break;
 		case R.id.lin_number_2:
 			if (status[1] == 0) {
 				Toast.makeText(getActivity(), "2月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[1] == 0) {
-					condition[1] = 1;
-					ImageNumber2.setImageResource(R.drawable.rs2);
-				} else {
-					condition[1] = 0;
-					ImageNumber2.setImageResource(R.drawable.ns2);
-				}
-				ShowPayMoney();
+				showmonth(1);
 			}
 			break;
 		case R.id.lin_number_3:
 			if (status[2] == 0) {
 				Toast.makeText(getActivity(), "3月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[2] == 0) {
-					condition[2] = 1;
-					ImageNumber3.setImageResource(R.drawable.rs3);
-				} else {
-					condition[2] = 0;
-					ImageNumber3.setImageResource(R.drawable.ns3);
-				}
-				ShowPayMoney();
+				showmonth(2);
 			}
 			break;
 		case R.id.lin_number_4:
 			if (status[3] == 0) {
 				Toast.makeText(getActivity(), "4月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[3] == 0) {
-					condition[3] = 1;
-					ImageNumber4.setImageResource(R.drawable.rs4);
-				} else {
-					condition[3] = 0;
-					ImageNumber4.setImageResource(R.drawable.ns4);
-				}
-				ShowPayMoney();
+				showmonth(3);
 			}
 			break;
 		case R.id.lin_number_5:
 			if (status[4] == 0) {
 				Toast.makeText(getActivity(), "5月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[4] == 0) {
-					condition[4] = 1;
-					ImageNumber5.setImageResource(R.drawable.rs5);
-				} else {
-					condition[4] = 0;
-					ImageNumber5.setImageResource(R.drawable.ns5);
-				}
-				ShowPayMoney();
+				showmonth(4);
 			}
 			break;
 		case R.id.lin_number_6:
 			if (status[5] == 0) {
 				Toast.makeText(getActivity(), "6月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[5] == 0) {
-					condition[5] = 1;
-					ImageNumber6.setImageResource(R.drawable.rs6);
-				} else {
-					condition[5] = 0;
-					ImageNumber6.setImageResource(R.drawable.ns6);
-				}
-				ShowPayMoney();
+				showmonth(5);
 			}
 			break;
 		case R.id.lin_number_7:
 			if (status[6] == 0) {
 				Toast.makeText(getActivity(), "7月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[6] == 0) {
-					condition[6] = 1;
-					ImageNumber7.setImageResource(R.drawable.rs7);
-				} else {
-					condition[6] = 0;
-					ImageNumber7.setImageResource(R.drawable.ns7);
-				}
-				ShowPayMoney();
+				showmonth(6);
 			}
 			break;
 		case R.id.lin_number_8:
 			if (status[7] == 0) {
 				Toast.makeText(getActivity(), "8月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[7] == 0) {
-					condition[7] = 1;
-					ImageNumber8.setImageResource(R.drawable.rs8);
-				} else {
-					condition[7] = 0;
-					ImageNumber8.setImageResource(R.drawable.ns8);
-				}
-				ShowPayMoney();
+				showmonth(7);
 			}
 			break;
 		case R.id.lin_number_9:
 			if (status[8] == 0) {
 				Toast.makeText(getActivity(), "9月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[8] == 0) {
-					condition[8] = 1;
-					ImageNumber9.setImageResource(R.drawable.rs9);
-				} else {
-					condition[8] = 0;
-					ImageNumber9.setImageResource(R.drawable.ns9);
-				}
-				ShowPayMoney();
+				showmonth(8);
 			}
 			break;
 		case R.id.lin_number_10:
 			if (status[9] == 0) {
 				Toast.makeText(getActivity(), "10月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[9] == 0) {
-					condition[9] = 1;
-					ImageNumber10.setImageResource(R.drawable.rs10);
-				} else {
-					condition[9] = 0;
-					ImageNumber10.setImageResource(R.drawable.ns10);
-				}
-				ShowPayMoney();
+				showmonth(9);
 			}
 			break;
 		case R.id.lin_number_11:
 			if (status[10] == 0) {
 				Toast.makeText(getActivity(), "11月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[10] == 0) {
-					condition[10] = 1;
-					ImageNumber11.setImageResource(R.drawable.rs11);
-				} else {
-					condition[10] = 0;
-					ImageNumber11.setImageResource(R.drawable.ns11);
-				}
-				ShowPayMoney();
+				showmonth(10);
 			}
 			break;
 		case R.id.lin_number_12:
 			if (status[11] == 0) {
 				Toast.makeText(getActivity(), "12月党费已交", Toast.LENGTH_SHORT).show();
 			} else {
-				if (condition[11] == 0) {
-					condition[11] = 1;
-					ImageNumber12.setImageResource(R.drawable.rs12);
-				} else {
-					condition[11] = 0;
-					ImageNumber12.setImageResource(R.drawable.ns12);
-				}
-				ShowPayMoney();
+				showmonth(11);
 			}
 			break;
 

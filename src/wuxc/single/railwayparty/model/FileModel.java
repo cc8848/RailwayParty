@@ -5,8 +5,10 @@ public class FileModel {
 	private String Title;
 	private String time;
 	private String Id;
-	private String Detail;	private boolean Cont;
+	private String Detail;
+	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -24,8 +26,6 @@ public class FileModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

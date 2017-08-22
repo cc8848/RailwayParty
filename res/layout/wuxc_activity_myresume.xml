@@ -39,7 +39,7 @@
             android:gravity="center"
             android:text="完成"
             android:textColor="#ffffff"
-            android:textSize="18dp" />
+            android:textSize="14dp" />
     </RelativeLayout>
 
     <ScrollView
@@ -256,6 +256,65 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/arrow_right" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/text_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="25dp" >
+
+                <TextView
+                    android:id="@+id/text_po"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="验  证  码"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:id="@+id/lin_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/text_po"
+                    android:orientation="horizontal" >
+
+                    <EditText
+                        android:id="@+id/text_code"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#ffffff"
+                        android:gravity="center"
+                        android:hint="验证码"
+                        android:textColor="@color/text_grey"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/text_line" />
+
+                    <TextView
+                        android:id="@+id/text_send"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="发送验证码"
+                        android:textColor="@color/main_color"
+                        android:textSize="16dp" />
+                </LinearLayout>
             </RelativeLayout>
 
             <TextView

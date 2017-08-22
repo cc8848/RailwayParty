@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -69,6 +70,8 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 	private TextView TextVideo;
 	private int type = 2;
 	private String classify = "";
+	private TextView text_rank2;
+	private TextView text_rank1;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -76,11 +79,38 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 17:
+				Showrank(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void Showrank(Object obj) {
+		// TODO Auto-generated method stub
+		String datacre = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			datacre = demoJson.getString("data");
+			demoJson = new JSONObject(datacre);
+			String rank1 = "0";
+			String rank2 = "0";
+			rank1 = demoJson.getString("num");
+			rank2 = demoJson.getString("totalLength");
+
+			text_rank1.setText(rank2 + "分钟");
+			text_rank2.setText(rank1);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -97,9 +127,11 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 				GetPager(Data);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-//				Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), "暂无数据",
+				// Toast.LENGTH_SHORT).show();
 			} else {
-//				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getActivity(), "数据格式校验失败",
+				// Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -128,11 +160,12 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 					Log.e("json_data", "" + json_data);
 					json_data = json_data.getJSONObject("data");
 					MyLearnModel listinfo = new MyLearnModel();
-					listinfo.setTime(json_data.getString("sendDate"));
+					listinfo.setTime(json_data.getString("learnDate"));
 					listinfo.setTitle(json_data.getString("title"));
-					listinfo.setImageUrl("");
-					listinfo.setId(json_data.getString("keyid"));
-					listinfo.setDetail(json_data.getString("content"));
+					listinfo.setImageUrl(json_data.getString("cover"));
+//					listinfo.setId(json_data.getString("keyid"));
+					listinfo.setDetail(json_data.getString("timeLength"));
+					
 					list.add(listinfo);
 
 				}
@@ -191,6 +224,51 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 			ReadTicket();
 			GetData();
+			if (true) {
+
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket",
+				// ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType",
+				// "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType",
+				// "" + type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", ""
+				// + curPage));
+				// ArrayValues.add(new BasicNameValuePair("mobile", "" +
+				// text_phone.getText().toString()));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn",
+				// "dyq"));
+				// chn = "dyq";
+				// ArrayValues.add(new BasicNameValuePair("templateName",
+				// "modifyPwd"));
+				// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
+				// "" + Str_text_motto));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.mobile", "" +
+				// Str_text_phone));
+				// ArrayValues.add(new BasicNameValuePair("classify", ""
+				// +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/pb/learnRecord/getLearnStatics", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 17;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
 			// getdatalist(curPage);
 		}
 
@@ -201,7 +279,8 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
-
+		text_rank1 = (TextView) view.findViewById(R.id.text_rank1);
+		text_rank2 = (TextView) view.findViewById(R.id.text_rank2);
 	}
 
 	private void setonclicklistener() {
@@ -227,7 +306,7 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 		// chn = "dyq";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
 		ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-//		ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
+		// ArrayValues.add(new BasicNameValuePair("classify", "" + classify));
 
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -352,7 +431,7 @@ public class FragmentMyLearn extends Fragment implements OnTouchListener, OnClic
 		// bundle.putString("Name", "名字");
 		// intent.putExtras(bundle);
 		// startActivity(intent);
-		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), "点击第" + position + "条" + "item", Toast.LENGTH_SHORT).show();
 	}
 
 	private void setheadtextview() {

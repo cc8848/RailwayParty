@@ -57,7 +57,7 @@ public class PartyOrgActivity extends ListActivity implements OnClickListener, O
 	private TextView headTextView = null;
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -156,7 +156,7 @@ public class PartyOrgActivity extends ListActivity implements OnClickListener, O
 		for (int i = 0; i < listPartyBranchDataListModel.size(); i++) {
 			PartyBranchDataListModel listinfo = listPartyBranchDataListModel.get(i);
 			String id = listinfo.getId();
-			for (int j = i; j < listPartyBranchDataListModel.size(); j++) {
+			for (int j = 0; j < listPartyBranchDataListModel.size(); j++) {
 				PartyBranchDataListModel listinfo1 = listPartyBranchDataListModel.get(j);
 				String pid = listinfo1.getPid();
 				if (id.equals(pid)) {
@@ -174,8 +174,9 @@ public class PartyOrgActivity extends ListActivity implements OnClickListener, O
 
 			mPdfOutlinesCount.add(pdfOutlineElement);
 		}
+		int size = listPartyBranchDataListModel.size();
 		for (int i = 0; i < listPartyBranchDataListModel.size(); i++) {
-			PartyBranchDataListModel listinfo = listPartyBranchDataListModel.get(i);
+			PartyBranchDataListModel listinfo = listPartyBranchDataListModel.get(size - 1 - i);
 			Log.e("listinfo", listinfo.getstring());
 			PDFOutlineElement pdfOutlineElement = new PDFOutlineElement(listinfo.getId(), listinfo.getPartyName(),
 					listinfo.isHasparent(), listinfo.isHaschild(), listinfo.getPid(), 0, false);

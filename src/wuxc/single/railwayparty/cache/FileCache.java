@@ -2,6 +2,7 @@ package wuxc.single.railwayparty.cache;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
 
@@ -13,6 +14,14 @@ public class FileCache {
 	private TextView TextTitle;
 	private TextView TextDetail;
 	private TextView Textfrom;
+	private LinearLayout lin_all;
+
+	public LinearLayout getlin_all() {
+		if (lin_all == null) {
+			lin_all = (LinearLayout) baseView.findViewById(R.id.lin_all);
+		}
+		return lin_all;
+	}
 
 	public FileCache(View baseView) {
 		this.baseView = baseView;

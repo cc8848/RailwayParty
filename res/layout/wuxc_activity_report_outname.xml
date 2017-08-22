@@ -30,7 +30,7 @@
                 android:layout_marginRight="@dimen/top_height"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="实名举报"
+                android:text="匿名举报"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/text_size" />
         </RelativeLayout>

@@ -11,7 +11,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,11 +96,13 @@ public class ExamActivity extends Activity implements OnClickListener {
 	Timer timer = new Timer();
 	private String Title;
 	private String Id;
+	private String Username;
 	private String ticket = "";
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
 	private int topicnumber = 2;
+	private SharedPreferences PreUserInfo;// 存储个人信息
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -193,6 +197,16 @@ public class ExamActivity extends Activity implements OnClickListener {
 			btn_last.setVisibility(View.VISIBLE);
 		}
 		timer.schedule(task, 1000, 1000); // timeTask
+		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		ReadTicket();
+		text_name.setText(Username);
+	}
+
+	private void ReadTicket() {
+		// TODO Auto-generated method stub
+		ticket = PreUserInfo.getString("ticket", "");
+
+		Username = PreUserInfo.getString("userName", "");
 	}
 
 	final Handler handler = new Handler() {
@@ -254,7 +268,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 
 			json_data = new JSONObject(data);
 			timelength = json_data.getInt("timeLength");
-//			recLen = timelength * 60;
+			// recLen = timelength * 60;
 			String Subs = json_data.getString("subs");
 			getdata(Subs);
 		} catch (JSONException e) {
@@ -475,7 +489,7 @@ public class ExamActivity extends Activity implements OnClickListener {
 		topic_b.setTextColor(Color.parseColor("#000000"));
 		topic_c.setTextColor(Color.parseColor("#000000"));
 		topic_d.setTextColor(Color.parseColor("#000000"));
-		text_topic_main.setText(examTopicModel.getTopic());
+		text_topic_main.setText("    "+examTopicModel.getTopic());
 		image_a.setImageResource(R.drawable.icon_radio1);
 		image_b.setImageResource(R.drawable.icon_radio1);
 		image_c.setImageResource(R.drawable.icon_radio1);

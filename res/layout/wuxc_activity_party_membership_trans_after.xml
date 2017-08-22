@@ -28,6 +28,14 @@
             android:text="关系转接"
             android:textColor="#ffffff"
             android:textSize="@dimen/text_size" />
+
+        <ImageView
+            android:id="@+id/image_search"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:src="@drawable/search_top" />
     </RelativeLayout>
 
     <LinearLayout

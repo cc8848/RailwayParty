@@ -173,7 +173,32 @@ public class SpecialDetailActivity2 extends Activity implements OnClickListener,
 		webView.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 
 		webView.loadDataWithBaseURL(URLcontainer.urlip, detail, "text/html", "utf-8", null);
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+		// type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign",
+		// "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+		// curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+		// pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("chn", chn));
 
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/cms/common/browserModelItem", ArrayValues);
+
+			}
+		}).start();
 		// } else {
 		// GetData();
 		// }

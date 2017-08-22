@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -97,6 +98,14 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	private int fujian = 0;
 	private String filePath = "";
 	private String ext = "";
+	private TextView text_1;
+	private TextView text_2;
+	private TextView text_3;
+	private TextView text_4;
+	private TextView text_5;
+	private TextView text_6;
+	private TextView text_7;
+	private LinearLayout lin_text;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -140,6 +149,22 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		}
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
+		text_1 = (TextView) findViewById(R.id.text_1);
+		text_2 = (TextView) findViewById(R.id.text_2);
+		text_3 = (TextView) findViewById(R.id.text_3);
+		text_4 = (TextView) findViewById(R.id.text_4);
+		text_5 = (TextView) findViewById(R.id.text_5);
+		text_6 = (TextView) findViewById(R.id.text_6);
+		text_7 = (TextView) findViewById(R.id.text_7);
+		text_1.setOnClickListener(this);
+		text_2.setOnClickListener(this);
+		text_3.setOnClickListener(this);
+		text_4.setOnClickListener(this);
+		text_5.setOnClickListener(this);
+		text_6.setOnClickListener(this);
+		text_7.setOnClickListener(this);
+		lin_text = (LinearLayout) findViewById(R.id.lin_text);
+		lin_text.setVisibility(View.GONE);
 		initview();
 		setonclicklistener();
 		setlistheight(0);
@@ -150,6 +175,32 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
 				+ "</html>";
 		text_detail.setText("摘要：" + detail);
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+		// type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign",
+		// "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+		// curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+		// pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("chn", chn));
+
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/cms/common/browserModelItem", ArrayValues);
+
+			}
+		}).start();
 		if (chn.equals("wsdx")) {
 			webView = (android.webkit.WebView) findViewById(R.id.webview);
 			// StringBuilder sb = new StringBuilder();
@@ -356,6 +407,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 				json_data = jArray.getJSONObject(0);
 
 				filePath = json_data.getString("filePath");
+				filePath = URLcontainer.urlip + "upload" + filePath;
 				ext = json_data.getString("ext");
 				fujian = 1;
 			} catch (Exception e) {
@@ -521,12 +573,42 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		webView = (android.webkit.WebView) findViewById(R.id.webview);
+		WebSettings settings = webView.getSettings();
 		switch (v.getId()) {
 		case R.id.image_back:
 			finish();
 			// Intent intent = new Intent();
 			// intent.setClass(getApplicationContext(), imageshow.class);
 			// startActivity(intent);
+			break;
+		case R.id.text_1:
+			lin_text.setVisibility(View.GONE);
+
+			settings.setTextSize(WebSettings.TextSize.SMALLEST);
+			break;
+		case R.id.text_2:
+			lin_text.setVisibility(View.GONE);
+
+			settings.setTextSize(WebSettings.TextSize.SMALLER);
+			break;
+		case R.id.text_3:
+			lin_text.setVisibility(View.GONE);
+			settings.setTextSize(WebSettings.TextSize.NORMAL);
+			break;
+		case R.id.text_4:
+			lin_text.setVisibility(View.GONE);
+			settings.setTextSize(WebSettings.TextSize.LARGER);
+			break;
+		case R.id.text_5:
+			lin_text.setVisibility(View.GONE);
+			settings.setTextSize(WebSettings.TextSize.LARGEST);
+			break;
+		case R.id.text_6:
+			lin_text.setVisibility(View.GONE);
+			break;
+		case R.id.text_7:
+			lin_text.setVisibility(View.VISIBLE);
 			break;
 		case R.id.lin_tupian:
 			// finish();
@@ -544,7 +626,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 			// finish();
 			if (true) {
 				int classify = 0;
-				filePath = URLcontainer.urlip + "upload" + filePath;
+
 				if (ext.equals("mp4")) {
 					classify = 3;
 				} else if (ext.equals("mp3")) {

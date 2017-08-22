@@ -87,6 +87,12 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private int credit = 0;
 	private TextView text_credit;
 	private int warning = 0;
+	private String rank1 = "0";
+	private String rank2 = "0";
+	private String rank3 = "0";
+	private TextView tet_rank1;
+	private TextView tet_rank2;
+	private TextView tet_rank3;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -99,6 +105,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				break;
 			case 9:
 				Showcredit(msg.obj);
+				break;
+			case 17:
+				Showrank(msg.obj);
 				break;
 			default:
 				break;
@@ -119,7 +128,80 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		}
 		GetHeadPic();
 		getd();
+		if (true) {
+
+			final ArrayList ArrayValues = new ArrayList();
+			// ArrayValues.add(new BasicNameValuePair("ticket",
+			// ticket));
+			// ArrayValues.add(new BasicNameValuePair("applyType",
+			// "" + 2));
+			// ArrayValues.add(new BasicNameValuePair("helpSType",
+			// "" + type));
+			// ArrayValues.add(new BasicNameValuePair("modelSign",
+			// "KNDY_APPLY"));
+			// ArrayValues.add(new BasicNameValuePair("curPage", ""
+			// + curPage));
+			// ArrayValues.add(new BasicNameValuePair("mobile", "" +
+			// text_phone.getText().toString()));
+			// final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+			// ArrayValues.add(new BasicNameValuePair("chn",
+			// "dyq"));
+			// chn = "dyq";
+			// ArrayValues.add(new BasicNameValuePair("templateName",
+			// "modifyPwd"));
+			// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
+			// "" + Str_text_motto));
+			// ArrayValues.add(new
+			// BasicNameValuePair("orgUserExtDto.mobile", "" +
+			// Str_text_phone));
+			// ArrayValues.add(new BasicNameValuePair("classify", ""
+			// +
+			// classify));
+
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String DueData = "";
+					DueData = HttpGetData.GetData("api/pb/learnRecord/getLearnStatics", ArrayValues);
+					Message msg = new Message();
+					msg.obj = DueData;
+					msg.what = 17;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
+
+		}
 		return view;
+	}
+
+	protected void Showrank(Object obj) {
+		// TODO Auto-generated method stub
+		String datacre = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			datacre = demoJson.getString("data");
+			demoJson = new JSONObject(datacre);
+			rank1 = demoJson.getString("num");
+			rank2 = demoJson.getString("totalLength");
+			rank3 = demoJson.getString("todayLength");
+			Editor edit = PreUserInfo.edit();
+			edit.putString("rank1", rank1);
+			edit.putString("rank2", rank2);
+			edit.putString("rank3", rank3);
+			edit.commit();
+			tet_rank1.setText(rank1);
+			tet_rank2.setText(rank2);
+			tet_rank3.setText(rank3);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	public void showAlertDialog(String versionNum, final String versionPath) {
@@ -329,6 +411,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		rel_myvote.setOnClickListener(this);
 		rel_evaluation.setOnClickListener(this);
 		rel_credits.setOnClickListener(this);
+		tet_rank1 = (TextView) view.findViewById(R.id.text_rank1);
+		tet_rank2 = (TextView) view.findViewById(R.id.text_rank2);
+		tet_rank3 = (TextView) view.findViewById(R.id.text_rank3);
 	}
 
 	@Override

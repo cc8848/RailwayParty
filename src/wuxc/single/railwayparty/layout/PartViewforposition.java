@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.branch.Statisticsforposition;
 import wuxc.single.railwayparty.branch.Statisticsforsex;
 
 public class PartViewforposition extends View {
@@ -147,7 +148,7 @@ public class PartViewforposition extends View {
 
 				rect.left = 30 + step * (i + 1) - 40;
 				rect.right = 30 + step * (i + 1) + 40;
-				int rh = (int) (leftHeight - leftHeight * (((double) value) / Statisticsforsex.total));
+				int rh = (int) (leftHeight - leftHeight * (((double) value) / Statisticsforposition.total));
 				rect.top = rh + 20;
 				rect.bottom = height;
 

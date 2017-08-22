@@ -340,7 +340,7 @@ public class ExamDetailActivity extends Activity implements OnClickListener {
 		topic_b.setTextColor(Color.parseColor("#000000"));
 		topic_c.setTextColor(Color.parseColor("#000000"));
 		topic_d.setTextColor(Color.parseColor("#000000"));
-		text_topic_main.setText(examTopicModel.getTopic());
+		text_topic_main.setText("    " + examTopicModel.getTopic());
 		text_topic_detail.setText(examTopicModel.getDetail());
 		SpannableStringBuilder style = new SpannableStringBuilder(examTopicModel.getDetail());
 		style.setSpan(new ForegroundColorSpan(Color.parseColor(getString(R.color.brown))), 0, 3,

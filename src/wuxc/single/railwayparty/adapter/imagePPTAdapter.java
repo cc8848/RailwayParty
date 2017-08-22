@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,10 +96,15 @@ public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnCl
 		}
 
 		// }
-		LinearLayout.LayoutParams LayoutParams2 = (android.widget.LinearLayout.LayoutParams) imageView
-				.getLayoutParams();
-		LayoutParams2.height = imageAndText.getWidth() * 3 / 4;
-		imageView.setLayoutParams(LayoutParams2);
+//		LinearLayout.LayoutParams LayoutParams2 = (android.widget.LinearLayout.LayoutParams) imageView
+//				.getLayoutParams();
+//		LayoutParams2.height = imageAndText.getWidth() * 3 / 4;
+//		imageView.setLayoutParams(LayoutParams2);
+		ViewGroup.LayoutParams lp = imageView.getLayoutParams();
+
+		lp.height = LayoutParams.WRAP_CONTENT;
+		imageView.setLayoutParams(lp);
+		imageView.setMaxHeight(3000);
 		LinearLayout lin_all = viewCache.getlin_all();
 		lin_all.setTag(position);
 		lin_all.setOnClickListener(this);

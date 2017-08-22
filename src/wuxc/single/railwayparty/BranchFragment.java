@@ -208,7 +208,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 		rel_group.setLayoutParams(LayoutParams8);
 		LinearLayout.LayoutParams LayoutParams9 = (android.widget.LinearLayout.LayoutParams) lin_main_top
 				.getLayoutParams();
-		LayoutParams9.height = screenwidth * 400 / 750;
+		LayoutParams9.height = screenwidth * 400 / 900;
 		LayoutParams9.width = screenwidth;
 		lin_main_top.setLayoutParams(LayoutParams9);
 

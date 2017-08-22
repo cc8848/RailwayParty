@@ -162,7 +162,7 @@ public class BuildFragment6 extends Fragment
 					listinfo.setGuanzhu("231");
 					listinfo.setZan("453");
 					listinfo.setFileClassify(json_data.getInt("fileClassify"));
-					listinfo.setNumber(json_data.getInt("hot"));
+					listinfo.setNumber(json_data.getInt("browser"));
 					listinfo.setImageurl(headimg[i]);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(true);
@@ -631,6 +631,8 @@ public class BuildFragment6 extends Fragment
 					bundle.putString("detail", data.getContent());
 					bundle.putString("chn", chn);
 					bundle.putString("Id", data.getId());
+					bundle.putString("cover", data.getHeadimgUrl());
+					bundle.putString("ticket", ticket);
 					intent.putExtras(bundle);
 					startActivity(intent);
 				} else {
@@ -642,6 +644,8 @@ public class BuildFragment6 extends Fragment
 					bundle.putString("detail", data.getContent());
 					bundle.putString("chn", chn);
 					bundle.putString("Id", data.getId());
+					bundle.putString("cover", data.getHeadimgUrl());
+					bundle.putString("ticket", ticket);
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
@@ -657,6 +661,13 @@ public class BuildFragment6 extends Fragment
 				// // bundle.putString("Detail",
 				// //
 				// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
+				bundle.putString("Title", data.getTitle());
+				bundle.putString("Time", data.getTime());
+				bundle.putString("detail", data.getContent());
+				bundle.putString("chn", chn);
+				bundle.putString("Id", data.getId());
+				bundle.putString("cover", data.getHeadimgUrl());
+				bundle.putString("ticket", ticket);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}

@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -86,6 +87,9 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 	private Button btn_go;
 	private int classify = 0;
 	private String filePath = "";
+	private int recLen = 60;
+	private String cover = "";
+	Timer timer = new Timer();
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -127,6 +131,7 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 		try {
 			detail = bundle.getString("detail");
 			ticket = bundle.getString("ticket");
+			cover = bundle.getString("cover");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -137,6 +142,7 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 		setlistheight(0);
 		settext();
 		starttimedelay();
+		timer.schedule(task, 1000, 1000); // timeTask
 		TextName.setText("作者：" + Name);
 		TextTime.setText(Time);
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
@@ -157,9 +163,65 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 
 		// } else {
 		GetData();
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" +
+		// type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign",
+		// "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" +
+		// curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" +
+		// pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("chn", chn));
+
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + Id));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/cms/common/browserModelItem", ArrayValues);
+
+			}
+		}).start();
 		// }
 
 		// detail=getNewContent(detail);
+	}
+
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			recLen++;
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+		}
+	};
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (recLen < 0) {
+					timer.cancel();
+
+				}
+			}
+		}
+	};
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		timer.cancel();
 	}
 
 	private void ReadTicket() {
@@ -384,11 +446,102 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 	}
 
 	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			if (true) {
+				finish();
+
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket",
+				// ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType",
+				// "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType",
+				// "" + type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", ""
+				// + curPage));
+				// ArrayValues.add(new BasicNameValuePair("mobile", "" +
+				// text_phone.getText().toString()));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn",
+				// "dyq"));
+				// chn = "dyq";
+				ArrayValues.add(new BasicNameValuePair("learnRecordDto.title", Title));
+				ArrayValues.add(new BasicNameValuePair("learnRecordDto.timeLength", "" + (recLen / 60)));
+				ArrayValues.add(new BasicNameValuePair("learnRecordDto.cover", "" + cover));
+				ArrayValues.add(new BasicNameValuePair("learnRecordDto.content", "" + detail));
+				// ArrayValues.add(new BasicNameValuePair("classify", ""
+				// +
+				// classify));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/pb/learnRecord/save", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 17;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+
+			}
+			return false;
+		} else {
+			return super.onKeyDown(keyCode, event);
+		}
+
+	}
+
+	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.image_back:
 			finish();
+			final ArrayList ArrayValues = new ArrayList();
+			// ArrayValues.add(new BasicNameValuePair("ticket",
+			// ticket));
+			// ArrayValues.add(new BasicNameValuePair("applyType",
+			// "" + 2));
+			// ArrayValues.add(new BasicNameValuePair("helpSType",
+			// "" + type));
+			// ArrayValues.add(new BasicNameValuePair("modelSign",
+			// "KNDY_APPLY"));
+			// ArrayValues.add(new BasicNameValuePair("curPage", ""
+			// + curPage));
+			// ArrayValues.add(new BasicNameValuePair("mobile", "" +
+			// text_phone.getText().toString()));
+			// final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+			// ArrayValues.add(new BasicNameValuePair("chn",
+			// "dyq"));
+			// chn = "dyq";
+			ArrayValues.add(new BasicNameValuePair("learnRecordDto.title", Title));
+			ArrayValues.add(new BasicNameValuePair("learnRecordDto.timeLength", "" + (recLen / 60)));
+			ArrayValues.add(new BasicNameValuePair("learnRecordDto.cover", "" + cover));
+			ArrayValues.add(new BasicNameValuePair("learnRecordDto.cover", "" + detail));
+			// ArrayValues.add(new BasicNameValuePair("classify", ""
+			// +
+			// classify));
+
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String DueData = "";
+					DueData = HttpGetData.GetData("api/pb/learnRecord/save", ArrayValues);
+					// Message msg = new Message();
+					// msg.obj = DueData;
+					// msg.what = 17;
+					// uiHandler.sendMessage(msg);
+				}
+			}).start();
 			break;
 		case R.id.btn_go:
 			if (filePath == null || filePath.equals("")) {

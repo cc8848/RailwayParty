@@ -26,6 +26,7 @@ import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.my.CreditsActivity;
 import wuxc.single.railwayparty.my.MyResumeActivity;
+import wuxc.single.railwayparty.my.NewpwdActivity;
 
 public class LoginActivity extends Activity implements OnClickListener {
 	private EditText edit_username;
@@ -223,7 +224,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.lin_forget:
 			Intent intent = new Intent();
-			intent.setClass(getApplicationContext(), ResetPwdActivity.class);
+			intent.setClass(getApplicationContext(), NewpwdActivity.class);
 			startActivity(intent);
 			break;
 

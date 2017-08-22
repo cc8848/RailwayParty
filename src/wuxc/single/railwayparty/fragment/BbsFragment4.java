@@ -286,7 +286,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setWidth((int) (screenwidth - 120 * scalepx));
 					listinfo.setPhoto(photo);
 					listinfo.setNumber(number);
-					listinfo.setSummary("createtime");
+					listinfo.setSummary(json_data.getString("createtime"));
 					list.add(listinfo);
 
 				}

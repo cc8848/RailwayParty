@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,7 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
 
 public class PartyMembershipActivity extends Activity implements OnClickListener {
@@ -37,6 +40,11 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private String ticket = "";
 	private String myid = "";
+	private String userPhoto;
+	private TextView text_username;
+	private TextView text_sign;
+	private RoundImageView round_headimg;
+	private final static int GET_USER_HEAD_IMAGE = 6;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -45,6 +53,9 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 			case 7:
 				GetDataDueData(msg.obj);
 				break;
+			case GET_USER_HEAD_IMAGE:
+				ShowHeadImage(msg.obj);
+				break;
 			default:
 				break;
 
@@ -52,6 +63,18 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		}
 
 	};
+
+	protected void ShowHeadImage(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj == null)) {
+			try {
+				Bitmap HeadImage = (Bitmap) obj;
+				round_headimg.setImageBitmap(HeadImage);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -96,9 +119,38 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		round_headimg = (RoundImageView) findViewById(R.id.image_headimg);
 		ReadTicket();
 		settext();
 		GetData();
+		GetHeadPic();
+		ImageView imagesearch = (ImageView) findViewById(R.id.image_search);
+		imagesearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent_membership = new Intent();
+				intent_membership.setClass(getApplicationContext(), PartySearch.class);
+				startActivity(intent_membership);
+			}
+		});
+	}
+
+	private void GetHeadPic() {
+		// TODO Auto-generated method stub
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				Bitmap HeadImage = null;
+				HeadImage = GetBitmapFromServer
+						.getBitmapFromServer(URLcontainer.urlip + URLcontainer.GetFile + userPhoto);
+				Message msg = new Message();
+				msg.what = GET_USER_HEAD_IMAGE;
+				msg.obj = HeadImage;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	private void ReadTicket() {
@@ -109,6 +161,7 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		Str_party_time = PreUserInfo.getString("pInTime", "");
 		ticket = PreUserInfo.getString("ticket", "");
 		myid = PreUserInfo.getString("deptId", "");
+		userPhoto = PreUserInfo.getString("userPhoto", null);
 	}
 
 	private void settext() {
