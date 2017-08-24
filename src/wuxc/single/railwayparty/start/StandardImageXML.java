@@ -1,11 +1,18 @@
 package wuxc.single.railwayparty.start;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import com.polites.android.GestureImageView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -21,6 +28,7 @@ public class StandardImageXML extends Activity {
 	private Bitmap HeadImage;
 	private GestureImageView image;
 	private final static int GET_USER_HEAD_IMAGE = 6;
+	private String userName = "";
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -41,6 +49,7 @@ public class StandardImageXML extends Activity {
 		if (!(obj == null)) {
 			try {
 				HeadImage = (Bitmap) obj;
+				saveMyBitmap(userName, HeadImage);
 				image.setImageBitmap(HeadImage);
 				// if (HeadImage != null && !HeadImage.isRecycled()) {
 				// Log.e("HeadImage", "recycle");
@@ -54,6 +63,30 @@ public class StandardImageXML extends Activity {
 				// TODO: handle exception
 			}
 		}
+	}
+
+	public void saveMyBitmap(String bitName, Bitmap mBitmap) throws IOException {
+//		String path = Environment.getExternalStorageDirectory() + "/chat/";
+//		String myJpgPath = Environment.getExternalStorageDirectory() + "/chat/" + bitName + ".png";
+//		File tmp = new File(path);
+//		if (!tmp.exists()) {
+//			tmp.mkdir();
+//		}
+//		File f = new File(myJpgPath);
+//		f.createNewFile();
+//		FileOutputStream fOut = null;
+//		try {
+//			fOut = new FileOutputStream(f);
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		mBitmap.compress(Bitmap.CompressFormat.PNG, 25, fOut);
+//		try {
+//			fOut.flush();
+//			fOut.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
@@ -70,8 +103,40 @@ public class StandardImageXML extends Activity {
 			image.setImageResource(inturl);
 		} else {
 			userPhoto = URLcontainer.urlip + "upload" + url;
-			GetHeadPic();
+			userName = getBitName(userPhoto);
+			String temppath = Environment.getExternalStorageDirectory() + "/chat/" + userName + ".png";
+			Bitmap bm1 = null;
+			bm1 = getBitmapByPath(temppath);
+			if (bm1 == null) {
+				Log.e("º”‘ÿÕº∆¨", "º”‘ÿÕº∆¨" + userName);
+				GetHeadPic();
+			} else {
+				Log.e("“˝”√Õº∆¨", "“˝”√Õº∆¨" + userName);
+				image.setImageBitmap(bm1);
+			}
 		}
+	}
+
+	public Bitmap getBitmapByPath(String fileName) {
+		// String myJpgPath =
+		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		// options.inSampleSize = 12;
+		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
+		return bm;
+	}
+
+	private String getBitName(String imageUrl) {
+		// TODO Auto-generated method stub
+		String[] temp = imageUrl.split("");
+		String result = "";
+		for (int i = 0; i < temp.length; i++) {
+			if (temp[i].equals("/") || temp[i].equals(".")) {
+				temp[i] = "";
+			}
+			result = result + temp[i];
+		}
+		return result + "600";
 	}
 
 	@Override

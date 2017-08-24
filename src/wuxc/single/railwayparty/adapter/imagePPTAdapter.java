@@ -23,7 +23,7 @@ import wuxc.single.railwayparty.cache.imagePPTCache;
 
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.imagePPTModel;
-import wuxc.single.railwayparty.start.ImageLoader;
+import wuxc.single.railwayparty.start.ImageLoader600;
 
 public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnClickListener {
 	private ListView listView;
@@ -32,7 +32,7 @@ public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnCl
 	private int screenwidth = 0;
 	private Activity thisactivity;
 	private Callback mCallback;
-	public ImageLoader imageLoader;
+	public ImageLoader600 imageLoader;
 	private static LayoutInflater inflater = null;
 	private List<imagePPTModel> imageAndTexts;
 
@@ -43,7 +43,7 @@ public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnCl
 		this.imageAndTexts = imageAndTexts;
 		mCallback = callback;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageLoader = new ImageLoader(activity.getApplicationContext());
+		imageLoader = new ImageLoader600(activity.getApplicationContext());
 	}
 
 	public interface Callback {
@@ -83,23 +83,20 @@ public class imagePPTAdapter extends ArrayAdapter<imagePPTModel> implements OnCl
 		// Load the image and set it on the ImageView
 		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
+		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
+			imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
 
-		try {
+			try {
 
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity, imageView,
-					imageAndText.getImageurl());
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity,
+						imageView, imageAndText.getImageurl());
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
 
-		// }
-//		LinearLayout.LayoutParams LayoutParams2 = (android.widget.LinearLayout.LayoutParams) imageView
-//				.getLayoutParams();
-//		LayoutParams2.height = imageAndText.getWidth() * 3 / 4;
-//		imageView.setLayoutParams(LayoutParams2);
 		ViewGroup.LayoutParams lp = imageView.getLayoutParams();
 
 		lp.height = LayoutParams.WRAP_CONTENT;

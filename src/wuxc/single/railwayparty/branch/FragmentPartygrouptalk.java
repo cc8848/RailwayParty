@@ -240,6 +240,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 					} else {
 						listinfo.setMy(false);
 					}
+					listinfo.setImage("");
 					listinfo.setImageUrl(json_data.getString("userPhoto"));
 					json_data = new JSONObject(json_data.getString("content"));
 					// json_data =

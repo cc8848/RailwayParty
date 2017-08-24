@@ -38,8 +38,7 @@ public class MycheckAdapter extends ArrayAdapter<MycheckModel> implements OnClic
 			rowView = inflater.inflate(R.layout.wuxc_item_mycheck, null);
 			viewCache = new MycheckCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (MycheckCache) rowView.getTag();
+	 
 		}
 
 		// Load the image and set it on the ImageView

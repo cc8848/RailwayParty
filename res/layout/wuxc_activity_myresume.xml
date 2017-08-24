@@ -186,6 +186,7 @@
                 android:background="@color/text_line" />
 
             <RelativeLayout
+                android:id="@+id/rel_motto"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginLeft="40dp"
@@ -226,6 +227,7 @@
                 android:background="@color/text_line" />
 
             <RelativeLayout
+                android:id="@+id/rel_phone"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginLeft="40dp"

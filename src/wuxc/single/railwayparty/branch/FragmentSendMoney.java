@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -140,6 +141,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 
 	private RoundImageView round_headimg;
 	private String userPhoto;
+
 	protected void ShowHeadImage(Object obj) {
 		// TODO Auto-generated method stub
 		if (!(obj == null)) {
@@ -294,6 +296,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 
 		return view;
 	}
+
 	private void GetHeadPic() {
 		// TODO Auto-generated method stub
 		new Thread(new Runnable() { // 开启线程上传文件
@@ -309,6 +312,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			}
 		}).start();
 	}
+
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		userPhoto = PreUserInfo.getString("userPhoto", null);
@@ -701,6 +705,8 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("idCardNo", idnumber));
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		Log.e("idCardNo", idnumber);
+		Log.e("ticket", ticket);
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {
@@ -731,6 +737,23 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				showAlert();
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.fareMonth", monthstring));
+				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.amount", "" + totalpay));
+				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.payWay", "" + 2));
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String LoginResultData = "";
+						LoginResultData = HttpGetData.GetData("api/pb/partyFareRecord/save", ArrayValues);
+//						Message msg = new Message();
+//						msg.obj = LoginResultData;
+//						msg.what = GET_MONTH_RESULT_DATA;
+//						uiHandler.sendMessage(msg);
+					}
+				}).start();
 			}
 		});
 
@@ -841,7 +864,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		monthstring = "";
 		Month = "";
 		for (int i = 0; i < 12; i++) {
-			if (condition[i] == 1) {
+			if (condition[i] == 1&&status[i]==1) {
 				result = result + money[i];
 				monthstring = monthstring + (i + 1) + "、";
 				Month = Month + (inityear + STR_MONTH[i]) + ",";

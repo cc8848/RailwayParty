@@ -28,7 +28,7 @@ import wuxc.single.railwayparty.cache.TalkCache;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.Bbs1Model;
 import wuxc.single.railwayparty.model.TalkModel;
-import wuxc.single.railwayparty.start.ImageLoader;;
+import wuxc.single.railwayparty.start.ImageLoader120;;
 
 public class TalkAdapter extends ArrayAdapter<TalkModel> {
 	private ListView listView;
@@ -36,7 +36,7 @@ public class TalkAdapter extends ArrayAdapter<TalkModel> {
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
-	public ImageLoader imageLoader;
+	public ImageLoader120 imageLoader;
 	private static LayoutInflater inflater = null;
 	private List<Bbs1Model> imageAndTexts;
 
@@ -45,7 +45,7 @@ public class TalkAdapter extends ArrayAdapter<TalkModel> {
 		this.listView = listView;
 		this.thisactivity = activity;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageLoader = new ImageLoader(activity.getApplicationContext());
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
 
 	}
 
@@ -77,28 +77,33 @@ public class TalkAdapter extends ArrayAdapter<TalkModel> {
 
 		viewCache = new TalkCache(rowView);
 		rowView.setTag(viewCache);
+		if (!(imageAndText.getImageUrl().equals("") || imageAndText.getImageUrl() == null)) {
 
-		viewCache.getImageHeadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageUrl());
+			viewCache.getImageHeadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageUrl());
 
-		try {
+			try {
 
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageUrl(), activity,
-					viewCache.getImageHeadimg(), 0);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageUrl(), activity,
+						viewCache.getImageHeadimg(), 0);
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
-		viewCache.getimage().setTag(URLcontainer.urlip + "upload" + imageAndText.getImage());
+		if (!(imageAndText.getImage().equals("") || imageAndText.getImage() == null)) {
 
-		try {
+			viewCache.getimage().setTag(URLcontainer.urlip + "upload" + imageAndText.getImage());
 
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImage(), activity,
-					viewCache.getimage(), 0);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+			try {
+
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImage(), activity,
+						viewCache.getimage(), 0);
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
 		TextView Textname = viewCache.getTextName();
 		Textname.setText("" + imageAndText.getName());

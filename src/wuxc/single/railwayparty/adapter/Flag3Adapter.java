@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -27,29 +28,39 @@ import wuxc.single.railwayparty.cache.Flag3Cache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
 import wuxc.single.railwayparty.internet.URLcontainer;
-import wuxc.single.railwayparty.model.Flag3Model;;
+import wuxc.single.railwayparty.model.Flag3Model;
+import wuxc.single.railwayparty.start.ImageLoader120;;
 
-public class Flag3Adapter extends ArrayAdapter<Flag3Model>  implements OnClickListener {
+public class Flag3Adapter extends ArrayAdapter<Flag3Model> implements OnClickListener {
 	private ListView listView;
-	private ImageLoader ImageLoader;
+	public ImageLoader120 imageLoader;
+	private static LayoutInflater inflater = null;
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
 	private Callback mCallback;
+
 	public Flag3Adapter(Activity activity, List<Flag3Model> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
-		ImageLoader = new ImageLoader();	mCallback = callback;
+		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
 
-	}@Override
+		mCallback = callback;
+
+	}
+
+	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		mCallback.click(v);
 	}
+
 	public interface Callback {
 		public void click(View v);
 	}
+
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Activity activity = (Activity) getContext();
 
@@ -63,55 +74,25 @@ public class Flag3Adapter extends ArrayAdapter<Flag3Model>  implements OnClickLi
 
 			viewCache = new Flag3Cache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (Flag3Cache) rowView.getTag();
+
 		}
 		Flag3Model imageAndText = getItem(position);
 
 		// Load the image and set it on the ImageView
-		String imageUrl = imageAndText.getImageUrl();
-		ImageView imageView = viewCache.getImageHeadimg();
-		imageView.setTag(URLcontainer.urlip +"upload" + imageUrl);
-		Log.e("imageUrl", imageUrl);
-		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
-			imageView.setImageResource(R.drawable.image001);
-		} else {
+
+		if (!(imageAndText.getImageUrl().equals("") || imageAndText.getImageUrl() == null)) {
+
+			viewCache.getImageHeadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageUrl());
+
 			try {
-//				String imageName1 = getBitName(imageUrl);
-//				String temppath = Environment.getExternalStorageDirectory() + "/chat/" + imageName1 + ".png";
-				Bitmap bm1 = null;
-//				bm1 = getBitmapByPath(temppath);
-				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
-					Log.e("imageUrl", imageUrl);
-					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
-						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-							ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl);
-							if (imageViewByTag != null) {
-								imageViewByTag.setImageDrawable(imageDrawable);
-							}
-						}
-					});
-					if (cachedImage == null) {
-						imageView.setImageResource(R.drawable.image001);
-					} else {
-						Drawable d = cachedImage; // xxx根据自己的情况获取drawable
 
-						BitmapDrawable bd = (BitmapDrawable) d;
-
-						Bitmap bm = bd.getBitmap();
-//						bm = cutBmp(bm);
-						imageView.setImageBitmap(bm);
-					}
-				} else {
-					imageView.setImageBitmap(bm1);
-				}
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageUrl(), activity,
+						viewCache.getImageHeadimg(), 0);
 			} catch (Exception e) {
 				// TODO: handle exception
 			} catch (OutOfMemoryError e) {
 				// TODO: handle exception
 			}
-
 		}
 		TextView TextTitle = viewCache.getTextTitle();
 		TextTitle.setText("" + imageAndText.getTitle());

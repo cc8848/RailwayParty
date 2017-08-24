@@ -44,7 +44,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	private LinearLayout rel_org;
 	private LinearLayout rel_statisic;
 	private LinearLayout rel_group;
-	private String ticket ;
+	private String ticket;
 	private String loginId;
 	private String sex;
 	private String sessionId;
@@ -56,6 +56,7 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	public static String description = "为人民服务";
 	public static String time = "2017-07-30";
 	private LinearLayout lin_main_top;
+	private View view;// 缓存Fragment view
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -76,36 +77,43 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.wuxc_fragment_branch, container, false);
-		initview(view);
-		initheight(view);
-		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
-		image_search.setOnClickListener(new OnClickListener() {
+		if (null != view) {
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (null != parent) {
+				parent.removeView(view);
+			}
+		} else {
+			view = inflater.inflate(R.layout.wuxc_fragment_branch, container, false);
+			initview(view);
+			initheight(view);
+			ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+			image_search.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SearchActivity.class);
-				startActivity(intent);
-			}
-		});
-		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ReadTicket();
-		final ArrayList ArrayValues = new ArrayList();
-		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-		ArrayValues.add(new BasicNameValuePair("deptId", sessionId));
-		new Thread(new Runnable() { // 开启线程上传文件
-			@Override
-			public void run() {
-				String LoginResultData = "";
-				LoginResultData = HttpGetData.GetData("api/pb/chatGroup/getByDept", ArrayValues);
-				Message msg = new Message();
-				msg.obj = LoginResultData;
-				msg.what = GET_LOGININ_RESULT_DATA;
-				uiHandler.sendMessage(msg);
-			}
-		}).start();
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), SearchActivity.class);
+					startActivity(intent);
+				}
+			});
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ReadTicket();
+			final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("deptId", sessionId));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/pb/chatGroup/getByDept", ArrayValues);
+					Message msg = new Message();
+					msg.obj = LoginResultData;
+					msg.what = GET_LOGININ_RESULT_DATA;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
+		}
 		return view;
 	}
 

@@ -38,8 +38,7 @@ public class CreditsAdapter extends ArrayAdapter<CreditsModel> implements OnClic
 			rowView = inflater.inflate(R.layout.wuxc_item_credits, null);
 			viewCache = new CreditsCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (CreditsCache) rowView.getTag();
+
 		}
 
 		// Load the image and set it on the ImageView

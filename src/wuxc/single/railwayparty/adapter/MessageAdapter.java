@@ -39,8 +39,7 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> implements OnClic
 			rowView = inflater.inflate(R.layout.wuxc_item_message, null);
 			viewCache = new MessageCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (MessageCache) rowView.getTag();
+
 		}
 
 		// Load the image and set it on the ImageView

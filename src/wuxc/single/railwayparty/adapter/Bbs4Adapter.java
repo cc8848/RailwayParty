@@ -30,7 +30,7 @@ import wuxc.single.railwayparty.cache.Bbs4Cache;
 import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.Bbs4Model;
-import wuxc.single.railwayparty.start.ImageLoader;
+import wuxc.single.railwayparty.start.ImageLoader120;
 
 public class Bbs4Adapter extends ArrayAdapter<Bbs4Model> implements OnClickListener {
 	private ListView listView;
@@ -39,7 +39,7 @@ public class Bbs4Adapter extends ArrayAdapter<Bbs4Model> implements OnClickListe
 	private int screenwidth = 0;
 	private Activity thisactivity;
 	private Callback mCallback;
-	public ImageLoader imageLoader;
+	public ImageLoader120 imageLoader;
 	private static LayoutInflater inflater = null;
 
 	public Bbs4Adapter(Activity activity, List<Bbs4Model> imageAndTexts, ListView listView, Callback callback) {
@@ -49,7 +49,7 @@ public class Bbs4Adapter extends ArrayAdapter<Bbs4Model> implements OnClickListe
 
 		mCallback = callback;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageLoader = new ImageLoader(activity.getApplicationContext());
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
 
 	}
 
@@ -76,17 +76,19 @@ public class Bbs4Adapter extends ArrayAdapter<Bbs4Model> implements OnClickListe
 			viewCache = new Bbs4Cache(rowView);
 			rowView.setTag(viewCache);
 		}
+		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
 
-		viewCache.getheadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl());
+			viewCache.getheadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl());
 
-		try {
+			try {
 
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity,
-					viewCache.getheadimg(), 0);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity,
+						viewCache.getheadimg(), 0);
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
 		if (!imageAndText.getImage1().equals("")) {
 			viewCache.getimage_1().setTag(URLcontainer.urlip + "upload" + imageAndText.getImage1());

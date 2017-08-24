@@ -38,8 +38,7 @@ public class EvaluationAdapter extends ArrayAdapter<EvaluationModel> implements 
 			rowView = inflater.inflate(R.layout.wuxc_item_evaluation, null);
 			viewCache = new EvaluationCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (EvaluationCache) rowView.getTag();
+		 
 		}
 
 		// Load the image and set it on the ImageView

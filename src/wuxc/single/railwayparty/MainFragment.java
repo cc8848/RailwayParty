@@ -162,37 +162,44 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		view = inflater.inflate(R.layout.wuxc_fragment_main, container, false);
-		screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
-		initview(view);
-		initheight(view);
-		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
-		image_search.setOnClickListener(new OnClickListener() {
+		if (null != view) {
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (null != parent) {
+				parent.removeView(view);
+			}
+		} else {
+			view = inflater.inflate(R.layout.wuxc_fragment_main, container, false);
+			screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
+			initview(view);
+			initheight(view);
+			ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+			image_search.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SearchActivity.class);
-				startActivity(intent);
-			}
-		});
-		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ticket = PreUserInfo.getString("ticket", "");
-		final ArrayList ArrayValues = new ArrayList();
-		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-		ArrayValues.add(new BasicNameValuePair("chns", "tzgg,lxyzxx,djkh,wsdx,lzsx,xxtb,jszn,qnxf"));
-		new Thread(new Runnable() { // 开启线程上传文件
-			@Override
-			public void run() {
-				String LoginResultData = "";
-				LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
-				Message msg = new Message();
-				msg.obj = LoginResultData;
-				msg.what = GET_VERSION_RESULT;
-				uiHandler.sendMessage(msg);
-			}
-		}).start();
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), SearchActivity.class);
+					startActivity(intent);
+				}
+			});
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ticket = PreUserInfo.getString("ticket", "");
+			final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("chns", "tzgg,lxyzxx,djkh,wsdx,lzsx,xxtb,jszn,qnxf"));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
+					Message msg = new Message();
+					msg.obj = LoginResultData;
+					msg.what = GET_VERSION_RESULT;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
+		}
 		return view;
 	}
 

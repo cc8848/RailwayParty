@@ -53,31 +53,39 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 	private int NumberPicture = 5;
 	private ImageView image_edit;
 	private int page = 1;
+	private View view;// 缓存Fragment view
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.wuxc_fragment_bbs, container, false);
-		initview(view);
-		initcolor();
-		ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
-		Fragments.clear();// 清空list
-		initfragment();// list 装填fragment
-		FragmentManager = getActivity().getSupportFragmentManager();
-		ViewPaper.setOffscreenPageLimit(NumberPicture);
-		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
-		ViewPaper.setAdapter(new MyPagerAdapter());
-		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
-		image_search.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SearchActivity.class);
-				startActivity(intent);
+		if (null != view) {
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (null != parent) {
+				parent.removeView(view);
 			}
-		});
+		} else {
+			view = inflater.inflate(R.layout.wuxc_fragment_bbs, container, false);
+			initview(view);
+			initcolor();
+			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
+			Fragments.clear();// 清空list
+			initfragment();// list 装填fragment
+			FragmentManager = getActivity().getSupportFragmentManager();
+			ViewPaper.setOffscreenPageLimit(NumberPicture);
+			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
+			ViewPaper.setAdapter(new MyPagerAdapter());
+			ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+			image_search.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), SearchActivity.class);
+					startActivity(intent);
+				}
+			});
+		}
 		return view;
 	}
 

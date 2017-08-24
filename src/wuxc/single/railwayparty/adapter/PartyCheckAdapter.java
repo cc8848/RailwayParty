@@ -69,8 +69,7 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 			rowView = inflater.inflate(R.layout.wuxc_item_partycheck, null);
 			viewCache = new PartyCheckCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (PartyCheckCache) rowView.getTag();
+		 
 		}
 
 		// Load the image and set it on the ImageView
@@ -86,9 +85,5 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 		return rowView;
 	}
 
-	// @Override
-	// public void onClick(View v) {
-	// // TODO Auto-generated method stub
-	//
-	// }
+	 
 }

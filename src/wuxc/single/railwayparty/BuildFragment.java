@@ -106,7 +106,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	private int t6 = 0;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_VERSION_RESULT = 5;
-
+	private View view;// 缓存Fragment view
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -124,46 +124,53 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.wuxc_fragment_build, container, false);
-		screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
-		initview(view);
-		initheight(view);
-		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-
-		initcolor();
-		ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
-		Fragments.clear();// 清空list
-		initfragment();// list 装填fragment
-		FragmentManager = getActivity().getSupportFragmentManager();
-		ViewPaper.setOffscreenPageLimit(NumberPicture);
-		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
-		ViewPaper.setAdapter(new MyPagerAdapter());
-		ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
-		image_search.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(getActivity(), SearchActivity.class);
-				startActivity(intent);
+		if (null != view) {
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (null != parent) {
+				parent.removeView(view);
 			}
-		});
-		String ticket = PreUserInfo.getString("ticket", "");
-		final ArrayList ArrayValues = new ArrayList();
-		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-		ArrayValues.add(new BasicNameValuePair("chns", "zdwj,djyw,tzgg,szrd,dyfc,wsdx"));
-		new Thread(new Runnable() { // 开启线程上传文件
-			@Override
-			public void run() {
-				String LoginResultData = "";
-				LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
-				Message msg = new Message();
-				msg.obj = LoginResultData;
-				msg.what = GET_VERSION_RESULT;
-				uiHandler.sendMessage(msg);
-			}
-		}).start();
+		} else {
+			view = inflater.inflate(R.layout.wuxc_fragment_build, container, false);
+			screenwidth = getActivity().getWindow().getWindowManager().getDefaultDisplay().getWidth();
+			initview(view);
+			initheight(view);
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+
+			initcolor();
+			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
+			Fragments.clear();// 清空list
+			initfragment();// list 装填fragment
+			FragmentManager = getActivity().getSupportFragmentManager();
+			ViewPaper.setOffscreenPageLimit(NumberPicture);
+			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
+			ViewPaper.setAdapter(new MyPagerAdapter());
+			ImageView image_search = (ImageView) view.findViewById(R.id.image_search);
+			image_search.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), SearchActivity.class);
+					startActivity(intent);
+				}
+			});
+			String ticket = PreUserInfo.getString("ticket", "");
+			final ArrayList ArrayValues = new ArrayList();
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("chns", "zdwj,djyw,tzgg,szrd,dyfc,wsdx"));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
+					Message msg = new Message();
+					msg.obj = LoginResultData;
+					msg.what = GET_VERSION_RESULT;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
+		}
 		return view;
 	}
 

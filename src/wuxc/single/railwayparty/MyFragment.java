@@ -93,6 +93,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private TextView tet_rank1;
 	private TextView tet_rank2;
 	private TextView tet_rank3;
+	private View view;// 缓存Fragment view
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -118,60 +119,67 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View view = inflater.inflate(R.layout.wuxc_fragment_my, container, false);
-		initview(view);
-		initheight(view);
-		PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-		ReadTicket();
-		if (warning == 0) {
-			showAlertDialog("", "");
-		}
-		GetHeadPic();
-		getd();
-		if (true) {
+		if (null != view) {
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if (null != parent) {
+				parent.removeView(view);
+			}
+		} else {
+			view = inflater.inflate(R.layout.wuxc_fragment_my, container, false);
+			initview(view);
+			initheight(view);
+			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ReadTicket();
+			if (warning == 0) {
+				showAlertDialog("", "");
+			}
+			GetHeadPic();
+			getd();
+			if (true) {
 
-			final ArrayList ArrayValues = new ArrayList();
-			// ArrayValues.add(new BasicNameValuePair("ticket",
-			// ticket));
-			// ArrayValues.add(new BasicNameValuePair("applyType",
-			// "" + 2));
-			// ArrayValues.add(new BasicNameValuePair("helpSType",
-			// "" + type));
-			// ArrayValues.add(new BasicNameValuePair("modelSign",
-			// "KNDY_APPLY"));
-			// ArrayValues.add(new BasicNameValuePair("curPage", ""
-			// + curPage));
-			// ArrayValues.add(new BasicNameValuePair("mobile", "" +
-			// text_phone.getText().toString()));
-			// final ArrayList ArrayValues = new ArrayList();
-			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-			// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-			// ArrayValues.add(new BasicNameValuePair("chn",
-			// "dyq"));
-			// chn = "dyq";
-			// ArrayValues.add(new BasicNameValuePair("templateName",
-			// "modifyPwd"));
-			// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
-			// "" + Str_text_motto));
-			// ArrayValues.add(new
-			// BasicNameValuePair("orgUserExtDto.mobile", "" +
-			// Str_text_phone));
-			// ArrayValues.add(new BasicNameValuePair("classify", ""
-			// +
-			// classify));
+				final ArrayList ArrayValues = new ArrayList();
+				// ArrayValues.add(new BasicNameValuePair("ticket",
+				// ticket));
+				// ArrayValues.add(new BasicNameValuePair("applyType",
+				// "" + 2));
+				// ArrayValues.add(new BasicNameValuePair("helpSType",
+				// "" + type));
+				// ArrayValues.add(new BasicNameValuePair("modelSign",
+				// "KNDY_APPLY"));
+				// ArrayValues.add(new BasicNameValuePair("curPage", ""
+				// + curPage));
+				// ArrayValues.add(new BasicNameValuePair("mobile", "" +
+				// text_phone.getText().toString()));
+				// final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+				// ArrayValues.add(new BasicNameValuePair("chn",
+				// "dyq"));
+				// chn = "dyq";
+				// ArrayValues.add(new BasicNameValuePair("templateName",
+				// "modifyPwd"));
+				// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
+				// "" + Str_text_motto));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.mobile", "" +
+				// Str_text_phone));
+				// ArrayValues.add(new BasicNameValuePair("classify", ""
+				// +
+				// classify));
 
-			new Thread(new Runnable() { // 开启线程上传文件
-				@Override
-				public void run() {
-					String DueData = "";
-					DueData = HttpGetData.GetData("api/pb/learnRecord/getLearnStatics", ArrayValues);
-					Message msg = new Message();
-					msg.obj = DueData;
-					msg.what = 17;
-					uiHandler.sendMessage(msg);
-				}
-			}).start();
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/pb/learnRecord/getLearnStatics", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 17;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
 
+			}
 		}
 		return view;
 	}

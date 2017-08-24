@@ -451,7 +451,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new ArtAdapter(getActivity(), list, ListData, this);
+		mAdapter = new ArtAdapter(getActivity(), list, this);
 		ListData.setAdapter(mAdapter);
 	}
 

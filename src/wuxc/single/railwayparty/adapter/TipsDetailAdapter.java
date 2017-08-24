@@ -23,7 +23,7 @@ import wuxc.single.railwayparty.cache.TipsDetailCache;
 
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.TipsDetailModel;
-import wuxc.single.railwayparty.start.ImageLoader;
+import wuxc.single.railwayparty.start.ImageLoader600;
 
 public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements OnClickListener {
 	private ListView listView;
@@ -32,7 +32,7 @@ public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements 
 	private int screenwidth = 0;
 	private Activity thisactivity;
 	private Callback mCallback;
-	public ImageLoader imageLoader;
+	public ImageLoader600 imageLoader;
 	private static LayoutInflater inflater = null;
 	private List<TipsDetailModel> imageAndTexts;
 
@@ -44,7 +44,7 @@ public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements 
 		this.imageAndTexts = imageAndTexts;
 		mCallback = callback;
 		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		imageLoader = new ImageLoader(activity.getApplicationContext());
+		imageLoader = new ImageLoader600(activity.getApplicationContext());
 	}
 
 	public interface Callback {
@@ -88,33 +88,37 @@ public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements 
 		}
 
 		// Load the image and set it on the ImageView
+		if (!(imageAndText.getImageHeadimg().equals("") || imageAndText.getImageHeadimg() == null)) {
+			viewCache.getimage_headimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageHeadimg());
 
-		viewCache.getimage_headimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageHeadimg());
+			try {
 
-		try {
-
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageHeadimg(), activity,
-					viewCache.getimage_headimg(), 0);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageHeadimg(), activity,
+						viewCache.getimage_headimg(), 0);
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
-		viewCache.getimage_pic().setTag(URLcontainer.urlip + "upload" + imageAndText.getImage());
-		ViewGroup.LayoutParams lp = viewCache.getimage_pic().getLayoutParams();
+		if (!(imageAndText.getImage().equals("") || imageAndText.getImage() == null)) {
 
-		lp.height = LayoutParams.WRAP_CONTENT;
-		viewCache.getimage_pic().setLayoutParams(lp);
+			viewCache.getimage_pic().setTag(URLcontainer.urlip + "upload" + imageAndText.getImage());
+			ViewGroup.LayoutParams lp = viewCache.getimage_pic().getLayoutParams();
 
-		viewCache.getimage_pic().setMaxHeight(3000);
-		try {
+			lp.height = LayoutParams.WRAP_CONTENT;
+			viewCache.getimage_pic().setLayoutParams(lp);
 
-			imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImage(), activity,
-					viewCache.getimage_pic(), 0);
-		} catch (Exception e) {
-			// TODO: handle exception
-		} catch (OutOfMemoryError e) {
-			// TODO: handle exception
+			viewCache.getimage_pic().setMaxHeight(3000);
+			try {
+
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImage(), activity,
+						viewCache.getimage_pic(), 0);
+			} catch (Exception e) {
+				// TODO: handle exception
+			} catch (OutOfMemoryError e) {
+				// TODO: handle exception
+			}
 		}
 		// }
 		TextView text_name = viewCache.gettext_nickname();

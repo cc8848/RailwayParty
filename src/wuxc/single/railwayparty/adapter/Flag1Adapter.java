@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -28,10 +29,12 @@ import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.Flag1Model;
+import wuxc.single.railwayparty.start.ImageLoader120;
 
 public class Flag1Adapter extends ArrayAdapter<Flag1Model> implements OnClickListener {
 	private ListView listView;
-	private ImageLoader ImageLoader;
+	public ImageLoader120 imageLoader;
+	private static LayoutInflater inflater = null;
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
@@ -41,7 +44,9 @@ public class Flag1Adapter extends ArrayAdapter<Flag1Model> implements OnClickLis
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
-		ImageLoader = new ImageLoader();
+		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
+
 		mCallback = callback;
 	}
 
@@ -68,54 +73,24 @@ public class Flag1Adapter extends ArrayAdapter<Flag1Model> implements OnClickLis
 			rowView = inflater.inflate(R.layout.wuxc_item_flag_2, null);
 			viewCache = new Flag1Cache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (Flag1Cache) rowView.getTag();
+
 		}
 
 		// Load the image and set it on the ImageView
-		String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
-		// Log.e("imageUrl", imageUrl);
-		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
-			imageView.setImageResource(imageAndText.getImageurl());
-		} else {
+		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
+
+			viewCache.getheadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl());
+
 			try {
-//				String imageName1 = getBitName(imageUrl);
-//				String temppath = Environment.getExternalStorageDirectory() + "/trans/" + imageName1 + ".png";
-				Bitmap bm1 = null;
-//				bm1 = getBitmapByPath(temppath);
-				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
-					// Log.e("imageUrl", imageUrl);
-					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
-						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-							ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl);
-							if (imageViewByTag != null) {
-								imageViewByTag.setImageDrawable(imageDrawable);
-							}
-						}
-					});
-					if (cachedImage == null) {
-						imageView.setImageResource(imageAndText.getImageurl());
-					} else {
-						Drawable d = cachedImage; // xxx根据自己的情况获取drawable
 
-						BitmapDrawable bd = (BitmapDrawable) d;
-
-						Bitmap bm = bd.getBitmap();
-//						bm = cutBmp(bm);
-						imageView.setImageBitmap(bm);
-					}
-				} else {
-					imageView.setImageBitmap(bm1);
-				}
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity,
+						viewCache.getheadimg(), 0);
 			} catch (Exception e) {
 				// TODO: handle exception
 			} catch (OutOfMemoryError e) {
 				// TODO: handle exception
 			}
-
 		}
 
 		TextView texttime = viewCache.gettextTime();

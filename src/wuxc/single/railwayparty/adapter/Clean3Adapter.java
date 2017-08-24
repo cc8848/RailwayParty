@@ -1,18 +1,9 @@
 package wuxc.single.railwayparty.adapter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,15 +15,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.cache.Clean3Cache;
-import wuxc.single.railwayparty.internet.ImageLoader;
-import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
-import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.model.Clean3Model;
+import wuxc.single.railwayparty.start.ImageLoader120;
 
 public class Clean3Adapter extends ArrayAdapter<Clean3Model> implements OnClickListener {
 	private ListView listView;
-	private ImageLoader ImageLoader;
+	public ImageLoader120 imageLoader;
+	private static LayoutInflater inflater = null;
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
@@ -41,7 +31,9 @@ public class Clean3Adapter extends ArrayAdapter<Clean3Model> implements OnClickL
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
-		ImageLoader = new ImageLoader();
+		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
+
 		mCallback = callback;
 	}
 
@@ -68,54 +60,23 @@ public class Clean3Adapter extends ArrayAdapter<Clean3Model> implements OnClickL
 			rowView = inflater.inflate(R.layout.wuxc_item_clean_3, null);
 			viewCache = new Clean3Cache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (Clean3Cache) rowView.getTag();
-		}
+		} 
 
 		// Load the image and set it on the ImageView
-		String imageUrl = imageAndText.getHeadimgUrl();
-		RoundImageView imageView = viewCache.getheadimg();
-		imageView.setTag(URLcontainer.urlip+"upload" + imageUrl);
-		// Log.e("imageUrl", imageUrl);
-		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
-			imageView.setImageResource(imageAndText.getImageurl());
-		} else {
+	 
+		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
+
+			viewCache.getheadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl());
+
 			try {
-//				String imageName1 = getBitName(imageUrl);
-//				String temppath = Environment.getExternalStorageDirectory() + "/trans/" + imageName1 + ".png";
-				Bitmap bm1 = null;
-//				bm1 = getBitmapByPath(temppath);
-				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip+"upload" + imageUrl;
-					// Log.e("imageUrl", imageUrl);
-					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
-						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-							ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl);
-							if (imageViewByTag != null) {
-								imageViewByTag.setImageDrawable(imageDrawable);
-							}
-						}
-					});
-					if (cachedImage == null) {
-						imageView.setImageResource(imageAndText.getImageurl());
-					} else {
-						Drawable d = cachedImage; // xxx根据自己的情况获取drawable
 
-						BitmapDrawable bd = (BitmapDrawable) d;
-
-						Bitmap bm = bd.getBitmap();
-//						bm = cutBmp(bm);
-						imageView.setImageBitmap(bm);
-					}
-				} else {
-					imageView.setImageBitmap(bm1);
-				}
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl(), activity,
+						viewCache.getheadimg(), 0);
 			} catch (Exception e) {
 				// TODO: handle exception
 			} catch (OutOfMemoryError e) {
 				// TODO: handle exception
 			}
-
 		}
 
 		TextView texttime = viewCache.gettextTime();

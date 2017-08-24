@@ -19,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
@@ -68,6 +69,8 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private static final int GET_LOGININ_RESULT_DATA = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final int GET_VERSION_RESULT = 5;
+	private RelativeLayout rel_phone;
+	private RelativeLayout rel_motto;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -280,6 +283,10 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		text_motto.setOnClickListener(this);
 		text_phone.setOnClickListener(this);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		rel_phone = (RelativeLayout) findViewById(R.id.rel_phone);
+		rel_motto = (RelativeLayout) findViewById(R.id.rel_motto);
+		rel_phone.setOnClickListener(this);
+		rel_motto.setOnClickListener(this);
 		ReadTicket();
 		getdata();
 
@@ -439,14 +446,34 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.text_motto:
-			Intent intent_sign = new Intent();
-			intent_sign.setClass(getApplicationContext(), mottoActivity.class);
-			startActivityForResult(intent_sign, 1);
+			if (true) {
+				Intent intent_sign = new Intent();
+				intent_sign.setClass(getApplicationContext(), mottoActivity.class);
+				startActivityForResult(intent_sign, 1);
+			}
 			break;
 		case R.id.text_phone:
-			Intent intent_phone = new Intent();
-			intent_phone.setClass(getApplicationContext(), phoneActivity.class);
-			startActivityForResult(intent_phone, 2);
+			if (true) {
+				Intent intent_phone = new Intent();
+				intent_phone.setClass(getApplicationContext(), phoneActivity.class);
+				startActivityForResult(intent_phone, 2);
+			}
+			break;
+		case R.id.rel_motto:
+			if (true) {
+				Intent intent_sign = new Intent();
+				intent_sign.setClass(getApplicationContext(), mottoActivity.class);
+				startActivityForResult(intent_sign, 1);
+			}
+
+			break;
+		case R.id.rel_phone:
+			if (true) {
+				Intent intent_phone = new Intent();
+				intent_phone.setClass(getApplicationContext(), phoneActivity.class);
+				startActivityForResult(intent_phone, 2);
+			}
+
 			break;
 		case R.id.text_send:
 			if (true) {

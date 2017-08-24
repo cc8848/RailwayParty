@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,11 +29,13 @@ import wuxc.single.railwayparty.cache.VoteCache;
 import wuxc.single.railwayparty.internet.ImageLoader;
 import wuxc.single.railwayparty.internet.ImageLoader.ImageCallback;
 import wuxc.single.railwayparty.internet.URLcontainer;
-import wuxc.single.railwayparty.model.VoteModel;;
+import wuxc.single.railwayparty.model.VoteModel;
+import wuxc.single.railwayparty.start.ImageLoader120;;
 
 public class VoteAdapter extends ArrayAdapter<VoteModel> implements OnClickListener {
 	private ListView listView;
-	private ImageLoader ImageLoader;
+	public ImageLoader120 imageLoader;
+	private static LayoutInflater inflater = null;
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
@@ -42,7 +45,9 @@ public class VoteAdapter extends ArrayAdapter<VoteModel> implements OnClickListe
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
 		this.thisactivity = activity;
-		ImageLoader = new ImageLoader();
+		inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader120(activity.getApplicationContext());
+
 		mCallback = callback;
 	}
 
@@ -73,56 +78,25 @@ public class VoteAdapter extends ArrayAdapter<VoteModel> implements OnClickListe
 
 			viewCache = new VoteCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (VoteCache) rowView.getTag();
+		 
 		}
 		VoteModel imageAndText = getItem(position);
 
 		// Load the image and set it on the ImageView
-		String imageUrl = imageAndText.getImageUrl();
-		ImageView imageView = viewCache.getImageHeadimg();
-		imageView.setTag(URLcontainer.urlip + "upload" + imageUrl);
-		Log.e("imageUrl", imageUrl);
-		if (imageUrl.equals(imageurl) || imageUrl.equals("null")) {
-			imageView.setImageResource(R.drawable.vote);
-		} else {
+	 
+		if (!(imageAndText.getImageUrl().equals("") || imageAndText.getImageUrl() == null)) {
+
+			viewCache.getImageHeadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getImageUrl());
+
 			try {
-				// String imageName1 = getBitName(imageUrl);
-				// String temppath = Environment.getExternalStorageDirectory() +
-				// "/chat/" + imageName1 + ".png";
-				Bitmap bm1 = null;
-				// bm1 = getBitmapByPath(temppath);
-				if (bm1 == null) {
-					imageUrl = URLcontainer.urlip + "upload" + imageUrl;
-					Log.e("imageUrl", imageUrl);
-					Drawable cachedImage = ImageLoader.loadDrawable(imageUrl, new ImageCallback() {
-						public void imageLoaded(Drawable imageDrawable, String imageUrl) {
-							ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl);
-							if (imageViewByTag != null) {
-								imageViewByTag.setImageDrawable(imageDrawable);
-							}
-						}
-					});
-					if (cachedImage == null) {
-						imageView.setImageResource(R.drawable.vote);
-					} else {
-						Drawable d = cachedImage; // xxx根据自己的情况获取drawable
 
-						BitmapDrawable bd = (BitmapDrawable) d;
-
-						Bitmap bm = bd.getBitmap();
-						// bm = cutBmp(bm);
-						imageView.setImageBitmap(bm);
-					}
-				} else {
-					imageView.setImageBitmap(bm1);
-				}
+				imageLoader.DisplayImage(URLcontainer.urlip + "upload" + imageAndText.getImageUrl(), activity,
+						viewCache.getImageHeadimg(), 0);
 			} catch (Exception e) {
 				// TODO: handle exception
 			} catch (OutOfMemoryError e) {
 				// TODO: handle exception
 			}
-
 		}
 		TextView TextTitle = viewCache.getTextTitle();
 		TextTitle.setText("" + imageAndText.getTitle());
