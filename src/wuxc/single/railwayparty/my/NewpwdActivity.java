@@ -28,7 +28,7 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 	private EditText edit_new1;
 	private Button btn_ok;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private String ticket="";
+	private String ticket = "";
 	private static final int GET_DUE_DATA = 6;
 	private TextView TextArticle;
 	private TextView TextVideo;
@@ -107,7 +107,7 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 			} else if (newpwd1.equals("") || newpwd1 == null) {
 				Toast.makeText(getApplicationContext(), "请确认新密码", Toast.LENGTH_SHORT).show();
 
-			} else if (newpwd1.equals(newpwd)) {
+			} else if (!newpwd1.equals(newpwd)) {
 				Toast.makeText(getApplicationContext(), "两次输入不一致", Toast.LENGTH_SHORT).show();
 
 			} else {
@@ -128,8 +128,9 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 				// ArrayValues.add(new BasicNameValuePair("chn", "dyq"));
 				// chn = "dyq";
-				ArrayValues.add(new BasicNameValuePair("orgUserDto.pwd", edit_old.getText().toString()));
-				ArrayValues.add(new BasicNameValuePair("orgUserDto.pwd2", "" + edit_new.getText().toString()));
+				ArrayValues.add(new BasicNameValuePair("actionType", "password"));
+				ArrayValues.add(new BasicNameValuePair("newPassword", edit_new.getText().toString()));
+				ArrayValues.add(new BasicNameValuePair("code", "" + edit_old.getText().toString()));
 				// ArrayValues.add(new
 				// BasicNameValuePair("orgUserExtDto.mobile", "" +
 				// Str_text_phone));

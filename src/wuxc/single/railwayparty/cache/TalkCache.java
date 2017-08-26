@@ -2,6 +2,7 @@ package wuxc.single.railwayparty.cache;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
 
@@ -12,7 +13,14 @@ public class TalkCache {
 	private ImageView ImageHeadimg;
 	private TextView TextDetail;
 	private ImageView image;
+	private LinearLayout lin_all;
 
+	public LinearLayout getlin_all() {
+		if (lin_all == null) {
+			lin_all = (LinearLayout) baseView.findViewById(R.id.lin_all);
+		}
+		return lin_all;
+	}
 	public ImageView getimage() {
 		if (image == null) {
 			image = (ImageView) baseView.findViewById(R.id.image);

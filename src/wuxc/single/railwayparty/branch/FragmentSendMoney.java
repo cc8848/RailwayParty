@@ -320,7 +320,16 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		idnumber = PreUserInfo.getString("icardNo", "");
 		text_name = (TextView) view.findViewById(R.id.text_name);
 		text_name.setText(PreUserInfo.getString("userName", ""));
-		text_last_month.setText("截止日期：" + PreUserInfo.getString("pFareEndMonth", ""));
+		String month = PreUserInfo.getString("pFareEndMonth", "");
+		try {
+			String[] temp = month.split("-");
+			String yString = temp[0];
+			String mString = temp[1];
+			month = yString + "年" + mString + "月";
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		text_last_month.setText("截止日期：" + month);
 		text_last_time.setText("每月党费：" + PreUserInfo.getString("pMonthFare", ""));
 		try {
 			pMonthFaredouble = Double.parseDouble(PreUserInfo.getString("pMonthFare", ""));
@@ -748,10 +757,10 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 					public void run() {
 						String LoginResultData = "";
 						LoginResultData = HttpGetData.GetData("api/pb/partyFareRecord/save", ArrayValues);
-//						Message msg = new Message();
-//						msg.obj = LoginResultData;
-//						msg.what = GET_MONTH_RESULT_DATA;
-//						uiHandler.sendMessage(msg);
+						// Message msg = new Message();
+						// msg.obj = LoginResultData;
+						// msg.what = GET_MONTH_RESULT_DATA;
+						// uiHandler.sendMessage(msg);
 					}
 				}).start();
 			}
@@ -864,7 +873,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		monthstring = "";
 		Month = "";
 		for (int i = 0; i < 12; i++) {
-			if (condition[i] == 1&&status[i]==1) {
+			if (condition[i] == 1 && status[i] == 1) {
 				result = result + money[i];
 				monthstring = monthstring + (i + 1) + "、";
 				Month = Month + (inityear + STR_MONTH[i]) + ",";

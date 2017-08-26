@@ -85,7 +85,10 @@ public class BuildFragment1 extends Fragment
 	public String fileClassify = "";
 	private int sy = 0;
 	public Fragment Fragment1;
-	public BuildFragment buildFragment = new BuildFragment();
+	private int recLen = 60;
+	private String cover = "";
+	Timer timer = new Timer();
+	// public BuildFragment buildFragment = new BuildFragment();
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -132,35 +135,35 @@ public class BuildFragment1 extends Fragment
 		}
 	}
 
-	private void starttimedelay() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-
-				try {
-					int sys = 0;
-					sys = PreUserInfo.getInt("sys", 0);
-
-					if (sys == 0) {
-
-					} else {
-						fileClassify = "" + sys;
-						curPage = 1;
-						GetData();
-					}
-					starttimedelay();
-				} catch (Exception e) {
-					// TODO: handle exceptioni
-
-				}
-
-			}
-
-		}, 200);
-	}
+	// private void starttimedelay() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	//
+	// try {
+	// int sys = 0;
+	// sys = PreUserInfo.getInt("sys", 0);
+	//
+	// if (sys == 0) {
+	//
+	// } else {
+	// fileClassify = "" + sys;
+	// curPage = 1;
+	// GetData();
+	// }
+	// starttimedelay();
+	// } catch (Exception e) {
+	// // TODO: handle exceptioni
+	//
+	// }
+	//
+	// }
+	//
+	// }, 200);
+	// }
 
 	private void GetDataList(String data, int arg) {
 		Log.e("1111", "33333");
@@ -286,13 +289,53 @@ public class BuildFragment1 extends Fragment
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 			ReadTicket();
-			starttimedelay();
+
 			GetData();
 		}
 
 		return view;
 
 	}
+
+	TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			recLen++;
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+		}
+	};
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (recLen < 0) {
+					timer.cancel();
+
+				}
+				try {
+					int sys = 0;
+					sys = PreUserInfo.getInt("sys", 0);
+
+					if (sys == 0) {
+
+					} else {
+						fileClassify = "" + sys;
+						curPage = 1;
+						GetData();
+					}
+					// starttimedelay();
+				} catch (Exception e) {
+					// TODO: handle exceptioni
+
+				}
+				break;
+			}
+		}
+	};
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -566,6 +609,16 @@ public class BuildFragment1 extends Fragment
 	@Override
 	public void onStart() {
 		super.onStart();
+		try {
+			if (view != null) {
+				timer.schedule(task, 1000, 1000); // timeTask
+				Log.e("onStart", "onStart-time_begin");
+			}
+			Log.e("onStart", "onStart");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	@Override
@@ -580,21 +633,27 @@ public class BuildFragment1 extends Fragment
 	@Override
 	public void onPause() {
 		super.onPause();
+
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
+
+		Log.e("onStop", "onStop");
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
+		Log.e("onDestroyView", "onDestroyView");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		timer.cancel();
+		Log.e("onDestroy", "onDestroy");
 	}
 
 	@Override

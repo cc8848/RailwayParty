@@ -14,6 +14,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -51,7 +52,8 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 	private String username;
 	private SharedPreferences PreAccount;// 存储用户名和密码，用于自动登录
 	private SharedPreferences PreUserInfo;// 存储个人信息
-
+	private String remeberusername = "";
+	private String remeberpassword = "";
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -84,7 +86,17 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 		lin_forget.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
-
+		remeber = PreAccount.getBoolean("remeber", true);
+		Log.e("remeber_2", remeber + "");
+		remeberusername = PreAccount.getString("LoginId", "");
+		remeberpassword = PreAccount.getString("pwd", "");
+		edit_username.setText(remeberusername);
+		if (remeber) {
+			edit_password.setText(remeberpassword);
+		} else {
+			edit_password.setText("");
+		}
+		remeber = true;
 	}
 
 	public void GetDataDetailFromLoginResultData(Object obj) {
@@ -168,6 +180,10 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 			Editor edit = PreAccount.edit();
 			edit.putString("LoginId", userName);
 			edit.putString("pwd", password);
+
+			edit.putBoolean("remeber", remeber);
+			Log.e("remeber_2_w", remeber + "");
+			edit.putBoolean("autoLogin", true);
 			edit.commit();
 			// } else {
 			// Editor edit = PreAccount.edit();
@@ -225,7 +241,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 			break;
 		case R.id.lin_forget:
 			Intent intent = new Intent();
-			intent.setClass(getApplicationContext(), NewpwdActivity.class);
+			intent.setClass(getApplicationContext(), ResetPwdActivity.class);
 			startActivity(intent);
 			break;
 

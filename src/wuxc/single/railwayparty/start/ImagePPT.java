@@ -646,7 +646,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 			ArrayValues.add(new BasicNameValuePair("learnRecordDto.title", Title));
 			ArrayValues.add(new BasicNameValuePair("learnRecordDto.timeLength", "" + (recLen / 60)));
 			ArrayValues.add(new BasicNameValuePair("learnRecordDto.cover", "" + cover));
-			ArrayValues.add(new BasicNameValuePair("learnRecordDto.cover", "" + detail));
+			ArrayValues.add(new BasicNameValuePair("learnRecordDto.content", "" + detail));
 			// ArrayValues.add(new BasicNameValuePair("classify", ""
 			// +
 			// classify));

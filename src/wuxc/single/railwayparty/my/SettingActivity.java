@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,12 +41,12 @@ public class SettingActivity extends Activity implements OnClickListener {
 	private Button btn_exit;
 	private boolean IsExit = true;
 	private MainActivity MainActivity;
-	private String ticket="";
+	private String ticket = "";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_VERSION_RESULT = 1;
 
 	private LinearLayout lin_changepassword;
-
+	private SharedPreferences PreAccount;// 存储用户名和密码，用于自动登录
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -135,6 +136,8 @@ public class SettingActivity extends Activity implements OnClickListener {
 		lin_advice.setOnClickListener(this);
 		btn_exit = (Button) findViewById(R.id.btn_exit);
 		btn_exit.setOnClickListener(this);
+		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
+
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ticket = PreUserInfo.getString("ticket", "");
 	}
@@ -197,11 +200,18 @@ public class SettingActivity extends Activity implements OnClickListener {
 				startActivity(intent_test);
 				finish();
 				MainActivity.activity.finish();
-				// WriteAccount();
+				WriteAccount();
 			}
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void WriteAccount() {
+		// TODO Auto-generated method stub
+		Editor edit = PreAccount.edit();
+		edit.putBoolean("autoLogin", false);
+		edit.commit();
 	}
 }

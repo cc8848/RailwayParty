@@ -96,11 +96,11 @@ public class PartySearchAdapter extends BaseAdapter {
 		scalepx = screenheight / dp;
 		LinearLayout.LayoutParams layoutParams1 = (android.widget.LinearLayout.LayoutParams) LinHeight
 				.getLayoutParams();
-		layoutParams1.height = (int) (((screenheight - statusBarHeight - 161 * scalepx) / 6));
+		layoutParams1.height = (int) (((screenheight - statusBarHeight - 161 * scalepx) / 5));
 		LinHeight.setLayoutParams(layoutParams1);
 		RelativeLayout.LayoutParams layoutParams = (android.widget.RelativeLayout.LayoutParams) ImageHeading
 				.getLayoutParams();
-		layoutParams.width = (int) (((screenheight - statusBarHeight - 161 * scalepx) / 6));
+		layoutParams.width = (int) (((screenheight - statusBarHeight - 161 * scalepx) / 5));
 		ImageHeading.setLayoutParams(layoutParams);
 		return view;
 	}

@@ -622,22 +622,22 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}
 	}
 
-	private void starttimedelay1() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				doubleclick1 = false;
-			}
-
-		}, 300);
-	}
+	// private void starttimedelay1() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	// doubleclick1 = false;
+	// }
+	//
+	// }, 300);
+	// }
 
 	private void starttimedelay() {
 		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
+		final Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 
 			@Override
@@ -647,7 +647,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 					Editor edit = PreUserInfo.edit();
 					edit.putInt("sys", 0);
 					edit.commit();
-
+					timer.cancel();
 				} catch (Exception e) {
 					// TODO: handle exceptioni
 
@@ -658,66 +658,67 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}, 3000);
 	}
 
-	private void starttimedelay2() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+	// private void starttimedelay2() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	// doubleclick2 = false;
+	// }
+	//
+	// }, 300);
+	// }
 
-			@Override
-			public void run() {
-				doubleclick2 = false;
-			}
+	// private void starttimedelay3() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	// doubleclick3 = false;
+	// }
+	//
+	// }, 300);
+	// }
 
-		}, 300);
-	}
+	// private void starttimedelay4() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	// doubleclick4 = false;
+	// }
+	//
+	// }, 300);
+	// }
 
-	private void starttimedelay3() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				doubleclick3 = false;
-			}
-
-		}, 300);
-	}
-
-	private void starttimedelay4() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				doubleclick4 = false;
-			}
-
-		}, 300);
-	}
-
-	private void starttimedelay5() {
-		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				doubleclick5 = false;
-			}
-
-		}, 300);
-	}
+	// private void starttimedelay5() {
+	// // 原因：不延时的话list会滑到顶部
+	// Timer timer = new Timer();
+	// timer.schedule(new TimerTask() {
+	//
+	// @Override
+	// public void run() {
+	// doubleclick5 = false;
+	// }
+	//
+	// }, 300);
+	// }
 
 	private void starttimedelay6() {
 		// 原因：不延时的话list会滑到顶部
-		Timer timer = new Timer();
+		final Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
 				doubleclick6 = false;
+				timer.cancel();
 			}
 
 		}, 300);

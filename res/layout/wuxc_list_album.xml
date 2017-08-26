@@ -27,6 +27,7 @@
             android:background="@drawable/btn_left"
             android:gravity="center"
             android:onClick="cancel"
+            android:paddingLeft="11dp"
             android:text="@string/cancel"
             android:textColor="#ffffff"
             android:textSize="14sp" />

@@ -25,9 +25,10 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:background="@drawable/btn_left"
-            android:gravity="right|center"
+            android:gravity="center"
             android:onClick="back"
-            android:text="返回    "
+            android:paddingLeft="11dp"
+            android:text="返回 "
             android:textColor="#ffffff"
             android:textSize="14sp" />
 
@@ -47,9 +48,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:background="@drawable/button_right"
-            android:gravity="left|center"
+            android:gravity="center"
             android:onClick="finish"
-            android:text="    完成"
+            android:paddingRight="11dp"
+            android:text="完成"
             android:textColor="#fff"
             android:textSize="14sp" />
     </RelativeLayout>

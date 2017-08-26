@@ -126,7 +126,7 @@ public class MypublishActivity extends Activity
 					MypublishModel listinfo = new MypublishModel();
 					listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle("跳动的音符");
-					listinfo.setNumber(json_data.getInt("browser"));
+					listinfo.setNumber(jArray.length());
 					if (json_data.getString("classify").equals("1")) {
 						listinfo.setLabel("党内活动");
 

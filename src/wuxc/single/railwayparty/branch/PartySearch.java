@@ -19,6 +19,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -139,45 +140,48 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 
 	protected void GetDataDetailFromBranch(String Data, String Userdata) {
 		// TODO Auto-generated method stub
+		TotalItem=0;
 		JSONArray jArray;
 		try {
 			jArray = new JSONArray(Userdata);
-
+			TotalItem=TotalItem+jArray.length();
 			JSONObject json_data = null;
 			for (int i = 0; i < jArray.length(); i++) {
 				json_data = jArray.getJSONObject(i);
 				String name = json_data.getString("user_name");
-//				String id = json_data.getString("id");
+				// String id = json_data.getString("id");
 				PartyBranchDataListModel data = new PartyBranchDataListModel();
 				data.setIsSelected(false);
 				data.setPartyAddress(json_data.getString("address"));
 				data.setPartyName(name);
 				data.setId("");
 				data.setPartyPhonenumber(json_data.getString("mobile"));
+				Log.e("Userdata", name);
 				list.add(data);
 				initList.add(data);
-			
+
 			}
 			jArray = new JSONArray(Data);
-
+			TotalItem=TotalItem+jArray.length();
 			json_data = null;
 			for (int i = 0; i < jArray.length(); i++) {
 				json_data = jArray.getJSONObject(i);
 				String name = json_data.getString("node_name");
-//				String id = json_data.getString("id");
+				// String id = json_data.getString("id");
 				PartyBranchDataListModel data = new PartyBranchDataListModel();
 				data.setIsSelected(false);
 				data.setPartyAddress(json_data.getString("address"));
 				data.setPartyName(name);
 				data.setId("");
 				data.setPartyPhonenumber(json_data.getString("tel"));
+				Log.e("orgdata", name);
 				list.add(data);
 				initList.add(data);
 			}
-			initTotalPage = jArray.length();
-			TotalItem = jArray.length();
-			TotalPage = TotalItem / 6;
-			if (TotalPage * 6 < TotalItem) {
+			initTotalPage =TotalItem;
+		 
+			TotalPage = TotalItem / 5;
+			if (TotalPage * 5 < TotalItem) {
 				TotalPage++;
 			}
 			go(Page);
@@ -219,8 +223,8 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 			}
 		}
 		TotalItem = temptotalitem;
-		TotalPage = TotalItem / 6;
-		if (TotalPage * 6 < TotalItem) {
+		TotalPage = TotalItem / 5;
+		if (TotalPage * 5 < TotalItem) {
 			TotalPage++;
 		}
 		go(Page);
@@ -258,14 +262,14 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 
 	private List<PartyBranchDataListModel> getData(int page) {
 		ShowList.clear();
-		for (int i = 0; i < 6; i++) {
-			if (i + (page - 1) * 6 >= TotalItem) {
+		for (int i = 0; i < 5; i++) {
+			if (i + (page - 1) * 5 >= TotalItem) {
 				break;
 			} else {
 
 				try {
-					PartyBranchDataListModel data = list.get(i + (page - 1) * 6);
-					if (i + (page - 1) * 6 == selecteditem) {
+					PartyBranchDataListModel data = list.get(i + (page - 1) * 5);
+					if (i + (page - 1) * 5 == selecteditem) {
 						data.setIsSelected(true);
 					} else {
 						data.setIsSelected(false);

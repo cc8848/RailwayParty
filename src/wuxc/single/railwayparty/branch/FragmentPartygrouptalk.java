@@ -9,13 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.transition;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,29 +27,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.BranchFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.TalkAdapter;
+import wuxc.single.railwayparty.adapter.TalkAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.UpLoadFile;
 import wuxc.single.railwayparty.model.TalkModel;
-import wuxc.single.railwayparty.model.TalkModel;
-import wuxc.single.railwayparty.start.SpecialDetailActivity;
-import wuxc.single.railwayparty.start.webview;
+import wuxc.single.railwayparty.start.StandardImageXML;
 
-public class FragmentPartygrouptalk extends Fragment implements OnTouchListener, OnClickListener, OnItemClickListener {
+public class FragmentPartygrouptalk extends Fragment
+		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
 	private ListView ListData;
 	List<TalkModel> list = new ArrayList<TalkModel>();
 	List<TalkModel> listshow = new ArrayList<TalkModel>();
@@ -576,7 +573,7 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new TalkAdapter(getActivity(), listshow, ListData);
+		mAdapter = new TalkAdapter(getActivity(), listshow, ListData, this);
 		ListData.setAdapter(mAdapter);
 		ListData.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
@@ -717,8 +714,8 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 							@Override
 							public void run() {
 								String UpLoadResult = UpLoadFile.uploadFileatt(file,
-										URLcontainer.urlip + "console/pb/chatgroupfileUpload/uploadMultiple",
-										BranchFragment.id, "" + ticket);
+										URLcontainer.urlip + "console/form/formfileUpload/uploadSignle",
+										"chat", "" + ticket);
 								Message msg = new Message();
 								msg.what = 1;
 								msg.obj = UpLoadResult;
@@ -771,5 +768,28 @@ public class FragmentPartygrouptalk extends Fragment implements OnTouchListener,
 			return null;
 		}
 		return file;
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+			TalkModel data = listshow.get((Integer) v.getTag());
+			Log.e("dx", "dx");
+			if (data.isPic() || !data.getImage().equals("")) {
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), StandardImageXML.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("url", data.getImage());
+				bundle.putInt("inturl", R.drawable.logo);
+
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

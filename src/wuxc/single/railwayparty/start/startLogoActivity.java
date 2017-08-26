@@ -45,7 +45,7 @@ public class startLogoActivity extends Activity {
 	private String sex;
 	private String sessionId;
 	private String username;
-
+	private boolean autoLogin = false;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -107,12 +107,22 @@ public class startLogoActivity extends Activity {
 		} else {
 			userName = PreAccount.getString("LoginId", "");
 			password = PreAccount.getString("pwd", "");
+			autoLogin = PreAccount.getBoolean("autoLogin", false);
 			if (userName.equals("") || password.equals("")) {
 				Intent intent = new Intent();
 				intent.setClass(this, MainActivity.class);
 				startActivity(intent);
 				finish();
+			} else if (!autoLogin) {
+				Intent intent = new Intent();
+				intent.setClass(this, MainActivity.class);
+				startActivity(intent);
+				finish();
+				Editor edit = PreUserInfo.edit();
+				edit.clear();
+				edit.commit();
 			} else {
+
 				Toast.makeText(getApplicationContext(), "×Ô¶¯µÇÂ¼", Toast.LENGTH_SHORT).show();
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("login_id", userName));
