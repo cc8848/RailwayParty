@@ -69,7 +69,7 @@ public class PartySearchAdapter extends BaseAdapter {
 		TextPartyPhonenumber = (TextView) view.findViewById(R.id.party_phonenumber);
 		ImageHeading = (ImageView) view.findViewById(R.id.image_heading);
 		PartyBranchDataListModel data = mData.get(position);
-		TextPartyAddress.setText("地址：" + data.getPartyAddress());
+		TextPartyAddress.setText(data.getPartyAddress());
 		TextPartyName.setText(data.getPartyName());
 		TextPartyPhonenumber.setText("联系电话：" + data.getPartyPhonenumber());
 		if (data.isIsSelected()) {

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,19 +30,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Bbs3Adapter;
 import wuxc.single.railwayparty.adapter.Bbs3Adapter.Callback;
-import wuxc.single.railwayparty.detail.DetailActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs3Model;
-import wuxc.single.railwayparty.model.BuildModel;
-import wuxc.single.railwayparty.model.Bbs3Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
-import wuxc.single.railwayparty.start.webview;
 
 public class BbsFragment3 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
 	private ListView ListData;
@@ -59,27 +55,20 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private int[] headimg = { R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234,
-			R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234 };
-
 	private TextView text_1;
 
 	private TextView text_2;
 
 	private TextView text_3;
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
 	private String classify = "";
+	private SharedPreferences PreForDSYYJ;
+	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -87,11 +76,79 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForDSYYJ.edit();
+					edit.putBoolean("DSYYJ", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	private void GetRecord(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					if (jArray.length() == 0) {
+						// / Toast.makeText(getActivity(), "无数据",
+						// Toast.LENGTH_SHORT).show();
+
+					} else {
+						Editor edit = PreForDSYYJ.edit();
+						edit.putBoolean("DSYYJ", true);
+
+						for (int i = 0; i < jArray.length(); i++) {
+
+							try {
+								json_data = jArray.getJSONObject(i);
+								json_data = json_data.getJSONObject("data");
+								String keyid = json_data.getString("busKey");
+								edit.putBoolean(keyid, true);
+							} catch (Exception e) {
+								// TODO: handle exception
+
+							}
+
+						}
+						edit.commit();
+						Editor edit1 = ItemNumber.edit();
+						edit1.putInt("DSYYJread", (PreForDSYYJ.getAll().size() - 1));
+						Log.e("DSYYJread", "" + (PreForDSYYJ.getAll().size() - 1));
+						edit1.commit();
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -102,10 +159,10 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -148,8 +205,9 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setSummary(json_data.getString("summary"));
 					listinfo.setCont(true);
 
-					listinfo.setImageurl(headimg[i]);
+					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
+					listinfo.setRead(PreForDSYYJ.getBoolean(json_data.getString("keyid"), false));
 
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
@@ -186,7 +244,14 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
-
+			if (classify.equals("")) {
+				int totalcount = 0;
+				totalcount = demoJson.getInt("totalRecord");
+				Log.e("totalcount", "" + totalcount);
+				Editor edit = ItemNumber.edit();
+				edit.putInt("DSYYJtotal", totalcount);
+				edit.commit();
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -220,11 +285,41 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 			initcolor();
 			//// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			PreForDSYYJ = getActivity().getSharedPreferences("DSYYJ", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+
 			ReadTicket();
+
 			GetData();
+			if (!PreForDSYYJ.getBoolean("DSYYJ", false)) {
+				GetMyReadRecord();
+			}
 		}
 
 		return view;
+
+	}
+
+	private void GetMyReadRecord() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", "dsyyj"));
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + 1));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + 100000));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 66;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 
 	}
 
@@ -381,19 +476,7 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("url", data.getLink());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
-			// //
-			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
-			intent.putExtras(bundle);
-			startActivity(intent);
+
 		}
 	}
 
@@ -402,13 +485,6 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
-		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
-		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
-		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
-		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
-		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
-		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 		ArrayValues.add(new BasicNameValuePair("chn", "dsyyj"));
@@ -434,8 +510,6 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	@Override
@@ -530,38 +604,6 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 		ListData.setOnTouchListener(this);
 	}
 
-	private void getdatalist(int arg) {
-		if (arg == 1) {
-			list.clear();
-		}
-		// TODO Auto-generated method stub
-
-		try {
-
-			for (int i = 0; i < 1; i++) {
-
-				Bbs3Model listinfo = new Bbs3Model();
-				listinfo.setTime("2017-09-18");
-				listinfo.setTitle("学党章党规");
-				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-				listinfo.setImageurl(headimg[i]);
-				listinfo.setHeadimgUrl("");
-
-				list.add(listinfo);
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (arg == 1) {
-			go();
-		} else {
-			mAdapter.notifyDataSetChanged();
-		}
-
-	}
-
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Bbs3Adapter(getActivity(), list, ListData, this);
@@ -654,8 +696,20 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());
+			bundle.putBoolean("read", data.isRead());
 			intent.putExtras(bundle);
 			startActivity(intent);
+			if (!data.isRead()) {
+				Editor edit = PreForDSYYJ.edit();
+				edit.putBoolean(data.getId(), true);
+				edit.commit();
+				data.setRead(true);
+				mAdapter.notifyDataSetChanged();
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("DSYYJread", (PreForDSYYJ.getAll().size() - 1));
+				Log.e("DSYYJread", "" + (PreForDSYYJ.getAll().size() - 1));
+				edit1.commit();
+			}
 
 			// Toast.makeText(getActivity(), "删除第" + + "条",
 			// Toast.LENGTH_SHORT).show();

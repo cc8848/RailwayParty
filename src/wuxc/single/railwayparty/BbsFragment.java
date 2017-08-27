@@ -3,7 +3,10 @@ package wuxc.single.railwayparty;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +58,15 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 	private ImageView image_edit;
 	private int page = 1;
 	private View view;// 産贋Fragment view
+	private TextView text_number_1;
+	private TextView text_number_2;
+	private TextView text_number_3;
+	private TextView text_number_4;
+	private int t1 = 0;
+	private int t2 = 0;
+	private int t3 = 0;
+	private int t4 = 0;
+	private SharedPreferences ItemNumber;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +78,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			}
 		} else {
 			view = inflater.inflate(R.layout.wuxc_fragment_bbs, container, false);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
 			initview(view);
 			initcolor();
 			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
@@ -209,8 +223,74 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		text_5.setTextColor(Color.parseColor("#D0D0D0"));
 	}
 
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if (view != null) {
+			intnumber();
+		}
+	}
+
+	private void intnumber() {
+		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+		t1 = ItemNumber.getInt("DYQtotal", 100) - ItemNumber.getInt("DYQread", 0);
+		t2 = ItemNumber.getInt("DQLHtotal", 100) - ItemNumber.getInt("DQLHread", 0);
+		t3 = ItemNumber.getInt("DSYYJtotal", 100) - ItemNumber.getInt("DSYYJread", 0);
+		t4 = ItemNumber.getInt("DYYJtotal", 100) - ItemNumber.getInt("DYYJread", 0);
+		text_number_1.setVisibility(View.GONE);
+		text_number_2.setVisibility(View.GONE);
+		text_number_3.setVisibility(View.GONE);
+		text_number_4.setVisibility(View.GONE);
+		if (t1 != 0) {
+			text_number_1.setVisibility(View.VISIBLE);
+
+			if (t1 >= 100) {
+				text_number_1.setText("，，，");
+			} else {
+				text_number_1.setText("" + t1);
+			}
+		}
+		if (t2 != 0) {
+			text_number_2.setVisibility(View.VISIBLE);
+			if (t2 > 99) {
+				text_number_2.setText("，，，");
+			} else {
+				text_number_2.setText("" + t2);
+			}
+
+		}
+		if (t3 != 0) {
+			text_number_3.setVisibility(View.VISIBLE);
+
+			if (t3 > 99) {
+				text_number_3.setText("，，，");
+			} else {
+				text_number_3.setText("" + t3);
+			}
+		}
+		if (t4 != 0) {
+			text_number_4.setVisibility(View.VISIBLE);
+
+			if (t4 > 99) {
+				text_number_4.setText("，，，");
+			} else {
+				text_number_4.setText("" + t4);
+			}
+		}
+
+	}
+
 	private void initview(View view) {
 		// TODO Auto-generated method stub
+		text_number_1 = (TextView) view.findViewById(R.id.text_number_1);
+
+		text_number_2 = (TextView) view.findViewById(R.id.text_number_2);
+
+		text_number_3 = (TextView) view.findViewById(R.id.text_number_3);
+
+		text_number_4 = (TextView) view.findViewById(R.id.text_number_4);
+
 		lin_1 = (LinearLayout) view.findViewById(R.id.lin_1);
 		image_1 = (ImageView) view.findViewById(R.id.image_1);
 		text_1 = (TextView) view.findViewById(R.id.text_1);
@@ -254,6 +334,13 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			ViewPaper.setCurrentItem(0);
 			image_edit.setVisibility(View.VISIBLE);
 			page = 1;
+			if (true) {
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("DYQread", ItemNumber.getInt("DYQtotal", 0));
+				edit1.commit();
+			}
+
+			intnumber();
 			break;
 		case R.id.lin_2:
 			clearcolor();
@@ -262,6 +349,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			page = 2;
 			image_edit.setVisibility(View.GONE);
 			ViewPaper.setCurrentItem(1);
+			intnumber();
 			break;
 		case R.id.lin_3:
 			clearcolor();
@@ -270,6 +358,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			text_3.setTextColor(Color.parseColor("#cc0502"));
 			image_edit.setVisibility(View.GONE);
 			ViewPaper.setCurrentItem(2);
+			intnumber();
 			break;
 		case R.id.lin_4:
 			clearcolor();
@@ -278,6 +367,12 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			page = 4;
 			ViewPaper.setCurrentItem(3);
 			image_edit.setVisibility(View.VISIBLE);
+			if (true) {
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("DYYJread", ItemNumber.getInt("DYYJtotal", 0));
+				edit1.commit();
+			}
+			intnumber();
 			break;
 		case R.id.lin_5:
 			clearcolor();
@@ -286,6 +381,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			image_edit.setVisibility(View.GONE);
 			text_5.setTextColor(Color.parseColor("#cc0502"));
 			ViewPaper.setCurrentItem(4);
+			intnumber();
 			break;
 		case R.id.image_edit:
 			if (page == 4) {

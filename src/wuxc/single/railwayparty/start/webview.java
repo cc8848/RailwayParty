@@ -56,6 +56,7 @@ public class webview extends Activity implements OnClickListener {
 	private int recLen = 60;
 	private String cover = "";
 	Timer timer = new Timer();
+	private boolean read = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class webview extends Activity implements OnClickListener {
 			detail = bundle.getString("detail");
 			ticket = bundle.getString("ticket");
 			cover = bundle.getString("cover");
+			read = bundle.getBoolean("read");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -101,6 +103,9 @@ public class webview extends Activity implements OnClickListener {
 		text_7.setOnClickListener(this);
 		lin_text = (LinearLayout) findViewById(R.id.lin_text);
 		lin_text.setVisibility(View.GONE);
+		if (!read) {
+			record();
+		}
 		final ArrayList ArrayValues = new ArrayList();
 		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
@@ -162,6 +167,28 @@ public class webview extends Activity implements OnClickListener {
 		settings.setUseWideViewPort(true);
 		settings.setLoadWithOverviewMode(true);
 		settings.setTextSize(WebSettings.TextSize.NORMAL);
+	}
+
+	private void record() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", chn));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.busKey", "" + Id));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.title", "" + Title));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/save", ArrayValues);
+
+			}
+		}).start();
 	}
 
 	TimerTask task = new TimerTask() {

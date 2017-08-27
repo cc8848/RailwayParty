@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -96,7 +97,11 @@ public class Clean3Adapter extends ArrayAdapter<Clean3Model> implements OnClickL
 		LinearLayout lin_all = viewCache.getlin_all();
 		lin_all.setTag(position);
 		lin_all.setOnClickListener(this);
-
+		if (imageAndText.isRead()) {
+			textname.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			textname.setTextColor(Color.parseColor("#000000"));
+		}
 		TextView textlabel = viewCache.gettextPltextLabel();
 		textlabel.setText("¡¾" + imageAndText.getLabel() + "¡¿");
 		return rowView;

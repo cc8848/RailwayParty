@@ -5,7 +5,17 @@ public class PartyCheckModel {
 	private String title;
 	private String content;
 	private String time;
-	private String keyid;private String Id;
+	private String keyid;
+	private String Id;
+	private boolean read;
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
 
 	public String getId() {
 		return Id;
@@ -14,11 +24,13 @@ public class PartyCheckModel {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	private int imageurl;
 	private String label;
 	private int width;
 	private boolean Cont;
 	private String Summary;
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -36,8 +48,6 @@ public class PartyCheckModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

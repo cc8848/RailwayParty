@@ -35,13 +35,14 @@ import wuxc.single.railwayparty.start.ImageLoader600;
 
 public class Clean2Adapter extends ArrayAdapter<Clean2Model> implements OnClickListener {
 	private ListView listView;
- 
+
 	private String imageurl = "";
 	private int screenwidth = 0;
 	private Activity thisactivity;
 	private Callback mCallback;
 	public ImageLoader600 imageLoader;
 	private static LayoutInflater inflater = null;
+
 	public Clean2Adapter(Activity activity, List<Clean2Model> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
 		this.listView = listView;
@@ -75,7 +76,7 @@ public class Clean2Adapter extends ArrayAdapter<Clean2Model> implements OnClickL
 			rowView = inflater.inflate(R.layout.wuxc_item_clean_2, null);
 			viewCache = new Clean2Cache(rowView);
 			rowView.setTag(viewCache);
-		} 
+		}
 
 		// Load the image and set it on the ImageView
 		ImageView imageView = viewCache.getheadimg();
@@ -102,6 +103,11 @@ public class Clean2Adapter extends ArrayAdapter<Clean2Model> implements OnClickL
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		LinearLayout lin_all = viewCache.getlin_all();
 		lin_all.setTag(position);
 		lin_all.setOnClickListener(this);
@@ -115,5 +121,4 @@ public class Clean2Adapter extends ArrayAdapter<Clean2Model> implements OnClickL
 		return rowView;
 	}
 
-	 
 }

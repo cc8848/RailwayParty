@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,12 +32,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.adapter.RewardAdapter.Callback;
 import wuxc.single.railwayparty.adapter.RewardAdapter;
+import wuxc.single.railwayparty.adapter.RewardAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.RewardModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
-import wuxc.single.railwayparty.start.webview;
 
 public class PartyRewardFragment extends Fragment
 		implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
@@ -55,34 +55,98 @@ public class PartyRewardFragment extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private boolean[] read = { false, false, true, true, true, true, true, true, true, true, true };
-	private int[] headimg = { R.drawable.pic1, R.drawable.pic4, R.drawable.pic3, R.drawable.pic2, R.drawable.pic3,
-			R.drawable.pic1, R.drawable.pic4, R.drawable.pic1, R.drawable.pic2, R.drawable.pic3, R.drawable.pic4 };
 	private String ticket="";
 	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
+	private SharedPreferences PreForDNJC;
+	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;
+				break;	case 66:
+					GetRecord(msg.obj);
+					try {
+						Editor edit = PreForDNJC.edit();
+						edit.putBoolean("DNJC", true);
+						edit.commit();
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					break;
 			default:
 				break;
 			}
 		}
 	};
+	private void GetRecord(Object obj) {
 
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					if (jArray.length() == 0) {
+						// / Toast.makeText(getActivity(), "无数据",
+						// Toast.LENGTH_SHORT).show();
+
+					} else {
+						Editor edit = PreForDNJC.edit();
+						edit.putBoolean("DNJC", true);
+
+						for (int i = 0; i < jArray.length(); i++) {
+
+							try {
+								json_data = jArray.getJSONObject(i);
+								json_data = json_data.getJSONObject("data");
+								String keyid = json_data.getString("busKey");
+								edit.putBoolean(keyid, true);
+							} catch (Exception e) {
+								// TODO: handle exception
+
+							}
+
+						}
+						edit.commit();
+						Editor edit1 = ItemNumber.edit();
+						edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
+						Log.e("DNJCread", "" + (PreForDNJC.getAll().size() - 1));
+						edit1.commit();
+						// BuildFragment buildFragment = new
+						// BuildFragment();
+						// buildFragment.intnumber();
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -92,10 +156,10 @@ public class PartyRewardFragment extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
+			 pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -145,7 +209,8 @@ public class PartyRewardFragment extends Fragment
 					}
 
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-
+					listinfo.setRead(PreForDNJC.getBoolean(json_data.getString("keyid"), false));
+					
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -181,7 +246,12 @@ public class PartyRewardFragment extends Fragment
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
-
+			int totalcount = 0;
+			totalcount = demoJson.getInt("totalRecord");
+			Log.e("totalcount", "" + totalcount);
+			Editor edit = ItemNumber.edit();
+			edit.putInt("DNJCtotal", totalcount);
+			edit.commit();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -215,14 +285,42 @@ public class PartyRewardFragment extends Fragment
 
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			PreForDNJC = getActivity().getSharedPreferences("DNJC", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+
 			ReadTicket();
+
 			GetData();
+			if (!PreForDNJC.getBoolean("DNJC", false)) {
+				GetMyReadRecord();
+			}
 		}
 
 		return view;
 
 	}
+	private void GetMyReadRecord() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", "dnjc"));
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + 1));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + 100000));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
 
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 66;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -236,21 +334,20 @@ public class PartyRewardFragment extends Fragment
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());
+			bundle.putBoolean("read", data.isRead());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("url", data.getLink());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
-			// //
-			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
-			intent.putExtras(bundle);
-			startActivity(intent);
+			if (!data.isRead()) {
+				Editor edit = PreForDNJC.edit();
+				edit.putBoolean(data.getId(), true);
+				edit.commit();
+				data.setRead(true);
+				mAdapter.notifyDataSetChanged();
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
+				Log.e("DNJCread", "" + (PreForDNJC.getAll().size() - 1));
+				edit1.commit();
+			}
 		}
 	}
 
@@ -269,8 +366,20 @@ public class PartyRewardFragment extends Fragment
 				bundle.putString("detail", data.getContent());
 				bundle.putString("chn", chn);
 				bundle.putString("Id", data.getId());
+				bundle.putBoolean("read", data.isRead());
 				intent.putExtras(bundle);
 				startActivity(intent);
+				if (!data.isRead()) {
+					Editor edit = PreForDNJC.edit();
+					edit.putBoolean(data.getId(), true);
+					edit.commit();
+					data.setRead(true);
+					mAdapter.notifyDataSetChanged();
+					Editor edit1 = ItemNumber.edit();
+					edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
+					Log.e("DNJCread", "" + (PreForDNJC.getAll().size() - 1));
+					edit1.commit();
+				}
 			}
 			break;
 		default:
@@ -314,8 +423,6 @@ public class PartyRewardFragment extends Fragment
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	private void initview(View view2) {
@@ -446,39 +553,7 @@ public class PartyRewardFragment extends Fragment
 		ListData.setOnTouchListener(this);
 	}
 
-	private void getdatalist(int arg) {
-		if (arg == 1) {
-			list.clear();
-		}
-		// TODO Auto-generated method stub
-
-		try {
-
-			for (int i = 0; i < 10; i++) {
-
-				RewardModel listinfo = new RewardModel();
-				listinfo.setTime("2017-08-30");
-				listinfo.setTitle("杭州地区地铁项目");
-				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-				// listinfo.setGuanzhu("231");
-				// listinfo.setZan("453");
-				// listinfo.setRead(read[i]);
-				listinfo.setImageurl(headimg[i]);
-				listinfo.setHeadimgUrl("");
-				list.add(listinfo);
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (arg == 1) {
-			go();
-		} else {
-			mAdapter.notifyDataSetChanged();
-		}
-
-	}
+ 
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);

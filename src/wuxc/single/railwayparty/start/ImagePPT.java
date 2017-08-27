@@ -94,6 +94,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	private int recLen = 60;
 	private String cover = "";
 	Timer timer = new Timer();
+	private boolean read3 = false;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -238,6 +239,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 			detail = bundle.getString("detail");
 			ticket = bundle.getString("ticket");
 			cover = bundle.getString("cover");
+			read3 = bundle.getBoolean("read");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -249,10 +251,32 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		// getdatalist(curPage);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
-		GetData();
+		GetData();if (!read3) {
+			record();
+		}
 		timer.schedule(task, 1000, 1000); // timeTask
 	}
+	private void record() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
 
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", chn));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.busKey", "" + Id));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.title", "" + Title));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/save", ArrayValues);
+
+			}
+		}).start();
+	}
 	TimerTask task = new TimerTask() {
 		@Override
 		public void run() {

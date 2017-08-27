@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -33,14 +34,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import wuxc.single.railwayparty.BuildFragment;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.BuildAdapter4;
 import wuxc.single.railwayparty.adapter.BuildAdapter4.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
-import wuxc.single.railwayparty.start.StandardImageXML;
 import wuxc.single.railwayparty.start.webview;
 
 public class BuildFragment1 extends Fragment
@@ -60,21 +59,15 @@ public class BuildFragment1 extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private boolean[] read = { false, false, true, true, true, true, true, true, true, true, true };
-	private int[] headimg = { R.drawable.pic1, R.drawable.pic4, R.drawable.pic3, R.drawable.pic2, R.drawable.pic3,
-			R.drawable.pic1, R.drawable.pic4, R.drawable.pic1, R.drawable.pic2, R.drawable.pic3, R.drawable.pic4 };
 	private String ticket = "";
 	private String chn;
-	private String userPhoto;
-	private String LoginId;
+
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
+
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
+
 	private TextView text_1;
 	private TextView text_2;
 	private TextView text_3;
@@ -83,19 +76,31 @@ public class BuildFragment1 extends Fragment
 	private TextView text_6;
 	private TextView text_7;
 	public String fileClassify = "";
-	private int sy = 0;
+
 	public Fragment Fragment1;
 	private int recLen = 60;
-	private String cover = "";
+
+	private SharedPreferences PreForZDWJ;
+	private SharedPreferences ItemNumber;
 	Timer timer = new Timer();
-	// public BuildFragment buildFragment = new BuildFragment();
+
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				// Log.e("1111", "11111");
+
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForZDWJ.edit();
+					edit.putBoolean("ZDWJ", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				break;
 			case 8:
 				curPage = 1;
@@ -106,7 +111,66 @@ public class BuildFragment1 extends Fragment
 				break;
 			}
 		}
+
 	};
+
+	private void GetRecord(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					if (jArray.length() == 0) {
+						// / Toast.makeText(getActivity(), "无数据",
+						// Toast.LENGTH_SHORT).show();
+
+					} else {
+						Editor edit = PreForZDWJ.edit();
+						edit.putBoolean("ZDWJ", true);
+
+						for (int i = 0; i < jArray.length(); i++) {
+
+							try {
+								json_data = jArray.getJSONObject(i);
+								json_data = json_data.getJSONObject("data");
+								String keyid = json_data.getString("busKey");
+								edit.putBoolean(keyid, true);
+							} catch (Exception e) {
+								// TODO: handle exception
+
+							}
+
+						}
+						edit.commit();
+						Editor edit1 = ItemNumber.edit();
+						edit1.putInt("ZDWJread", (PreForZDWJ.getAll().size() - 1));
+						Log.e("ZDWJread", "" + (PreForZDWJ.getAll().size() - 1));
+						edit1.commit();
+					}
+
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 		Log.e("1111", "22222");
@@ -117,10 +181,10 @@ public class BuildFragment1 extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -134,36 +198,6 @@ public class BuildFragment1 extends Fragment
 			// TODO: handle exception
 		}
 	}
-
-	// private void starttimedelay() {
-	// // 原因：不延时的话list会滑到顶部
-	// Timer timer = new Timer();
-	// timer.schedule(new TimerTask() {
-	//
-	// @Override
-	// public void run() {
-	//
-	// try {
-	// int sys = 0;
-	// sys = PreUserInfo.getInt("sys", 0);
-	//
-	// if (sys == 0) {
-	//
-	// } else {
-	// fileClassify = "" + sys;
-	// curPage = 1;
-	// GetData();
-	// }
-	// starttimedelay();
-	// } catch (Exception e) {
-	// // TODO: handle exceptioni
-	//
-	// }
-	//
-	// }
-	//
-	// }, 200);
-	// }
 
 	private void GetDataList(String data, int arg) {
 		Log.e("1111", "33333");
@@ -201,9 +235,9 @@ public class BuildFragment1 extends Fragment
 					listinfo.setCont(true);
 					listinfo.setGuanzhu("231");
 					listinfo.setZan("453");
-					listinfo.setImageurl(headimg[i]);
+					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-					listinfo.setRead(true);
+					listinfo.setRead(PreForZDWJ.getBoolean(json_data.getString("keyid"), false));
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -224,12 +258,9 @@ public class BuildFragment1 extends Fragment
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.e("1111", "" + list.size());
+
 		if (arg == 1) {
-			Log.e("1111", "44444");
-
 			go();
-
 		} else {
 			mAdapter.notifyDataSetChanged();
 		}
@@ -251,10 +282,21 @@ public class BuildFragment1 extends Fragment
 	private void GetPager(String pager) {
 		// TODO Auto-generated method stub
 		try {
+			Log.e("pager", pager);
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
+			if (fileClassify.equals("")) {
+				int totalcount = 0;
+				totalcount = demoJson.getInt("totalRecord");
+				Log.e("totalcount", "" + totalcount);
+				Editor edit = ItemNumber.edit();
+				edit.putInt("ZDWJtotal", totalcount);
+				edit.commit();
+			}
 
+			// BuildFragment buildFragment = new BuildFragment();
+			// buildFragment.intnumber();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -288,12 +330,41 @@ public class BuildFragment1 extends Fragment
 			Fragment1 = this;
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			PreForZDWJ = getActivity().getSharedPreferences("ZDWJ", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+
 			ReadTicket();
 
 			GetData();
+			if (!PreForZDWJ.getBoolean("ZDWJ", false)) {
+				GetMyReadRecord();
+			}
 		}
 
 		return view;
+
+	}
+
+	private void GetMyReadRecord() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", "zdwj"));
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + 1));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + 100000));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 66;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 
 	}
 
@@ -352,36 +423,13 @@ public class BuildFragment1 extends Fragment
 			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		} else {
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), webview.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("url", data.getLink());
-			// // bundle.putString("Time", "2016-11-23");
-			// // bundle.putString("Name", "小李");
-			// // bundle.putString("PageTitle", "收藏详情");
-			// // bundle.putString("Detail",
-			// //
-			// "中国共产主义青年团，简称共青团，原名中国社会主义青年团，是中国共产党领导的一个由信仰共产主义的中国青年组成的群众性组织。共青团中央委员会受中共中央委员会领导，共青团的地方各级组织受同级党的委员会领导，同时受共青团上级组织领导。1922年5月，团的第一次代表大会在广州举行，正式成立中国社会主义青年团，1925年1月26日改称中国共产主义青年团。1959年5月4日共青团中央颁布共青团团徽。");
-			intent.putExtras(bundle);
-			startActivity(intent);
 		}
 	}
 
 	private void GetData() {
 		// TODO Auto-generated method stub
-
-		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
-		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
-		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
-		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
-		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
-		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
-		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 		ArrayValues.add(new BasicNameValuePair("chn", "zdwj"));
 		chn = "zdwj";
 		ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
@@ -405,8 +453,7 @@ public class BuildFragment1 extends Fragment
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
+
 	}
 
 	private void initview(View view2) {
@@ -516,32 +563,6 @@ public class BuildFragment1 extends Fragment
 		return false;
 	}
 
-	// @Override
-	// public void onItemClick(AdapterView<?> parent, View view, int position,
-	// long id) {
-	// // TODO Auto-generated method stub
-	// // recommendModel data = list.get(position - 1);
-	// // Intent intent = new Intent();
-	// // intent.setClass(getActivity(), SpecialDetailActivity.class);
-	// // Bundle bundle = new Bundle();
-	// // bundle.putString("Title", data.getTitle());
-	// // bundle.putString("detail", data.getDetail());
-	// // bundle.putString("Time", data.getTime());
-	// // bundle.putString("Name", "名字");
-	// // intent.putExtras(bundle);
-	// // startActivity(intent);
-	// // Toast.makeText(getActivity(), "点击第" + position + "条" + "item",
-	// // Toast.LENGTH_SHORT).show();
-	// Intent intent = new Intent();
-	// intent.setClass(getActivity(), DetailActivity.class);
-	// Bundle bundle = new Bundle();
-	// bundle.putInt("source", R.drawable.detail);
-	// bundle.putInt("height", 3048);
-	// bundle.putInt("width", 750);
-	// intent.putExtras(bundle);
-	// startActivity(intent);
-	// }
-
 	private void setheadtextview() {
 		headTextView = new TextView(getActivity());
 		headTextView.setGravity(Gravity.CENTER);
@@ -555,49 +576,14 @@ public class BuildFragment1 extends Fragment
 		ListData.setOnTouchListener(this);
 	}
 
-	private void getdatalist(int arg) {
-		if (arg == 1) {
-			list.clear();
-		}
-		// TODO Auto-generated method stub
-
-		try {
-
-			for (int i = 0; i < 10; i++) {
-
-				BuildModel listinfo = new BuildModel();
-				listinfo.setTime("2017-08-30");
-				listinfo.setTitle("杭州地区地铁项目");
-				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-				listinfo.setGuanzhu("231");
-				listinfo.setZan("453");
-				listinfo.setRead(read[i]);
-				listinfo.setImageurl(headimg[i]);
-				listinfo.setHeadimgUrl("");
-				list.add(listinfo);
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (arg == 1) {
-			go();
-
-		} else {
-			mAdapter.notifyDataSetChanged();
-		}
-
-	}
-
 	protected void go() {
 		ListData = (ListView) view.findViewById(R.id.list_data);
 		ListData.setPadding(0, -100, 0, 0);
-		Log.e("1111", "555555555");
+
 		mAdapter = new BuildAdapter4(getActivity(), list, ListData, this);
-		Log.e("1111", "666666666");
+
 		ListData.setAdapter(mAdapter);
-		Log.e("1111", "777777777");
+
 	}
 
 	@Override
@@ -624,10 +610,7 @@ public class BuildFragment1 extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		// if (view != null) {
-		// fileClassify = "" + 1;
-		// GetData();
-		// }
+
 	}
 
 	@Override
@@ -671,9 +654,7 @@ public class BuildFragment1 extends Fragment
 				@Override
 				public void run() {
 					String DueData = "";
-					// DueData =
-					// HttpGetData.GetData("api/cms/channel/channleListData",
-					// ArrayValues);
+
 					Message msg = new Message();
 					msg.obj = DueData;
 					msg.what = 8;
@@ -686,7 +667,6 @@ public class BuildFragment1 extends Fragment
 			// text_1=(TextView) view.findViewById(R.id.text_1);
 			this.text_1.setText("ee");
 
-			sy = 1;
 			curPage = 1;
 			fileClassify = "5";
 			GetData();
@@ -819,8 +799,20 @@ public class BuildFragment1 extends Fragment
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());
+			bundle.putBoolean("read", data.isRead());
 			intent.putExtras(bundle);
 			startActivity(intent);
+			if (!data.isRead()) {
+				Editor edit = PreForZDWJ.edit();
+				edit.putBoolean(data.getId(), true);
+				edit.commit();
+				data.setRead(true);
+				mAdapter.notifyDataSetChanged();
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("ZDWJread", (PreForZDWJ.getAll().size() - 1));
+				Log.e("ZDWJread", "" + (PreForZDWJ.getAll().size() - 1));
+				edit1.commit();
+			}
 
 			// Toast.makeText(getActivity(), "删除第" + + "条",
 			// Toast.LENGTH_SHORT).show();

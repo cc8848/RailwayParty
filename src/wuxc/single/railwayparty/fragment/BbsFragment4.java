@@ -66,24 +66,16 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private int[] headimg = { R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234,
-			R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234 };
 
 	private TextView text_1;
 
 	private TextView text_2;
 	private String ticket = "";
 	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
 	private String URL = "api/pb/yijian/getAllListJsonData";
 	private int number = 0;
 
@@ -202,7 +194,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setCont(true);
 					listinfo.setGuanzhu(json_data.getString("browser"));
 					listinfo.setZan(json_data.getString("hot"));
-					listinfo.setImageurl(headimg[i]);
+					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setLabel("合理化建议");
 					listinfo.setHeadimgUrl("");
 					if (json_data.getInt("classify") == 1) {
@@ -459,8 +451,6 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	@Override
@@ -660,41 +650,7 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 		ListData.setOnTouchListener(this);
 	}
 
-	private void getdatalist(int arg) {
-		if (arg == 1) {
-			list.clear();
-		}
-		// TODO Auto-generated method stub
-
-		try {
-
-			for (int i = 0; i < 1; i++) {
-
-				Bbs4Model listinfo = new Bbs4Model();
-				listinfo.setTime("2017-09-18");
-				listinfo.setTitle("学党章党规");
-				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-				listinfo.setImageurl(headimg[i]);
-				listinfo.setLabel("合理化建议");
-				listinfo.setHeadimgUrl("");
-				listinfo.setName("琳琳");
-				listinfo.setZan("123");
-				listinfo.setGuanzhu("4532");
-				list.add(listinfo);
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (arg == 1) {
-			go();
-		} else {
-			mAdapter.notifyDataSetChanged();
-		}
-
-	}
-
+ 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Bbs4Adapter(getActivity(), list, ListData, this);

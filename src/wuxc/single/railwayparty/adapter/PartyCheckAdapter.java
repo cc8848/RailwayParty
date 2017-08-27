@@ -9,6 +9,7 @@ import java.util.List;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -69,7 +70,7 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 			rowView = inflater.inflate(R.layout.wuxc_item_partycheck, null);
 			viewCache = new PartyCheckCache(rowView);
 			rowView.setTag(viewCache);
-		 
+
 		}
 
 		// Load the image and set it on the ImageView
@@ -81,9 +82,12 @@ public class PartyCheckAdapter extends ArrayAdapter<PartyCheckModel> implements 
 		lin_all.setOnClickListener(this);
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
-
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		return rowView;
 	}
 
-	 
 }

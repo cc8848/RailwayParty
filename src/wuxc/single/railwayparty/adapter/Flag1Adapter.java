@@ -101,7 +101,11 @@ public class Flag1Adapter extends ArrayAdapter<Flag1Model> implements OnClickLis
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
-
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		TextView textguanzhu = viewCache.gettextGuanzhu();
 		textguanzhu.setText(imageAndText.getGuanzhu());
 

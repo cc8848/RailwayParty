@@ -9,6 +9,7 @@ import java.util.List;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -67,8 +68,7 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 			rowView = inflater.inflate(R.layout.wuxc_item_party_reward, null);
 			viewCache = new RewardCache(rowView);
 			rowView.setTag(viewCache);
-		} else {
-			viewCache = (RewardCache) rowView.getTag();
+		 
 		}
 
 		// Load the image and set it on the ImageView
@@ -124,7 +124,11 @@ public class RewardAdapter extends ArrayAdapter<RewardModel> implements OnClickL
 		lin_all.setOnClickListener(this);
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
-
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		return rowView;
 	}
 

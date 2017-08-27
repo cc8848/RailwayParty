@@ -10,7 +10,16 @@ public class Bbs2Model {
 	private String label;
 	private int width;
 	private boolean Cont;
-	private String Summary;private String Id;
+	private String Summary;
+	private String Id;
+private boolean read;
+	public boolean isRead() {
+	return read;
+}
+
+public void setRead(boolean read) {
+	this.read = read;
+}
 
 	public String getId() {
 		return Id;
@@ -19,6 +28,7 @@ public class Bbs2Model {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -36,8 +46,6 @@ public class Bbs2Model {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

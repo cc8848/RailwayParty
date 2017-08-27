@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,7 +72,7 @@ public class Bbs2Adapter extends ArrayAdapter<Bbs2Model> implements OnClickListe
 		}
 
 		// Load the image and set it on the ImageView
-//		String imageUrl = imageAndText.getHeadimgUrl();
+		// String imageUrl = imageAndText.getHeadimgUrl();
 		ImageView imageView = viewCache.getheadimg();
 		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
 
@@ -95,6 +96,11 @@ public class Bbs2Adapter extends ArrayAdapter<Bbs2Model> implements OnClickListe
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		LinearLayout lin_all = viewCache.getlin_all();
 		lin_all.setTag(position);
 		lin_all.setOnClickListener(this);

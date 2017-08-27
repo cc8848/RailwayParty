@@ -96,7 +96,7 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 	private static int number = 0;
 	private int fujian = 0;
 	private String filePath = "";
-	private String ext = "";
+	private String ext = "";	private boolean read = false;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -134,7 +134,7 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 		chn = bundle.getString("chn");
 		try {
 			detail = bundle.getString("detail");
-			ticket = bundle.getString("ticket");
+			ticket = bundle.getString("ticket");	read = bundle.getBoolean("read");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -149,7 +149,9 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 		TextTime.setText(Time);
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
 				+ "</html>";
-		text_detail.setText("摘要：" + detail);
+		text_detail.setText("摘要：" + detail);if (!read) {
+			record();
+		}
 		final ArrayList ArrayValues = new ArrayList();
 		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
@@ -194,7 +196,27 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 
 		// detail=getNewContent(detail);
 	}
+	private void record() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
 
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", chn));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.busKey", "" + Id));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.title", "" + Title));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/save", ArrayValues);
+
+			}
+		}).start();
+	}
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");

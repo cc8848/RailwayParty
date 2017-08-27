@@ -24,6 +24,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -105,21 +106,22 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	private int t5 = 0;
 	private int t6 = 0;
 	private SharedPreferences PreUserInfo;// 存储个人信息
+	private SharedPreferences ItemNumber;
 	private static final int GET_VERSION_RESULT = 5;
 	private View view;// 缓存Fragment view
-	private Handler uiHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-
-			case GET_VERSION_RESULT:
-				GetDataDetailFromVersion(msg.obj);
-				break;
-			default:
-				break;
-			}
-		}
-	};
+	// private Handler uiHandler = new Handler() {
+	// @Override
+	// public void handleMessage(Message msg) {
+	// switch (msg.what) {
+	//
+	// case GET_VERSION_RESULT:
+	// GetDataDetailFromVersion(msg.obj);
+	// break;
+	// default:
+	// break;
+	// }
+	// }
+	// };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			initview(view);
 			initheight(view);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
 
 			initcolor();
 			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
@@ -156,49 +159,61 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				}
 			});
 			String ticket = PreUserInfo.getString("ticket", "");
-			final ArrayList ArrayValues = new ArrayList();
-			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-			ArrayValues.add(new BasicNameValuePair("chns", "zdwj,djyw,tzgg,szrd,dyfc,wsdx"));
-			new Thread(new Runnable() { // 开启线程上传文件
-				@Override
-				public void run() {
-					String LoginResultData = "";
-					LoginResultData = HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics", ArrayValues);
-					Message msg = new Message();
-					msg.obj = LoginResultData;
-					msg.what = GET_VERSION_RESULT;
-					uiHandler.sendMessage(msg);
-				}
-			}).start();
+			// final ArrayList ArrayValues = new ArrayList();
+			// ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			// ArrayValues.add(new BasicNameValuePair("chns",
+			// "zdwj,djyw,tzgg,szrd,dyfc,wsdx"));
+			// new Thread(new Runnable() { // 开启线程上传文件
+			// @Override
+			// public void run() {
+			// String LoginResultData = "";
+			// LoginResultData =
+			// HttpGetData.GetData("api/cms/accessRecord/getUnReadStatics",
+			// ArrayValues);
+			// Message msg = new Message();
+			// msg.obj = LoginResultData;
+			// msg.what = GET_VERSION_RESULT;
+			// uiHandler.sendMessage(msg);
+			// }
+			// }).start();
 		}
 		return view;
 	}
 
-	protected void GetDataDetailFromVersion(Object obj) {
+	// protected void GetDataDetailFromVersion(Object obj) {
+	// // TODO Auto-generated method stub
+	//
+	// // TODO Auto-generated method stub
+	// String data = null;
+	//
+	// try {
+	// JSONObject demoJson = new JSONObject(obj.toString());
+	//
+	// data = demoJson.getString("data");
+	// demoJson = new JSONObject(data);
+	// t1 = demoJson.getInt("zdwj");
+	// t2 = demoJson.getInt("djyw");
+	// t3 = demoJson.getInt("tzgg");
+	// t4 = demoJson.getInt("szrd");
+	// t5 = demoJson.getInt("dyfc");
+	// t6 = demoJson.getInt("wsdx");
+	// intnumber();
+	// } catch (JSONException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (Exception e) {
+	// // TODO: handle exception
+	// }
+	//
+	// }
+
+	@Override
+	public void onStart() {
 		// TODO Auto-generated method stub
-
-		// TODO Auto-generated method stub
-		String data = null;
-
-		try {
-			JSONObject demoJson = new JSONObject(obj.toString());
-
-			data = demoJson.getString("data");
-			demoJson = new JSONObject(data);
-			t1 = demoJson.getInt("zdwj");
-			t2 = demoJson.getInt("djyw");
-			t3 = demoJson.getInt("tzgg");
-			t4 = demoJson.getInt("szrd");
-			t5 = demoJson.getInt("dyfc");
-			t6 = demoJson.getInt("wsdx");
+		super.onStart();
+		if (view != null) {
 			intnumber();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
-
 	}
 
 	private void initfragment() {
@@ -301,6 +316,15 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	}
 
 	private void intnumber() {
+		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+		t1 = ItemNumber.getInt("ZDWJtotal", 100) - ItemNumber.getInt("ZDWJread", 0);
+		t2 = ItemNumber.getInt("DJYWtotal", 100) - ItemNumber.getInt("DJYWread", 0);
+		t3 = ItemNumber.getInt("TZGGtotal", 100) - ItemNumber.getInt("TZGGread", 0);
+		t4 = ItemNumber.getInt("SZRDtotal", 100) - ItemNumber.getInt("SZRDread", 0);
+		Log.e("SZRDtotal", " ItemNumber" + ItemNumber.getInt("SZRDtotal", 100));
+		Log.e("SZRDread", " ItemNumber" + ItemNumber.getInt("SZRDread", 100));
+		t5 = ItemNumber.getInt("DYFCtotal", 100) - ItemNumber.getInt("DYFCread", 0);
+		t6 = ItemNumber.getInt("WSDXtotal", 100) - ItemNumber.getInt("WSDXread", 0);
 		text_number_1.setVisibility(View.GONE);
 		text_number_2.setVisibility(View.GONE);
 		text_number_3.setVisibility(View.GONE);
@@ -309,27 +333,57 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		text_number_6.setVisibility(View.GONE);
 		if (t1 != 0) {
 			text_number_1.setVisibility(View.VISIBLE);
-			text_number_1.setText("" + t1);
+
+			if (t1 >= 100) {
+				text_number_1.setText("···");
+			} else {
+				text_number_1.setText("" + t1);
+			}
 		}
 		if (t2 != 0) {
 			text_number_2.setVisibility(View.VISIBLE);
-			text_number_2.setText("" + t2);
+			if (t2 > 99) {
+				text_number_2.setText("···");
+			} else {
+				text_number_2.setText("" + t2);
+			}
+
 		}
 		if (t3 != 0) {
 			text_number_3.setVisibility(View.VISIBLE);
-			text_number_3.setText("" + t3);
+
+			if (t3 > 99) {
+				text_number_3.setText("···");
+			} else {
+				text_number_3.setText("" + t3);
+			}
 		}
 		if (t4 != 0) {
 			text_number_4.setVisibility(View.VISIBLE);
-			text_number_4.setText("" + t4);
+
+			if (t4 > 99) {
+				text_number_4.setText("···");
+			} else {
+				text_number_4.setText("" + t4);
+			}
 		}
 		if (t5 != 0) {
 			text_number_5.setVisibility(View.VISIBLE);
-			text_number_5.setText("" + t5);
+
+			if (t5 > 99) {
+				text_number_5.setText("···");
+			} else {
+				text_number_5.setText("" + t5);
+			}
 		}
 		if (t6 != 0) {
 			text_number_6.setVisibility(View.VISIBLE);
-			text_number_6.setText("" + t6);
+
+			if (t6 > 99) {
+				text_number_6.setText("···");
+			} else {
+				text_number_6.setText("" + t6);
+			}
 		}
 	}
 

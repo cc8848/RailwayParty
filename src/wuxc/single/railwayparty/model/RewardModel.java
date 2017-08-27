@@ -7,7 +7,15 @@ public class RewardModel {
 	private String time;
 	private String keyid;
 	private int imageurl;private String Id;
+	private boolean read;
 
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
 	public String getId() {
 		return Id;
 	}

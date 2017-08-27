@@ -4,8 +4,19 @@ public class PolicyModel {
 	private String headimgUrl;
 	private String title;
 	private String content;
-	private String time;	private boolean Cont;
-	private String Summary;private String Id;
+	private String time;
+	private boolean Cont;
+	private String Summary;
+	private String Id;
+	private boolean read;
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+	}
 
 	public String getId() {
 		return Id;
@@ -14,6 +25,7 @@ public class PolicyModel {
 	public void setId(String id) {
 		Id = id;
 	}
+
 	public String getSummary() {
 		return Summary;
 	}
@@ -31,8 +43,6 @@ public class PolicyModel {
 	}
 
 	private String Link;
-
-	 
 
 	public String getLink() {
 		return Link;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,6 +78,13 @@ public class ArtAdapter extends ArrayAdapter<ArtModel> implements OnClickListene
 			imageView.setImageResource(R.drawable.qh);
 			TextTitle.setTextColor(Color.parseColor("#7bd1d2"));
 
+		}
+		if (!imageAndText.isRead()) {
+			TextPaint tp = TextTitle.getPaint();
+			tp.setFakeBoldText(true);
+		} else {
+			TextPaint tp = TextTitle.getPaint();
+			tp.setFakeBoldText(false);
 		}
 		return rowView;
 	}

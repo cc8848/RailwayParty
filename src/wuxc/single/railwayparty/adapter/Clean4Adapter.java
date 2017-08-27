@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -96,6 +97,11 @@ public class Clean4Adapter extends ArrayAdapter<Clean4Model> implements OnClickL
 		}
 		TextView TextTitle = viewCache.getTextTitle();
 		TextTitle.setText("" + imageAndText.getTitle());
+		if (imageAndText.isRead()) {
+			TextTitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			TextTitle.setTextColor(Color.parseColor("#000000"));
+		}
 		TextView texttime = viewCache.getTextTime();
 		texttime.setText("" + imageAndText.getTime());
 		LinearLayout lin_all = viewCache.getlin_all();

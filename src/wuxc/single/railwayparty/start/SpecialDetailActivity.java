@@ -106,6 +106,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 	private TextView text_6;
 	private TextView text_7;
 	private LinearLayout lin_text;
+	private boolean read = false;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -144,6 +145,7 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		try {
 			detail = bundle.getString("detail");
 			ticket = bundle.getString("ticket");
+			read = bundle.getBoolean("read");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -175,6 +177,10 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
 				+ "</html>";
 		text_detail.setText("摘要：" + detail);
+		Log.e("read", "read" + read);
+		if (!read) {
+			record();
+		}
 		final ArrayList ArrayValues = new ArrayList();
 		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
@@ -218,6 +224,28 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		}
 
 		// detail=getNewContent(detail);
+	}
+
+	private void record() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", chn));
+
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.busKey", "" + Id));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.title", "" + Title));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/save", ArrayValues);
+
+			}
+		}).start();
 	}
 
 	private void ReadTicket() {

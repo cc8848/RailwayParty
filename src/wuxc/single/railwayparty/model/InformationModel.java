@@ -3,7 +3,14 @@ package wuxc.single.railwayparty.model;
 public class InformationModel {
 	private String headimgUrl;
 	private String title;private String Id;
+	private boolean read;
+	public boolean isRead() {
+	return read;
+}
 
+public void setRead(boolean read) {
+	this.read = read;
+}
 	public String getId() {
 		return Id;
 	}

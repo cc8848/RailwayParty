@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -72,6 +73,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private int t6 = 0;
 	private int t7 = 0;
 	private int t8 = 0;
+	private SharedPreferences ItemNumber;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -97,14 +99,37 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			data = demoJson.getString("data");
 			demoJson = new JSONObject(data);
-			t1 = demoJson.getInt("tzgg");
-			t2 = demoJson.getInt("lxyzxx");
-			t3 = demoJson.getInt("djkh");
-			t4 = demoJson.getInt("wsdx");
-			t5 = demoJson.getInt("lzsx");
-			t6 = demoJson.getInt("xxtb");
-			t7 = demoJson.getInt("jszn");
-			t8 = demoJson.getInt("qnxf");
+			Editor edit = ItemNumber.edit();
+			edit.putInt("ZDWJtotal", demoJson.getInt("zdwj_total"));
+			edit.putInt("DJYWtotal", demoJson.getInt("djyw_total"));
+			edit.putInt("TZGGtotal", demoJson.getInt("tzggd_total"));
+			edit.putInt("SZRDtotal", demoJson.getInt("szrd_total"));
+			edit.putInt("DYFCtotal", demoJson.getInt("dyfc_total"));
+			edit.putInt("WSDXtotal", demoJson.getInt("wsdx_total"));
+			edit.putInt("LXYZXXtotal1", demoJson.getInt("lxyzxx_total"));
+			edit.putInt("DJKHtotal", demoJson.getInt("djkh_total"));
+			edit.putInt("DNJCtotal", demoJson.getInt("dnjc_total"));
+			edit.putInt("DWGKtotal", demoJson.getInt("dwgk_total"));
+			edit.putInt("LZSXtotal", demoJson.getInt("lzsx_total"));
+			edit.putInt("YASJLBtotal", demoJson.getInt("yasjlb_total"));
+			edit.putInt("QLKMtotal", demoJson.getInt("qlkm_total"));
+			edit.putInt("XXJLtotal", demoJson.getInt("xxjl_total"));
+			edit.putInt("DJFGtotal", demoJson.getInt("djfg_total"));
+			edit.putInt("XXTBtotal", demoJson.getInt("xxtb_total"));
+			edit.putInt("JSZNtotal", demoJson.getInt("jszn_total"));
+			edit.putInt("WHZNtotal", demoJson.getInt("whzn_total"));
+			edit.putInt("CYZNtotal", demoJson.getInt("cyzn_total"));
+			edit.putInt("JYZNtotal", demoJson.getInt("jyzn_total"));
+			edit.putInt("QTXStotal", demoJson.getInt("qtxs_total"));
+			edit.putInt("QWXtotal", demoJson.getInt("qwx_total"));
+			edit.putInt("QNXFtotal", demoJson.getInt("qnxf_total"));
+			edit.putInt("LXYZXXtotal2", 0);
+			edit.putInt("JZXXtotal", demoJson.getInt("jzxx_total"));
+			edit.putInt("DYQtotal", demoJson.getInt("dyq_total"));
+			edit.putInt("DQLHtotal", demoJson.getInt("dqlh_total"));
+			edit.putInt("DSYYJtotal", demoJson.getInt("dsyyj_total"));
+			edit.putInt("DYYJtotal", demoJson.getInt("dyyj_total"));
+			edit.commit();
 			intnumber();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -115,8 +140,38 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 	}
 
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if (view != null) {
+			intnumber();
+		}
+	}
+
 	private void intnumber() {
 		// TODO Auto-generated method stub
+		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+		t1 = ItemNumber.getInt("TZGGtotal", 100) - ItemNumber.getInt("TZGGread", 0);
+		t2 = ItemNumber.getInt("LXYZXXtotal" + 2, 100) + ItemNumber.getInt("LXYZXXtotal" + 1, 100)
+				- ItemNumber.getInt("LXYZXXread", 0);
+		t3 = ItemNumber.getInt("DJKHtotal", 100) - ItemNumber.getInt("DJKHread", 0)
+				+ ItemNumber.getInt("DNJCtotal", 100) - ItemNumber.getInt("DNJCread", 0)
+				+ ItemNumber.getInt("DWGKtotal", 100) - ItemNumber.getInt("DWGKread", 0);
+		t4 = ItemNumber.getInt("WSDXtotal", 100) - ItemNumber.getInt("WSDXread", 0);
+		t5 = ItemNumber.getInt("LZSXtotal", 100) - ItemNumber.getInt("LZSXread", 0)
+				+ ItemNumber.getInt("YASJLBtotal", 100) - ItemNumber.getInt("YASJLBread", 0)
+				+ ItemNumber.getInt("QLKMtotal", 100) - ItemNumber.getInt("QLKMread", 0)
+				+ ItemNumber.getInt("XXJLtotal", 100) - ItemNumber.getInt("XXJLread", 0);
+		t6 = ItemNumber.getInt("DJFGtotal", 100) - ItemNumber.getInt("DJFGread", 0)
+				+ ItemNumber.getInt("XXTBtotal", 100) - ItemNumber.getInt("XXTBread", 0);
+		t7 = ItemNumber.getInt("JSZNtotal", 100) - ItemNumber.getInt("JSZNread", 0)
+				+ ItemNumber.getInt("WHZNtotal", 100) - ItemNumber.getInt("WHZNread", 0)
+				+ ItemNumber.getInt("CYZNtotal", 100) - ItemNumber.getInt("CYZNread", 0)
+				+ ItemNumber.getInt("JYZNtotal", 100) - ItemNumber.getInt("JYZNread", 0);
+		t8 = ItemNumber.getInt("QTXStotal", 100) - ItemNumber.getInt("QTXSread", 0) + ItemNumber.getInt("QWXtotal", 100)
+				- ItemNumber.getInt("QWXread", 0) + ItemNumber.getInt("QNXFtotal", 100)
+				- ItemNumber.getInt("QNXFread", 0);
 		text_1.setVisibility(View.GONE);
 		text_2.setVisibility(View.GONE);
 		text_3.setVisibility(View.GONE);
@@ -127,35 +182,75 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		text_8.setVisibility(View.GONE);
 		if (t1 != 0) {
 			text_1.setVisibility(View.VISIBLE);
-			text_1.setText("" + t1);
+
+			if (t1 >= 100) {
+				text_1.setText("，，，");
+			} else {
+				text_1.setText("" + t1);
+			}
 		}
 		if (t2 != 0) {
 			text_2.setVisibility(View.VISIBLE);
-			text_2.setText("" + t2);
+			if (t2 > 99) {
+				text_2.setText("，，，");
+			} else {
+				text_2.setText("" + t2);
+			}
+
 		}
 		if (t3 != 0) {
 			text_3.setVisibility(View.VISIBLE);
-			text_3.setText("" + t3);
+
+			if (t3 > 99) {
+				text_3.setText("，，，");
+			} else {
+				text_3.setText("" + t3);
+			}
 		}
 		if (t4 != 0) {
 			text_4.setVisibility(View.VISIBLE);
-			text_4.setText("" + t4);
+
+			if (t4 > 99) {
+				text_4.setText("，，，");
+			} else {
+				text_4.setText("" + t4);
+			}
 		}
 		if (t5 != 0) {
 			text_5.setVisibility(View.VISIBLE);
-			text_5.setText("" + t5);
+
+			if (t5 > 99) {
+				text_5.setText("，，，");
+			} else {
+				text_5.setText("" + t5);
+			}
 		}
 		if (t6 != 0) {
 			text_6.setVisibility(View.VISIBLE);
-			text_6.setText("" + t6);
+
+			if (t6 > 99) {
+				text_6.setText("，，，");
+			} else {
+				text_6.setText("" + t6);
+			}
 		}
 		if (t7 != 0) {
 			text_7.setVisibility(View.VISIBLE);
-			text_7.setText("" + t7);
+			if (t7 > 99) {
+				text_7.setText("，，，");
+			} else {
+				text_7.setText("" + t7);
+			}
+
 		}
 		if (t8 != 0) {
 			text_8.setVisibility(View.VISIBLE);
-			text_8.setText("" + t8);
+			if (t8 > 99) {
+				text_8.setText("，，，");
+			} else {
+				text_8.setText("" + t8);
+			}
+
 		}
 	}
 
@@ -184,10 +279,12 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				}
 			});
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
 			ticket = PreUserInfo.getString("ticket", "");
 			final ArrayList ArrayValues = new ArrayList();
 			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-			ArrayValues.add(new BasicNameValuePair("chns", "tzgg,lxyzxx,djkh,wsdx,lzsx,xxtb,jszn,qnxf"));
+			ArrayValues.add(new BasicNameValuePair("chns",
+					"jzxx,dyq,dqlh,dsyyj,dyyj,zdwj,djyw,tzggd,szrd,dyfc,wsdx,lxyzxx,djkh,dnjc,dwgk,lzsx,yasjlb,qlkm,xxjl,djfg,xxtb,jszn,whzn,cyzn,jyzn,qnxf,qtxs,qwx"));
 			new Thread(new Runnable() { // 蝕尼�潦棉牢�猟周
 				@Override
 				public void run() {

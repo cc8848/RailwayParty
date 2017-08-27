@@ -105,8 +105,8 @@
 
                         <TextView
                             android:id="@+id/text_1"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
@@ -114,7 +114,7 @@
                             android:gravity="center"
                             android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="12dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <TextView
@@ -152,8 +152,8 @@
 
                         <TextView
                             android:id="@+id/text_2"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
@@ -161,7 +161,7 @@
                             android:gravity="center"
                             android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="12dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <TextView
@@ -205,8 +205,8 @@
 
                         <TextView
                             android:id="@+id/text_3"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
@@ -214,7 +214,7 @@
                             android:gravity="center"
                             android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="12dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <TextView
@@ -252,8 +252,8 @@
 
                         <TextView
                             android:id="@+id/text_4"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="16dp"
@@ -261,7 +261,7 @@
                             android:gravity="center"
                             android:text="19"
                             android:textColor="#ffffff"
-                            android:textSize="12dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <TextView
@@ -311,15 +311,15 @@
 
                     <TextView
                         android:id="@+id/text_5"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
                         android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -349,15 +349,15 @@
 
                     <TextView
                         android:id="@+id/text_6"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
                         android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -387,15 +387,15 @@
 
                     <TextView
                         android:id="@+id/text_7"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
                         android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -425,15 +425,15 @@
 
                     <TextView
                         android:id="@+id/text_8"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/tag"
                         android:gravity="center"
                         android:text="19"
                         android:textColor="#ffffff"
-                        android:textSize="12dp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>

@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -68,8 +69,8 @@ public class Bbs3Adapter extends ArrayAdapter<Bbs3Model> implements OnClickListe
 		}
 
 		// Load the image and set it on the ImageView
-//		String imageUrl = imageAndText.getHeadimgUrl();
-//		ImageView imageView = viewCache.getheadimg();
+		// String imageUrl = imageAndText.getHeadimgUrl();
+		// ImageView imageView = viewCache.getheadimg();
 		if (!(imageAndText.getHeadimgUrl().equals("") || imageAndText.getHeadimgUrl() == null)) {
 			viewCache.getheadimg().setTag(URLcontainer.urlip + "upload" + imageAndText.getHeadimgUrl());
 
@@ -91,6 +92,11 @@ public class Bbs3Adapter extends ArrayAdapter<Bbs3Model> implements OnClickListe
 
 		TextView texttitle = viewCache.gettextTitle();
 		texttitle.setText(imageAndText.getTitle());
+		if (imageAndText.isRead()) {
+			texttitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			texttitle.setTextColor(Color.parseColor("#000000"));
+		}
 		LinearLayout lin_all = viewCache.getlin_all();
 		lin_all.setTag(position);
 		lin_all.setOnClickListener(this);

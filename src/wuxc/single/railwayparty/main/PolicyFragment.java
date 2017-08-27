@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -58,27 +59,21 @@ public class PolicyFragment extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private int[] headimg = { R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234,
-			R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234 };
 
 	private int screenwidth = 0;
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
 	private int subClassify = 1;
 	private int classify = 1;
 	private TextView text_1;
 
 	private TextView text_2;
+	private SharedPreferences PreForLXYZXX;
+	private SharedPreferences ItemNumber;
 	private RelativeLayout main_top_bac;
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -87,11 +82,85 @@ public class PolicyFragment extends Fragment
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForLXYZXX.edit();
+					edit.putBoolean("LXYZXX", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	private void GetRecord(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			Data = demoJson.getString("datas");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					if (jArray.length() == 0) {
+						// / Toast.makeText(getActivity(), "无数据",
+						// Toast.LENGTH_SHORT).show();
+
+					} else {
+						Editor edit = PreForLXYZXX.edit();
+						edit.putBoolean("LXYZXX", true);
+
+						for (int i = 0; i < jArray.length(); i++) {
+
+							try {
+								json_data = jArray.getJSONObject(i);
+								json_data = json_data.getJSONObject("data");
+								String keyid = json_data.getString("busKey");
+								edit.putBoolean(keyid, true);
+							} catch (Exception e) {
+								// TODO: handle exception
+
+							}
+
+						}
+						edit.commit();
+						Editor edit1 = ItemNumber.edit();
+						edit1.putInt("LXYZXXread", (PreForLXYZXX.getAll().size() - 1));
+						Log.e("LXYZXXread", "" + (PreForLXYZXX.getAll().size() - 1));
+						edit1.commit();
+						// BuildFragment buildFragment = new
+						// BuildFragment();
+						// buildFragment.intnumber();
+					}
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	protected void GetDataDueData(Object obj) {
 
@@ -102,10 +171,10 @@ public class PolicyFragment extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -157,7 +226,7 @@ public class PolicyFragment extends Fragment
 					listinfo.setCont(true);
 					// listinfo.setGuanzhu(json_data.getString("hot"));
 					// listinfo.setZan("453");
-					listinfo.setImageurl(headimg[i]);
+					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setScreenwidth(screenwidth);
 					// listinfo.setName(json_data.getString("title"));
 					listinfo.setLabel(json_data.getString("title"));
@@ -169,7 +238,8 @@ public class PolicyFragment extends Fragment
 					}
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					// listinfo.setRead(true);
-					try {
+					listinfo.setRead(PreForLXYZXX.getBoolean(json_data.getString("keyid"), false));
+						try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
 								|| json_data.getString("summary").equals("null")) {
@@ -204,7 +274,12 @@ public class PolicyFragment extends Fragment
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
-
+//			int totalcount = 0;
+//			totalcount = demoJson.getInt("totalRecord");
+//			Log.e("totalcount", "" + totalcount);
+//			Editor edit = ItemNumber.edit();
+//			edit.putInt("LXYZXXtotal" + subClassify, totalcount);
+//			edit.commit();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -240,14 +315,52 @@ public class PolicyFragment extends Fragment
 			initcolor();
 			// getdatalist(curPage);
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+			PreForLXYZXX = getActivity().getSharedPreferences("LXYZXX", Context.MODE_PRIVATE);
+			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
+
 			ReadTicket();
+
 			GetData();
+			if (!PreForLXYZXX.getBoolean("LXYZXX", false)) {
+				GetMyReadRecord();
+			}
 		}
 
 		return view;
 
 	}
+	private void GetMyReadRecord() {
+		// TODO Auto-generated method stub
 
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
+		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
+		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
+		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
+		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
+		// final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.classify", "lxyzxx"));
+		ArrayValues.add(new BasicNameValuePair("curPage", "" + 1));
+		ArrayValues.add(new BasicNameValuePair("pageSize", "" + 100000));
+		ArrayValues.add(new BasicNameValuePair("accessRecordDto.bigClassify", "channel"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/accessRecord/getListJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 66;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
+	}
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
@@ -415,8 +528,6 @@ public class PolicyFragment extends Fragment
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	private void setheadtextview() {
@@ -430,38 +541,6 @@ public class PolicyFragment extends Fragment
 		ListData.addHeaderView(headTextView, null, false);
 		ListData.setPadding(0, -100, 0, 0);
 		ListData.setOnTouchListener(this);
-	}
-
-	private void getdatalist(int arg) {
-		if (arg == 1) {
-			list.clear();
-		}
-		// TODO Auto-generated method stub
-
-		try {
-
-			for (int i = 0; i < 10; i++) {
-
-				PolicyModel listinfo = new PolicyModel();
-				listinfo.setTime("2017-09-18");
-				listinfo.setTitle("学党章党规");
-				listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
-				listinfo.setImageurl(headimg[i]);
-				listinfo.setHeadimgUrl("");
-				listinfo.setScreenwidth(screenwidth);
-				list.add(listinfo);
-
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (arg == 1) {
-			go();
-		} else {
-			mAdapter.notifyDataSetChanged();
-		}
-
 	}
 
 	protected void go() {
@@ -573,8 +652,21 @@ public class PolicyFragment extends Fragment
 			bundle.putString("detail", data.getContent());
 			bundle.putString("chn", chn);
 			bundle.putString("Id", data.getId());
+			bundle.putBoolean("read", data.isRead());
 			intent.putExtras(bundle);
 			startActivity(intent);
+			if (!data.isRead()) {
+				Editor edit = PreForLXYZXX.edit();
+				edit.putBoolean(data.getId(), true);
+				edit.commit();
+				data.setRead(true);
+				mAdapter.notifyDataSetChanged();
+				Editor edit1 = ItemNumber.edit();
+				edit1.putInt("LXYZXXread", (PreForLXYZXX.getAll().size() - 1));
+				Log.e("LXYZXXread", "" + (PreForLXYZXX.getAll().size() - 1));
+				edit1.commit();
+			}
+
 			// }
 
 			break;

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -96,6 +97,11 @@ public class Flag3Adapter extends ArrayAdapter<Flag3Model> implements OnClickLis
 		}
 		TextView TextTitle = viewCache.getTextTitle();
 		TextTitle.setText("" + imageAndText.getTitle());
+		if (imageAndText.isRead()) {
+			TextTitle.setTextColor(Color.parseColor("#7d7d7d"));
+		} else {
+			TextTitle.setTextColor(Color.parseColor("#000000"));
+		}
 		TextView texttime = viewCache.getTextTime();
 		texttime.setText("" + imageAndText.getTime());
 		TextView textdetail = viewCache.getTextDetail();

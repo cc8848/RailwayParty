@@ -140,11 +140,11 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 
 	protected void GetDataDetailFromBranch(String Data, String Userdata) {
 		// TODO Auto-generated method stub
-		TotalItem=0;
+		TotalItem = 0;
 		JSONArray jArray;
 		try {
 			jArray = new JSONArray(Userdata);
-			TotalItem=TotalItem+jArray.length();
+			TotalItem = TotalItem + jArray.length();
 			JSONObject json_data = null;
 			for (int i = 0; i < jArray.length(); i++) {
 				json_data = jArray.getJSONObject(i);
@@ -152,7 +152,7 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 				// String id = json_data.getString("id");
 				PartyBranchDataListModel data = new PartyBranchDataListModel();
 				data.setIsSelected(false);
-				data.setPartyAddress(json_data.getString("address"));
+				data.setPartyAddress("所属党组织:" + json_data.getString("companyName"));
 				data.setPartyName(name);
 				data.setId("");
 				data.setPartyPhonenumber(json_data.getString("mobile"));
@@ -162,7 +162,7 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 
 			}
 			jArray = new JSONArray(Data);
-			TotalItem=TotalItem+jArray.length();
+			TotalItem = TotalItem + jArray.length();
 			json_data = null;
 			for (int i = 0; i < jArray.length(); i++) {
 				json_data = jArray.getJSONObject(i);
@@ -170,7 +170,7 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 				// String id = json_data.getString("id");
 				PartyBranchDataListModel data = new PartyBranchDataListModel();
 				data.setIsSelected(false);
-				data.setPartyAddress(json_data.getString("address"));
+				data.setPartyAddress("地址：" + json_data.getString("address"));
 				data.setPartyName(name);
 				data.setId("");
 				data.setPartyPhonenumber(json_data.getString("tel"));
@@ -178,8 +178,8 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 				list.add(data);
 				initList.add(data);
 			}
-			initTotalPage =TotalItem;
-		 
+			initTotalPage = TotalItem;
+
 			TotalPage = TotalItem / 5;
 			if (TotalPage * 5 < TotalItem) {
 				TotalPage++;
@@ -205,21 +205,75 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 		// Toast.makeText(getApplicationContext(), "这"+string,
 		// Toast.LENGTH_SHORT).show();
 		// TODO Auto-generated method stub
+		List<PartyBranchDataListModel> listtemp = new ArrayList<PartyBranchDataListModel>();
+		for(int i = 0; i < initTotalPage; i++){
+			PartyBranchDataListModel data = initList.get(i);
+			listtemp.add(data);
+		}
+		Log.e("listtemp.size()", "listtemp.size()"+listtemp.size());
 		if (TextUtils.isEmpty(string)) {
-			for (int i = 0; i < initTotalPage; i++) {
-				PartyBranchDataListModel data = initList.get(i);
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
 				temptotalitem++;
 				list.add(data);
 			}
 		} else {
-			for (int i = 0; i < initTotalPage; i++) {
-				PartyBranchDataListModel data = initList.get(i);
-				if ((data.getPartyAddress()).indexOf(string) != -1 || (data.getPartyPhonenumber()).indexOf(string) != -1
-						|| (data.getPartyName()).indexOf(string) != -1) {
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+
+				if ((data.getPartyName()).indexOf(string) != -1) {
 					temptotalitem++;
 					list.add(data);
+					listtemp.remove(i);
+					i--;
 				}
+			}
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+				if ((data.getPartyAddress()).indexOf(string) != -1) {
 
+					temptotalitem++;
+					list.add(data);
+					listtemp.remove(i);
+					i--;
+
+				}
+			}
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+				if ((data.getPartyPhonenumber()).indexOf(string) != -1) {
+					temptotalitem++;
+					list.add(data);
+					listtemp.remove(i);
+					i--;
+				}
+			}
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+				if (string.indexOf((data.getPartyName())) != -1) {
+					temptotalitem++;
+					list.add(data);
+					listtemp.remove(i);
+					i--;
+				}
+			}
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+				if (string.indexOf((data.getPartyAddress())) != -1) {
+					temptotalitem++;
+					list.add(data);
+					listtemp.remove(i);
+					i--;
+				}
+			}
+			for (int i = 0; i < listtemp.size(); i++) {
+				PartyBranchDataListModel data = listtemp.get(i);
+				if (string.indexOf((data.getPartyPhonenumber())) != -1) {
+					temptotalitem++;
+					list.add(data);
+					listtemp.remove(i);
+					i--;
+				}
 			}
 		}
 		TotalItem = temptotalitem;
@@ -227,6 +281,7 @@ public class PartySearch extends Activity implements OnClickListener, OnItemClic
 		if (TotalPage * 5 < TotalItem) {
 			TotalPage++;
 		}
+
 		go(Page);
 	}
 
