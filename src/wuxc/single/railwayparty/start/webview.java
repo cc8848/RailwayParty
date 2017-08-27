@@ -226,6 +226,7 @@ public class webview extends Activity implements OnClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			if (true) {
+				sendpost();
 				finish();
 
 				final ArrayList ArrayValues = new ArrayList();
@@ -275,6 +276,23 @@ public class webview extends Activity implements OnClickListener {
 
 	}
 
+	private void sendpost() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "specialActivity"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title+"》"));
+		ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+
+			}
+		}).start();
+	}
+
 	@Override
 	protected void onPause() {
 		// WebView.reload();
@@ -288,6 +306,7 @@ public class webview extends Activity implements OnClickListener {
 		WebSettings settings = WebView.getSettings();
 		switch (v.getId()) {
 		case R.id.image_back:
+			sendpost();
 			finish();
 			final ArrayList ArrayValues = new ArrayList();
 			// ArrayValues.add(new BasicNameValuePair("ticket",

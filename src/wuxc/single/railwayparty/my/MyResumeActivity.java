@@ -71,6 +71,8 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private static final int GET_VERSION_RESULT = 5;
 	private RelativeLayout rel_phone;
 	private RelativeLayout rel_motto;
+	private SharedPreferences Prechange;
+	private String LoginId;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -84,11 +86,37 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			case 12:
 				GetDataDetailFromLoginResultDatacode(msg.obj);
 				break;
+			case 66:
+				GetData(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Editor edit = Prechange.edit();
+				edit.putBoolean(LoginId, true);
+
+				edit.commit();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	public void GetDataDetailFromLoginResultData(Object obj) {
 
@@ -231,14 +259,34 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 			if (Type.equals("success")) {
 				Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
-				if (creditsym == 0) {
-					Intent intent = new Intent();
-					intent.setClass(getApplicationContext(), CreditsRuleActivity.class);
-					startActivity(intent);
-					Editor edit = PreUserInfo.edit();
-					edit.putInt("creditsym", 1);
-					edit.commit();
+				if (!Prechange.getBoolean(LoginId, false)) {
+					final ArrayList ArrayValues = new ArrayList();
+					ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+					ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "personalData"));
+					ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+					ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "首次完善个人资料"));
+					ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+					new Thread(new Runnable() { // 开启线程上传文件
+						@Override
+						public void run() {
+							String LoginResultData = "";
+							LoginResultData = HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+							Message msg = new Message();
+							msg.obj = LoginResultData;
+							msg.what = 66;
+							uiHandler.sendMessage(msg);
+						}
+					}).start();
 				}
+				// if (creditsym == 0) {
+				// Intent intent = new Intent();
+				// intent.setClass(getApplicationContext(),
+				// CreditsRuleActivity.class);
+				// startActivity(intent);
+				// Editor edit = PreUserInfo.edit();
+				// edit.putInt("creditsym", 1);
+				// edit.commit();
+				// }
 				finish();
 			} else {
 				Toast.makeText(getApplicationContext(), "修改失败，请重试", Toast.LENGTH_SHORT).show();
@@ -257,6 +305,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wuxc_activity_myresume);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		Prechange = getSharedPreferences("change", Context.MODE_PRIVATE);
 
 		ImageView image_back = (ImageView) findViewById(R.id.image_back);
 		image_back.setOnClickListener(this);
@@ -318,6 +367,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		ticket = PreUserInfo.getString("ticket", "");
 		Str_text_name = PreUserInfo.getString("realName", "无数据");
 		userid = PreUserInfo.getString("loginId", "");
+		LoginId = PreUserInfo.getString("loginId", null);
 		Str_text_sex = PreUserInfo.getString("sex", "male");
 		if (Str_text_sex.equals("male")) {
 			Str_text_sex = "男";
@@ -428,14 +478,14 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 	private void ReadSign() {
 		// TODO Auto-generated method stub
-		Str_text_motto = PreUserInfo.getString("Sign", "");
+		Str_text_motto = PreUserInfo.getString("sign", "");
 
 	}
 
 	private void ReadPhone() {
 		// TODO Auto-generated method stub
 
-		Str_text_phone = PreUserInfo.getString("PhoneNumber", "");
+		Str_text_phone = PreUserInfo.getString("mobile", "");
 	}
 
 	@Override

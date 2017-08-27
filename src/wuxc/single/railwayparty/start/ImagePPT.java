@@ -251,11 +251,13 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		// getdatalist(curPage);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ReadTicket();
-		GetData();if (!read3) {
+		GetData();
+		if (!read3) {
 			record();
 		}
 		timer.schedule(task, 1000, 1000); // timeTask
 	}
+
 	private void record() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -277,6 +279,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 			}
 		}).start();
 	}
+
 	TimerTask task = new TimerTask() {
 		@Override
 		public void run() {
@@ -592,6 +595,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
 			if (true) {
+				sendpost();
 				finish();
 
 				final ArrayList ArrayValues = new ArrayList();
@@ -641,11 +645,29 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 
 	}
 
+	private void sendpost() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "specialActivity"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title+"》"));
+		ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+
+			}
+		}).start();
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.image_back:
+			sendpost();
 			finish();
 
 			final ArrayList ArrayValues = new ArrayList();

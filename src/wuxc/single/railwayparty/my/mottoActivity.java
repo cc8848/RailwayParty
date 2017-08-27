@@ -174,14 +174,14 @@ public class mottoActivity extends Activity implements OnClickListener, OnTouchL
 
 	private void readinfo() {
 		// TODO Auto-generated method stub
-		Sign = PreUserInfo.getString("Sign", "");
+		Sign = PreUserInfo.getString("sign", "");
 		editSign.setText(Sign);
 	}
 
 	private void writeSign() {
 		// TODO Auto-generated method stub
 		Editor edit = PreUserInfo.edit();
-		edit.putString("Sign", Sign);
+		edit.putString("sign", Sign);
 		edit.commit();
 	}
 

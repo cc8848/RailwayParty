@@ -1,6 +1,7 @@
 package wuxc.single.railwayparty.other;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -25,10 +26,6 @@ import android.widget.Toast;
 import wuxc.single.railwayparty.MainActivity;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
-import wuxc.single.railwayparty.internet.URLcontainer;
-import wuxc.single.railwayparty.my.CreditsActivity;
-import wuxc.single.railwayparty.my.MyResumeActivity;
-import wuxc.single.railwayparty.my.NewpwdActivity;
 
 public class LoginActivity2 extends Activity implements OnClickListener {
 	private EditText edit_username;
@@ -52,6 +49,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 	private String username;
 	private SharedPreferences PreAccount;// 存储用户名和密码，用于自动登录
 	private SharedPreferences PreUserInfo;// 存储个人信息
+	private SharedPreferences PreLogin;
 	private String remeberusername = "";
 	private String remeberpassword = "";
 	private Handler uiHandler = new Handler() {
@@ -61,12 +59,37 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 			case GET_LOGININ_RESULT_DATA:
 				GetDataDetailFromLoginResultData(msg.obj);
 				break;
-
+			case 66:
+				GetData(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
+	protected void GetData(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Editor edit = PreLogin.edit();
+				edit.putBoolean(getTimeByCalendar() + userName, true);
+				Log.e("PreLogin", "" + true);
+				edit.commit();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +109,7 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 		lin_forget.setOnClickListener(this);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
+		PreLogin = getSharedPreferences("Login", Context.MODE_PRIVATE);
 		remeber = PreAccount.getBoolean("remeber", true);
 		Log.e("remeber_2", remeber + "");
 		remeberusername = PreAccount.getString("LoginId", "");
@@ -151,6 +175,25 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 			username = demoJson.getString("username");
 			WriteAccount();
 			WriteUserInfo();
+			if (!PreLogin.getBoolean(getTimeByCalendar() + userName, false)) {
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "userSign"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "每日首次登录"));
+				ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String LoginResultData = "";
+						LoginResultData = HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+						Message msg = new Message();
+						msg.obj = LoginResultData;
+						msg.what = 66;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+			}
 			// GetAllData();
 
 		} catch (JSONException e) {
@@ -159,6 +202,24 @@ public class LoginActivity2 extends Activity implements OnClickListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	public String getTimeByCalendar() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+		int month = cal.get(Calendar.MONTH);// 获取月份
+		int day = cal.get(Calendar.DAY_OF_MONTH);// 获取日
+		String Mon = "";
+		String Day = "";
+		month++;
+		if (month < 10) {
+			Mon = "0" + month;
+		}
+		if (day < 10) {
+			Day = "0" + day;
+		}
+		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
+		return year + "-" + Mon + "-" + Day;
 	}
 
 	private void WriteUserInfo() {

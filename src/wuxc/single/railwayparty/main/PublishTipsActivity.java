@@ -16,13 +16,13 @@ import com.example.newsapp.photo.photo.PhotoAlbumActivity;
 import com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerActivity;
 import com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerDeleteActivity;
 import com.example.newsapp.photo.util.PictureManageUtil;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -56,17 +56,10 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 	private EditText edit_content;
 	private Button btn_ok;
 	private String ticket = "";
-	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
 	private TextView text_load;
 	private String attachment_ext;
 	private String attachment_scalePath;
@@ -113,7 +106,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 	private int pic_number = 0;
 	private int screenwidth = 0;
 	private JSONArray kArray = new JSONArray();
-	
+
 	private boolean write = false;
 	private int load = 0;
 
@@ -161,7 +154,7 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			attachment_size = demoJson.getString("size");
 			attachment_classify = "imageList";
 			try {
-				  JSONObject jsonObject = new JSONObject();
+				JSONObject jsonObject = new JSONObject();
 				jsonObject.put("operateFlag", "1");
 				jsonObject.put("ext", attachment_ext);
 				jsonObject.put("scalePath", attachment_scalePath);
@@ -204,7 +197,21 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 			// Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT).show();
-				finish();text_load.setVisibility(View.GONE);
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "sendPost"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "发表学习心得"));
+				ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+
+					}
+				}).start();
+				finish();
+				text_load.setVisibility(View.GONE);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -294,16 +301,16 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 		for (int i = 0; i < kArray.length(); i++) {
 			try {
 				JSONObject jsonObject = kArray.getJSONObject(i);
-//				jsonObject.put("operateFlag", "1");
-//				jsonObject.put("ext", attachment_ext);
-//				jsonObject.put("scalePath", attachment_scalePath);
-//				jsonObject.put("classify", attachment_classify);
-//				jsonObject.put("fileName", attachment_fileName);
-//				jsonObject.put("par_keyid", attachment_par_keyid);
-//				jsonObject.put("size", attachment_size);
-//				jsonObject.put("filePath", attachment_filePath);
-//				jsonObject.put("pathType", attachment_key);
-//				jsonObject.put("key", attachment_key);
+				// jsonObject.put("operateFlag", "1");
+				// jsonObject.put("ext", attachment_ext);
+				// jsonObject.put("scalePath", attachment_scalePath);
+				// jsonObject.put("classify", attachment_classify);
+				// jsonObject.put("fileName", attachment_fileName);
+				// jsonObject.put("par_keyid", attachment_par_keyid);
+				// jsonObject.put("size", attachment_size);
+				// jsonObject.put("filePath", attachment_filePath);
+				// jsonObject.put("pathType", attachment_key);
+				// jsonObject.put("key", attachment_key);
 				ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", jsonObject.getString("operateFlag")));
 				ArrayValues.add(new BasicNameValuePair("attacement.ext", jsonObject.getString("ext")));
 				ArrayValues.add(new BasicNameValuePair("attacement.scalePath", jsonObject.getString("scalePath")));
@@ -339,8 +346,6 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	@Override

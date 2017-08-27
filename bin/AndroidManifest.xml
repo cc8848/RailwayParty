@@ -144,6 +144,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name=".my.MyResumeActivityFirst"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".my.mottoActivity"
             android:screenOrientation="portrait" >
         </activity>

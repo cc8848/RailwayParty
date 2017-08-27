@@ -174,14 +174,14 @@ public class phoneActivity extends Activity implements OnClickListener, OnTouchL
 
 	private void readinfo() {
 		// TODO Auto-generated method stub
-		phone = PreUserInfo.getString("PhoneNumber", "");
+		phone = PreUserInfo.getString("mobile", "");
 		editphone.setText(phone);
 	}
 
 	private void writephone() {
 		// TODO Auto-generated method stub
 		Editor edit = PreUserInfo.edit();
-		edit.putString("PhoneNumber", phone);
+		edit.putString("mobile", phone);
 		edit.commit();
 	}
 

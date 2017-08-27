@@ -17,13 +17,13 @@ import com.example.newsapp.photo.photo.PhotoAlbumActivity;
 import com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerActivity;
 import com.example.newsapp.photo.photoviewer.photoviewerinterface.ViewPagerDeleteActivity;
 import com.example.newsapp.photo.util.PictureManageUtil;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -58,17 +58,10 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 	private EditText edit_content;
 	private Button btn_ok;
 	private String ticket = "";
-	private String chn;
-	private String userPhoto;
-	private String LoginId;
 	private SharedPreferences PreUserInfo;// 存储个人信息
-	private SharedPreferences PreALLChannel;// 存储所用频道信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
-	private TextView TextArticle;
-	private TextView TextVideo;
-	private int type = 2;
 	private LinearLayout lin_select;
 	private LinearLayout lin_center;
 	private TextView text_one;
@@ -204,15 +197,24 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 		}
 
 		String Type = null;
-		String Data = null;
-		String pager = null;
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
-			// Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT).show();
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "sendPost"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "党员圈发帖"));
+				ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						  HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+
+					}
+				}).start();
 				finish();
 				text_load.setVisibility(View.GONE);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
@@ -324,13 +326,6 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
-		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
-		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
-		// ArrayValues.add(new BasicNameValuePair("helpSType", "" + type));
-		// ArrayValues.add(new BasicNameValuePair("modelSign", "KNDY_APPLY"));
-		// ArrayValues.add(new BasicNameValuePair("curPage", "" + curPage));
-		// ArrayValues.add(new BasicNameValuePair("pageSize", "" + pageSize));
-		// final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 		// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
 		ArrayValues.add(new BasicNameValuePair("article.classify", "" + classify));
@@ -388,8 +383,6 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
-		userPhoto = PreUserInfo.getString("userPhoto", "");
-		LoginId = PreUserInfo.getString("userName", "");
 	}
 
 	@Override
