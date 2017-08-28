@@ -42,17 +42,17 @@ import wuxc.single.railwayparty.layout.RoundImageView;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
 
 public class MyResumeActivityFirst extends Activity implements OnClickListener {
-	private String Str_text_name = "李超";
-	private String Str_text_sex = "男";
-	private String Str_text_id_number = "622331196011146661";
+	private String Str_text_name = "";
+	private String Str_text_sex = "";
+	private String Str_text_id_number = "";
 	private String Str_text_motto = "点击输入您的宣言";
 	private String Str_text_phone = "点击绑定电话号码";
-	private String Str_text_level = "本科";
-	private String Str_text_party_time = "2014-10-01";
-	private String Str_text_party_age = "1年";
-	private String Str_text_branch = "五公司第一党支部";
-	private String Str_text_statue = "政工干部";
-	private String Str_text_partymoney_endtime = "2017-10-09";
+	private String Str_text_level = "";
+	private String Str_text_party_time = "";
+	private String Str_text_party_age = "";
+	private String Str_text_branch = "";
+	private String Str_text_statue = "";
+	private String Str_text_partymoney_endtime = "";
 	private TextView text_ok;
 	private TextView text_name;
 	private TextView text_sex;
@@ -113,14 +113,16 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 				break;
 			case 12:
 				GetDataDetailFromLoginResultDatacode(msg.obj);
-				break;case 66:
-					GetData(msg.obj);
-					break;
+				break;
+			case 66:
+				GetData(msg.obj);
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	protected void GetData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -133,7 +135,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Editor edit = Prechange.edit();
 				edit.putBoolean(LoginId, true);
-			 
+
 				edit.commit();
 			}
 		} catch (JSONException e) {
@@ -266,6 +268,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			edit.putString("userPhoto", demoJson.getString("userPhoto"));
 			edit.putString("userName", demoJson.getString("userName"));
 			edit.putString("sex", demoJson.getString("sex"));
+			edit.putString("education", demoJson.getString("education"));
 			edit.putString("loginId", demoJson.getString("loginId"));
 			edit.putString("memberLevel", demoJson.getString("memberLevel"));
 			edit.putString("memberLevelDesc", demoJson.getString("memberLevelDesc"));
@@ -297,6 +300,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			edit.putString("pFormalTime", demoJson.getString("pFormalTime"));
 			edit.putString("pMonthFare", demoJson.getString("pMonthFare"));
 			edit.putString("pFareEndTime", demoJson.getString("pFareEndTime"));
+			edit.putString("pFareEndMonth", demoJson.getString("pFareEndMonth"));
 			edit.putString("pUser", demoJson.getString("pUser"));
 			edit.putString("pAllowOnLinFare", demoJson.getString("pAllowOnLinFare"));
 			edit.commit();
@@ -492,7 +496,16 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			Str_text_statue = "一般党员";
 		}
 		Str_text_party_time_yes = PreUserInfo.getString("pFormalTime", "无数据");
-		Str_text_partymoney_endtime = PreUserInfo.getString("pFareEndTime", "无数据");
+		String month = PreUserInfo.getString("pFareEndMonth", "2000-10");
+		try {
+			String[] temp = month.split("-");
+			String yString = temp[0];
+			String mString = temp[1];
+			month = yString + "年" + mString + "月";
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		Str_text_partymoney_endtime = month;
 		Str_text_username = PreUserInfo.getString("userName", "无数据");
 	}
 

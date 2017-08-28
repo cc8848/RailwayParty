@@ -335,7 +335,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_number_1.setVisibility(View.VISIBLE);
 
 			if (t1 >= 100) {
-				text_number_1.setText("，，，");
+				text_number_1.setText("");
+				text_number_1.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_1.setText("" + t1);
 			}
@@ -343,7 +345,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		if (t2 != 0) {
 			text_number_2.setVisibility(View.VISIBLE);
 			if (t2 > 99) {
-				text_number_2.setText("，，，");
+				text_number_2.setText("");
+				text_number_2.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_2.setText("" + t2);
 			}
@@ -353,7 +357,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_number_3.setVisibility(View.VISIBLE);
 
 			if (t3 > 99) {
-				text_number_3.setText("，，，");
+				text_number_3.setText("");
+				text_number_3.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_3.setText("" + t3);
 			}
@@ -362,7 +368,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_number_4.setVisibility(View.VISIBLE);
 
 			if (t4 > 99) {
-				text_number_4.setText("，，，");
+				text_number_4.setText("");
+				text_number_4.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_4.setText("" + t4);
 			}
@@ -371,7 +379,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_number_5.setVisibility(View.VISIBLE);
 
 			if (t5 > 99) {
-				text_number_5.setText("，，，");
+				text_number_5.setText("");
+				text_number_5.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_5.setText("" + t5);
 			}
@@ -380,7 +390,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			text_number_6.setVisibility(View.VISIBLE);
 
 			if (t6 > 99) {
-				text_number_6.setText("，，，");
+				text_number_6.setText("");
+				text_number_6.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_number_6.setText("" + t6);
 			}

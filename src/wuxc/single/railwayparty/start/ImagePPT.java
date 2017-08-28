@@ -95,6 +95,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 	private String cover = "";
 	Timer timer = new Timer();
 	private boolean read3 = false;
+	private JSONArray jsonArray = new JSONArray();
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -146,6 +147,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 			JSONArray jArray = null;
 
 			jArray = new JSONArray(demoJson.getString("videoFile"));
+			int number = 0;
 			for (int i = 0; i < jArray.length(); i++) {
 				try {
 					JSONObject demoJson1 = jArray.getJSONObject(i);
@@ -158,6 +160,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 					} else if (bStrings.equals("png") || bStrings.equals("jpg") || bStrings.equals("JPG")
 							|| bStrings.equals("PNG") || bStrings.equals("JPEG") || bStrings.equals("jpeg")) {
 						imagePPTModel listinfo = new imagePPTModel();
+						number++;
 						listinfo.setTime("2017-08-30");
 						listinfo.setTitle("杭州地区地铁项目");
 						listinfo.setContent("着眼明确基本标准、树立行为规范、逐条逐句通读党章、为人民做表率。");
@@ -165,10 +168,13 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 						listinfo.setZan("453");
 						listinfo.setRead(true);
 						listinfo.setImageurl(0);
-
+						listinfo.setNumber(number);
 						listinfo.setHeadimgUrl(temp);
 
 						listinfo.setWidth(screenwidth);
+						JSONObject jsonObject = new JSONObject();
+						jsonObject.put("path", temp);
+						jsonArray.put(jsonObject);
 						Log.e("temp", temp + screenwidth);
 						list.add(listinfo);
 					}
@@ -651,7 +657,7 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 		ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
 		ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "specialActivity"));
 		ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
-		ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title+"》"));
+		ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title + "》"));
 		ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
@@ -740,7 +746,9 @@ public class ImagePPT extends Activity implements OnTouchListener, Callback, OnC
 			Bundle bundle = new Bundle();
 			bundle.putString("url", data.getHeadimgUrl());
 			bundle.putInt("inturl", data.getImageurl());
-
+			bundle.putString("path", jsonArray + "");
+			bundle.putInt("number", data.getNumber());
+			Log.e("jsonArray", jsonArray + "");
 			intent.putExtras(bundle);
 			startActivity(intent);
 			// Toast.makeText(getApplicationContext(), "删除第" + (Integer)

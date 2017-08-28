@@ -210,8 +210,6 @@ public class imageshow extends FragmentActivity {
 					Fragments.add(new image10());
 					NumberPicture = NumberPicture + 10;
 					ViewPaper.setOffscreenPageLimit(NumberPicture);
-					// ViewPaper.setOnPageChangeListener(new
-					// MyOnPageChangeListener());
 					adapter.notifyDataSetChanged();
 				}
 			}

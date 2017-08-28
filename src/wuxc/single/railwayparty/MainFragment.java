@@ -185,6 +185,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			if (t1 >= 100) {
 				text_1.setText("，，，");
+				text_1.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_1.setText("" + t1);
 			}
@@ -193,6 +195,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			text_2.setVisibility(View.VISIBLE);
 			if (t2 > 99) {
 				text_2.setText("，，，");
+				text_2.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_2.setText("" + t2);
 			}
@@ -203,6 +207,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			if (t3 > 99) {
 				text_3.setText("，，，");
+				text_3.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_3.setText("" + t3);
 			}
@@ -212,6 +218,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			if (t4 > 99) {
 				text_4.setText("，，，");
+				text_4.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_4.setText("" + t4);
 			}
@@ -221,6 +229,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			if (t5 > 99) {
 				text_5.setText("，，，");
+				text_5.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_5.setText("" + t5);
 			}
@@ -230,6 +240,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			if (t6 > 99) {
 				text_6.setText("，，，");
+				text_6.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_6.setText("" + t6);
 			}
@@ -238,6 +250,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			text_7.setVisibility(View.VISIBLE);
 			if (t7 > 99) {
 				text_7.setText("，，，");
+				text_7.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_7.setText("" + t7);
 			}
@@ -247,6 +261,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			text_8.setVisibility(View.VISIBLE);
 			if (t8 > 99) {
 				text_8.setText("，，，");
+				text_8.setBackgroundResource(R.drawable.morethan100);
+
 			} else {
 				text_8.setText("" + t8);
 			}

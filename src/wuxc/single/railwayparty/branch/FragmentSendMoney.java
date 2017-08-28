@@ -99,7 +99,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	// 0--已交
 	// 1--未交
 
-	private int[] status = { 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0 };
+	private int[] status = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	// 0--未选
 	// 1--已选
 	private int[] condition = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

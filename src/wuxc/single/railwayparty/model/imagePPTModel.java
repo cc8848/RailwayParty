@@ -11,6 +11,15 @@ public class imagePPTModel {
 	private String Id;
 	private int bi;
 	private int width;
+	private int number;
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
 
 	public int getWidth() {
 		return width;
