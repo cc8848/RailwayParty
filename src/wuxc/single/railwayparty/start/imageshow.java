@@ -51,6 +51,7 @@ public class imageshow extends FragmentActivity {
 	public static int bigpage = 0;
 	private SharedPreferences PreGuidePage;// 用于确定是否是第一次登录
 	private MyPagerAdapter adapter = new MyPagerAdapter();
+	private int thispage = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,12 @@ public class imageshow extends FragmentActivity {
 		Intent intent = this.getIntent(); // 获取已有的intent对象
 		Bundle bundle = intent.getExtras(); // 获取intent里面的bundle对象
 		NumberPicture = bundle.getInt("number");
+		try {
+			thispage = bundle.getInt("page");
+		} catch (Exception e) {
+			// TODO: handle exception
+			thispage = 0;
+		}
 		FragmentManager = getSupportFragmentManager();
 		ViewPaper.setOffscreenPageLimit(NumberPicture);
 		ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
@@ -72,7 +79,10 @@ public class imageshow extends FragmentActivity {
 		image_dot1 = (ImageView) findViewById(R.id.image_dot1);
 		image_dot2 = (ImageView) findViewById(R.id.image_dot2);
 		image_dot3 = (ImageView) findViewById(R.id.image_dot3);
+		if (thispage != 0 && thispage < 10) {
 
+			ViewPaper.setCurrentItem(thispage);
+		}
 		// setdot(0);
 	}
 
@@ -184,8 +194,8 @@ public class imageshow extends FragmentActivity {
 			// go_next_page();
 			int temp = page + 1;
 			temp = temp % 10;
-			int big=temp/10;
-			if (temp < NumberPicture&&big>bigpage) {
+			int big = temp / 10;
+			if (temp < NumberPicture && big > bigpage) {
 				if (temp == 0) {
 					bigpage++;
 					Fragments.add(new image1());

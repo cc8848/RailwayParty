@@ -58,7 +58,7 @@ public class ChangeTermsDetailActivity extends Activity
 	private String StartTime;
 	private String EndTime;
 	private String Id = "";
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -198,9 +198,9 @@ public class ChangeTermsDetailActivity extends Activity
 				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "暂无数据", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "暂无数据", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -424,7 +424,8 @@ public class ChangeTermsDetailActivity extends Activity
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		super.onResume();	GetData();
+		super.onResume();
+		GetData();
 	}
 
 	@Override

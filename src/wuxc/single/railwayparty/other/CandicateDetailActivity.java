@@ -10,9 +10,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
 
 public class CandicateDetailActivity extends Activity implements OnClickListener {
@@ -42,6 +47,7 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
+	private String url;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -70,11 +76,50 @@ public class CandicateDetailActivity extends Activity implements OnClickListener
 		TextName.setText(Name);
 		Id = bundle.getString("Id");
 		remark = bundle.getString("remark");
+		url = bundle.getString("itemImage");
 		TextNumber.setText("当前票数：" + Number);
 		TextDetail.setText(remark);
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		PreALLChannel = getSharedPreferences("ALLChannel", Context.MODE_PRIVATE);
 		ReadTicket();
+		if (url.equals("")) {
+			RoundHeadimg.setImageResource(R.drawable.logo);
+		} else {
+			String userPhoto = URLcontainer.urlip + "upload" + url;
+			String userName = getBitName(userPhoto);
+			String temppath = Environment.getExternalStorageDirectory() + "/chat/" + userName + ".png";
+			Bitmap bm1 = null;
+			bm1 = getBitmapByPath(temppath);
+			if (bm1 == null) {
+				Log.e("加载图片", "加载图片" + userName);
+				RoundHeadimg.setImageResource(R.drawable.logo);
+			} else {
+				Log.e("引用图片", "引用图片" + userName);
+				RoundHeadimg.setImageBitmap(bm1);
+			}
+		}
+	}
+
+	public Bitmap getBitmapByPath(String fileName) {
+		// String myJpgPath =
+		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		// options.inSampleSize = 12;
+		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
+		return bm;
+	}
+
+	private String getBitName(String imageUrl) {
+		// TODO Auto-generated method stub
+		String[] temp = imageUrl.split("");
+		String result = "";
+		for (int i = 0; i < temp.length; i++) {
+			if (temp[i].equals("/") || temp[i].equals(".")) {
+				temp[i] = "";
+			}
+			result = result + temp[i];
+		}
+		return result + "120";
 	}
 
 	protected void GetDataDueData(Object obj) {

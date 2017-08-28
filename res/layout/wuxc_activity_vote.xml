@@ -25,7 +25,7 @@
             android:layout_marginRight="@dimen/top_height"
             android:gravity="center"
             android:singleLine="true"
-            android:text="投票"
+            android:text="我的投票"
             android:textColor="#ffffff"
             android:textSize="@dimen/text_size" />
     </RelativeLayout>
@@ -34,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="166dp"

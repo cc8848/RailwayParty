@@ -91,6 +91,7 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 
 				JSONObject json = new JSONObject(Data);
 				Str_party_address = json.getString("address");
+				Str_party_time= json.getString("operateTime");
 			} else {
 				// Toast.makeText(getApplicationContext(), "数据格式校验失败",
 				// Toast.LENGTH_SHORT).show();
@@ -171,7 +172,7 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 		text_party_address.setText("党组织地址：" + Str_party_address);
 		text_party_time.setText("转入本组织时间：" + Str_party_time);
 		Editor edit = PreUserInfo.edit();
-
+		edit.putString("detailtime", Str_party_time);
 		edit.putString("detailaddress", Str_party_address);
 		edit.commit();
 	}
@@ -197,7 +198,7 @@ public class PartyMembershipActivity extends Activity implements OnClickListener
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/common/getOrg", ArrayValues);
+				DueData = HttpGetData.GetData("api/pb/relationChange/getParty", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = 7;

@@ -239,6 +239,8 @@ public class startLogoActivity extends Activity {
 			username = demoJson.getString("username");
 			WriteAccount();
 			WriteUserInfo();
+			Log.e("getTimeByCalendar() + userName", getTimeByCalendar() + userName);
+			
 			if (!PreLogin.getBoolean(getTimeByCalendar() + userName, false)) {
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
@@ -278,9 +280,13 @@ public class startLogoActivity extends Activity {
 		month++;
 		if (month < 10) {
 			Mon = "0" + month;
+		}else {
+			Mon = "" + month;
 		}
 		if (day < 10) {
 			Day = "0" + day;
+		}else {
+			Day=day+"";
 		}
 		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
 		return year + "-" + Mon + "-" + Day;

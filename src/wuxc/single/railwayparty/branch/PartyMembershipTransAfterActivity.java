@@ -118,7 +118,7 @@ public class PartyMembershipTransAfterActivity extends Activity implements OnCli
 		Str_name = PreUserInfo.getString("userName", "");
 		Str_party_name = PreUserInfo.getString("deptName", "");
 		Str_party_address = PreUserInfo.getString("detailaddress", "");
-		Str_party_time = PreUserInfo.getString("pInTime", "");
+		Str_party_time = PreUserInfo.getString("detailtime", "");
 		userPhoto = PreUserInfo.getString("userPhoto", null);
 	}
 

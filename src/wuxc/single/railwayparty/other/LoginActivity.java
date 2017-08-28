@@ -113,7 +113,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				Editor edit = PreLogin.edit();
 				edit.putBoolean(getTimeByCalendar() + userName, true);
-				Log.e("PreLogin", ""+true);
+				Log.e("PreLogin", "" + true);
 				edit.commit();
 			}
 		} catch (JSONException e) {
@@ -134,9 +134,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 		month++;
 		if (month < 10) {
 			Mon = "0" + month;
+		}else {
+			Mon = "" + month;
 		}
 		if (day < 10) {
 			Day = "0" + day;
+		}else {
+			Day=day+"";
 		}
 		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
 		return year + "-" + Mon + "-" + Day;
@@ -195,7 +199,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 			username = demoJson.getString("username");
 			WriteAccount();
 			WriteUserInfo();
-			if (!PreLogin.getBoolean(getTimeByCalendar() + userName, false)) {
+			 
+				if (!PreLogin.getBoolean(getTimeByCalendar() + userName, false)) {
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "userSign"));

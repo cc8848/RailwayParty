@@ -27,7 +27,7 @@ public class MyvoteActivity extends FragmentActivity implements OnClickListener 
 	private Childviewpaper ViewPaper;
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
-	private int NumberPicture = 2;
+	private int NumberPicture = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class MyvoteActivity extends FragmentActivity implements OnClickListener 
 	private void initfragment() {
 		// TODO Auto-generated method stub
 		Fragments.add(new FragmentVotePerson());
-		Fragments.add(new FragmentVoteOther());
+//		Fragments.add(new FragmentVoteOther());
 
 	}
 

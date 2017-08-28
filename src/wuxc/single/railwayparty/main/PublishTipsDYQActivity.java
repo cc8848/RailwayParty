@@ -313,9 +313,13 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 		month++;
 		if (month < 10) {
 			Mon = "0" + month;
+		}else {
+			Mon = "" + month;
 		}
 		if (day < 10) {
 			Day = "0" + day;
+		}else {
+			Day=day+"";
 		}
 		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
 		return year + "-" + Mon + "-" + Day;
@@ -438,6 +442,9 @@ public class PublishTipsDYQActivity extends FragmentActivity implements OnClickL
 						}
 					}).start();
 				}
+			}
+			if (photoList.size()==0) {
+				GetData();
 			}
 			// GetFile( photoList.get(0).getPhotoPath());
 

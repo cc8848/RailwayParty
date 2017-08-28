@@ -377,6 +377,8 @@ public class PublishTipsActivity extends FragmentActivity implements OnClickList
 						}
 					}).start();
 				}
+			}if (photoList.size()==0) {
+				GetData();
 			}
 			// GetFile( photoList.get(0).getPhotoPath());
 

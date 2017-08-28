@@ -8,6 +8,15 @@ public class TipsDetailModel {
 	private String Time;
 	private String Detail;
 	private int type;
+	private int number;
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
 
 	public int getType() {
 		return type;

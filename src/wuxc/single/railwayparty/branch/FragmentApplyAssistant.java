@@ -317,20 +317,25 @@ public class FragmentApplyAssistant extends Fragment implements OnClickListener 
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.hstate", "0"));
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.orgName", LoginId));
 		ArrayValues.add(new BasicNameValuePair("kndy_apply.content", "" + edit_content.getText().toString()));
-		ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
-		ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
+		if (attachment_filePath.equals("")||attachment_filePath==null) {
+			
+		}else {
+			ArrayValues.add(new BasicNameValuePair("attacement.operateFlag", "1"));
+			ArrayValues.add(new BasicNameValuePair("attacement.ext", attachment_ext));
 
-		ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
+			ArrayValues.add(new BasicNameValuePair("attacement.scalePath", attachment_scalePath));
 
-		ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
-		ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
-		ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
-		ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
-		ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
+			ArrayValues.add(new BasicNameValuePair("attacement.classify", "attachFile"));
+			ArrayValues.add(new BasicNameValuePair("attacement.fileName", attachment_fileName));
+			ArrayValues.add(new BasicNameValuePair("attacement.par_keyid", attachment_par_keyid));
+			ArrayValues.add(new BasicNameValuePair("attacement.size", attachment_size));
+			ArrayValues.add(new BasicNameValuePair("attacement.filePath", attachment_filePath));
 
-		ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
-		ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
+			ArrayValues.add(new BasicNameValuePair("attacement.pathType", attachment_pathType));
+			ArrayValues.add(new BasicNameValuePair("attacement.key", attachment_key));
 
+		}
+		
 		new Thread(new Runnable() { // 开启线程上传文件
 			@Override
 			public void run() {

@@ -57,7 +57,7 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 	private View view;// 缓存Fragment view
 	private int[] headimg = { R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234,
 			R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234, R.drawable.p234 };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -133,7 +133,15 @@ public class BbsFragment5 extends Fragment implements OnTouchListener, Callback,
 					listinfo.setTitle(json_data.getString("title"));
 					listinfo.setId(json_data.getString("keyid"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
-					listinfo.setDetail("暂无详情");
+
+					try {
+						listinfo.setDetail(json_data.getString("summary"));
+
+					} catch (Exception e) {
+						// TODO: handle exception
+						listinfo.setDetail("暂无详情");
+
+					}
 					listinfo.setEndtime(json_data.getString("endDate"));
 					listinfo.setStarttime(json_data.getString("startDate"));
 					// listinfo.setSummary(json_data.getString("summary"));

@@ -234,7 +234,7 @@ public class FragmentVoteOther extends Fragment implements OnTouchListener, OnCl
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/vote/getByClassify", ArrayValues);
+				DueData = HttpGetData.GetData("api/cms/voteRecord/getListJsonDataMyVote", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;

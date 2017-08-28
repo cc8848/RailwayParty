@@ -91,10 +91,10 @@ public class FragmentVotePerson extends Fragment implements OnTouchListener, OnC
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			// pager = demoJson.getString("pager");
+			 pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-				GetPager(Data);
+				GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 //				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -128,11 +128,11 @@ public class FragmentVotePerson extends Fragment implements OnTouchListener, OnC
 					Log.e("json_data", "" + json_data);
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					VotePersonModel listinfo = new VotePersonModel();
-					listinfo.setTime(json_data.getString("startDate"));
+					listinfo.setTime(json_data.getString("createtime"));
 					listinfo.setTitle(json_data.getString("title"));
-					listinfo.setImageUrl(json_data.getString("coverImage"));
+					listinfo.setImageUrl("");
 
-					listinfo.setDetail("");
+					listinfo.setDetail("支持对象:"+json_data.getString("name"));
 					list.add(listinfo);
 
 				}
@@ -233,7 +233,7 @@ public class FragmentVotePerson extends Fragment implements OnTouchListener, OnC
 			@Override
 			public void run() {
 				String DueData = "";
-				DueData = HttpGetData.GetData("api/cms/vote/getByClassify", ArrayValues);
+				DueData = HttpGetData.GetData("api/cms/voteRecord/getListJsonDataMyVote", ArrayValues);
 				Message msg = new Message();
 				msg.obj = DueData;
 				msg.what = GET_DUE_DATA;

@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -122,12 +124,53 @@ public class image6 extends Fragment implements OnClickListener {
 			try {
 				PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 				userPhoto = PreUserInfo.getString("image" + (imageshow.bigpage*10+5), "");
-				GetHeadPic();
+				if (userPhoto.equals("")) {
+					image.setImageResource(R.drawable.logo);
+				} else {
+					if (userPhoto.indexOf("http") < 0 && userPhoto.indexOf("upload") < 0) {
+
+//					} else {
+						userPhoto = "/upload" + userPhoto;
+					}
+					String Photo = URLcontainer.urlipno + userPhoto;
+					String userName = getBitName(Photo);
+					String temppath = Environment.getExternalStorageDirectory() + "/chat/" + userName + ".png";
+					Bitmap bm1 = null;
+					bm1 = getBitmapByPath(temppath);
+					if (bm1 == null) {
+						Log.e("¼ÓÔØÍ¼Æ¬", "¼ÓÔØÍ¼Æ¬" + userName);
+						GetHeadPic();
+					} else {
+						Log.e("ÒýÓÃÍ¼Æ¬", "ÒýÓÃÍ¼Æ¬" + userName);
+						image.setImageBitmap(bm1);
+					}
+				}
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 
 		}
+	}
+	public Bitmap getBitmapByPath(String fileName) {
+		// String myJpgPath =
+		// Environment.getExternalStorageDirectory()+"pepper/" + fileName;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		// options.inSampleSize = 12;
+		Bitmap bm = BitmapFactory.decodeFile(fileName, options);
+		return bm;
+	}
+
+	private String getBitName(String imageUrl) {
+		// TODO Auto-generated method stub
+		String[] temp = imageUrl.split("");
+		String result = "";
+		for (int i = 0; i < temp.length; i++) {
+			if (temp[i].equals("/") || temp[i].equals(".")) {
+				temp[i] = "";
+			}
+			result = result + temp[i];
+		}
+		return result + "600";
 	}
 
 	@Override

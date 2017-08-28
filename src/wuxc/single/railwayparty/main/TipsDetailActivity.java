@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,7 @@ import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.TipsDetailModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.StandardImageXML;
+import wuxc.single.railwayparty.start.imageshow;
 
 public class TipsDetailActivity extends Activity
 		implements Callback, OnItemClickListener, OnClickListener, OnTouchListener {
@@ -165,7 +167,7 @@ public class TipsDetailActivity extends Activity
 				listinfo.setDetail(detail);
 				listinfo.setImage("");
 				listinfo.setType(0);
-
+				listinfo.setNumber(0);
 				list.add(listinfo);
 			}
 			for (int i = 0; i < number; i++) {
@@ -180,8 +182,11 @@ public class TipsDetailActivity extends Activity
 					Log.e("photo", photo[i]);
 					listinfo.setImage(photo[i]);
 					listinfo.setType(1);
-
+					listinfo.setNumber(i);
 					list.add(listinfo);
+					Editor edit = PreUserInfo.edit();
+					edit.putString("image" + i, photo[i]);
+					edit.commit();
 				}
 			}
 		}
@@ -295,7 +300,6 @@ public class TipsDetailActivity extends Activity
 
 		GetData();
 
-	 
 		final ArrayList ArrayValues = new ArrayList();
 		// ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 		// ArrayValues.add(new BasicNameValuePair("applyType", "" + 2));
@@ -322,7 +326,7 @@ public class TipsDetailActivity extends Activity
 
 			}
 		}).start();
-	
+
 	}
 
 	private void ReadTicket() {
@@ -517,13 +521,21 @@ public class TipsDetailActivity extends Activity
 				//
 				// Toast.makeText(getApplicationContext(), "É¾³ýµÚ" + (Integer)
 				// v.getTag() + "Ìõ", Toast.LENGTH_SHORT).show();
+				// Intent intent = new Intent();
+				// intent.setClass(getApplicationContext(),
+				// StandardImageXML.class);
+				// Bundle bundle = new Bundle();
+				// bundle.putString("url", data.getImage());
+				// bundle.putInt("inturl", R.drawable.logo);
+				//
+				// intent.putExtras(bundle);
+				// startActivity(intent);
 				Intent intent = new Intent();
-				intent.setClass(getApplicationContext(), StandardImageXML.class);
 				Bundle bundle = new Bundle();
-				bundle.putString("url", data.getImage());
-				bundle.putInt("inturl", R.drawable.logo);
-
+				bundle.putInt("number", number);
+				bundle.putInt("page", data.getNumber());
 				intent.putExtras(bundle);
+				intent.setClass(getApplicationContext(), imageshow.class);
 				startActivity(intent);
 			}
 			break;
