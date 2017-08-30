@@ -14,6 +14,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -73,6 +74,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 	private RelativeLayout rel_motto;
 	private SharedPreferences Prechange;
 	private String LoginId;
+	private String Mobile = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -174,6 +176,9 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 			} else if (Type.equals("mobileUsed")) {
 				Toast.makeText(getApplicationContext(), "手机号已被使用", Toast.LENGTH_SHORT).show();
+
+			} else if (Type.equals("errorMobileCode")) {
+				Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
 
 			} else {
 				Toast.makeText(getApplicationContext(), "获取失败", Toast.LENGTH_SHORT).show();
@@ -290,6 +295,9 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 				// edit.commit();
 				// }
 				finish();
+			} else if (Type.equals("errorMobileCode")) {
+				Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+
 			} else {
 				Toast.makeText(getApplicationContext(), "修改失败，请重试", Toast.LENGTH_SHORT).show();
 			}
@@ -379,6 +387,7 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 		Str_text_id_number = PreUserInfo.getString("icardNo", "无数据");
 		Str_text_motto = PreUserInfo.getString("sign", "无数据");
 		Str_text_phone = PreUserInfo.getString("mobile", "点击绑定手机号码");
+		Mobile = Str_text_phone;
 		b_phone = Str_text_phone;
 		Str_text_level = PreUserInfo.getString("education", "本科");
 		if (Str_text_level.equals("2")) {
@@ -538,35 +547,28 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 
 			break;
 		case R.id.text_send:
-			if (true) {
+			if (Mobile.equals(text_phone.getText().toString())) {
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				ArrayValues.add(new BasicNameValuePair("templateName", "mpAndbindMobile"));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/member/sendMobileCode", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 12;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+			} else {
 
 				final ArrayList ArrayValues = new ArrayList();
-				// ArrayValues.add(new BasicNameValuePair("ticket",
-				// ticket));
-				// ArrayValues.add(new BasicNameValuePair("applyType",
-				// "" + 2));
-				// ArrayValues.add(new BasicNameValuePair("helpSType",
-				// "" + type));
-				// ArrayValues.add(new BasicNameValuePair("modelSign",
-				// "KNDY_APPLY"));
-				// ArrayValues.add(new BasicNameValuePair("curPage", ""
-				// + curPage));
 				ArrayValues.add(new BasicNameValuePair("mobile", "" + text_phone.getText().toString()));
-				// final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-				// ArrayValues.add(new BasicNameValuePair("chn",
-				// "dyq"));
-				// chn = "dyq";
 				ArrayValues.add(new BasicNameValuePair("templateName", "mpAndbindMobile"));
-				// ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign",
-				// "" + Str_text_motto));
-				// ArrayValues.add(new
-				// BasicNameValuePair("orgUserExtDto.mobile", "" +
-				// Str_text_phone));
-				// ArrayValues.add(new BasicNameValuePair("classify", ""
-				// +
-				// classify));
 
 				new Thread(new Runnable() { // 开启线程上传文件
 					@Override
@@ -583,38 +585,39 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.text_ok:
-			if (!b_phone.equals(Str_text_phone)) {
+
+			if (true) {
 				if (text_code.getText().toString().equals("") || text_code == null) {
 					Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
 				} else {
-					if (true) {
+					if (Mobile.equals(text_phone.getText().toString())) {
 						final ArrayList ArrayValues = new ArrayList();
-						// ArrayValues.add(new BasicNameValuePair("ticket",
-						// ticket));
-						// ArrayValues.add(new BasicNameValuePair("applyType",
-						// "" + 2));
-						// ArrayValues.add(new BasicNameValuePair("helpSType",
-						// "" + type));
-						// ArrayValues.add(new BasicNameValuePair("modelSign",
-						// "KNDY_APPLY"));
-						// ArrayValues.add(new BasicNameValuePair("curPage", ""
-						// + curPage));
 						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobileValCode",
 								"" + text_code.getText().toString()));
-						// final ArrayList ArrayValues = new ArrayList();
 						ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-						// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-						// ArrayValues.add(new BasicNameValuePair("chn",
-						// "dyq"));
-						// chn = "dyq";
 						ArrayValues.add(
 								new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
 						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
 						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
-						// ArrayValues.add(new BasicNameValuePair("classify", ""
-						// +
-						// classify));
 
+						new Thread(new Runnable() { // 开启线程上传文件
+							@Override
+							public void run() {
+								String DueData = "";
+								DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
+								Message msg = new Message();
+								msg.obj = DueData;
+								msg.what = GET_DUE_DATA;
+								uiHandler.sendMessage(msg);
+							}
+						}).start();
+					} else {
+						final ArrayList ArrayValues = new ArrayList();
+						ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+						ArrayValues.add(
+								new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
+						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
+						ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
 						new Thread(new Runnable() { // 开启线程上传文件
 							@Override
 							public void run() {
@@ -628,46 +631,33 @@ public class MyResumeActivity extends Activity implements OnClickListener {
 						}).start();
 					}
 				}
-			} else {
+				// } else {
 
-				final ArrayList ArrayValues = new ArrayList();
-				// ArrayValues.add(new BasicNameValuePair("ticket",
-				// ticket));
-				// ArrayValues.add(new BasicNameValuePair("applyType",
-				// "" + 2));
-				// ArrayValues.add(new BasicNameValuePair("helpSType",
-				// "" + type));
-				// ArrayValues.add(new BasicNameValuePair("modelSign",
-				// "KNDY_APPLY"));
-				// ArrayValues.add(new BasicNameValuePair("curPage", ""
-				// + curPage));
-				// ArrayValues.add(new
-				// BasicNameValuePair("orgUserExtDto.mobileValCode",
-				// "" + text_code.getText().toString()));
 				// final ArrayList ArrayValues = new ArrayList();
-				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-				// chn = GetChannelByKey.GetSign(PreALLChannel, "职工之家");
-				// ArrayValues.add(new BasicNameValuePair("chn",
-				// "dyq"));
-				// chn = "dyq";
-				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
-				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
-				ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
-				// ArrayValues.add(new BasicNameValuePair("classify", ""
-				// +
-				// classify));
-
-				new Thread(new Runnable() { // 开启线程上传文件
-					@Override
-					public void run() {
-						String DueData = "";
-						DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
-						Message msg = new Message();
-						msg.obj = DueData;
-						msg.what = GET_DUE_DATA;
-						uiHandler.sendMessage(msg);
-					}
-				}).start();
+				// ArrayValues.add(new BasicNameValuePair("ticket", "" +
+				// ticket));
+				// ArrayValues
+				// .add(new BasicNameValuePair("orgUserExtDto.user_name",
+				// text_username.getText().toString()));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.sign", "" +
+				// Str_text_motto));
+				// ArrayValues.add(new
+				// BasicNameValuePair("orgUserExtDto.mobile", "" +
+				// Str_text_phone));
+				// new Thread(new Runnable() { // 开启线程上传文件
+				// @Override
+				// public void run() {
+				// String DueData = "";
+				// DueData =
+				// HttpGetData.GetData("api/member/saveMemberInfo",
+				// ArrayValues);
+				// Message msg = new Message();
+				// msg.obj = DueData;
+				// msg.what = GET_DUE_DATA;
+				// uiHandler.sendMessage(msg);
+				// }
+				// }).start();
 
 			}
 

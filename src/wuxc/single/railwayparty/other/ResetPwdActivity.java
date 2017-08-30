@@ -175,11 +175,11 @@ public class ResetPwdActivity extends Activity implements OnClickListener {
 				if (temp.length == 12) {
 					type = 3;
 					sendcode(type);
-				} else if (temp.length == 19) {
-					type = 2;
-					sendcode(type);
+					// } else if (temp.length == 19) {
+					// type = 2;
+					// sendcode(type);
 				} else {
-					Toast.makeText(getApplicationContext(), "请输入18位身份证号或11手机号", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请输入11手机号", Toast.LENGTH_SHORT).show();
 
 				}
 			}
@@ -208,24 +208,29 @@ public class ResetPwdActivity extends Activity implements OnClickListener {
 					} else {
 						resetdata(type);
 					}
-				} else if (temp.length == 19) {
-					type = 2;
-					if (edit_code.getText().toString() == null || edit_code.getText().toString().equals("")) {
-						Toast.makeText(getApplicationContext(), "验证码不可为空", Toast.LENGTH_SHORT).show();
-					} else if (newpwd.equals("") || newpwd == null) {
-						Toast.makeText(getApplicationContext(), "请输入新密码", Toast.LENGTH_SHORT).show();
-
-					} else if (newpwd1.equals("") || newpwd1 == null) {
-						Toast.makeText(getApplicationContext(), "请确认新密码", Toast.LENGTH_SHORT).show();
-
-					} else if (!newpwd.equals(newpwd1)) {
-						Toast.makeText(getApplicationContext(), "两次输入不一致", Toast.LENGTH_SHORT).show();
-
-					} else {
-						resetdata(type);
-					}
+					// } else if (temp.length == 19) {
+					// type = 2;
+					// if (edit_code.getText().toString() == null ||
+					// edit_code.getText().toString().equals("")) {
+					// Toast.makeText(getApplicationContext(), "验证码不可为空",
+					// Toast.LENGTH_SHORT).show();
+					// } else if (newpwd.equals("") || newpwd == null) {
+					// Toast.makeText(getApplicationContext(), "请输入新密码",
+					// Toast.LENGTH_SHORT).show();
+					//
+					// } else if (newpwd1.equals("") || newpwd1 == null) {
+					// Toast.makeText(getApplicationContext(), "请确认新密码",
+					// Toast.LENGTH_SHORT).show();
+					//
+					// } else if (!newpwd.equals(newpwd1)) {
+					// Toast.makeText(getApplicationContext(), "两次输入不一致",
+					// Toast.LENGTH_SHORT).show();
+					//
+					// } else {
+					// resetdata(type);
+					// }
 				} else {
-					Toast.makeText(getApplicationContext(), "请输入18位身份证号或11手机号", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "请输入11手机号", Toast.LENGTH_SHORT).show();
 				}
 			}
 			break;

@@ -32,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.internet.UpLoadFile;
@@ -98,10 +99,15 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 	private Bitmap mbitmap;
 	private boolean head = false;
 	private SharedPreferences Prechange;
+	private String Mobile = "";
+	private String userPhoto = "";
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
+			case 99:
+				ShowHeadImage(msg.obj);
+				break;
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
@@ -143,6 +149,18 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+	}
+
+	protected void ShowHeadImage(Object obj) {
+		// TODO Auto-generated method stub
+		if (!(obj == null)) {
+			try {
+				Bitmap HeadImage = (Bitmap) obj;
+				round_headimg.setImageBitmap(HeadImage);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 		}
 	}
 
@@ -307,6 +325,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			// GetAllData();
 			ReadTicket();
 			settext();
+			GetHeadPic();
 		} catch (
 
 		JSONException e) {
@@ -415,6 +434,22 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 
 	}
 
+	private void GetHeadPic() {
+		// TODO Auto-generated method stub
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				Bitmap HeadImage = null;
+				HeadImage = GetBitmapFromServer
+						.getBitmapFromServer(URLcontainer.urlip + URLcontainer.GetFile + userPhoto);
+				Message msg = new Message();
+				msg.what = 99;
+				msg.obj = HeadImage;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
 	private void getdata() {
 		// TODO Auto-generated method stub
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
@@ -439,6 +474,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		creditsym = PreUserInfo.getInt("creditsym", 0);
 		ticket = PreUserInfo.getString("ticket", "");
+		userPhoto = PreUserInfo.getString("userPhoto", "");
 		Str_text_name = PreUserInfo.getString("realName", "无数据");
 		userid = PreUserInfo.getString("loginId", "");
 		LoginId = PreUserInfo.getString("loginId", null);
@@ -451,6 +487,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 		Str_text_id_number = PreUserInfo.getString("icardNo", "无数据");
 		Str_text_motto = PreUserInfo.getString("sign", "无数据");
 		Str_text_phone = PreUserInfo.getString("mobile", "点击绑定手机号码");
+		Mobile = Str_text_phone;
 		b_phone = Str_text_phone;
 		Str_text_level = PreUserInfo.getString("education", "本科");
 		if (Str_text_level.equals("2")) {
@@ -733,7 +770,23 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 
 			break;
 		case R.id.text_send:
-			if (true) {
+			if (Mobile.equals(text_phone.getText().toString())) {
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+				ArrayValues.add(new BasicNameValuePair("templateName", "mpAndbindMobile"));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String DueData = "";
+						DueData = HttpGetData.GetData("api/member/sendMobileCode", ArrayValues);
+						Message msg = new Message();
+						msg.obj = DueData;
+						msg.what = 12;
+						uiHandler.sendMessage(msg);
+					}
+				}).start();
+			} else {
 
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("mobile", "" + text_phone.getText().toString()));
@@ -755,12 +808,12 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.text_ok:
-			if (head) {
-				if (!b_phone.equals(Str_text_phone)) {
+			if (head || (!userPhoto.equals(""))) {
+				if (true) {
 					if (text_code.getText().toString().equals("") || text_code == null) {
 						Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
 					} else {
-						if (true) {
+						if (Mobile.equals(text_phone.getText().toString())) {
 							final ArrayList ArrayValues = new ArrayList();
 							ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobileValCode",
 									"" + text_code.getText().toString()));
@@ -781,27 +834,53 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 									uiHandler.sendMessage(msg);
 								}
 							}).start();
+						} else {
+							final ArrayList ArrayValues = new ArrayList();
+							ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+							ArrayValues.add(new BasicNameValuePair("orgUserExtDto.user_name",
+									text_username.getText().toString()));
+							ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
+							ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
+							new Thread(new Runnable() { // 开启线程上传文件
+								@Override
+								public void run() {
+									String DueData = "";
+									DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
+									Message msg = new Message();
+									msg.obj = DueData;
+									msg.what = GET_DUE_DATA;
+									uiHandler.sendMessage(msg);
+								}
+							}).start();
 						}
 					}
-				} else {
+					// } else {
 
-					final ArrayList ArrayValues = new ArrayList();
-					ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
-					ArrayValues
-							.add(new BasicNameValuePair("orgUserExtDto.user_name", text_username.getText().toString()));
-					ArrayValues.add(new BasicNameValuePair("orgUserExtDto.sign", "" + Str_text_motto));
-					ArrayValues.add(new BasicNameValuePair("orgUserExtDto.mobile", "" + Str_text_phone));
-					new Thread(new Runnable() { // 开启线程上传文件
-						@Override
-						public void run() {
-							String DueData = "";
-							DueData = HttpGetData.GetData("api/member/saveMemberInfo", ArrayValues);
-							Message msg = new Message();
-							msg.obj = DueData;
-							msg.what = GET_DUE_DATA;
-							uiHandler.sendMessage(msg);
-						}
-					}).start();
+					// final ArrayList ArrayValues = new ArrayList();
+					// ArrayValues.add(new BasicNameValuePair("ticket", "" +
+					// ticket));
+					// ArrayValues
+					// .add(new BasicNameValuePair("orgUserExtDto.user_name",
+					// text_username.getText().toString()));
+					// ArrayValues.add(new
+					// BasicNameValuePair("orgUserExtDto.sign", "" +
+					// Str_text_motto));
+					// ArrayValues.add(new
+					// BasicNameValuePair("orgUserExtDto.mobile", "" +
+					// Str_text_phone));
+					// new Thread(new Runnable() { // 开启线程上传文件
+					// @Override
+					// public void run() {
+					// String DueData = "";
+					// DueData =
+					// HttpGetData.GetData("api/member/saveMemberInfo",
+					// ArrayValues);
+					// Message msg = new Message();
+					// msg.obj = DueData;
+					// msg.what = GET_DUE_DATA;
+					// uiHandler.sendMessage(msg);
+					// }
+					// }).start();
 
 				}
 			} else {

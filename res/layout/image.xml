@@ -26,7 +26,8 @@
             android:gravity="center"
             android:textColor="#ffffff"
             android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,7 +43,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pic_last" />
+                android:src="@drawable/pic_last"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/image_next"
@@ -52,7 +54,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pic_next" />
+                android:src="@drawable/pic_next"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 

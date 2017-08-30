@@ -70,7 +70,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="身份证号/手机号"
+                    android:hint="手机号"
                     android:numeric="integer"
                     android:textSize="16dp" />
             </LinearLayout>

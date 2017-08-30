@@ -53,7 +53,7 @@ public class MycheckActivity extends Activity implements OnClickListener, OnTouc
 	private TextView headTextView = null;
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -87,10 +87,10 @@ public class MycheckActivity extends Activity implements OnClickListener, OnTouc
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-//			 pager = demoJson.getString("pager");
+			// pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
-//				GetPager(pager);
+				// GetPager(pager);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
@@ -125,12 +125,22 @@ public class MycheckActivity extends Activity implements OnClickListener, OnTouc
 					MycheckModel listinfo = new MycheckModel();
 					listinfo.setTime(json_data.getString("createTime"));
 					listinfo.setTitle(json_data.getString("title"));
+
 					if (json_data.getString("CSTATUS").equals("1")) {
 						listinfo.setDetail("通过");
 					} else if (json_data.getString("CSTATUS").equals("2")) {
 						listinfo.setDetail("不通过");
 					} else {
 						listinfo.setDetail("正在审批");
+					}
+					try {
+						json_data = new JSONObject(json_data.getString("datas"));
+						String from = json_data.getString("fromOrgName");
+						String to = json_data.getString("toOrgName");
+						String userName = json_data.getString("userName");
+						listinfo.setTitle("党员" + userName + "由" + from + "转接至" + to);
+					} catch (Exception e) {
+						// TODO: handle exception
 					}
 
 					list.add(listinfo);
@@ -309,79 +319,83 @@ public class MycheckActivity extends Activity implements OnClickListener, OnTouc
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
-//		float tempY = event.getY();
-//		float tempyfoot = event.getY();
-//		firstItemIndex = ListData.getFirstVisiblePosition();
-//		lastItemIndex = ListData.getLastVisiblePosition();
-//		// Toast.makeText(getApplicationContext(), " lastItemIndex" +
-//		// lastItemIndex, Toast.LENGTH_SHORT).show();
-//		switch (event.getAction()) {
-//		case MotionEvent.ACTION_DOWN:
-//		case MotionEvent.ACTION_MOVE:
-//			if (!isRecored && (firstItemIndex == 0)) {
-//				isRecored = true;
-//				startY = tempY;
-//			}
-//			int temp = 1;
-//			temp = (lastItemIndex) % pageSize;
-//			if (!isRecoredfoot && (temp == 0)) {
-//				isRecoredfoot = true;
-//				startYfoot = tempyfoot;
-//			}
-//			break;
-//		case MotionEvent.ACTION_UP:
-//		case MotionEvent.ACTION_CANCEL:
-//			isRecored = false;
-//			isRecoredfoot = false;
-//			break;
-//
-//		default:
-//			break;
-//		}
-//
-//		switch (event.getAction()) {
-//		case MotionEvent.ACTION_DOWN:
-//			break;
-//		case MotionEvent.ACTION_UP:
-//		case MotionEvent.ACTION_CANCEL:
-//			ListData.setPadding(0, 0, 0, 0);
-//			if (tempY - startY < 400) {
-//				ListData.setPadding(0, -100, 0, 0);
-//			} else {
-//				curPage = 1;
-//				Toast.makeText(getApplicationContext(), "正在刷新", Toast.LENGTH_SHORT).show();
-//				GetData();
-//			}
-//			int temp = 1;
-//			temp = (lastItemIndex) % pageSize;
-//			// temp = 0;
-//			if (temp == 0 && (startYfoot - tempyfoot > 400)) {
-//				curPage++;
-//				if (curPage > totalPage) {
-//					Toast.makeText(getApplicationContext(), " 没有更多了", Toast.LENGTH_SHORT).show();
-//					// // listinfoagain();
-//				} else {
-////					GetData();
-////					Toast.makeText(getApplicationContext(), "正在加载下一页", Toast.LENGTH_SHORT).show();
-//				}
-//
-//			} else {
-//
-//			}
-//			break;
-//		case MotionEvent.ACTION_MOVE:
-//			if (isRecored && tempY > startY) {
-//				ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
-//			}
-//			if (isRecoredfoot && startYfoot > tempyfoot) {
-//				// footTextView.setVisibility(View.VISIBLE);
-//				ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) / RATIO));
-//			}
-//			break;
-//
-//		default:
-//			break;
-//		}
+		// float tempY = event.getY();
+		// float tempyfoot = event.getY();
+		// firstItemIndex = ListData.getFirstVisiblePosition();
+		// lastItemIndex = ListData.getLastVisiblePosition();
+		// // Toast.makeText(getApplicationContext(), " lastItemIndex" +
+		// // lastItemIndex, Toast.LENGTH_SHORT).show();
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// case MotionEvent.ACTION_MOVE:
+		// if (!isRecored && (firstItemIndex == 0)) {
+		// isRecored = true;
+		// startY = tempY;
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// if (!isRecoredfoot && (temp == 0)) {
+		// isRecoredfoot = true;
+		// startYfoot = tempyfoot;
+		// }
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// isRecored = false;
+		// isRecoredfoot = false;
+		// break;
+		//
+		// default:
+		// break;
+		// }
+		//
+		// switch (event.getAction()) {
+		// case MotionEvent.ACTION_DOWN:
+		// break;
+		// case MotionEvent.ACTION_UP:
+		// case MotionEvent.ACTION_CANCEL:
+		// ListData.setPadding(0, 0, 0, 0);
+		// if (tempY - startY < 400) {
+		// ListData.setPadding(0, -100, 0, 0);
+		// } else {
+		// curPage = 1;
+		// Toast.makeText(getApplicationContext(), "正在刷新",
+		// Toast.LENGTH_SHORT).show();
+		// GetData();
+		// }
+		// int temp = 1;
+		// temp = (lastItemIndex) % pageSize;
+		// // temp = 0;
+		// if (temp == 0 && (startYfoot - tempyfoot > 400)) {
+		// curPage++;
+		// if (curPage > totalPage) {
+		// Toast.makeText(getApplicationContext(), " 没有更多了",
+		// Toast.LENGTH_SHORT).show();
+		// // // listinfoagain();
+		// } else {
+		//// GetData();
+		//// Toast.makeText(getApplicationContext(), "正在加载下一页",
+		// Toast.LENGTH_SHORT).show();
+		// }
+		//
+		// } else {
+		//
+		// }
+		// break;
+		// case MotionEvent.ACTION_MOVE:
+		// if (isRecored && tempY > startY) {
+		// ListData.setPadding(0, (int) ((tempY - startY) / RATIO - 100), 0, 0);
+		// }
+		// if (isRecoredfoot && startYfoot > tempyfoot) {
+		// // footTextView.setVisibility(View.VISIBLE);
+		// ListData.setPadding(0, -100, 0, (int) ((startYfoot - tempyfoot) /
+		// RATIO));
+		// }
+		// break;
+		//
+		// default:
+		// break;
+		// }
 		return false;
 	}
 
