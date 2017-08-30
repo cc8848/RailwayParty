@@ -25,7 +25,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
-import wuxc.single.railwayparty.my.MyResumeActivity;
 import wuxc.single.railwayparty.my.MyResumeActivityFirst;
 
 public class LoginActivity extends Activity implements OnClickListener {

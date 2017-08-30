@@ -36,6 +36,7 @@ import wuxc.single.railwayparty.adapter.Clean1Adapter;
 import wuxc.single.railwayparty.adapter.Clean1Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Clean1Model;
+import wuxc.single.railwayparty.model.Clean3Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
 public class MemberFragment1 extends Fragment
@@ -60,7 +61,8 @@ public class MemberFragment1 extends Fragment
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
-	private static final int GET_DUE_DATA = 6;private SharedPreferences PreForJSZN;
+	private static final int GET_DUE_DATA = 6;
+	private SharedPreferences PreForJSZN;
 	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -68,21 +70,23 @@ public class MemberFragment1 extends Fragment
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;	case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForJSZN.edit();
-						edit.putBoolean("JSZN", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForJSZN.edit();
+					edit.putBoolean("JSZN", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -132,7 +136,7 @@ public class MemberFragment1 extends Fragment
 					e.printStackTrace();
 				}
 
-			}  
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,6 +144,7 @@ public class MemberFragment1 extends Fragment
 			// TODO: handle exception
 		}
 	}
+
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -149,7 +154,7 @@ public class MemberFragment1 extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -199,7 +204,7 @@ public class MemberFragment1 extends Fragment
 					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(PreForJSZN.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -288,6 +293,7 @@ public class MemberFragment1 extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -310,6 +316,7 @@ public class MemberFragment1 extends Fragment
 		}).start();
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -524,6 +531,21 @@ public class MemberFragment1 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Clean1Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForJSZN.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForJSZN.edit();
+		edit2.putBoolean("JSZN", true);
+		for (int i = 0; i < list.size(); i++) {
+			Clean1Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("JSZNread", (PreForJSZN.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

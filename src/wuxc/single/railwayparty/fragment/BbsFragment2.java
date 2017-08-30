@@ -39,6 +39,7 @@ import wuxc.single.railwayparty.adapter.Bbs2Adapter;
 import wuxc.single.railwayparty.adapter.Bbs2Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs2Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
 public class BbsFragment2 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
@@ -645,6 +646,21 @@ public class BbsFragment2 extends Fragment implements OnTouchListener, Callback,
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Bbs2Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForDQLH.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForDQLH.edit();
+		edit2.putBoolean("DQLH", true);
+		for (int i = 0; i < list.size(); i++) {
+			Bbs2Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("DQLHread", (PreForDQLH.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

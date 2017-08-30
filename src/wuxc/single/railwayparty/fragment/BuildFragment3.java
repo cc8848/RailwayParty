@@ -557,6 +557,21 @@ public class BuildFragment3 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new BuildAdapter5(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForTZGG.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForTZGG.edit();
+		edit2.putBoolean("TZGG", true);
+		for (int i = 0; i < list.size(); i++) {
+			BuildModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("TZGGread", (PreForTZGG.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

@@ -583,7 +583,21 @@ public class BuildFragment1 extends Fragment
 		mAdapter = new BuildAdapter4(getActivity(), list, ListData, this);
 
 		ListData.setAdapter(mAdapter);
-
+		Editor edit = PreForZDWJ.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForZDWJ.edit();
+		edit2.putBoolean("ZDWJ", true);
+		for (int i = 0; i < list.size(); i++) {
+			BuildModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("ZDWJread", (PreForZDWJ.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

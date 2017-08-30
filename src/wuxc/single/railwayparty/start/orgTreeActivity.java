@@ -42,7 +42,7 @@ import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
 
-public class SpecialDetailActivity3 extends Activity implements OnClickListener, OnItemClickListener {
+public class orgTreeActivity extends Activity implements OnClickListener, OnItemClickListener {
 	// private EditText EditAnswer;
 	// private Button BtnAnswer;
 	private ImageView ImageBack;

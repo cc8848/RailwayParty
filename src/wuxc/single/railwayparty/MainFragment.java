@@ -180,7 +180,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		text_6.setVisibility(View.GONE);
 		text_7.setVisibility(View.GONE);
 		text_8.setVisibility(View.GONE);
-		if (t1 != 0) {
+		if (t1 > 0) {
 			text_1.setVisibility(View.VISIBLE);
 
 			if (t1 >= 100) {
@@ -189,9 +189,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_1.setText("" + t1);
+				text_1.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t2 != 0) {
+		if (t2 > 0) {
 			text_2.setVisibility(View.VISIBLE);
 			if (t2 > 99) {
 				text_2.setText("，，，");
@@ -199,10 +200,11 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_2.setText("" + t2);
+				text_2.setBackgroundResource(R.drawable.tag);
 			}
 
 		}
-		if (t3 != 0) {
+		if (t3 > 0) {
 			text_3.setVisibility(View.VISIBLE);
 
 			if (t3 > 99) {
@@ -211,9 +213,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_3.setText("" + t3);
+				text_3.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t4 != 0) {
+		if (t4 > 0) {
 			text_4.setVisibility(View.VISIBLE);
 
 			if (t4 > 99) {
@@ -222,9 +225,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_4.setText("" + t4);
+				text_4.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t5 != 0) {
+		if (t5 > 0) {
 			text_5.setVisibility(View.VISIBLE);
 
 			if (t5 > 99) {
@@ -233,9 +237,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_5.setText("" + t5);
+				text_5.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t6 != 0) {
+		if (t6 > 0) {
 			text_6.setVisibility(View.VISIBLE);
 
 			if (t6 > 99) {
@@ -244,9 +249,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_6.setText("" + t6);
+				text_6.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t7 != 0) {
+		if (t7 > 0) {
 			text_7.setVisibility(View.VISIBLE);
 			if (t7 > 99) {
 				text_7.setText("，，，");
@@ -254,10 +260,11 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_7.setText("" + t7);
+				text_7.setBackgroundResource(R.drawable.tag);
 			}
 
 		}
-		if (t8 != 0) {
+		if (t8 > 0) {
 			text_8.setVisibility(View.VISIBLE);
 			if (t8 > 99) {
 				text_8.setText("，，，");
@@ -265,6 +272,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 			} else {
 				text_8.setText("" + t8);
+				text_8.setBackgroundResource(R.drawable.tag);
 			}
 
 		}

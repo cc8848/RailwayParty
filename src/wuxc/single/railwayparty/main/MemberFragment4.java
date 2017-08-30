@@ -529,7 +529,21 @@ public class MemberFragment4 extends Fragment
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Clean1Adapter(getActivity(), list, ListData, this);
-		ListData.setAdapter(mAdapter);
+		ListData.setAdapter(mAdapter);Editor edit = PreForJYZN.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForJYZN.edit();
+		edit2.putBoolean("JYZN", true);
+		for (int i = 0; i < list.size(); i++) {
+			Clean1Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("JYZNread", (PreForJYZN.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

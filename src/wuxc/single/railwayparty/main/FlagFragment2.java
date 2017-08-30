@@ -36,6 +36,9 @@ import wuxc.single.railwayparty.adapter.ArtAdapter;
 import wuxc.single.railwayparty.adapter.ArtAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.ArtModel;
+import wuxc.single.railwayparty.model.BuildModel;
+import wuxc.single.railwayparty.model.Clean3Model;
+import wuxc.single.railwayparty.model.MemberModel;
 import wuxc.single.railwayparty.start.artDetail;
 
 public class FlagFragment2 extends Fragment implements Callback, OnTouchListener, OnClickListener, OnItemClickListener {
@@ -59,7 +62,8 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
-	private static final int GET_DUE_DATA = 6;	private SharedPreferences PreForQWX;
+	private static final int GET_DUE_DATA = 6;
+	private SharedPreferences PreForQWX;
 	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -67,21 +71,23 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForQWX.edit();
-						edit.putBoolean("QWX", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForQWX.edit();
+					edit.putBoolean("QWX", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -131,7 +137,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 					e.printStackTrace();
 				}
 
-			}  
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,6 +145,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 			// TODO: handle exception
 		}
 	}
+
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -148,7 +155,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -199,7 +206,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 					listinfo.setColor(json_data.getInt("classify"));
 					listinfo.setImageUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(PreForQWX.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -287,7 +294,9 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 
 		return view;
 
-	}private void GetMyReadRecord() {
+	}
+
+	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
 		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
@@ -415,7 +424,7 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 			bundle.putString("Id", data.getId());
 			intent.putExtras(bundle);
 			startActivity(intent);
-		}   
+		}
 	}
 
 	@Override
@@ -495,11 +504,25 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 		ListData.setOnTouchListener(this);
 	}
 
-
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new ArtAdapter(getActivity(), list, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForQWX.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForQWX.edit();
+		edit2.putBoolean("QWX", true);
+		for (int i = 0; i < list.size(); i++) {
+			ArtModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("QWXread", (PreForQWX.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

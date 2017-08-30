@@ -35,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.InformationAdapter;
 import wuxc.single.railwayparty.adapter.InformationAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.Clean3Model;
 import wuxc.single.railwayparty.model.InformationModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
@@ -537,7 +538,21 @@ public class InformationFragment extends Fragment
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new InformationAdapter(getActivity(), list, ListData, this);
-		ListData.setAdapter(mAdapter);
+		ListData.setAdapter(mAdapter);Editor edit = PreForXXTB.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForXXTB.edit();
+		edit2.putBoolean("XXTB", true);
+		for (int i = 0; i < list.size(); i++) {
+			InformationModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("XXTBread", (PreForXXTB.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

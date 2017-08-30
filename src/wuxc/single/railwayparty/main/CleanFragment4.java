@@ -35,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Clean4Adapter;
 import wuxc.single.railwayparty.adapter.Clean4Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Clean4Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
@@ -510,6 +511,21 @@ public class CleanFragment4 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Clean4Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForXXJL.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForXXJL.edit();
+		edit2.putBoolean("XXJL", true);
+		for (int i = 0; i < list.size(); i++) {
+			Clean4Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("XXJLread", (PreForXXJL.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

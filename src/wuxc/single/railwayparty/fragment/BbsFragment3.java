@@ -37,6 +37,7 @@ import wuxc.single.railwayparty.adapter.Bbs3Adapter;
 import wuxc.single.railwayparty.adapter.Bbs3Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.Bbs3Model;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
 public class BbsFragment3 extends Fragment implements OnTouchListener, Callback, OnClickListener, OnItemClickListener {
@@ -608,6 +609,21 @@ public class BbsFragment3 extends Fragment implements OnTouchListener, Callback,
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Bbs3Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForDSYYJ.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForDSYYJ.edit();
+		edit2.putBoolean("DSYYJ", true);
+		for (int i = 0; i < list.size(); i++) {
+			Bbs3Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("DSYYJread", (PreForDSYYJ.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

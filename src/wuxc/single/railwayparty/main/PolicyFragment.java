@@ -38,6 +38,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.PolicyAdapter;
 import wuxc.single.railwayparty.adapter.PolicyAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.Clean1Model;
 import wuxc.single.railwayparty.model.PolicyModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
@@ -239,7 +240,7 @@ public class PolicyFragment extends Fragment
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					// listinfo.setRead(true);
 					listinfo.setRead(PreForLXYZXX.getBoolean(json_data.getString("keyid"), false));
-						try {
+					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
 								|| json_data.getString("summary").equals("null")) {
@@ -274,12 +275,12 @@ public class PolicyFragment extends Fragment
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
-//			int totalcount = 0;
-//			totalcount = demoJson.getInt("totalRecord");
-//			Log.e("totalcount", "" + totalcount);
-//			Editor edit = ItemNumber.edit();
-//			edit.putInt("LXYZXXtotal" + subClassify, totalcount);
-//			edit.commit();
+			// int totalcount = 0;
+			// totalcount = demoJson.getInt("totalRecord");
+			// Log.e("totalcount", "" + totalcount);
+			// Editor edit = ItemNumber.edit();
+			// edit.putInt("LXYZXXtotal" + subClassify, totalcount);
+			// edit.commit();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -329,6 +330,7 @@ public class PolicyFragment extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 
@@ -361,6 +363,7 @@ public class PolicyFragment extends Fragment
 		}).start();
 
 	}
+
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
@@ -547,6 +550,21 @@ public class PolicyFragment extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new PolicyAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForLXYZXX.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForLXYZXX.edit();
+		edit2.putBoolean("LXYZXX", true);
+		for (int i = 0; i < list.size(); i++) {
+			PolicyModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("LXYZXXread", (PreForLXYZXX.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Clean3Adapter;
 import wuxc.single.railwayparty.adapter.Clean3Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Clean3Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
@@ -69,21 +70,23 @@ public class CleanFragment3 extends Fragment
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForQLKM.edit();
-						edit.putBoolean("QLKM", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForQLKM.edit();
+					edit.putBoolean("QLKM", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -133,7 +136,7 @@ public class CleanFragment3 extends Fragment
 					e.printStackTrace();
 				}
 
-			}  
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,7 +154,7 @@ public class CleanFragment3 extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -209,7 +212,7 @@ public class CleanFragment3 extends Fragment
 					}
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(PreForQLKM.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -298,6 +301,7 @@ public class CleanFragment3 extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -320,6 +324,7 @@ public class CleanFragment3 extends Fragment
 		}).start();
 
 	}
+
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
@@ -520,6 +525,21 @@ public class CleanFragment3 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Clean3Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForQLKM.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForQLKM.edit();
+		edit2.putBoolean("QLKM", true);
+		for (int i = 0; i < list.size(); i++) {
+			Clean3Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("QLKMread", (PreForQLKM.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

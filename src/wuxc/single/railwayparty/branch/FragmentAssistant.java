@@ -57,12 +57,13 @@ public class FragmentAssistant extends Fragment
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
 
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
-	private static final int GET_DUE_DATA = 6;private SharedPreferences PreForJZXX;
+	private static final int GET_DUE_DATA = 6;
+	private SharedPreferences PreForJZXX;
 	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -70,21 +71,24 @@ public class FragmentAssistant extends Fragment
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;	case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForJZXX.edit();
-						edit.putBoolean("JZXX", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForJZXX.edit();
+					edit.putBoolean("JZXX", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
-	};private void GetRecord(Object obj) {
+	};
+
+	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
 		String Type = null;
@@ -133,7 +137,7 @@ public class FragmentAssistant extends Fragment
 					e.printStackTrace();
 				}
 
-			}  
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,7 +155,7 @@ public class FragmentAssistant extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -204,7 +208,7 @@ public class FragmentAssistant extends Fragment
 					listinfo.setImageurl(R.drawable.logo);
 					// listinfo.setHeadimgUrl("");
 					listinfo.setRead(PreForJZXX.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("content").equals("") || json_data.getString("content") == null
@@ -240,12 +244,12 @@ public class FragmentAssistant extends Fragment
 			JSONObject demoJson = new JSONObject(pager);
 
 			totalPage = demoJson.getInt("totalPage");
-				int totalcount = 0;
-				totalcount = demoJson.getInt("totalRecord");
-				Log.e("totalcount", "" + totalcount);
-				Editor edit = ItemNumber.edit();
-				edit.putInt("JZXXtotal", totalcount);
-				edit.commit();
+			int totalcount = 0;
+			totalcount = demoJson.getInt("totalRecord");
+			Log.e("totalcount", "" + totalcount);
+			Editor edit = ItemNumber.edit();
+			edit.putInt("JZXXtotal", totalcount);
+			edit.commit();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,6 +296,7 @@ public class FragmentAssistant extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -314,6 +319,7 @@ public class FragmentAssistant extends Fragment
 		}).start();
 
 	}
+
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
@@ -614,8 +620,6 @@ public class FragmentAssistant extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		ListData.setOnTouchListener(this);
 	}
-
-	 
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);

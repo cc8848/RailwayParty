@@ -1,24 +1,24 @@
 package wuxc.single.railwayparty;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.jpushdemo.ExampleUtil;
+import com.example.jpushdemo.LocalBroadcastManager;
+
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,16 +26,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
 import wuxc.single.railwayparty.internet.APPVersion;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
@@ -64,7 +61,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private static final int GET_LOGININ_RESULT_DATA = 1;
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final int GET_VERSION_RESULT = 5;
-
+	public static boolean isForeground = false;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -95,7 +92,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			versionNum = demoJson.getString("versionNum");
 			versionPath = demoJson.getString("versionPath");
 			if (versionId.equals(APPVersion.APPVersion)) {
-//				Toast.makeText(getApplicationContext(), "已是最新版本", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "已是最新版本",
+				// Toast.LENGTH_SHORT).show();
 			} else {
 				showAlertDialog(versionNum, versionPath);
 			}
@@ -156,8 +154,74 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 				uiHandler.sendMessage(msg);
 			}
 		}).start();
+		registerMessageReceiver(); // used for receive msg
+		init();
 	}
 
+	// 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
+	private void init() {
+		JPushInterface.init(getApplicationContext());
+	}
+
+	@Override
+	protected void onResume() {
+		isForeground = true;
+		getdata();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		isForeground = false;
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+		write(0);
+		super.onDestroy();
+	}
+	// for receive customer msg from jpush server
+	private MessageReceiver mMessageReceiver;
+	public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_MESSAGE = "message";
+	public static final String KEY_EXTRAS = "extras";
+
+	public void registerMessageReceiver() {
+		mMessageReceiver = new MessageReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+		filter.addAction(MESSAGE_RECEIVED_ACTION);
+		LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+	}
+	public class MessageReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			try {
+				if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+					String messge = intent.getStringExtra(KEY_MESSAGE);
+					String extras = intent.getStringExtra(KEY_EXTRAS);
+					StringBuilder showMsg = new StringBuilder();
+					showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+					if (!ExampleUtil.isEmpty(extras)) {
+						showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+					}
+//					setCostomMsg(  showMsg.toString());
+				}
+			} catch (Exception e) {
+			}
+		}
+	}
+
+//	private void setCostomMsg(String msg) {
+//		if (null != msgText) {
+//			msgText.setText(msg);
+//			msgText.setVisibility(android.view.View.VISIBLE);
+//		}
+//	}
 	public void GetDataDetailFromLoginResultData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -468,21 +532,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		RelativeMy.setBackgroundColor(Color.parseColor("#cc0502"));
 		RelativeBbs.setBackgroundColor(Color.parseColor("#cc0502"));
 
-	}
-
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		write(0);
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-
-		getdata();
 	}
 
 	@Override

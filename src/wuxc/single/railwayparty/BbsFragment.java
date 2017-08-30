@@ -242,7 +242,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 		text_number_2.setVisibility(View.GONE);
 		text_number_3.setVisibility(View.GONE);
 		text_number_4.setVisibility(View.GONE);
-		if (t1 != 0) {
+		if (t1 > 0) {
 			text_number_1.setVisibility(View.VISIBLE);
 
 			if (t1 > 99) {
@@ -250,21 +250,23 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 				text_number_1.setBackgroundResource(R.drawable.morethan100);
 			} else {
 				text_number_1.setText("" + t1);
+				text_number_1.setBackgroundResource(R.drawable.tag);
 
 			}
 		}
-		if (t2 != 0) {
+		if (t2 > 0) {
 			text_number_2.setVisibility(View.VISIBLE);
 			if (t2 > 99) {
 				text_number_2.setText("");
 				text_number_2.setBackgroundResource(R.drawable.morethan100);
 			} else {
 				text_number_2.setText("" + t2);
+				text_number_2.setBackgroundResource(R.drawable.tag);
 
 			}
 
 		}
-		if (t3 != 0) {
+		if (t3 > 0) {
 			text_number_3.setVisibility(View.VISIBLE);
 
 			if (t3 > 99) {
@@ -272,10 +274,11 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 				text_number_3.setBackgroundResource(R.drawable.morethan100);
 			} else {
 				text_number_3.setText("" + t3);
+				text_number_3.setBackgroundResource(R.drawable.tag);
 
 			}
 		}
-		if (t4 != 0) {
+		if (t4 > 0) {
 			text_number_4.setVisibility(View.VISIBLE);
 
 			if (t4 > 99) {
@@ -283,6 +286,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 				text_number_4.setBackgroundResource(R.drawable.morethan100);
 			} else {
 				text_number_4.setText("" + t4);
+				text_number_4.setBackgroundResource(R.drawable.tag);
 
 			}
 		}

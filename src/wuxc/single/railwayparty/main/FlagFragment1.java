@@ -35,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.Flag1Adapter;
 import wuxc.single.railwayparty.adapter.Flag1Adapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.Flag1Model;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
@@ -500,6 +501,21 @@ public class FlagFragment1 extends Fragment implements Callback, OnTouchListener
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Flag1Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForQTXS.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForQTXS.edit();
+		edit2.putBoolean("QTXS", true);
+		for (int i = 0; i < list.size(); i++) {
+			Flag1Model info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("QTXSread", (PreForQTXS.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

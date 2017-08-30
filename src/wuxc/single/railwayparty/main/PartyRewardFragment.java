@@ -35,6 +35,7 @@ import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.RewardAdapter;
 import wuxc.single.railwayparty.adapter.RewardAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.model.Clean1Model;
 import wuxc.single.railwayparty.model.RewardModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 
@@ -55,7 +56,7 @@ public class PartyRewardFragment extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final String GET_SUCCESS_RESULT = "success";
@@ -69,21 +70,23 @@ public class PartyRewardFragment extends Fragment
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;	case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForDNJC.edit();
-						edit.putBoolean("DNJC", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForDNJC.edit();
+					edit.putBoolean("DNJC", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -147,6 +150,7 @@ public class PartyRewardFragment extends Fragment
 			// TODO: handle exception
 		}
 	}
+
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -156,7 +160,7 @@ public class PartyRewardFragment extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -210,7 +214,7 @@ public class PartyRewardFragment extends Fragment
 
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(PreForDNJC.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -299,6 +303,7 @@ public class PartyRewardFragment extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -321,6 +326,7 @@ public class PartyRewardFragment extends Fragment
 		}).start();
 
 	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO Auto-generated method stub
@@ -553,12 +559,25 @@ public class PartyRewardFragment extends Fragment
 		ListData.setOnTouchListener(this);
 	}
 
- 
-
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new RewardAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForDNJC.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForDNJC.edit();
+		edit2.putBoolean("DNJC", true);
+		for (int i = 0; i < list.size(); i++) {
+			RewardModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	@Override

@@ -39,13 +39,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
-import wuxc.single.railwayparty.other.SearchAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.Childviewpaper;
-import wuxc.single.railwayparty.model.Bbs1Model;
-import wuxc.single.railwayparty.start.SpecialDetailActivity;
-import wuxc.single.railwayparty.start.SpecialDetailActivity4;
+import wuxc.single.railwayparty.other.SearchAdapter.Callback;
+import wuxc.single.railwayparty.start.SearchDataDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
 public class SearchDataListActivity extends FragmentActivity
@@ -78,7 +76,7 @@ public class SearchDataListActivity extends FragmentActivity
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -463,7 +461,7 @@ public class SearchDataListActivity extends FragmentActivity
 			SearchModel data = list.get((Integer) v.getTag());
 
 			Intent intent = new Intent();
-			intent.setClass(this, SpecialDetailActivity4.class);
+			intent.setClass(this, SearchDataDetailActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("Title", data.getTitle());
 			bundle.putString("Time", "");

@@ -39,6 +39,7 @@ import wuxc.single.railwayparty.adapter.SchoolAdapter;
 import wuxc.single.railwayparty.adapter.SchoolAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.dialogselecttwo;
+import wuxc.single.railwayparty.model.BuildModel;
 import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.start.ImagePPT;
 import wuxc.single.railwayparty.start.webview;
@@ -542,6 +543,21 @@ public class BuildFragment6 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new SchoolAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
+		Editor edit = PreForWSDX.edit();
+		edit.clear();
+		edit.commit();
+		Editor edit2 = PreForWSDX.edit();
+		edit2.putBoolean("WSDX", true);
+		for (int i = 0; i < list.size(); i++) {
+			SchoolModel info = list.get(i);
+			if (info.isRead()) {
+				edit2.putBoolean(info.getId(), true);
+			}
+		}
+		edit2.commit();
+		Editor edit1 = ItemNumber.edit();
+		edit1.putInt("WSDXread", (PreForWSDX.getAll().size() - 1));
+		edit1.commit();
 	}
 
 	private void clearcolor() {
