@@ -519,21 +519,21 @@ public class PartyPublicFragment extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new PartyCheckAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForDWGK.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForDWGK.edit();
-		edit2.putBoolean("DWGK", true);
-		for (int i = 0; i < list.size(); i++) {
-			PartyCheckModel info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("DWGKread", (PreForDWGK.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForDWGK.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForDWGK.edit();
+//		edit2.putBoolean("DWGK", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			PartyCheckModel info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("DWGKread", (PreForDWGK.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

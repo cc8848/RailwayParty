@@ -501,21 +501,21 @@ public class PartyRuleFragment extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new PartyRuleAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForDJFG.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForDJFG.edit();
-		edit2.putBoolean("DJFG", true);
-		for (int i = 0; i < list.size(); i++) {
-			PartyRuleModel info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("DJFGread", (PreForDJFG.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForDJFG.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForDJFG.edit();
+//		edit2.putBoolean("DJFG", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			PartyRuleModel info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("DJFGread", (PreForDJFG.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

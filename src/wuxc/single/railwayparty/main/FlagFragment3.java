@@ -505,21 +505,21 @@ public class FlagFragment3 extends Fragment implements Callback, OnTouchListener
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Flag3Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForQNXF.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForQNXF.edit();
-		edit2.putBoolean("QNXF", true);
-		for (int i = 0; i < list.size(); i++) {
-			Flag3Model info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("QNXFread", (PreForQNXF.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForQNXF.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForQNXF.edit();
+//		edit2.putBoolean("QNXF", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			Flag3Model info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("QNXFread", (PreForQNXF.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

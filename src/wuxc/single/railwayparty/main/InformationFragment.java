@@ -57,12 +57,13 @@ public class InformationFragment extends Fragment
 	private final static int RATIO = 2;
 	private TextView headTextView = null;
 	private View view;// 缓存Fragment view
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final String GET_SUCCESS_RESULT = "success";
 	private static final String GET_FAIL_RESULT = "fail";
-	private static final int GET_DUE_DATA = 6;	private SharedPreferences PreForXXTB;
+	private static final int GET_DUE_DATA = 6;
+	private SharedPreferences PreForXXTB;
 	private SharedPreferences ItemNumber;
 	public Handler uiHandler = new Handler() {
 		@Override
@@ -70,21 +71,23 @@ public class InformationFragment extends Fragment
 			switch (msg.what) {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
-				break;case 66:
-					GetRecord(msg.obj);
-					try {
-						Editor edit = PreForXXTB.edit();
-						edit.putBoolean("XXTB", true);
-						edit.commit();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-					break;
+				break;
+			case 66:
+				GetRecord(msg.obj);
+				try {
+					Editor edit = PreForXXTB.edit();
+					edit.putBoolean("XXTB", true);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				break;
 			default:
 				break;
 			}
 		}
 	};
+
 	private void GetRecord(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -134,7 +137,7 @@ public class InformationFragment extends Fragment
 					e.printStackTrace();
 				}
 
-			}  
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -142,6 +145,7 @@ public class InformationFragment extends Fragment
 			// TODO: handle exception
 		}
 	}
+
 	protected void GetDataDueData(Object obj) {
 
 		// TODO Auto-generated method stub
@@ -151,7 +155,7 @@ public class InformationFragment extends Fragment
 		try {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			Type = demoJson.getString("type");
-			 pager = demoJson.getString("pager");
+			pager = demoJson.getString("pager");
 			Data = demoJson.getString("datas");
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 				GetPager(pager);
@@ -209,7 +213,7 @@ public class InformationFragment extends Fragment
 					listinfo.setImageurl(R.drawable.logo);
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
 					listinfo.setRead(PreForXXTB.getBoolean(json_data.getString("keyid"), false));
-					
+
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
 						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
@@ -299,6 +303,7 @@ public class InformationFragment extends Fragment
 		return view;
 
 	}
+
 	private void GetMyReadRecord() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -321,6 +326,7 @@ public class InformationFragment extends Fragment
 		}).start();
 
 	}
+
 	private void initview(View view2) {
 		// TODO Auto-generated method stub
 		ListData = (ListView) view.findViewById(R.id.list_data);
@@ -441,7 +447,7 @@ public class InformationFragment extends Fragment
 				bundle.putString("Id", data.getId());
 				intent.putExtras(bundle);
 				startActivity(intent);
-				 
+
 			}
 		}
 	}
@@ -533,26 +539,25 @@ public class InformationFragment extends Fragment
 		ListData.setOnTouchListener(this);
 	}
 
- 
-
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new InformationAdapter(getActivity(), list, ListData, this);
-		ListData.setAdapter(mAdapter);Editor edit = PreForXXTB.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForXXTB.edit();
-		edit2.putBoolean("XXTB", true);
-		for (int i = 0; i < list.size(); i++) {
-			InformationModel info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("XXTBread", (PreForXXTB.getAll().size() - 1));
-		edit1.commit();
+		ListData.setAdapter(mAdapter);
+//		Editor edit = PreForXXTB.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForXXTB.edit();
+//		edit2.putBoolean("XXTB", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			InformationModel info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("XXTBread", (PreForXXTB.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

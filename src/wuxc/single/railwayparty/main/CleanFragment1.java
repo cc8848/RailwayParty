@@ -542,21 +542,21 @@ public class CleanFragment1 extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new Clean1Adapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForLZSX.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForLZSX.edit();
-		edit2.putBoolean("LZSX", true);
-		for (int i = 0; i < list.size(); i++) {
-			Clean1Model info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("LZSXread", (PreForLZSX.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForLZSX.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForLZSX.edit();
+//		edit2.putBoolean("LZSX", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			Clean1Model info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("LZSXread", (PreForLZSX.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

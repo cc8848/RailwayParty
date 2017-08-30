@@ -563,21 +563,21 @@ public class PartyRewardFragment extends Fragment
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new RewardAdapter(getActivity(), list, ListData, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForDNJC.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForDNJC.edit();
-		edit2.putBoolean("DNJC", true);
-		for (int i = 0; i < list.size(); i++) {
-			RewardModel info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForDNJC.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForDNJC.edit();
+//		edit2.putBoolean("DNJC", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			RewardModel info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override

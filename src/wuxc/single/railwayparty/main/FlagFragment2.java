@@ -508,21 +508,21 @@ public class FlagFragment2 extends Fragment implements Callback, OnTouchListener
 		ListData.setPadding(0, -100, 0, 0);
 		mAdapter = new ArtAdapter(getActivity(), list, this);
 		ListData.setAdapter(mAdapter);
-		Editor edit = PreForQWX.edit();
-		edit.clear();
-		edit.commit();
-		Editor edit2 = PreForQWX.edit();
-		edit2.putBoolean("QWX", true);
-		for (int i = 0; i < list.size(); i++) {
-			ArtModel info = list.get(i);
-			if (info.isRead()) {
-				edit2.putBoolean(info.getId(), true);
-			}
-		}
-		edit2.commit();
-		Editor edit1 = ItemNumber.edit();
-		edit1.putInt("QWXread", (PreForQWX.getAll().size() - 1));
-		edit1.commit();
+//		Editor edit = PreForQWX.edit();
+//		edit.clear();
+//		edit.commit();
+//		Editor edit2 = PreForQWX.edit();
+//		edit2.putBoolean("QWX", true);
+//		for (int i = 0; i < list.size(); i++) {
+//			ArtModel info = list.get(i);
+//			if (info.isRead()) {
+//				edit2.putBoolean(info.getId(), true);
+//			}
+//		}
+//		edit2.commit();
+//		Editor edit1 = ItemNumber.edit();
+//		edit1.putInt("QWXread", (PreForQWX.getAll().size() - 1));
+//		edit1.commit();
 	}
 
 	@Override
