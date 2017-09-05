@@ -12,12 +12,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,13 +32,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.adapter.MessageAdapter;
+import wuxc.single.railwayparty.adapter.MessageAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.model.MessageModel;
+import wuxc.single.railwayparty.model.SchoolModel;
 import wuxc.single.railwayparty.model.MessageModel;
+import wuxc.single.railwayparty.start.MessageDetailActivity;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.webview;
 
-public class MessageActivity extends Activity implements OnClickListener, OnTouchListener, OnItemClickListener {
+public class MessageActivity extends Activity
+		implements Callback, OnClickListener, OnTouchListener, OnItemClickListener {
 	private ListView ListData;
 	List<MessageModel> list = new ArrayList<MessageModel>();
 	private static MessageAdapter mAdapter;
@@ -53,7 +59,7 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 	private TextView headTextView = null;
 	private boolean[] read = { false, false, false, true, true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true };
-	private String ticket="";
+	private String ticket = "";
 	private String chn;
 	private String userPhoto;
 	private String LoginId;
@@ -93,9 +99,9 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 				GetPager(Data);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "暂无数据", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "暂无数据", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -129,12 +135,17 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 					listinfo.setTitle(json_data.getString("title"));
 					// listinfo.setBackGround(json_data.getString("sacleImage"));
 					listinfo.setCont(true);
-					listinfo.setRead(true);
+					listinfo.setId(json_data.getString("keyid"));
+					listinfo.setRead(false);
+					String readst = json_data.getString("readState");
+					if (readst.equals("1")) {
+						listinfo.setRead(true);
+					}
 					try {
-						listinfo.setContent(json_data.getString("summary"));
+						listinfo.setContent(json_data.getString("content"));
 						listinfo.setLink(json_data.getString("otherLinks"));
-						if (json_data.getString("summary").equals("") || json_data.getString("summary") == null
-								|| json_data.getString("summary").equals("null")) {
+						if (json_data.getString("content").equals("") || json_data.getString("content") == null
+								|| json_data.getString("content").equals("null")) {
 							listinfo.setContent(json_data.getString("source"));
 							listinfo.setCont(false);
 						}
@@ -199,6 +210,7 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 		headTextView.setTypeface(Typeface.DEFAULT_BOLD);
 		headTextView.setTextSize(15);
 		headTextView.invalidate();
+		headTextView.setTextColor(Color.BLACK);
 		ListData.addHeaderView(headTextView, null, false);
 		ListData.setPadding(0, -100, 0, 0);
 		ListData.setOnTouchListener(this);
@@ -235,7 +247,7 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 
 	protected void go() {
 		ListData.setPadding(0, -100, 0, 0);
-		mAdapter = new MessageAdapter(this, list, ListData);
+		mAdapter = new MessageAdapter(this, list, ListData, this);
 		ListData.setAdapter(mAdapter);
 	}
 
@@ -399,13 +411,52 @@ public class MessageActivity extends Activity implements OnClickListener, OnTouc
 	}
 
 	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) { // 按下的如果是BACK，同时没有重复
+			Intent intent1 = new Intent();
+			setResult(0, intent1);
+			finish();
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.image_back:
+			Intent intent1 = new Intent();
+			setResult(0, intent1);
 			finish();
 			break;
 
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void click(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.lin_all:
+
+			MessageModel data = list.get((Integer) v.getTag());
+			Intent intent = new Intent();
+			intent.setClass(getApplicationContext(), MessageDetailActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("Title", data.getTitle());
+			bundle.putString("Time", data.getTime());
+			bundle.putString("detail", data.getContent());
+			bundle.putString("chn", "wsdx");
+			bundle.putString("Id", data.getId());
+			intent.putExtras(bundle);
+			startActivity(intent);
+			data.setRead(true);
+			mAdapter.notifyDataSetChanged();
+			break;
 		default:
 			break;
 		}

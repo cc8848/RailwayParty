@@ -340,8 +340,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textColor="#ffffff"
-                    android:textSize="14dp"
-                    android:visibility="gone" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -429,7 +428,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="50dp"
-                android:background="@color/text_line_black" />
+                android:background="@color/text_line_black"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rel_mypublish"

@@ -77,7 +77,7 @@ public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements 
 			rowView.setTag(viewCache);
 		} else if (imageAndText.getType() == 1) {
 			LayoutInflater inflater = activity.getLayoutInflater();
-			rowView = inflater.inflate(R.layout.wuxc_item_imageppt, null);
+			rowView = inflater.inflate(R.layout.wuxc_item_pic, null);
 			viewCache = new TipsDetailCache(rowView);
 			rowView.setTag(viewCache);
 		} else {
@@ -126,7 +126,7 @@ public class TipsDetailAdapter extends ArrayAdapter<TipsDetailModel> implements 
 		TextView text_content = viewCache.gettext_content();
 		text_content.setText(imageAndText.getContent());
 		TextView text_detail = viewCache.gettext_detail();
-		text_detail.setText(imageAndText.getDetail());
+		text_detail.setText("    " + imageAndText.getDetail());
 		TextView text_time = viewCache.gettext_time();
 		text_time.setText(imageAndText.getTime());
 		LinearLayout lin_all = viewCache.getlin_all();

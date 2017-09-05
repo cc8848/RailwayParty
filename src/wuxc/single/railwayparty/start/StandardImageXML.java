@@ -1,8 +1,5 @@
 package wuxc.single.railwayparty.start;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,7 +11,6 @@ import com.polites.android.GestureImageView;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,18 +18,20 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.GetBitmapFromServer;
 import wuxc.single.railwayparty.internet.URLcontainer;
-import wuxc.single.railwayparty.model.imagePPTModel;
 
-public class StandardImageXML extends Activity implements OnClickListener {
+public class StandardImageXML extends Activity implements OnClickListener, OnTouchListener {
 	private int inturl;
 	private String url = "";
 	private String userPhoto;
@@ -49,6 +47,8 @@ public class StandardImageXML extends Activity implements OnClickListener {
 	private TextView text_number;
 	private int pic_index = 999;
 	private int time_position = 1;
+	private LinearLayout layout;
+	private int showint = 0;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -57,7 +57,16 @@ public class StandardImageXML extends Activity implements OnClickListener {
 			case GET_USER_HEAD_IMAGE:
 				ShowHeadImage(msg.obj, msg.arg1);
 				break;
+			case 19:
+				if (showint == msg.arg1) {
+					image_last.setVisibility(View.GONE);
+					image_next.setVisibility(View.GONE);
+					Log.e("隐藏", "隐藏");
+				} else {
+					Log.e("标注不一致", "标注不一致");
+				}
 
+				break;
 			default:
 				break;
 			}
@@ -121,19 +130,24 @@ public class StandardImageXML extends Activity implements OnClickListener {
 		image_last = (ImageView) findViewById(R.id.image_last);
 		image_next = (ImageView) findViewById(R.id.image_next);
 		text_number = (TextView) findViewById(R.id.text_number);
+		layout = (LinearLayout) findViewById(R.id.layout);
 		if (number == 999) {
 			image_last.setVisibility(View.GONE);
 			image_next.setVisibility(View.GONE);
 			text_number.setVisibility(View.GONE);
 		} else {
-			image_last.setVisibility(View.VISIBLE);
-			image_next.setVisibility(View.VISIBLE);
+			image_last.setVisibility(View.GONE);
+			image_next.setVisibility(View.GONE);
 			text_number.setVisibility(View.VISIBLE);
 		}
 		image_last.setOnClickListener(this);
 		image_next.setOnClickListener(this);
+		layout.setOnTouchListener(this);
 		text_number.setText(number + "/" + totalnumber);
 		image = (GestureImageView) findViewById(R.id.image);
+		image.setOnTouchListener(this);
+		image_last.setOnTouchListener(this);
+		image_next.setOnTouchListener(this);
 		ShowPic(999);
 
 	}
@@ -277,5 +291,97 @@ public class StandardImageXML extends Activity implements OnClickListener {
 			}
 
 		}, 150);
+	}
+
+	private void showtimedelay(final int show) {
+		// 原因：不延时的话list会滑到顶部
+		final Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				try {
+
+					Message msg = new Message();
+					msg.what = 19;
+					msg.arg1 = show;
+					uiHandler.sendMessage(msg);
+
+				} catch (Exception e) {
+					// TODO: handle exceptioni
+
+				}
+
+			}
+
+		}, 2000);
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.image:
+			if (true) {
+				int temp = (int) (Math.random() * (1000));
+				showint = temp;
+				int action1 = event.getAction();
+				if (action1 == MotionEvent.ACTION_DOWN) {
+					image_last.setVisibility(View.VISIBLE);
+					image_next.setVisibility(View.VISIBLE);
+					Log.e("显示", "显示");
+				} else if (action1 == MotionEvent.ACTION_UP) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+				} else if (action1 == MotionEvent.ACTION_CANCEL) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+
+				}
+			}
+			break;
+		case R.id.image_next:
+			if (true) {
+				int temp = (int) (Math.random() * (1000));
+				showint = temp;
+				int action1 = event.getAction();
+				if (action1 == MotionEvent.ACTION_DOWN) {
+					image_last.setVisibility(View.VISIBLE);
+					image_next.setVisibility(View.VISIBLE);
+					Log.e("显示", "显示");
+				} else if (action1 == MotionEvent.ACTION_UP) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+				} else if (action1 == MotionEvent.ACTION_CANCEL) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+
+				}
+			}
+			break;
+		case R.id.image_last:
+			if (true) {
+				int temp = (int) (Math.random() * (1000));
+				showint = temp;
+				int action1 = event.getAction();
+				if (action1 == MotionEvent.ACTION_DOWN) {
+					image_last.setVisibility(View.VISIBLE);
+					image_next.setVisibility(View.VISIBLE);
+					Log.e("显示", "显示");
+				} else if (action1 == MotionEvent.ACTION_UP) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+				} else if (action1 == MotionEvent.ACTION_CANCEL) {
+					Log.e("隐藏开始", "隐藏开始");
+					showtimedelay(showint);
+
+				}
+			}
+			break;
+		default:
+			break;
+		}
+		return false;
 	}
 }

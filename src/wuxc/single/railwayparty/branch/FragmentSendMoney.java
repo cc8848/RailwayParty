@@ -1,6 +1,7 @@
 package wuxc.single.railwayparty.branch;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -267,12 +268,25 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 					}
 				}
 			}
+			if (inityear == 2017) {
+				for (int i = 0; i < 6; i++) {
+					status[i] = 0;
+				}
+			}
 			ShowResult();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+
+	public int getTimeByCalendar() {
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);// 获取年份
+
+		Log.e("getTimeByCalendar", year + "");
+		return year;
 	}
 
 	@Override
@@ -286,6 +300,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		} else {
 			view = inflater.inflate(R.layout.wuxc_fragment_send_money, container, false);
 			initview(view);
+			inityear = getTimeByCalendar();
 			setonclicklistener();
 			setlayoutheight();
 			setinitview();

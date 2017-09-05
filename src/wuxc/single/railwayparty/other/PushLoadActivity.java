@@ -28,6 +28,7 @@ import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.main.TipsDetailActivity;
 import wuxc.single.railwayparty.start.ImagePPT;
+import wuxc.single.railwayparty.start.MessageDetailActivity;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
 import wuxc.single.railwayparty.start.artDetail;
 import wuxc.single.railwayparty.start.webview;
@@ -43,6 +44,8 @@ public class PushLoadActivity extends Activity implements OnClickListener {
 	private static final String GET_FAIL_RESULT = "fail";
 	private static final int GET_DUE_DATA = 6;
 	private SharedPreferences ItemNumber;
+	private String type = "";
+	private String messageid = "";
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -50,6 +53,9 @@ public class PushLoadActivity extends Activity implements OnClickListener {
 
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
+				break;
+			case 12:
+				getmessagedetail(msg.obj);
 				break;
 			default:
 				break;
@@ -73,6 +79,46 @@ public class PushLoadActivity extends Activity implements OnClickListener {
 			if (Type.equals(GET_SUCCESS_RESULT)) {
 
 				GetDataList(Data, 1);
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getApplicationContext(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void getmessagedetail(Object obj) {
+
+		// TODO Auto-generated method stub
+		// String Type = null;
+		String Data = null;
+		// String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			String Type = demoJson.getString("type");
+
+			Data = demoJson.getString("data");
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				demoJson = new JSONObject(Data);
+				String id = demoJson.getString("keyid");
+				String content = demoJson.getString("content");
+				String time = demoJson.getString("sendDate");
+				String title = demoJson.getString("title");
+				Intent intent = new Intent();
+				intent.setClass(getApplicationContext(), MessageDetailActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("Title", title);
+				bundle.putString("Time", time);
+				bundle.putString("detail", content);
+				bundle.putString("chn", "wsdx");
+				bundle.putString("Id", id);
+				intent.putExtras(bundle);
+				startActivity(intent);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
 				Toast.makeText(getApplicationContext(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
@@ -594,17 +640,52 @@ public class PushLoadActivity extends Activity implements OnClickListener {
 				chn = "";
 				id = "";
 			}
+			try {
+				JSONObject jsonObject = new JSONObject(extra);
+				type = jsonObject.getString("type");
+				messageid = jsonObject.getString("keyid");
+			} catch (Exception e) {
+				// TODO: handle exception
+				type = "";
+				messageid = "";
+			}
 
 		}
 		if (ticket.equals("") || ticket == null) {
 			Toast.makeText(getApplicationContext(), "你尚未登录", Toast.LENGTH_SHORT).show();
 			finish();
 		} else if (chn.equals("") || id.equals("")) {
-			Toast.makeText(getApplicationContext(), "推送参数错误", Toast.LENGTH_SHORT).show();
-			finish();
+			if (type.equals("message")) {
+				GetMessage();
+			} else {
+				Toast.makeText(getApplicationContext(), "推送参数错误", Toast.LENGTH_SHORT).show();
+				finish();
+			}
+
 		} else {
 			GetData();
 		}
+	}
+
+	private void GetMessage() {
+
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("datakey", "" + messageid));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/console/systemMessage/getJsonData", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 12;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
 	}
 
 	private void GetData() {

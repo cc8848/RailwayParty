@@ -60,7 +60,7 @@
                     android:layout_marginLeft="5dp"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="请输入用户名"
+                    android:hint="请输入身份证号码"
                     android:textSize="16dp" />
             </LinearLayout>
 

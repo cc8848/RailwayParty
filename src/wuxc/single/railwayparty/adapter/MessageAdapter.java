@@ -9,17 +9,26 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.adapter.Bbs1Adapter.Callback;
 import wuxc.single.railwayparty.cache.MessageCache;
 import wuxc.single.railwayparty.model.MessageModel;
 
 public class MessageAdapter extends ArrayAdapter<MessageModel> implements OnClickListener {
+	private Callback mCallback;
 
-	public MessageAdapter(Activity activity, List<MessageModel> imageAndTexts, ListView listView) {
+	public MessageAdapter(Activity activity, List<MessageModel> imageAndTexts, ListView listView, Callback callback) {
 		super(activity, 0, imageAndTexts);
+		mCallback = callback;
+	}
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		mCallback.click(v);
 	}
 
 	public interface Callback {
@@ -54,12 +63,10 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> implements OnClic
 		} else {
 			texttitle.setTextColor(Color.parseColor("#000000"));
 		}
+		LinearLayout lin_all = viewCache.getlin_all();
+		lin_all.setTag(position);
+		lin_all.setOnClickListener(this);
 		return rowView;
 	}
 
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-
-	}
 }

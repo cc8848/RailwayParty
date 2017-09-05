@@ -32,29 +32,29 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:layout_marginBottom="50dp" >
 
             <ImageView
                 android:id="@+id/image_last"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pic_last"
+                android:src="@drawable/zuo"
                 android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/image_next"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/pic_next"
+                android:src="@drawable/you"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>

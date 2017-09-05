@@ -93,6 +93,8 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 	private TextView tet_rank1;
 	private TextView tet_rank2;
 	private TextView tet_rank3;
+	private int message = 0;
+	private TextView text_number;
 	private View view;// 缓存Fragment view
 	private Handler uiHandler = new Handler() {
 		@Override
@@ -109,6 +111,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				break;
 			case 17:
 				Showrank(msg.obj);
+				break;
+			case 36:
+				ShowMessage(msg.obj);
 				break;
 			default:
 				break;
@@ -180,8 +185,48 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				}).start();
 
 			}
+			shownumber();
+			getMessageStatue();
 		}
 		return view;
+	}
+
+	private void shownumber() {
+		// TODO Auto-generated method stub
+		if (message <= 0) {
+			text_number.setVisibility(view.GONE);
+		} else {
+			text_number.setVisibility(view.VISIBLE);
+			text_number.setText("" + message);
+		}
+	}
+
+	protected void ShowMessage(Object obj) {
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		String pager = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+			// pager = demoJson.getString("pager");
+			Data = demoJson.getString("data");
+			if (Type.equals("success")) {
+				demoJson = new JSONObject(Data);
+				message = demoJson.getInt("unReadNum");
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			message = 0;
+		} catch (Exception e) {
+			message = 0;
+			// TODO: handle exception
+		}
+		shownumber();
+
 	}
 
 	protected void Showrank(Object obj) {
@@ -395,6 +440,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		lin_top = (LinearLayout) view.findViewById(R.id.lin_top);
 		round_headimg = (RoundImageView) view.findViewById(R.id.round_headimg);
 		round_headimg.setOnClickListener(this);
+		text_number = (TextView) view.findViewById(R.id.text_number);
 		image_search = (ImageView) view.findViewById(R.id.image_search);
 		image_search.setOnClickListener(this);
 		rel_message = (RelativeLayout) view.findViewById(R.id.rel_message);
@@ -439,6 +485,9 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			return;
 		Bundle bundle = data.getExtras();
 		switch (requestCode) {
+		case 21:
+			getMessageStatue();
+			break;
 		case PHOTO_REQUEST_TAKEPHOTO:// 当选择拍照时调用
 			if (!(data == null) && !(bundle == null)) {
 				// Log.e("data", "" + data);
@@ -489,6 +538,29 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void getMessageStatue() {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("api/console/systemMessage/getListJsonStaticsDataByReadState",
+						ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = 36;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+
 	}
 
 	private void setPicToView(Intent picdata) {
@@ -596,7 +668,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		case R.id.rel_message:
 			Intent intent_message = new Intent();
 			intent_message.setClass(getActivity(), MessageActivity.class);
-			startActivity(intent_message);
+			startActivityForResult(intent_message, 21);
 			break;
 
 		case R.id.rel_mylearn:
