@@ -42,6 +42,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetUnreadNumber;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
@@ -320,6 +321,11 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		try {
+			GetUnreadNumber.getunreadnumber(this);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private void GetDataList(String data, int curPage2) {
@@ -527,20 +533,23 @@ public class wsdxActivity extends Activity implements OnClickListener, OnItemCli
 	}
 
 	private void sendpost() {
-		// TODO Auto-generated method stub
-		final ArrayList ArrayValues = new ArrayList<BasicNameValuePair>();
-		ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
-		ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "specialActivity"));
-		ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
-		ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title + "》"));
-		ArrayValues.add(new BasicNameValuePair("ticket", ticket));
-		new Thread(new Runnable() { // 开启线程上传文件
-			@Override
-			public void run() {
-				HttpGetData.GetData("api/console/userScore/save", ArrayValues);
+		if (recLen > 600) {
+			// TODO Auto-generated method stub
+			final ArrayList ArrayValues = new ArrayList<BasicNameValuePair>();
+			ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
+			ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "specialActivity"));
+			ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+			ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "网上党校学习《" + Title + "》"));
+			ArrayValues.add(new BasicNameValuePair("ticket", ticket));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					HttpGetData.GetData("api/console/userScore/save", ArrayValues);
 
-			}
-		}).start();
+				}
+			}).start();
+		}
+
 	}
 
 	@Override

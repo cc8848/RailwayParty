@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wuxc.single.railwayparty"
     android:versionCode="8"
-    android:versionName="4.2.0" >
+    android:versionName="4.2.3" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -131,6 +131,10 @@
         </activity>
         <activity
             android:name=".start.webview"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".start.picview"
             android:screenOrientation="portrait" >
         </activity>
         <activity

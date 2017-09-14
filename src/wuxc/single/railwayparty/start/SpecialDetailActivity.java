@@ -48,6 +48,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetUnreadNumber;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
@@ -334,6 +335,11 @@ public class SpecialDetailActivity extends Activity implements OnClickListener, 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
+			GetUnreadNumber.getunreadnumber(this);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

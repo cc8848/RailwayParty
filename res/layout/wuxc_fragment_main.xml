@@ -51,6 +51,12 @@
             android:layout_height="100dp"
             android:background="@drawable/thiseeee" >
 
+            <wuxc.single.railwayparty.layout.Childviewpaper
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+            </wuxc.single.railwayparty.layout.Childviewpaper>
+
             <ImageView
                 android:id="@+id/headimg"
                 android:layout_width="50dp"

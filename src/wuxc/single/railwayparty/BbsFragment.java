@@ -234,10 +234,18 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 
 	private void intnumber() {
 		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
-		t1 = ItemNumber.getInt("DYQtotal", 100) - ItemNumber.getInt("DYQread", 0);
-		t2 = ItemNumber.getInt("DQLHtotal", 100) - ItemNumber.getInt("DQLHread", 0);
-		t3 = ItemNumber.getInt("DSYYJtotal", 100) - ItemNumber.getInt("DSYYJread", 0);
-		t4 = ItemNumber.getInt("DYYJtotal", 100) - ItemNumber.getInt("DYYJread", 0);
+		// t1 = ItemNumber.getInt("DYQtotal", 100) -
+		// ItemNumber.getInt("DYQread", 0);
+		// t2 = ItemNumber.getInt("DQLHtotal", 100) -
+		// ItemNumber.getInt("DQLHread", 0);
+		// t3 = ItemNumber.getInt("DSYYJtotal", 100) -
+		// ItemNumber.getInt("DSYYJread", 0);
+		// t4 = ItemNumber.getInt("DYYJtotal", 100) -
+		// ItemNumber.getInt("DYYJread", 0);
+		t1 = ItemNumber.getInt("DYQapi", 0) - ItemNumber.getInt("DYQposition", 0);
+		t2 = ItemNumber.getInt("DQLHapi", 0) - ItemNumber.getInt("DQLHposition", 0);
+		t3 = ItemNumber.getInt("DSYYJapi", 0) - ItemNumber.getInt("DSYYJposition", 0);
+		t4 = ItemNumber.getInt("DYYJapi", 0) - ItemNumber.getInt("DYYJposition", 0);
 		text_number_1.setVisibility(View.GONE);
 		text_number_2.setVisibility(View.GONE);
 		text_number_3.setVisibility(View.GONE);
@@ -349,6 +357,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			if (true) {
 				Editor edit1 = ItemNumber.edit();
 				edit1.putInt("DYQread", ItemNumber.getInt("DYQtotal", 0));
+				edit1.putInt("DYQposition", ItemNumber.getInt("DYQapi", 0));
 				edit1.commit();
 			}
 
@@ -382,6 +391,7 @@ public class BbsFragment extends MainBaseFragment implements OnClickListener {
 			if (true) {
 				Editor edit1 = ItemNumber.edit();
 				edit1.putInt("DYYJread", ItemNumber.getInt("DYYJtotal", 0));
+				edit1.putInt("DYYJposition", ItemNumber.getInt("DYYJapi", 0));
 				edit1.commit();
 			}
 			intnumber();

@@ -47,6 +47,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.internet.GetUnreadNumber;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.internet.URLcontainer;
 import wuxc.single.railwayparty.layout.RoundImageView;
@@ -96,7 +97,8 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 	private static int number = 0;
 	private int fujian = 0;
 	private String filePath = "";
-	private String ext = "";	private boolean read = false;
+	private String ext = "";
+	private boolean read = false;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -134,7 +136,8 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 		chn = bundle.getString("chn");
 		try {
 			detail = bundle.getString("detail");
-			ticket = bundle.getString("ticket");	read = bundle.getBoolean("read");
+			ticket = bundle.getString("ticket");
+			read = bundle.getBoolean("read");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -149,7 +152,8 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 		TextTime.setText(Time);
 		String html = "<html>" + "<body>" + "<table>" + "<tr>" + "<td>成都天府</td>" + "</tr>" + "</table>" + "</body>"
 				+ "</html>";
-		text_detail.setText("摘要：" + detail);if (!read) {
+		text_detail.setText("摘要：" + detail);
+		if (!read) {
 			record();
 		}
 		final ArrayList ArrayValues = new ArrayList();
@@ -196,6 +200,7 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 
 		// detail=getNewContent(detail);
 	}
+
 	private void record() {
 		// TODO Auto-generated method stub
 		final ArrayList ArrayValues = new ArrayList();
@@ -217,6 +222,7 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 			}
 		}).start();
 	}
+
 	private void ReadTicket() {
 		// TODO Auto-generated method stub
 		ticket = PreUserInfo.getString("ticket", "");
@@ -303,6 +309,11 @@ public class artDetail extends Activity implements OnClickListener, OnItemClickL
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		try {
+			GetUnreadNumber.getunreadnumber(this);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

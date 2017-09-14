@@ -9,6 +9,17 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.railwayparty.picfragment.b1;
+import com.example.railwayparty.picfragment.b10;
+import com.example.railwayparty.picfragment.b2;
+import com.example.railwayparty.picfragment.b3;
+import com.example.railwayparty.picfragment.b4;
+import com.example.railwayparty.picfragment.b5;
+import com.example.railwayparty.picfragment.b6;
+import com.example.railwayparty.picfragment.b7;
+import com.example.railwayparty.picfragment.b8;
+import com.example.railwayparty.picfragment.b9;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +52,7 @@ import wuxc.single.railwayparty.fragment.BuildFragment4;
 import wuxc.single.railwayparty.fragment.BuildFragment5;
 import wuxc.single.railwayparty.fragment.BuildFragment6;
 import wuxc.single.railwayparty.internet.APPVersion;
+import wuxc.single.railwayparty.internet.GetUnreadNumber;
 import wuxc.single.railwayparty.internet.HttpGetData;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.main.WebLearnActivity;
@@ -108,6 +120,10 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private SharedPreferences ItemNumber;
 	private static final int GET_VERSION_RESULT = 5;
+	private Childviewpaper ViewPaper1;
+	public List<Fragment> Fragments1 = new ArrayList<Fragment>();
+	private FragmentManager FragmentManager1;
+	private int NumberPicture1 = 0;
 	private View view;// 缓存Fragment view
 	// private Handler uiHandler = new Handler() {
 	// @Override
@@ -159,6 +175,17 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				}
 			});
 			String ticket = PreUserInfo.getString("ticket", "");
+			NumberPicture1 = PreUserInfo.getInt("b_number", 0);
+			if (NumberPicture1 > 10) {
+				NumberPicture1 = 10;
+			}
+			ViewPaper1 = (Childviewpaper) view.findViewById(R.id.viewPager1);
+			Fragments1.clear();// 清空list
+			initfragment1();// list 装填fragment
+			FragmentManager1 = getActivity().getSupportFragmentManager();
+			ViewPaper1.setOffscreenPageLimit(NumberPicture1);
+			ViewPaper1.setOnPageChangeListener(new MyOnPageChangeListener1());
+			ViewPaper1.setAdapter(new MyPagerAdapter1());
 			// final ArrayList ArrayValues = new ArrayList();
 			// ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 			// ArrayValues.add(new BasicNameValuePair("chns",
@@ -179,7 +206,65 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}
 		return view;
 	}
+	private void initfragment1() {
+		// TODO Auto-generated method stub
+		Fragments1.add(new b1());
+		Fragments1.add(new b2());
+		Fragments1.add(new b3());
+		Fragments1.add(new b4());
+		Fragments1.add(new b5());
+		Fragments1.add(new b6());
+		Fragments1.add(new b7());
+		Fragments1.add(new b8());
+		Fragments1.add(new b9());
+		Fragments1.add(new b10());
+	}private class MyPagerAdapter1 extends PagerAdapter {
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
 
+		@Override
+		public int getCount() {
+			return NumberPicture1;
+		}
+
+		@Override
+		public void destroyItem(View container, int position, Object object) {
+			((ViewPager) container).removeView(Fragments1.get(position).getView());
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			Fragment fragment = Fragments1.get(position);
+			if (!fragment.isAdded()) {
+				FragmentTransaction ft = FragmentManager1.beginTransaction();
+				ft.add(fragment, fragment.getClass().getSimpleName());
+				ft.commit();
+				FragmentManager1.executePendingTransactions();
+			}
+
+			if (fragment.getView().getParent() == null) {
+				container.addView(fragment.getView());
+			}
+			return fragment.getView();
+		}
+	};
+
+	public class MyOnPageChangeListener1 implements OnPageChangeListener {
+		@Override
+		public void onPageSelected(int arg0) {
+
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
+	}
 	// protected void GetDataDetailFromVersion(Object obj) {
 	// // TODO Auto-generated method stub
 	//
@@ -212,6 +297,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onStart();
 		if (view != null) {
+
 			intnumber();
 		}
 	}
@@ -317,21 +403,38 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 
 	private void intnumber() {
 		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
-		t1 = ItemNumber.getInt("ZDWJtotal", 100) - ItemNumber.getInt("ZDWJread", 0);
-		t2 = ItemNumber.getInt("DJYWtotal", 100) - ItemNumber.getInt("DJYWread", 0);
-		t3 = ItemNumber.getInt("TZGGtotal", 100) - ItemNumber.getInt("TZGGread", 0);
-		t4 = ItemNumber.getInt("SZRDtotal", 100) - ItemNumber.getInt("SZRDread", 0);
-		Log.e("SZRDtotal", " ItemNumber" + ItemNumber.getInt("SZRDtotal", 100));
-		Log.e("SZRDread", " ItemNumber" + ItemNumber.getInt("SZRDread", 100));
-		t5 = ItemNumber.getInt("DYFCtotal", 100) - ItemNumber.getInt("DYFCread", 0);
-		t6 = ItemNumber.getInt("WSDXtotal", 100) - ItemNumber.getInt("WSDXread", 0);
+		// t1 = ItemNumber.getInt("ZDWJtotal", 100) -
+		// ItemNumber.getInt("ZDWJread", 0);
+		// t2 = ItemNumber.getInt("DJYWtotal", 100) -
+		// ItemNumber.getInt("DJYWread", 0);
+		// t3 = ItemNumber.getInt("TZGGtotal", 100) -
+		// ItemNumber.getInt("TZGGread", 0);
+		// t4 = ItemNumber.getInt("SZRDtotal", 100) -
+		// ItemNumber.getInt("SZRDread", 0);
+		// Log.e("SZRDtotal", " ItemNumber" + ItemNumber.getInt("SZRDtotal",
+		// 100));
+		// Log.e("SZRDread", " ItemNumber" + ItemNumber.getInt("SZRDread",
+		// 100));
+		// t5 = ItemNumber.getInt("DYFCtotal", 100) -
+		// ItemNumber.getInt("DYFCread", 0);
+		// t6 = ItemNumber.getInt("WSDXtotal", 100) -
+		// ItemNumber.getInt("WSDXread", 0);
+		t1 = ItemNumber.getInt("ZDWJapi", 0) - ItemNumber.getInt("ZDWJposition", 0);
+		t2 = ItemNumber.getInt("DJYWapi", 0) - ItemNumber.getInt("DJYWposition", 0);
+		t3 = ItemNumber.getInt("TZGGapi", 0) - ItemNumber.getInt("TZGGposition", 0);
+		t4 = ItemNumber.getInt("SZRDapi", 0) - ItemNumber.getInt("SZRDposition", 0);
+		Log.e("DJYWapi", " ItemNumber" + ItemNumber.getInt("DJYWapi", 0));
+		Log.e("DJYWapi", " ItemNumber" + ItemNumber.getInt("DJYWapi", 0));
+		t5 = ItemNumber.getInt("DYFCapi", 0) - ItemNumber.getInt("DYFCposition", 0);
+		t6 = ItemNumber.getInt("WSDXapi", 0) - ItemNumber.getInt("WSDXposition", 0);
+
 		text_number_1.setVisibility(View.GONE);
 		text_number_2.setVisibility(View.GONE);
 		text_number_3.setVisibility(View.GONE);
 		text_number_4.setVisibility(View.GONE);
 		text_number_5.setVisibility(View.GONE);
 		text_number_6.setVisibility(View.GONE);
-		if (t1>0) {
+		if (t1 > 0) {
 			text_number_1.setVisibility(View.VISIBLE);
 
 			if (t1 >= 100) {
@@ -343,7 +446,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				text_number_1.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t2>0) {
+		if (t2 > 0) {
 			text_number_2.setVisibility(View.VISIBLE);
 			if (t2 > 99) {
 				text_number_2.setText("");
@@ -355,7 +458,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 			}
 
 		}
-		if (t3>0) {
+		if (t3 > 0) {
 			text_number_3.setVisibility(View.VISIBLE);
 
 			if (t3 > 99) {
@@ -367,7 +470,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				text_number_3.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t4>0) {
+		if (t4 > 0) {
 			text_number_4.setVisibility(View.VISIBLE);
 
 			if (t4 > 99) {
@@ -379,7 +482,7 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 				text_number_4.setBackgroundResource(R.drawable.tag);
 			}
 		}
-		if (t5>0) {
+		if (t5 > 0) {
 			text_number_5.setVisibility(View.VISIBLE);
 
 			if (t5 > 99) {

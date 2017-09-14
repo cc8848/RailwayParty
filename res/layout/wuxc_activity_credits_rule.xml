@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="用户每日登录可获得2积分"
+                android:text="用户每日登录可获得1积分"
                 android:textSize="16dp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -133,8 +133,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:text="每学习一节可获得2积分"
+                android:text="每学习一节可获得2积分(PPT学习5分钟以上，视频学习10分钟以上)"
                 android:textSize="16dp"
                 android:textStyle="bold" />
         </LinearLayout>

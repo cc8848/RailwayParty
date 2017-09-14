@@ -9,6 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/twoanddo" >
+
+        <wuxc.single.railwayparty.layout.Childviewpaper
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </wuxc.single.railwayparty.layout.Childviewpaper>
     </RelativeLayout>
 
     <LinearLayout

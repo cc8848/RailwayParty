@@ -203,7 +203,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "userSign"));
-				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "1"));
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "每日首次登录"));
 				ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 				new Thread(new Runnable() { // 开启线程上传文件

@@ -1,10 +1,22 @@
 package wuxc.single.railwayparty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.railwayparty.picfragment.p1;
+import com.example.railwayparty.picfragment.p10;
+import com.example.railwayparty.picfragment.p2;
+import com.example.railwayparty.picfragment.p3;
+import com.example.railwayparty.picfragment.p4;
+import com.example.railwayparty.picfragment.p5;
+import com.example.railwayparty.picfragment.p6;
+import com.example.railwayparty.picfragment.p7;
+import com.example.railwayparty.picfragment.p8;
+import com.example.railwayparty.picfragment.p9;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +24,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import wuxc.single.railwayparty.MainFragment.MyOnPageChangeListener;
 import wuxc.single.railwayparty.branch.PartyAssistantActivity;
 import wuxc.single.railwayparty.branch.PartyBranchGroupActivity;
 import wuxc.single.railwayparty.branch.PartyBranchStatisicActivity;
@@ -27,6 +46,7 @@ import wuxc.single.railwayparty.branch.PartyMembershipActivity;
 import wuxc.single.railwayparty.branch.PartyMoneyActivity;
 import wuxc.single.railwayparty.branch.PartyOrgActivity;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.other.SearchActivity;
 import android.view.ViewGroup;
 
@@ -57,6 +77,10 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 	public static String time = "2017-07-30";
 	private LinearLayout lin_main_top;
 	private View view;// »º´æFragment view
+	private Childviewpaper ViewPaper;
+	public List<Fragment> Fragments = new ArrayList<Fragment>();
+	private FragmentManager FragmentManager;
+	private int NumberPicture = 0;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -113,8 +137,81 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 					uiHandler.sendMessage(msg);
 				}
 			}).start();
+			NumberPicture = PreUserInfo.getInt("p_number", 0);
+			if (NumberPicture > 10) {
+				NumberPicture = 10;
+			}
+			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
+			Fragments.clear();// Çå¿Õlist
+			initfragment();// list ×°Ìîfragment
+			FragmentManager = getActivity().getSupportFragmentManager();
+			ViewPaper.setOffscreenPageLimit(NumberPicture);
+			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
+			ViewPaper.setAdapter(new MyPagerAdapter());
 		}
 		return view;
+	}
+
+	private void initfragment() {
+		// TODO Auto-generated method stub
+		Fragments.add(new p1());
+		Fragments.add(new p2());
+		Fragments.add(new p3());
+		Fragments.add(new p4());
+		Fragments.add(new p5());
+		Fragments.add(new p6());
+		Fragments.add(new p7());
+		Fragments.add(new p8());
+		Fragments.add(new p9());
+		Fragments.add(new p10());
+	}
+
+	private class MyPagerAdapter extends PagerAdapter {
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public int getCount() {
+			return NumberPicture;
+		}
+
+		@Override
+		public void destroyItem(View container, int position, Object object) {
+			((ViewPager) container).removeView(Fragments.get(position).getView());
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			Fragment fragment = Fragments.get(position);
+			if (!fragment.isAdded()) {
+				FragmentTransaction ft = FragmentManager.beginTransaction();
+				ft.add(fragment, fragment.getClass().getSimpleName());
+				ft.commit();
+				FragmentManager.executePendingTransactions();
+			}
+
+			if (fragment.getView().getParent() == null) {
+				container.addView(fragment.getView());
+			}
+			return fragment.getView();
+		}
+	};
+
+	public class MyOnPageChangeListener implements OnPageChangeListener {
+		@Override
+		public void onPageSelected(int arg0) {
+
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
 	}
 
 	protected void GetDataDetailFromLoginResultData(Object obj) {

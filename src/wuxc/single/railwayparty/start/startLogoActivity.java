@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +63,18 @@ public class startLogoActivity extends Activity {
 			case 3:
 				go();
 				break;
+			case 11:
+				showf(msg.obj);
+				break;
+			case 22:
+				showp(msg.obj);
+				break;
+			case 33:
+				showb(msg.obj);
+				break;
+			case 44:
+				showd(msg.obj);
+				break;
 			default:
 				break;
 			}
@@ -83,6 +96,162 @@ public class startLogoActivity extends Activity {
 				edit.putBoolean(getTimeByCalendar() + userName, true);
 				Log.e("PreLogin", "" + true);
 				edit.commit();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void showf(Object obj) {
+		int number = 0;
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					for (int i = 0; i < jArray.length(); i++) {
+						json_data = jArray.getJSONObject(i);
+						Editor edit = PreUserInfo.edit();
+						number++;
+						edit.putString("f" + i, json_data.getString("path"));
+						edit.putString("f_pic" + i, json_data.getString("url"));
+						edit.commit();
+					}
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("f_number", number);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void showd(Object obj) {
+		int number = 0;
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					for (int i = 0; i < jArray.length(); i++) {
+						json_data = jArray.getJSONObject(i);
+						Editor edit = PreUserInfo.edit();
+						number++;
+						edit.putString("d" + i, json_data.getString("path"));
+						edit.putString("d_pic" + i, json_data.getString("url"));
+						edit.commit();
+					}
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("d_number", number);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void showb(Object obj) {
+		int number = 0;
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					for (int i = 0; i < jArray.length(); i++) {
+						json_data = jArray.getJSONObject(i);
+						Editor edit = PreUserInfo.edit();
+						number++;
+						edit.putString("b" + i, json_data.getString("path"));
+						edit.putString("b_pic" + i, json_data.getString("url"));
+						edit.commit();
+					}
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("b_number", number);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			} else {
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	protected void showp(Object obj) {
+		int number = 0;
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = null;
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				Data = demoJson.getString("data");
+				JSONArray jArray = null;
+				try {
+					jArray = new JSONArray(Data);
+					JSONObject json_data = null;
+					for (int i = 0; i < jArray.length(); i++) {
+						json_data = jArray.getJSONObject(i);
+						Editor edit = PreUserInfo.edit();
+						number++;
+						edit.putString("p" + i, json_data.getString("path"));
+						edit.putString("p_pic" + i, json_data.getString("url"));
+						edit.commit();
+					}
+					Editor edit = PreUserInfo.edit();
+					edit.putInt("p_number", number);
+					edit.commit();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			} else {
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -123,8 +292,96 @@ public class startLogoActivity extends Activity {
 		PreGuidePage = getSharedPreferences("GuidePage", Context.MODE_PRIVATE);
 		PreLogin = getSharedPreferences("Login", Context.MODE_PRIVATE);
 		GuidePage = PreGuidePage.getInt("GuidePage", 0);
+		recordb();
+		recordd();
+		recordf();
+		recordp();
 		starttimedelay();
 
+	}
+
+	private void recordf() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("classify", "mobileHome"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/homeImage/getDisplayList", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 11;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	private void recordp() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("classify", "mobileDept"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/homeImage/getDisplayList", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 22;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	private void recordb() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("classify", "mobileParty"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/homeImage/getDisplayList", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 33;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	private void recordd() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+		ArrayValues.add(new BasicNameValuePair("classify", "mobileStduty"));
+
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String DueData = "";
+				DueData = HttpGetData.GetData("api/pubshare/homeImage/getDisplayList", ArrayValues);
+				Message msg = new Message();
+				msg.obj = DueData;
+				msg.what = 44;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
 	}
 
 	private void go() {
@@ -240,12 +497,12 @@ public class startLogoActivity extends Activity {
 			WriteAccount();
 			WriteUserInfo();
 			Log.e("getTimeByCalendar() + userName", getTimeByCalendar() + userName);
-			
+
 			if (!PreLogin.getBoolean(getTimeByCalendar() + userName, false)) {
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.inOut", "1"));
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.classify", "userSign"));
-				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "2"));
+				ArrayValues.add(new BasicNameValuePair("userScoreDto.amount", "1"));
 				ArrayValues.add(new BasicNameValuePair("userScoreDto.reason", "每日首次登录"));
 				ArrayValues.add(new BasicNameValuePair("ticket", ticket));
 				new Thread(new Runnable() { // 开启线程上传文件
@@ -280,13 +537,13 @@ public class startLogoActivity extends Activity {
 		month++;
 		if (month < 10) {
 			Mon = "0" + month;
-		}else {
+		} else {
 			Mon = "" + month;
 		}
 		if (day < 10) {
 			Day = "0" + day;
-		}else {
-			Day=day+"";
+		} else {
+			Day = day + "";
 		}
 		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
 		return year + "-" + Mon + "-" + Day;

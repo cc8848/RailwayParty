@@ -1,10 +1,22 @@
 package wuxc.single.railwayparty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.railwayparty.picfragment.f1;
+import com.example.railwayparty.picfragment.f10;
+import com.example.railwayparty.picfragment.f2;
+import com.example.railwayparty.picfragment.f3;
+import com.example.railwayparty.picfragment.f4;
+import com.example.railwayparty.picfragment.f5;
+import com.example.railwayparty.picfragment.f6;
+import com.example.railwayparty.picfragment.f7;
+import com.example.railwayparty.picfragment.f8;
+import com.example.railwayparty.picfragment.f9;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +25,25 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import wuxc.single.railwayparty.fragment.GuideFragment1;
+import wuxc.single.railwayparty.fragment.GuideFragment2;
+import wuxc.single.railwayparty.fragment.GuideFragment3;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.main.CleanActivity;
 import wuxc.single.railwayparty.main.DisciplinaryActivity;
 import wuxc.single.railwayparty.main.FlagActivity;
@@ -31,7 +54,6 @@ import wuxc.single.railwayparty.main.PolicyActivity;
 import wuxc.single.railwayparty.main.WebLearnActivity;
 import wuxc.single.railwayparty.other.LoginActivity;
 import wuxc.single.railwayparty.other.SearchActivity;
-import android.view.ViewGroup;
 
 public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private int screenwidth = 0;
@@ -74,6 +96,10 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private int t7 = 0;
 	private int t8 = 0;
 	private SharedPreferences ItemNumber;
+	private Childviewpaper ViewPaper;
+	public List<Fragment> Fragments = new ArrayList<Fragment>();
+	private FragmentManager FragmentManager;
+	private int NumberPicture = 0;
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -129,6 +155,34 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			edit.putInt("DQLHtotal", demoJson.getInt("dqlh_total"));
 			edit.putInt("DSYYJtotal", demoJson.getInt("dsyyj_total"));
 			edit.putInt("DYYJtotal", demoJson.getInt("dyyj_total"));
+			edit.putInt("ZDWJapi", demoJson.getInt("zdwj"));
+			edit.putInt("DJYWapi", demoJson.getInt("djyw"));
+			edit.putInt("TZGGapi", demoJson.getInt("tzggd"));
+			edit.putInt("SZRDapi", demoJson.getInt("szrd"));
+			edit.putInt("DYFCapi", demoJson.getInt("dyfc"));
+			edit.putInt("WSDXapi", demoJson.getInt("wsdx"));
+			edit.putInt("LXYZXXapi1", demoJson.getInt("lxyzxx"));
+			edit.putInt("DJKHapi", demoJson.getInt("djkh"));
+			edit.putInt("DNJCapi", demoJson.getInt("dnjc"));
+			edit.putInt("DWGKapi", demoJson.getInt("dwgk"));
+			edit.putInt("LZSXapi", demoJson.getInt("lzsx"));
+			edit.putInt("YASJLBapi", demoJson.getInt("yasjlb"));
+			edit.putInt("QLKMapi", demoJson.getInt("qlkm"));
+			edit.putInt("XXJLapi", demoJson.getInt("xxjl"));
+			edit.putInt("DJFGapi", demoJson.getInt("djfg"));
+			edit.putInt("XXTBapi", demoJson.getInt("xxtb"));
+			edit.putInt("JSZNapi", demoJson.getInt("jszn"));
+			edit.putInt("WHZNapi", demoJson.getInt("whzn"));
+			edit.putInt("CYZNapi", demoJson.getInt("cyzn"));
+			edit.putInt("JYZNapi", demoJson.getInt("jyzn"));
+			edit.putInt("QTXSapi", demoJson.getInt("qtxs"));
+			edit.putInt("QWXapi", demoJson.getInt("qwx"));
+			edit.putInt("QNXFapi", demoJson.getInt("qnxf"));
+			edit.putInt("JZXXapi", demoJson.getInt("jzxx"));
+			edit.putInt("DYQapi", demoJson.getInt("dyq"));
+			edit.putInt("DQLHapi", demoJson.getInt("dqlh"));
+			edit.putInt("DSYYJapi", demoJson.getInt("dsyyj"));
+			edit.putInt("DYYJapi", demoJson.getInt("dyyj"));
 			edit.commit();
 			intnumber();
 		} catch (JSONException e) {
@@ -152,26 +206,64 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	private void intnumber() {
 		// TODO Auto-generated method stub
 		ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
-		t1 = ItemNumber.getInt("TZGGtotal", 100) - ItemNumber.getInt("TZGGread", 0);
-		t2 = ItemNumber.getInt("LXYZXXtotal" + 2, 100) + ItemNumber.getInt("LXYZXXtotal" + 1, 100)
-				- ItemNumber.getInt("LXYZXXread", 0);
-		t3 = ItemNumber.getInt("DJKHtotal", 100) - ItemNumber.getInt("DJKHread", 0)
-				+ ItemNumber.getInt("DNJCtotal", 100) - ItemNumber.getInt("DNJCread", 0)
-				+ ItemNumber.getInt("DWGKtotal", 100) - ItemNumber.getInt("DWGKread", 0);
-		t4 = ItemNumber.getInt("WSDXtotal", 100) - ItemNumber.getInt("WSDXread", 0);
-		t5 = ItemNumber.getInt("LZSXtotal", 100) - ItemNumber.getInt("LZSXread", 0)
-				+ ItemNumber.getInt("YASJLBtotal", 100) - ItemNumber.getInt("YASJLBread", 0)
-				+ ItemNumber.getInt("QLKMtotal", 100) - ItemNumber.getInt("QLKMread", 0)
-				+ ItemNumber.getInt("XXJLtotal", 100) - ItemNumber.getInt("XXJLread", 0);
-		t6 = ItemNumber.getInt("DJFGtotal", 100) - ItemNumber.getInt("DJFGread", 0)
-				+ ItemNumber.getInt("XXTBtotal", 100) - ItemNumber.getInt("XXTBread", 0);
-		t7 = ItemNumber.getInt("JSZNtotal", 100) - ItemNumber.getInt("JSZNread", 0)
-				+ ItemNumber.getInt("WHZNtotal", 100) - ItemNumber.getInt("WHZNread", 0)
-				+ ItemNumber.getInt("CYZNtotal", 100) - ItemNumber.getInt("CYZNread", 0)
-				+ ItemNumber.getInt("JYZNtotal", 100) - ItemNumber.getInt("JYZNread", 0);
-		t8 = ItemNumber.getInt("QTXStotal", 100) - ItemNumber.getInt("QTXSread", 0) + ItemNumber.getInt("QWXtotal", 100)
-				- ItemNumber.getInt("QWXread", 0) + ItemNumber.getInt("QNXFtotal", 100)
-				- ItemNumber.getInt("QNXFread", 0);
+		// t1 = ItemNumber.getInt("TZGGtotal", 100) -
+		// ItemNumber.getInt("TZGGread", 0);
+		// t2 = ItemNumber.getInt("LXYZXXtotal" + 2, 100) +
+		// ItemNumber.getInt("LXYZXXtotal" + 1, 100)
+		// - ItemNumber.getInt("LXYZXXread", 0);
+		// t3 = ItemNumber.getInt("DJKHtotal", 100) -
+		// ItemNumber.getInt("DJKHread", 0)
+		// + ItemNumber.getInt("DNJCtotal", 100) - ItemNumber.getInt("DNJCread",
+		// 0)
+		// + ItemNumber.getInt("DWGKtotal", 100) - ItemNumber.getInt("DWGKread",
+		// 0);
+		// t4 = ItemNumber.getInt("WSDXtotal", 100) -
+		// ItemNumber.getInt("WSDXread", 0);
+		// t5 = ItemNumber.getInt("LZSXtotal", 100) -
+		// ItemNumber.getInt("LZSXread", 0)
+		// + ItemNumber.getInt("YASJLBtotal", 100) -
+		// ItemNumber.getInt("YASJLBread", 0)
+		// + ItemNumber.getInt("QLKMtotal", 100) - ItemNumber.getInt("QLKMread",
+		// 0)
+		// + ItemNumber.getInt("XXJLtotal", 100) - ItemNumber.getInt("XXJLread",
+		// 0);
+		// t6 = ItemNumber.getInt("DJFGtotal", 100) -
+		// ItemNumber.getInt("DJFGread", 0)
+		// + ItemNumber.getInt("XXTBtotal", 100) - ItemNumber.getInt("XXTBread",
+		// 0);
+		// t7 = ItemNumber.getInt("JSZNtotal", 100) -
+		// ItemNumber.getInt("JSZNread", 0)
+		// + ItemNumber.getInt("WHZNtotal", 100) - ItemNumber.getInt("WHZNread",
+		// 0)
+		// + ItemNumber.getInt("CYZNtotal", 100) - ItemNumber.getInt("CYZNread",
+		// 0)
+		// + ItemNumber.getInt("JYZNtotal", 100) - ItemNumber.getInt("JYZNread",
+		// 0);
+		// t8 = ItemNumber.getInt("QTXStotal", 100) -
+		// ItemNumber.getInt("QTXSread", 0) + ItemNumber.getInt("QWXtotal", 100)
+		// - ItemNumber.getInt("QWXread", 0) + ItemNumber.getInt("QNXFtotal",
+		// 100)
+		// - ItemNumber.getInt("QNXFread", 0);
+		t1 = ItemNumber.getInt("TZGGapi", 0) - ItemNumber.getInt("TZGGposition", 0);
+		t2 = ItemNumber.getInt("LXYZXXapi" + 2, 0) + ItemNumber.getInt("LXYZXXapi" + 1, 0)
+				- ItemNumber.getInt("LXYZXXposition", 0);
+		t3 = ItemNumber.getInt("DJKHapi", 0) - ItemNumber.getInt("DJKHposition", 0) + ItemNumber.getInt("DNJCapi", 0)
+				- ItemNumber.getInt("DNJCposition", 0) + ItemNumber.getInt("DWGKapi", 0)
+				- ItemNumber.getInt("DWGKposition", 0);
+		t4 = ItemNumber.getInt("WSDXapi", 0) - ItemNumber.getInt("WSDXposition", 0);
+		t5 = ItemNumber.getInt("LZSXapi", 0) - ItemNumber.getInt("LZSXposition", 0) + ItemNumber.getInt("YASJLBapi", 0)
+				- ItemNumber.getInt("YASJLBposition", 0) + ItemNumber.getInt("QLKMapi", 0)
+				- ItemNumber.getInt("QLKMposition", 0) + ItemNumber.getInt("XXJLapi", 0)
+				- ItemNumber.getInt("XXJLposition", 0);
+		t6 = ItemNumber.getInt("DJFGapi", 0) - ItemNumber.getInt("DJFGposition", 0) + ItemNumber.getInt("XXTBapi", 0)
+				- ItemNumber.getInt("XXTBposition", 0);
+		t7 = ItemNumber.getInt("JSZNapi", 0) - ItemNumber.getInt("JSZNposition", 0) + ItemNumber.getInt("WHZNapi", 0)
+				- ItemNumber.getInt("WHZNposition", 0) + ItemNumber.getInt("CYZNapi", 0)
+				- ItemNumber.getInt("CYZNposition", 0) + ItemNumber.getInt("JYZNapi", 0)
+				- ItemNumber.getInt("JYZNposition", 0);
+		t8 = ItemNumber.getInt("QTXSapi", 0) - ItemNumber.getInt("QTXSposition", 0) + ItemNumber.getInt("QWXapi", 0)
+				- ItemNumber.getInt("QWXposition", 0) + ItemNumber.getInt("QNXFapi", 0)
+				- ItemNumber.getInt("QNXFposition", 0);
 		text_1.setVisibility(View.GONE);
 		text_2.setVisibility(View.GONE);
 		text_3.setVisibility(View.GONE);
@@ -303,6 +395,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				}
 			});
 			PreUserInfo = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+
 			ItemNumber = getActivity().getSharedPreferences("ItemNumber", Context.MODE_PRIVATE);
 			ticket = PreUserInfo.getString("ticket", "");
 			final ArrayList ArrayValues = new ArrayList();
@@ -320,8 +413,33 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 					uiHandler.sendMessage(msg);
 				}
 			}).start();
+			NumberPicture = PreUserInfo.getInt("f_number", 0);
+			if (NumberPicture > 10) {
+				NumberPicture = 10;
+			}
+			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
+			Fragments.clear();// Çå¿Õlist
+			initfragment();// list ×°Ìîfragment
+			FragmentManager = getActivity().getSupportFragmentManager();
+			ViewPaper.setOffscreenPageLimit(NumberPicture);
+			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
+			ViewPaper.setAdapter(new MyPagerAdapter());
 		}
 		return view;
+	}
+
+	private void initfragment() {
+		// TODO Auto-generated method stub
+		Fragments.add(new f1());
+		Fragments.add(new f2());
+		Fragments.add(new f3());
+		Fragments.add(new f4());
+		Fragments.add(new f5());
+		Fragments.add(new f6());
+		Fragments.add(new f7());
+		Fragments.add(new f8());
+		Fragments.add(new f9());
+		Fragments.add(new f10());
 	}
 
 	private void initview(View view) {
@@ -576,4 +694,51 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		}
 	}
 
+	private class MyPagerAdapter extends PagerAdapter {
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public int getCount() {
+			return NumberPicture;
+		}
+
+		@Override
+		public void destroyItem(View container, int position, Object object) {
+			((ViewPager) container).removeView(Fragments.get(position).getView());
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			Fragment fragment = Fragments.get(position);
+			if (!fragment.isAdded()) {
+				FragmentTransaction ft = FragmentManager.beginTransaction();
+				ft.add(fragment, fragment.getClass().getSimpleName());
+				ft.commit();
+				FragmentManager.executePendingTransactions();
+			}
+
+			if (fragment.getView().getParent() == null) {
+				container.addView(fragment.getView());
+			}
+			return fragment.getView();
+		}
+	};
+
+	public class MyOnPageChangeListener implements OnPageChangeListener {
+		@Override
+		public void onPageSelected(int arg0) {
+
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
+	}
 }

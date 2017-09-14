@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="建设职能"
+                android:text="工会动态"
                 android:textSize="16dp" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="维护职能"
+                android:text="情系员工"
                 android:textSize="16dp" />
 
             <TextView
@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="参与职能"
+                android:text="职工之家"
                 android:textSize="16dp" />
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="教育职能"
+                android:text="四项职能"
                 android:textSize="16dp" />
 
             <TextView

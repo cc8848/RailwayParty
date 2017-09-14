@@ -8,6 +8,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.railwayparty.picfragment.d1;
+import com.example.railwayparty.picfragment.d10;
+import com.example.railwayparty.picfragment.d2;
+import com.example.railwayparty.picfragment.d3;
+import com.example.railwayparty.picfragment.d4;
+import com.example.railwayparty.picfragment.d5;
+import com.example.railwayparty.picfragment.d6;
+import com.example.railwayparty.picfragment.d7;
+import com.example.railwayparty.picfragment.d8;
+import com.example.railwayparty.picfragment.d9;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +30,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,9 +51,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import wuxc.single.railwayparty.R;
+import wuxc.single.railwayparty.MainFragment.MyOnPageChangeListener;
 import wuxc.single.railwayparty.adapter.PolicyAdapter;
 import wuxc.single.railwayparty.adapter.PolicyAdapter.Callback;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.layout.Childviewpaper;
 import wuxc.single.railwayparty.model.Clean1Model;
 import wuxc.single.railwayparty.model.PolicyModel;
 import wuxc.single.railwayparty.start.SpecialDetailActivity;
@@ -76,6 +94,10 @@ public class PolicyFragment extends Fragment
 	private SharedPreferences PreForLXYZXX;
 	private SharedPreferences ItemNumber;
 	private RelativeLayout main_top_bac;
+	private Childviewpaper ViewPaper;
+	public List<Fragment> Fragments = new ArrayList<Fragment>();
+	private FragmentManager FragmentManager;
+	private int NumberPicture = 0;
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -325,10 +347,83 @@ public class PolicyFragment extends Fragment
 			if (!PreForLXYZXX.getBoolean("LXYZXX", false)) {
 				GetMyReadRecord();
 			}
+			NumberPicture = PreUserInfo.getInt("d_number", 0);
+			if (NumberPicture > 10) {
+				NumberPicture = 10;
+			}
+			ViewPaper = (Childviewpaper) view.findViewById(R.id.viewPager);
+			Fragments.clear();// Çå¿Õlist
+			initfragment();// list ×°Ìîfragment
+			FragmentManager = getActivity().getSupportFragmentManager();
+			ViewPaper.setOffscreenPageLimit(NumberPicture);
+			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
+			ViewPaper.setAdapter(new MyPagerAdapter());
 		}
 
 		return view;
 
+	}
+
+	private void initfragment() {
+		// TODO Auto-generated method stub
+		Fragments.add(new d1());
+		Fragments.add(new d2());
+		Fragments.add(new d3());
+		Fragments.add(new d4());
+		Fragments.add(new d5());
+		Fragments.add(new d6());
+		Fragments.add(new d7());
+		Fragments.add(new d8());
+		Fragments.add(new d9());
+		Fragments.add(new d10());
+	}
+
+	private class MyPagerAdapter extends PagerAdapter {
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			return arg0 == arg1;
+		}
+
+		@Override
+		public int getCount() {
+			return NumberPicture;
+		}
+
+		@Override
+		public void destroyItem(View container, int position, Object object) {
+			((ViewPager) container).removeView(Fragments.get(position).getView());
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			Fragment fragment = Fragments.get(position);
+			if (!fragment.isAdded()) {
+				FragmentTransaction ft = FragmentManager.beginTransaction();
+				ft.add(fragment, fragment.getClass().getSimpleName());
+				ft.commit();
+				FragmentManager.executePendingTransactions();
+			}
+
+			if (fragment.getView().getParent() == null) {
+				container.addView(fragment.getView());
+			}
+			return fragment.getView();
+		}
+	};
+
+	public class MyOnPageChangeListener implements OnPageChangeListener {
+		@Override
+		public void onPageSelected(int arg0) {
+
+		}
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+		}
 	}
 
 	private void GetMyReadRecord() {
