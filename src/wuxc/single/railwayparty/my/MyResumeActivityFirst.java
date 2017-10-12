@@ -199,6 +199,21 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 		}
 		if (fileName.equals("image_headimg")) {
 			Toast.makeText(this, "上传成功！", Toast.LENGTH_SHORT).show();
+			final ArrayList ArrayValues = new ArrayList();
+
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("userPhoto", "" + filePath));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/member/modifyPhoto", ArrayValues);
+					Message msg = new Message();
+					msg.obj = LoginResultData;
+					msg.what = 136;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
 			head = true;
 		} else {
 			Toast.makeText(this, "上传失败！", Toast.LENGTH_SHORT).show();
@@ -663,7 +678,7 @@ public class MyResumeActivityFirst extends Activity implements OnClickListener {
 				@Override
 				public void run() {
 					String UpLoadResult = UpLoadFile.uploadHeadImage(file1,
-							URLcontainer.urlip + "uploadUserPortrait/uploadSignle", LoginId, "" + ticket);
+							URLcontainer.urlip + "console/form/formfileUpload/uploadSignle", LoginId, "" + ticket);
 					Message msg = new Message();
 					msg.what = GET_UPLOAD_RESULT;
 					msg.obj = UpLoadResult;

@@ -127,7 +127,7 @@ public class FragmentPartygroupmember extends Fragment
 					// JSONObject jsonObject = json_data.getJSONObject("data");
 					MemberModel listinfo = new MemberModel();
 
-					listinfo.setTitle(json_data.getString("realName"));
+					listinfo.setTitle(json_data.getString("userName"));
 					listinfo.setName(json_data.getString("userName"));
 					listinfo.setImageUrl(json_data.getString("userPhoto"));
 					list.add(listinfo);

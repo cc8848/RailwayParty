@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="职工之家"
+                android:text="职工文化"
                 android:textSize="16dp" />
 
             <TextView

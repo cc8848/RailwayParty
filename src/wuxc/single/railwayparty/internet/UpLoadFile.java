@@ -59,6 +59,7 @@ public class UpLoadFile {
 				dos.flush();
 				res = conn.getResponseCode();
 				if (res == 200) {
+					Log.e("res"," res"+res);
 					InputStream input = conn.getInputStream();
 					StringBuffer sb1 = new StringBuffer();
 					int ss;

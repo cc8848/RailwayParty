@@ -366,6 +366,22 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 		if (fileName.equals("image_headimg")) {
 			Toast.makeText(getActivity(), "上传成功！", Toast.LENGTH_SHORT).show();
 			WriteUsPhoto(filePath);
+
+			final ArrayList ArrayValues = new ArrayList();
+
+			ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+			ArrayValues.add(new BasicNameValuePair("userPhoto", "" + filePath));
+			new Thread(new Runnable() { // 开启线程上传文件
+				@Override
+				public void run() {
+					String LoginResultData = "";
+					LoginResultData = HttpGetData.GetData("api/member/modifyPhoto", ArrayValues);
+					Message msg = new Message();
+					msg.obj = LoginResultData;
+					msg.what = 136;
+					uiHandler.sendMessage(msg);
+				}
+			}).start();
 			UploadImage = true;
 		} else {
 			Toast.makeText(getActivity(), "上传失败！", Toast.LENGTH_SHORT).show();
@@ -581,12 +597,13 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
+			Log.e("MyFragment", "头像上传中");
 			new Thread(new Runnable() { // 开启线程上传文件
 				@Override
 				public void run() {
+					// uploadUserPortrait/uploadSignle
 					String UpLoadResult = UpLoadFile.uploadHeadImage(file1,
-							URLcontainer.urlip + "uploadUserPortrait/uploadSignle", LoginId, "" + ticket);
+							URLcontainer.urlip + "console/form/formfileUpload/uploadSignle", LoginId, "" + ticket);
 					Message msg = new Message();
 					msg.what = GET_UPLOAD_RESULT;
 					msg.obj = UpLoadResult;
