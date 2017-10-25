@@ -19,6 +19,7 @@ public class UpLoadFile {
 		String result = null;
 		int res = 0;
 		RequestURL = RequestURL + "?userId=" + userId + "&scaleSmall=1&scaleWidth=180&scaleHeight=180&ticket=" + ticket;
+		Log.e("RequestURL", RequestURL);
 		String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
 		String PREFIX = "--", LINE_END = "\r\n";
 		String CONTENT_TYPE = "multipart/form-data"; // 内容类型
@@ -58,6 +59,7 @@ public class UpLoadFile {
 				dos.write(end_data);
 				dos.flush();
 				res = conn.getResponseCode();
+				Log.e("res"," res"+res);
 				if (res == 200) {
 					Log.e("res"," res"+res);
 					InputStream input = conn.getInputStream();

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wuxc.single.railwayparty"
     android:versionCode="9"
-    android:versionName="4.2.6" >
+    android:versionName="4.3.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -597,7 +597,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="eb6dcf4c1a939f4f58e33bf3" /> <!-- </>值来自开发者平台取得的AppKey -->
+            android:value="a8fea587ece7fbea65a38718" /> <!-- </>值来自开发者平台取得的AppKey -->
 
     </application>
 

@@ -60,20 +60,20 @@
                 android:id="@+id/positiveButton"
                 android:layout_width="120dp"
                 android:layout_height="45.0dip"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/shape_5_red"
                 android:gravity="center"
                 android:text="0k"
                 android:textColor="#ffffff"
                 android:textSize="16dp" />
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="match_parent" />
-
             <Button
                 android:id="@+id/negativeButton"
                 android:layout_width="120dp"
                 android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/shape_5_white_red_stroke"
                 android:gravity="center"
                 android:text="qux"

@@ -8,7 +8,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,8 +21,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import wuxc.single.railwayparty.MainActivity;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.internet.HttpGetData;
+import wuxc.single.railwayparty.other.LoginActivity2;
 
 public class NewpwdActivity extends Activity implements OnClickListener {
 	private EditText edit_old;
@@ -34,6 +38,9 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 	private TextView TextVideo;
 	private int type = 2;
 	private String classify = "";
+	private MainActivity MainActivity;
+	private SettingActivity settingActivity;
+	private SharedPreferences PreAccount;// 存储用户名和密码，用于自动登录
 	public Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -59,8 +66,14 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 			// pager = demoJson.getString("pager");
 
 			if (Type.equals("success")) {
-				Toast.makeText(getApplicationContext(), "修改成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "修改成功！请重新登陆！", Toast.LENGTH_SHORT).show();
+				Intent intent_test = new Intent();
+				intent_test.setClass(getApplicationContext(), LoginActivity2.class);
+				startActivity(intent_test);
 				finish();
+				MainActivity.activity.finish();
+				settingActivity.activity.finish();
+				WriteAccount();
 			} else {
 				Toast.makeText(getApplicationContext(), "修改失败，请重试", Toast.LENGTH_SHORT).show();
 			}
@@ -70,6 +83,13 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	private void WriteAccount() {
+		// TODO Auto-generated method stub
+		Editor edit = PreAccount.edit();
+		edit.putBoolean("autoLogin", false);
+		edit.commit();
 	}
 
 	@Override
@@ -85,6 +105,7 @@ public class NewpwdActivity extends Activity implements OnClickListener {
 		btn_ok = (Button) findViewById(R.id.btn_ok);
 		btn_ok.setOnClickListener(this);
 		PreUserInfo = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
 		ticket = PreUserInfo.getString("ticket", "");
 	}
 

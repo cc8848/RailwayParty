@@ -44,7 +44,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 	private String ticket = "";
 	private SharedPreferences PreUserInfo;// 存储个人信息
 	private static final int GET_VERSION_RESULT = 1;
-
+	public static Activity activity;
 	private LinearLayout lin_changepassword;
 	private SharedPreferences PreAccount;// 存储用户名和密码，用于自动登录
 	private Handler uiHandler = new Handler() {
@@ -137,7 +137,7 @@ public class SettingActivity extends Activity implements OnClickListener {
 		btn_exit = (Button) findViewById(R.id.btn_exit);
 		btn_exit.setOnClickListener(this);
 		PreAccount = getSharedPreferences("Account", Context.MODE_PRIVATE);
-
+		activity = this;
 		PreUserInfo = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 		ticket = PreUserInfo.getString("ticket", "");
 	}

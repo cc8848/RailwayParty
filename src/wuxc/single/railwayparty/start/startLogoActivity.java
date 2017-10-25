@@ -414,6 +414,8 @@ public class startLogoActivity extends Activity {
 				final ArrayList ArrayValues = new ArrayList();
 				ArrayValues.add(new BasicNameValuePair("login_id", userName));
 				ArrayValues.add(new BasicNameValuePair("pwd", password));
+				Log.e("login_id", userName);
+				Log.e("password", password);
 				new Thread(new Runnable() { // 开启线程上传文件
 					@Override
 					public void run() {
@@ -467,16 +469,22 @@ public class startLogoActivity extends Activity {
 				finish();
 			} else if (Type.equals("accountPwdError")) {
 				Toast.makeText(getApplicationContext(), "用户名和密码不匹配", Toast.LENGTH_SHORT).show();
-
+				WriteAccountnull();
+				WriteUserInfonull();
 			} else if (Type.equals("userLocked")) {
 				Toast.makeText(getApplicationContext(), "账号被禁用", Toast.LENGTH_SHORT).show();
-
+				WriteAccountnull();
+				WriteUserInfonull();
 			} else {
 				Toast.makeText(getApplicationContext(), "登陆失败", Toast.LENGTH_SHORT).show();
+				WriteAccountnull();
+				WriteUserInfonull();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			WriteAccountnull();
+			WriteUserInfonull();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -547,6 +555,35 @@ public class startLogoActivity extends Activity {
 		}
 		Log.e("getTimeByCalendar", year + "-" + Mon + "-" + Day);
 		return year + "-" + Mon + "-" + Day;
+	}
+
+	private void WriteUserInfonull() {
+		// TODO Auto-generated method stub
+		Editor edit = PreUserInfo.edit();
+		edit.putString("userPhoto", "");
+		edit.putString("address", "");
+		edit.putString("ticket", "");
+		edit.putString("sex", "");
+		edit.putString("loginId", "");
+		edit.putString("sessionId", "");
+		edit.putString("sex", "");
+		edit.commit();
+	}
+
+	private void WriteAccountnull() {
+		// TODO Auto-generated method stub
+		if (true) {
+			Editor edit = PreAccount.edit();
+			edit.putString("LoginId", "");
+			edit.putString("pwd", "");
+			edit.commit();
+			// } else {
+			// Editor edit = PreAccount.edit();
+			// edit.putString("LoginId", null);
+			// edit.putString("pwd", null);
+			// edit.commit();
+		}
+
 	}
 
 	private void WriteUserInfo() {

@@ -482,6 +482,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		rel_member.setOnClickListener(this);
 		rel_flag.setOnClickListener(this);
 		main_top_bac.setOnClickListener(this);
+		headimg.setOnClickListener(this);
 		showtext();
 	}
 
@@ -682,6 +683,14 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			startActivity(intent_rel_flag);
 			break;
 		case R.id.main_top_bac:
+			if (ticket.equals("")) {
+				Intent intent_top_bac = new Intent();
+				intent_top_bac.setClass(getActivity(), LoginActivity.class);
+				startActivity(intent_top_bac);
+			}
+
+			break;
+		case R.id.headimg:
 			if (ticket.equals("")) {
 				Intent intent_top_bac = new Intent();
 				intent_top_bac.setClass(getActivity(), LoginActivity.class);
