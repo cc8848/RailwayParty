@@ -45,6 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import wuxc.single.railwayparty.MainFragment.RequestTimerTask;
 import wuxc.single.railwayparty.fragment.BuildFragment1;
 import wuxc.single.railwayparty.fragment.BuildFragment2;
 import wuxc.single.railwayparty.fragment.BuildFragment3;
@@ -206,6 +207,94 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		}
 		return view;
 	}
+
+	private int recLen = 0;
+	Timer timer = new Timer();
+
+	private void timego() {
+		// TODO Auto-generated method stub
+		timer.schedule(new RequestTimerTask(), 3000, 3000); // timeTask
+
+	}
+
+	class RequestTimerTask extends TimerTask {
+		public void run() {
+			Log.d("mainfragmnet", "timer on schedule"+recLen);
+			recLen++;
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+
+		}
+	}
+
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (recLen < 0) {
+					timer.cancel();
+
+				}
+				try {
+					int cur = recLen % NumberPicture1;
+					ViewPaper1.setCurrentItem(cur);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	};@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		try {
+			Log.e("mainfragmetn", "onDestroyView");
+			timer.cancel();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
 	private void initfragment1() {
 		// TODO Auto-generated method stub
 		Fragments1.add(new b1());
@@ -297,8 +386,9 @@ public class BuildFragment extends MainBaseFragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onStart();
 		if (view != null) {
-
 			intnumber();
+			timer = new Timer();
+			timego();
 		}
 	}
 

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText; 
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,11 +99,12 @@ public class MainActivity extends InstrumentedActivity implements OnClickListene
 			break;
 		case R.id.getRegistrationId:
 			String rid = JPushInterface.getRegistrationID(getApplicationContext());
-			if (!rid.isEmpty()) {
-				mRegId.setText("RegId:" + rid);
-			} else {
-				Toast.makeText(this, "Get registration fail, JPush init failed!", Toast.LENGTH_SHORT).show();
-			}
+			// if (!rid.isEmpty()) {
+			// mRegId.setText("RegId:" + rid);
+			// } else {
+			// Toast.makeText(this, "Get registration fail, JPush init failed!",
+			// Toast.LENGTH_SHORT).show();
+			// }
 			break;
 		}
 	}

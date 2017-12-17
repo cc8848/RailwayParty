@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="wuxc.single.railwayparty"
-    android:versionCode="9"
-    android:versionName="4.3.0" >
+    android:versionCode="13"
+    android:versionName="5.0.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -331,6 +331,10 @@
         </activity>
         <activity
             android:name=".main.PolicyActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".main.PolicyActivity2"
             android:screenOrientation="portrait" >
         </activity>
         <activity

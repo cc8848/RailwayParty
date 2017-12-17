@@ -2,6 +2,8 @@ package wuxc.single.railwayparty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -39,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import wuxc.single.railwayparty.MainFragment.MyOnPageChangeListener;
+import wuxc.single.railwayparty.MainFragment.RequestTimerTask;
 import wuxc.single.railwayparty.branch.PartyAssistantActivity;
 import wuxc.single.railwayparty.branch.PartyBranchGroupActivity;
 import wuxc.single.railwayparty.branch.PartyBranchStatisicActivity;
@@ -150,6 +153,107 @@ public class BranchFragment extends MainBaseFragment implements OnClickListener 
 			ViewPaper.setAdapter(new MyPagerAdapter());
 		}
 		return view;
+	}
+
+	private int recLen = 0;
+	Timer timer = new Timer();
+
+	private void timego() {
+		// TODO Auto-generated method stub
+		timer.schedule(new RequestTimerTask(), 3000, 3000); // timeTask
+
+	}
+
+	class RequestTimerTask extends TimerTask {
+		public void run() {
+			Log.d("mainfragmnet", "timer on schedule" + recLen);
+			recLen++;
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+
+		}
+	}
+
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (recLen < 0) {
+					timer.cancel();
+
+				}
+				try {
+					int cur = recLen % NumberPicture;
+					ViewPaper.setCurrentItem(cur);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	};
+
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		try {
+			Log.e("mainfragmetn", "onDestroyView");
+			timer.cancel();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if (view != null) {
+
+			timer = new Timer();
+			timego();
+		}
+	}
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private void initfragment() {

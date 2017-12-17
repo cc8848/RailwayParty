@@ -17,6 +17,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ public class ImageLoader120 {
 			Log.e("内存引用", "内存引用");
 			imageView.setImageBitmap(bitmap);
 		} else {
+			
 			String userName = getBitName(url);
 			String temppath = Environment.getExternalStorageDirectory() + "/chat/" + userName + ".png";
 			Bitmap bm1 = null;
@@ -55,13 +58,63 @@ public class ImageLoader120 {
 				queuePhoto(url, activity, imageView);
 				imageView.setImageResource(stub_id);
 			} else {
-				Log.e("引用图片+imageloader", "引用图片+imageloader" + userName);
-				memoryCache.put(url, bm1);
-				imageView.setImageBitmap(bm1);
+				try {
+					int width = bm1.getWidth();
+					int height = bm1.getHeight();
+					Log.e("width", "" + width);
+					Log.e("width", "" + width);
+					int clr1 = bm1.getPixel(0, 0);
+					int clr2 = bm1.getPixel(width - 1, 0);
+					int clr3 = bm1.getPixel(0, height - 1);
+					int clr4 = bm1.getPixel(width - 1, height - 1);
+					int black = -16777216;
+
+					if (clr1 == black || clr2 == black || clr3 == black || clr4 == black) {
+
+						Log.e("判断数据加载图片+imageloader", "加载图片+imageloader" + userName);
+						queuePhoto(url, activity, imageView);
+						imageView.setImageResource(stub_id);
+					} else {
+						if (isWifiActive(activity)) {
+							Log.e("无线下加载图片+imageloader", "加载图片+imageloader" + userName);
+							queuePhoto(url, activity, imageView);
+							imageView.setImageBitmap(bm1);
+						} else {
+							Log.e("引用SD图片+imageloader", "引用图片+imageloader" + userName);
+							memoryCache.put(url, bm1);
+							imageView.setImageBitmap(bm1);
+						}
+					}
+
+				} catch (Exception e) {
+					// TODO: handle exception
+
+					Log.e("异常后加载图片+imageloader", "加载图片+imageloader" + userName);
+					queuePhoto(url, activity, imageView);
+					imageView.setImageResource(stub_id);
+				}
+
 			}
 
 		}
 	}
+	// 判断当前是否使用的是 WIFI网络
+		public static boolean isWifiActive(Context icontext) {
+			Context context = icontext.getApplicationContext();
+			ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo[] info;
+			if (connectivity != null) {
+				info = connectivity.getAllNetworkInfo();
+				if (info != null) {
+					for (int i = 0; i < info.length; i++) {
+						if (info[i].getTypeName().equals("WIFI") && info[i].isConnected()) {
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
 
 	public Bitmap getBitmapByPath(String fileName) {
 		// String myJpgPath =

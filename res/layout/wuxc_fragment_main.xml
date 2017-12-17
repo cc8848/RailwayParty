@@ -174,7 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:text="两学一做"
+                        android:text="十九大专题"
                         android:textSize="16dp" />
                 </LinearLayout>
             </LinearLayout>

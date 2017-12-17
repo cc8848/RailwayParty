@@ -154,7 +154,7 @@
         <LinearLayout
             android:id="@+id/lin_center"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="260dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/shape_10"
@@ -195,9 +195,9 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape20line"
                 android:gravity="center"
-                android:text="三会一课"
+                android:text="十九大专题"
                 android:textSize="16dp"
-                android:visibility="gone" />
+                 />
 
             <TextView
                 android:id="@+id/text_three"

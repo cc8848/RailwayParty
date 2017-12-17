@@ -48,7 +48,7 @@ public class ImageLoaderForHeadimg {
 			imageView.setImageBitmap(bitmap);
 		} else {
 			String userName = getBitName(url);
-			userName = "600" + userName;
+			userName = "a600" + userName;
 			String temppath = Environment.getExternalStorageDirectory() + "/chat/" + userName + ".png";
 			Bitmap bm1 = null;
 			bm1 = getBitmapByPath(temppath);
@@ -118,7 +118,7 @@ public class ImageLoaderForHeadimg {
 
 				Log.e("b图片内容不为空", "b图片内容不为空");
 				String userName = getBitName(url);
-				saveMyBitmap("600" + userName, b);
+				saveMyBitmap("a600" + userName, b);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -132,7 +132,7 @@ public class ImageLoaderForHeadimg {
 			//
 			// Log.e("b600图片内容不为空", "b600图片内容不为空");
 			// String userName = getBitName(url);
-			// saveMyBitmap("600" + userName, b600);
+			// saveMyBitmap("a600" + userName, b600);
 			// } catch (IOException e) {
 			// // TODO Auto-generated catch block
 			// e.printStackTrace();
@@ -166,7 +166,7 @@ public class ImageLoaderForHeadimg {
 					Log.e("图片内容不为空", "图片内容不为空");
 				}
 				String userName = getBitName(url);
-				saveMyBitmap("600" + userName, bitmap);
+				saveMyBitmap("a600" + userName, bitmap);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -180,7 +180,7 @@ public class ImageLoaderForHeadimg {
 			//
 			// Log.e("b600图片内容不为空", "b600图片内容不为空");
 			// String userName = getBitName(url);
-			// saveMyBitmap("600" + userName, b600);
+			// saveMyBitmap("a600" + userName, b600);
 			// } catch (IOException e) {
 			// // TODO Auto-generated catch block
 			// e.printStackTrace();

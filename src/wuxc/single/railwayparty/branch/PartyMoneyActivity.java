@@ -12,11 +12,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import wuxc.single.railwayparty.R;
 import wuxc.single.railwayparty.layout.Childviewpaper;
 
@@ -28,6 +30,24 @@ public class PartyMoneyActivity extends FragmentActivity implements OnClickListe
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 2;
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		try {
+			String param="";
+			param=getIntent().getStringExtra("from_bankabc_param");
+			if(param.equals("")){
+				Log.e("param", param);
+			//	Toast.makeText(this, param, Toast.LENGTH_SHORT).show();
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

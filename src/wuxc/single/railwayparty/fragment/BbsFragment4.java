@@ -112,9 +112,9 @@ public class BbsFragment4 extends Fragment implements OnTouchListener, Callback,
 				GetPager(Data);
 				GetDataList(Data, curPage);
 			} else if (Type.equals(GET_FAIL_RESULT)) {
-				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

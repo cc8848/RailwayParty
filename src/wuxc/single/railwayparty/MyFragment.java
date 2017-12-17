@@ -237,7 +237,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			JSONObject demoJson = new JSONObject(obj.toString());
 			datacre = demoJson.getString("data");
 			demoJson = new JSONObject(datacre);
-			rank1 = demoJson.getString("num");
+			rank1 = "" + (demoJson.getInt("num") + 1);
 			rank2 = demoJson.getString("totalLength");
 			rank3 = demoJson.getString("todayLength");
 			Editor edit = PreUserInfo.edit();
@@ -587,7 +587,7 @@ public class MyFragment extends MainBaseFragment implements OnClickListener {
 			Bitmap photo = extras.getParcelable("data");
 			mbitmap = photo;
 			Drawable drawable = new BitmapDrawable(photo);
-//			round_headimg.setImageBitmap(photo);
+			// round_headimg.setImageBitmap(photo);
 			Log.e("HeadimgAbsolutePath", HeadimgAbsolutePath);
 			final File file1 = savePNG.savePNG_After(photo, "wuxc", HeadimgAbsolutePath);
 			File file = null;

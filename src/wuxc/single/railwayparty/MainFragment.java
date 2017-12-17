@@ -2,6 +2,8 @@ package wuxc.single.railwayparty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -31,6 +33,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,6 +54,7 @@ import wuxc.single.railwayparty.main.InformActivity;
 import wuxc.single.railwayparty.main.MemberActivity;
 import wuxc.single.railwayparty.main.PartyManageActivity;
 import wuxc.single.railwayparty.main.PolicyActivity;
+import wuxc.single.railwayparty.main.PolicyActivity2;
 import wuxc.single.railwayparty.main.WebLearnActivity;
 import wuxc.single.railwayparty.other.LoginActivity;
 import wuxc.single.railwayparty.other.SearchActivity;
@@ -100,6 +104,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 	public List<Fragment> Fragments = new ArrayList<Fragment>();
 	private FragmentManager FragmentManager;
 	private int NumberPicture = 0;
+
 	private Handler uiHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -200,6 +205,8 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 		super.onStart();
 		if (view != null) {
 			intnumber();
+			timer = new Timer();
+			timego();
 		}
 	}
 
@@ -424,8 +431,98 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 			ViewPaper.setOffscreenPageLimit(NumberPicture);
 			ViewPaper.setOnPageChangeListener(new MyOnPageChangeListener());
 			ViewPaper.setAdapter(new MyPagerAdapter());
+
 		}
 		return view;
+	}
+
+	private int recLen = 0;
+	Timer timer = new Timer();
+
+	private void timego() {
+		// TODO Auto-generated method stub
+		timer.schedule(new RequestTimerTask(), 3000, 3000); // timeTask
+
+	}
+
+	class RequestTimerTask extends TimerTask {
+		public void run() {
+			Log.d("mainfragmnet", "timer on schedule"+recLen);
+			recLen++;
+			Message message = new Message();
+			message.what = 1;
+			handler.sendMessage(message);
+
+		}
+	}
+
+	final Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+
+				if (recLen < 0) {
+					timer.cancel();
+
+				}
+				try {
+					int cur = recLen % NumberPicture;
+					ViewPaper.setCurrentItem(cur);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
+	};
+	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		try {
+			Log.e("mainfragmetn", "onDestroyView");
+			timer.cancel();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+	}
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		try {
+			Log.e("mainfragmetn", "onDestroy");
+			timer.cancel();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private void initfragment() {
@@ -569,6 +666,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 
 	}
 
+	
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -597,7 +695,7 @@ public class MainFragment extends MainBaseFragment implements OnClickListener {
 				break;
 			}
 			Intent intent_rel_policy = new Intent();
-			intent_rel_policy.setClass(getActivity(), PolicyActivity.class);
+			intent_rel_policy.setClass(getActivity(), PolicyActivity2.class);
 			startActivity(intent_rel_policy);
 			t2 = 0;
 			intnumber();

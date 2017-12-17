@@ -259,7 +259,7 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 		case R.id.text_two:
 			clearselect();
 			text_two.setBackgroundResource(R.drawable.shape20line);
-			temp = "三会一课";
+			temp = "十九大专题";
 			if (true) {
 				PolicyFragment policyFragment = new PolicyFragment();
 				policyFragment.Set(2);
@@ -284,6 +284,15 @@ public class PolicyActivity extends FragmentActivity implements OnClickListener 
 			title = temp;
 			text_title.setText(title);
 			text_1.setText(title);
+			if (title.equals("两学一做")) {
+
+			} else {
+				finish();
+				Intent intent = new Intent();
+				intent.setClass(getApplicationContext(), PolicyActivity2.class);
+				startActivity(intent);
+			}
+
 			break;
 		case R.id.image_edit:
 			Intent intent = new Intent();

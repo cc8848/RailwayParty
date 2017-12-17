@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.caller.BankABCCaller;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -129,6 +131,7 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 	private String rechargeresult = "";
 	private boolean canwrite = true;
 	private String orderId = "";
+	private String tokenid = "";
 	private static final int GET_DUE_DATA = 9;
 	private String Month = "";
 	private final static int GO_CHANGE_HEADIMG = 8;
@@ -168,9 +171,51 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 			case GET_DUE_DATA:
 				GetDataDueData(msg.obj);
 				break;
+			case 321:
+				Getcharge(msg.obj);
+				break;
+			case 432:
+				getTokenResult(msg.obj);
+				break;
 			default:
 				break;
 			}
+		}
+
+		private void Getcharge(Object obj) {
+			// TODO Auto-generated method stub
+
+
+			// TODO Auto-generated method stub
+			String Type = null;
+			String Data = "";
+			try {
+				JSONObject demoJson = new JSONObject(obj.toString());
+				Type = demoJson.getString("type");
+
+				if (Type.equals(GET_SUCCESS_RESULT)) {
+					orderId = "";
+					orderId = demoJson.getString("orderId");
+					totalpay = demoJson.getDouble("payMoney");
+					if (!orderId.equals("")) {
+						rechargeresult = "success";
+					} else {
+						rechargeresult = "";
+					}
+				 gerToken();
+					// showalert();
+				} else if (Type.equals(GET_FAIL_RESULT)) {
+					Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		
 		}
 	};
 
@@ -204,6 +249,83 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+
+	protected void getTokenResult(Object obj) {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+
+
+		// TODO Auto-generated method stub
+		String Type = null;
+		String Data = "";
+		try {
+			JSONObject demoJson = new JSONObject(obj.toString());
+			Type = demoJson.getString("type");
+
+			if (Type.equals(GET_SUCCESS_RESULT)) {
+				orderId = "";
+			String data	  = demoJson.getString("extData");
+			JSONObject demoJson1 = new JSONObject(data);
+			 tokenid=demoJson1.getString("tokenId");
+			Log.e("tokenid", tokenid);
+			 pay();
+				// showalert();
+			} else if (Type.equals(GET_FAIL_RESULT)) {
+				Toast.makeText(getActivity(), "服务器数据失败", Toast.LENGTH_SHORT).show();
+			} else {
+				Toast.makeText(getActivity(), "数据格式校验失败", Toast.LENGTH_SHORT).show();
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	
+	
+	}
+
+	protected void gerToken() {
+		// TODO Auto-generated method stub
+		final ArrayList ArrayValues = new ArrayList();
+		ArrayValues.add(new BasicNameValuePair("OrderNo", orderId));
+		ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+		ArrayValues.add(new BasicNameValuePair("OrderAmount", "" + totalpay));
+		ArrayValues.add(new BasicNameValuePair("OrderDesc", "" + inityear + "年" + monthstring + "月份党费" ));
+		Log.e("idCardNo", idnumber);
+		Log.e("ticket", ticket);
+		new Thread(new Runnable() { // 开启线程上传文件
+			@Override
+			public void run() {
+				String LoginResultData = "";
+				LoginResultData = HttpGetData.GetData("member/nl/partyfare/geteneratePayOrder", ArrayValues);
+				Message msg = new Message();
+				msg.obj = LoginResultData;
+				msg.what = 432;
+				uiHandler.sendMessage(msg);
+			}
+		}).start();
+	}
+
+	protected void pay() {
+		// TODO Auto-generated method stub
+		/**
+		* 判断手机上是否具备调起农行掌银的条件
+		*/
+	 
+	//	Toast.makeText(getActivity(), tokenid,Toast.LENGTH_LONG).show();
+		
+		if (BankABCCaller.isBankABCAvaiable(getActivity())) {
+
+				/**
+				* 调起农行掌银
+				*/
+				BankABCCaller.startBankABC(getActivity(), "wuxc.single.railwayparty", "wuxc.single.railwayparty.MainActivity", "pay",tokenid);
+		} else {//客户手机未安装农行掌银APP的处理逻辑，由第三方APP自行实现
+			Toast.makeText(getActivity(), "没安装农行掌银，或已安装农行掌银版本不支持",Toast.LENGTH_LONG).show();
+	}
 	}
 
 	protected void GetDataDetailFromMonth(Object obj) {
@@ -762,8 +884,30 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 				dialog.dismiss();
 				showAlert();
 				final ArrayList ArrayValues = new ArrayList();
-				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.fareMonth", monthstring));
+				String month = monthstring;
+				try {
+				String c[] = monthstring.split("、");
+			
+				
+				for (int i = 0; i < c.length; i++) {
+					String string = c[i];
+					if (c[i].length() == 1) {
+						c[i] = inityear + "-0" + c[i];
+					} else {
+						c[i] = inityear + "-" + c[i];
+					}
+
+				}
+				month = c[0];
+				for (int i = 1; i < c.length; i++) {
+					month = c[i] + month;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.fareMonth", month));
 				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.amount", "" + totalpay));
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.ext1", idnumber));
 				ArrayValues.add(new BasicNameValuePair("partyFareRecordDto.payWay", "" + 2));
 				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
 
@@ -793,7 +937,48 @@ public class FragmentSendMoney extends Fragment implements OnClickListener {
 		builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
+				final ArrayList ArrayValues = new ArrayList();
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.platformCode", "010"));
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.payMoney", "" + totalpay));
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.title", monthstring));
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.classify", "PARY_FARE"));
+				String month = monthstring;
+				try {
+				String c[] = monthstring.split("、");
+			
+				
+				for (int i = 0; i < c.length; i++) {
+					String string = c[i];
+					if (c[i].length() == 1) {
+						c[i] = inityear + "-0" + c[i];
+					} else {
+						c[i] = inityear + "-" + c[i];
+					}
 
+				}
+				month = c[0];
+				for (int i = 1; i < c.length; i++) {
+					month = c[i] + month;
+				}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+				
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.ext1", idnumber));
+				ArrayValues.add(new BasicNameValuePair("rechargeMoneyDto.ext2", "" + month));
+				ArrayValues.add(new BasicNameValuePair("ticket", "" + ticket));
+
+				new Thread(new Runnable() { // 开启线程上传文件
+					@Override
+					public void run() {
+						String LoginResultData = "";
+						LoginResultData = HttpGetData.GetData("api/shop/recharge/generateRecharge", ArrayValues);
+						 Message msg = new Message();
+						 msg.obj = LoginResultData;
+						 msg.what = 321;
+						 uiHandler.sendMessage(msg);
+					}
+				}).start();
 			}
 		});
 
