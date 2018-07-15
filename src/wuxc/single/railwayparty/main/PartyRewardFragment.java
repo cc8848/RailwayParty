@@ -213,7 +213,7 @@ public class PartyRewardFragment extends Fragment
 					}
 
 					listinfo.setHeadimgUrl(json_data.getString("sacleImage"));
-					listinfo.setRead(PreForDNJC.getBoolean(json_data.getString("keyid"), false));
+					listinfo.setRead(ItemNumber.getBoolean("dnjc" + json_data.getString("keyid"), true));
 
 					try {
 						listinfo.setLink(json_data.getString("otherLinks"));
@@ -376,15 +376,12 @@ public class PartyRewardFragment extends Fragment
 				intent.putExtras(bundle);
 				startActivity(intent);
 				if (!data.isRead()) {
-					Editor edit = PreForDNJC.edit();
-					edit.putBoolean(data.getId(), true);
+					Editor edit = ItemNumber.edit();
+					edit.putBoolean("dnjc"+data.getId(), true);
 					edit.commit();
 					data.setRead(true);
 					mAdapter.notifyDataSetChanged();
-					Editor edit1 = ItemNumber.edit();
-					edit1.putInt("DNJCread", (PreForDNJC.getAll().size() - 1));
-					Log.e("DNJCread", "" + (PreForDNJC.getAll().size() - 1));
-					edit1.commit();
+				 
 				}
 			}
 			break;
